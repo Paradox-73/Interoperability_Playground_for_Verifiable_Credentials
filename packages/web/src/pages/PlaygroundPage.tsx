@@ -1,17 +1,21 @@
 /**
  * The page a judge sees first: choose the three roles, set the run, press Run, follow the timeline.
- * The inspector and the sequence diagram join the timeline in the lower area in a later step.
+ * Below the timeline, the sequence diagram and the protocol inspector show the same run's recorded
+ * messages.
  */
 import { useTranslation } from 'react-i18next';
 import { RunBar } from '../features/run-bar/RunBar';
 import { RoleSelector } from '../features/selector/RoleSelector';
 import { Timeline } from '../features/timeline/Timeline';
+import { LazyRunExplorer } from '../inspector/LazyRunExplorer';
 import { usePlaygroundStore } from '../state/playground';
+import { useRunEvents } from '../state/run-events';
 import { useDocumentTitle } from '../app/use-document-title';
 
 export function PlaygroundPage() {
   const { t } = useTranslation();
   const activeRunId = usePlaygroundStore((state) => state.activeRunId);
+  const events = useRunEvents(activeRunId);
   useDocumentTitle(t('app.nav.playground'));
   return (
     <div className="space-y-6">
@@ -19,6 +23,7 @@ export function PlaygroundPage() {
       <RoleSelector />
       <RunBar />
       <Timeline runId={activeRunId} linkToRun />
+      {activeRunId && <LazyRunExplorer key={activeRunId} runId={activeRunId} events={events} />}
     </div>
   );
 }

@@ -1,0 +1,82 @@
+/*
+ * Marks on the Mermaid sequence diagram. Colours come from the theme tokens in src/index.css, so the
+ * marks keep AA contrast in both themes. The newest arrow is marked by a thicker line and a bold label,
+ * not by colour alone; the selected one by an outline.
+ */
+.seq-canvas svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.seq-canvas .seq-message {
+  cursor: pointer;
+}
+
+.seq-canvas .seq-message:focus-visible {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.seq-canvas .seq-line {
+  cursor: pointer;
+}
+
+.seq-canvas .seq-newest.seq-message {
+  font-weight: 700;
+  fill: var(--c-accent) !important;
+}
+
+.seq-canvas .seq-newest.seq-line {
+  stroke: var(--c-accent) !important;
+  stroke-width: 3px !important;
+}
+
+.seq-canvas .seq-selected.seq-message {
+  text-decoration: underline;
+  fill: var(--c-text) !important;
+  font-weight: 700;
+}
+
+.seq-canvas .seq-selected.seq-line {
+  stroke-width: 3px !important;
+}
+
+.seq-canvas .seq-failed.seq-message {
+  fill: var(--c-fail) !important;
+}
+
+/* The newest arrow draws itself from the sender to the receiver, and its label fades in once. */
+.seq-canvas .seq-animate.seq-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: seq-draw 0.7s ease-out forwards;
+}
+
+.seq-canvas .seq-animate.seq-message {
+  animation: seq-fade 0.7s ease-out;
+}
+
+@keyframes seq-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes seq-fade {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Belt and braces: the component already leaves out seq-animate when reduced motion is asked for. */
+@media (prefers-reduced-motion: reduce) {
+  .seq-canvas .seq-animate.seq-line,
+  .seq-canvas .seq-animate.seq-message {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+}

@@ -167,6 +167,172 @@
     "resultError": "Stopped at “{{step}}”: {{message}}",
     "openRun": "Open this run on its own page"
   },
+  "inspector": {
+    "loading": "Loading the sequence diagram and the protocol inspector…",
+    "heading": "Protocol inspector",
+    "empty": "No recorded messages yet. Each HTTP request between the roles appears here as soon as the playground records it.",
+    "messagesLabel": "Recorded messages of run {{runId}}, grouped by step",
+    "untagged": "Messages not matched to a protocol step",
+    "selectPrompt": "Choose a message on the left, or an arrow in the sequence diagram, to see its payloads.",
+    "following": "Showing the newest message. Choose another message to keep it open.",
+    "status": "HTTP {{status}}",
+    "noResponse": "no response",
+    "messageHeading": "Message {{seq}}: {{method}} {{path}}",
+    "fromTo": "From → to",
+    "captured": "Captured",
+    "timing": "Started · duration",
+    "capture": {
+      "outbound": "sent by playground code through the recording HTTP client",
+      "proxy": "passed through the playground’s recording proxy",
+      "inbound": "received by a reference role hosted by the playground"
+    },
+    "redacted": "Tokens, codes, cookies and keys in this message were replaced by placeholders.",
+    "whatIsThis": "What is this step?",
+    "specLink": "{{name}}, section “{{section}}”",
+    "opensInNewTab": " (opens in a new tab)",
+    "stepHelp": {
+      "issuerOffer": "The issuer creates a credential offer: which credential the wallet may collect and a one-time pre-authorized code. A wallet receives it as a QR code or link, or the playground hands it to the wallet directly.",
+      "issuerMetadata": "The wallet downloads the issuer’s metadata to learn the credential endpoint, the credential types and formats on offer, and which proof of key possession the issuer accepts.",
+      "asMetadata": "The wallet looks up the authorization server that issues access tokens for this issuer, and its token endpoint.",
+      "token": "The wallet trades the pre-authorized code (or an authorization code) for an access token. The answer may carry a c_nonce that the wallet must sign in its proof.",
+      "nonce": "The wallet asks the issuer for a fresh nonce, so the proof of possession it signs next cannot be replayed.",
+      "credential": "The wallet sends a JWT signed with its own key (the proof of possession) and receives the signed credential, bound to that key.",
+      "verifierRequest": "The verifier creates an authorization request saying which credential and which claims it needs: a Presentation Exchange definition or a DCQL query, plus a nonce and where to send the answer.",
+      "walletFetchRequest": "The wallet downloads the request object the authorization request points to (request_uri). It is usually a signed JWT carrying the query, the nonce and the response URI.",
+      "walletSubmit": "The wallet posts its answer to the verifier’s response URI: the vp_token (the presentation, signed with the holder’s key over the verifier’s nonce) and, with Presentation Exchange, the presentation_submission that maps it to the request.",
+      "verifierResult": "The verifier checks the issuer’s signature, the dates, the holder binding (nonce and audience) and the disclosed claims, then reports its result.",
+      "personAction": "A person has to act: scan a QR code with a phone wallet or open a link. The run continues when the server sees the wallet’s request.",
+      "playgroundAdmin": "A set-up call the playground makes to a role before the protocol starts, for example asking an issuer to prepare an offer. It is not part of the standard."
+    },
+    "decodedHeading_one": "{{count}} decoded protocol object",
+    "decodedHeading_other": "{{count}} decoded protocol objects",
+    "notVerified": "Decoded only: signatures are checked by the verifier role of the run, not by the inspector.",
+    "section": {
+      "credential-offer": "Credential offer",
+      "authorization-request": "Authorization request parameters",
+      "request-object": "Request object",
+      "presentation-definition": "Presentation definition (Presentation Exchange)",
+      "dcql-query": "DCQL query",
+      "proof-jwt": "Proof of possession (JWT)",
+      "credential": "Credential",
+      "vp-token": "vp_token (presentation)",
+      "presentation-submission": "presentation_submission",
+      "verification-result": "Verification result",
+      "jwt": "JWT"
+    },
+    "sectionSource": "in {{source}} at {{path}}",
+    "source": {
+      "request": "the request",
+      "response": "the response",
+      "url": "the URL",
+      "artifact": "the artefact"
+    },
+    "raw": "Raw",
+    "decoded": "Decoded",
+    "request": "Request",
+    "response": "Response",
+    "headers_one": "{{count}} header",
+    "headers_other": "{{count}} headers",
+    "noBody": "No body.",
+    "binaryBody": "Binary body, stored as {{length}} characters of base64.",
+    "networkError": "No response arrived: {{error}}",
+    "bodyOf": "body of the {{title}}",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "copiedWhat": "{{what}} copied to the clipboard",
+    "download": "Download",
+    "artifactTitle": "Artefact: {{kind}}",
+    "artifactHint": "The run reported this artefact exactly as it was exchanged.",
+    "artifactFormat": "Format: {{format}}.",
+    "artifact": {
+      "offer": "credential offer",
+      "credential": "issued credential",
+      "request-object": "request object",
+      "vp-token": "vp_token",
+      "result": "verification result"
+    },
+    "opaque": "The inspector does not decode this format; the raw text is shown as sent.",
+    "json": {
+      "keys_one": "{{count}} key",
+      "keys_other": "{{count}} keys",
+      "items_one": "{{count}} item",
+      "items_other": "{{count}} items"
+    },
+    "jwt": {
+      "header": "Header",
+      "payload": "Payload",
+      "signature": "Signature (base64url, not checked here)",
+      "unsigned": "none (unsecured JWT)"
+    },
+    "sdJwt": {
+      "issuerJwt": "Issuer-signed JWT",
+      "disclosures_one": "{{count}} disclosure",
+      "disclosures_other": "{{count}} disclosures",
+      "disclosuresHint": "Each disclosure reveals one claim as [salt, name, value]. Its digest must be listed in the issuer JWT’s _sd array, or the issuer never signed that claim.",
+      "name": "Claim",
+      "value": "Value",
+      "salt": "Salt",
+      "listed": "Digest in _sd",
+      "listedYes": "yes",
+      "listedNo": "no: not signed by the issuer",
+      "checking": "checking…",
+      "arrayElement": "(array element)",
+      "invalid": "Not a valid disclosure: {{value}}",
+      "keyBinding": "Key-binding JWT (the holder’s signature over the verifier’s nonce and audience)",
+      "noKeyBinding": "No key-binding JWT: this is the credential as issued, without proof of who presents it."
+    },
+    "proof": {
+      "heading": "Embedded proof (Data Integrity / Linked Data proof)"
+    },
+    "params": {
+      "caption": "Parameters",
+      "name": "Parameter",
+      "value": "Value"
+    }
+  },
+  "sequence": {
+    "heading": "Sequence diagram",
+    "title": "Run {{runId}}: {{issuer}} to {{wallet}} to {{verifier}}",
+    "titleNoConfig": "Run {{runId}}",
+    "description_one": "{{count}} recorded HTTP message between the playground, the issuer, the wallet and the verifier, drawn in the order it was recorded. The timeline lists the same steps as text.",
+    "description_other": "{{count}} recorded HTTP messages between the playground, the issuer, the wallet and the verifier, drawn in the order they were recorded. The timeline lists the same steps as text.",
+    "empty": "The diagram draws one arrow per recorded HTTP message once the run starts.",
+    "loading": "Drawing the diagram…",
+    "failed": "The diagram could not be drawn ({{message}}). The recorded messages are listed instead.",
+    "messageLabel": "{{from}} to {{to}}: {{label}}. Open in the inspector.",
+    "hint": "Each arrow is one recorded HTTP message; the newest is drawn thicker. Select an arrow label, or reach it with Tab and press Enter, to open that message in the inspector.",
+    "motionReduced": "Animation is off because the system asks for reduced motion.",
+    "participant": {
+      "Playground": "Playground",
+      "Issuer": "Issuer",
+      "Wallet": "Wallet",
+      "Verifier": "Verifier",
+      "Person": "Person"
+    }
+  },
+  "playback": {
+    "title": "Playback of run {{runId}}",
+    "heading": "Playback of run {{runId}} recorded on {{date}}",
+    "headingNoDate": "Playback of run {{runId}}",
+    "notice": "This is a recording, not a live run: every message shown was captured when the run took place, and nothing is sent again.",
+    "back": "Back to run {{runId}}",
+    "loading": "Loading the recorded events of run {{runId}}…",
+    "error": "Run {{runId}} could not be loaded: {{message}}",
+    "empty": "Run {{runId}} has no recorded events.",
+    "controls": "Playback controls",
+    "play": "Play",
+    "replay": "Play again",
+    "pause": "Pause",
+    "step": "Step forward",
+    "back1": "Step back",
+    "restart": "Restart",
+    "end": "Go to end",
+    "speed": "Speed",
+    "speedValue": "{{speed}}×",
+    "positionLabel": "Playback position",
+    "position": "Event {{position}} of {{total}}"
+  },
   "announce": {
     "stepOk": "Step done: {{label}}",
     "stepFailed": "Step failed: {{label}}. {{message}}",
@@ -182,7 +348,8 @@
     },
     "run": {
       "title": "Run {{runId}}",
-      "back": "Back to the playground"
+      "back": "Back to the playground",
+      "playback": "Play back this run step by step"
     },
     "matrix": {
       "title": "Compatibility matrix",

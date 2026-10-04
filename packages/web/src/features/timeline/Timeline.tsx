@@ -52,7 +52,8 @@ export function Timeline({ runId, linkToRun = false }: TimelineProps) {
   );
 }
 
-function RunTimeline({ view }: { view: RunView }) {
+/** The timeline of a run view; also used by playback, which builds the view from stored events. */
+export function RunTimeline({ view }: { view: RunView }) {
   const { t } = useTranslation();
   const roles = useRoleIndex();
   // Role names when the server lists the role, else the id from the run configuration.

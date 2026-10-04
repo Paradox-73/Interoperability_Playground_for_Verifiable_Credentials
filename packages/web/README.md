@@ -57,7 +57,15 @@ test/
   msw/                            mock server (REST and WebSocket) used by every page test
 ```
 
-Later features add `src/inspector/`, `src/sequence/`, `src/playback/` and `src/features/{matrix,history,report,tamper,gaps,manual-wallet,inji-verify-sdk}/`.
+```
+src/inspector/             protocol inspector, run explorer (diagram + inspector, one selection)
+src/sequence/              Mermaid sequence diagram, built from recorded exchanges, lazy-loaded
+src/playback/              /runs/:id/playback: stored run replayed step by step
+```
+
+How the inspector, the diagram and playback work: [`src/inspector/README.md`](src/inspector/README.md).
+
+Later features add `src/features/{matrix,history,report,tamper,gaps,manual-wallet,inji-verify-sdk}/`.
 
 ## How the parts fit
 
@@ -87,17 +95,23 @@ misspelt key fails `npm run typecheck`. A new language is one more JSON file reg
 Measured on 2026-10-04 (Windows 11, Node 24.19.0): `npm test -w @inji-playground/web` passed 9 test
 files with 157 tests in 56 s while other packages were building on the same laptop (about 20 s on
 an idle one); `npm run build -w @inji-playground/web` built a 464 kB JavaScript bundle (143 kB gzip)
-and 17 kB of CSS. Page tests get 30 s each and `findBy*` / `waitFor` 5 s (`vite.config.ts`,
+and 17 kB of CSS.
+
+After the protocol inspector, sequence diagram and playback were added (2026-10-04): 15 test files, 217 tests, 24 s; the build's main chunk is 356 kB (112 kB gzip) because the run explorer (35 kB), the playback page (7 kB) and Mermaid (`mermaid.core` 94 kB, `sequenceDiagram` 116 kB, plus Mermaid's own lazy chunks) load on demand. Vite still warns about one chunk over 500 kB (662 kB): a shared chunk inside Mermaid, loaded only
+after Mermaid itself.
+
+Page tests get 30 s each and `findBy*` / `waitFor` 5 s (`vite.config.ts`,
 `test/setup.ts`), because the defaults (5 s, 1 s) failed under that load with no fault in the page.
 
-| File                              | What it checks                                                                                                                                                                                                 |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `test/playground.test.tsx`        | Three columns from `/api/roles`; incompatible card reasons (local and server); default selection and fallback; Run posts the configuration; run bar errors; timeline from WebSocket events; announcements; axe |
-| `test/app-shell.test.tsx`         | Routes and page titles, navigation, about page, status strip, theme switch                                                                                                                                     |
-| `test/theme-contrast.test.ts`     | AA contrast of every token pair in both themes                                                                                                                                                                 |
-| `src/api/socket.test.ts`          | Subscribe and unsubscribe, routing of events, reconnect back-off, resubscription, invalid messages                                                                                                             |
-| `src/api/compatibility.test.ts`   | Response parsing and per-role filtering                                                                                                                                                                        |
-| `src/features/selector/*.test.ts` | Shared options, incompatibility rules, run-setting choice, default selection tiers                                                                                                                             |
-| `src/state/*.test.ts`             | Timeline reducer (synthetic example run, failures, repeated steps, person actions), duplicate events                                                                                                           |
+| File                                                                                | What it checks                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `test/playground.test.tsx`                                                          | Three columns from `/api/roles`; incompatible card reasons (local and server); default selection and fallback; Run posts the configuration; run bar errors; timeline from WebSocket events; announcements; axe |
+| `test/app-shell.test.tsx`                                                           | Routes and page titles, navigation, about page, status strip, theme switch                                                                                                                                     |
+| `test/theme-contrast.test.ts`                                                       | AA contrast of every token pair in both themes                                                                                                                                                                 |
+| `src/api/socket.test.ts`                                                            | Subscribe and unsubscribe, routing of events, reconnect back-off, resubscription, invalid messages                                                                                                             |
+| `src/api/compatibility.test.ts`                                                     | Response parsing and per-role filtering                                                                                                                                                                        |
+| `src/features/selector/*.test.ts`                                                   | Shared options, incompatibility rules, run-setting choice, default selection tiers                                                                                                                             |
+| `src/state/*.test.ts`                                                               | Timeline reducer (synthetic example run, failures, repeated steps, person actions), duplicate events                                                                                                           |
+| `test/inspector*.test.ts(x)`, `test/sequence*.test.ts(x)`, `test/playback.test.tsx` | Protocol inspector, sequence diagram and playback; see [`src/inspector/README.md`](src/inspector/README.md#tests)                                                                                              |
 
 Browser tests: Playwright projects `e2e` (`e2e/`) and `e2e-live` (`e2e/live/`, needs the bundle).
