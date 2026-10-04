@@ -40,6 +40,10 @@ describe('compose.yaml', () => {
     expect(compose.services['verify-ui'].environment.OVP_QR_HEADER).toBe('INJI_OVP://payload=');
   });
 
+  it('turns off the Secure cookie flag of verify-service, which serves plain http', () => {
+    expect(compose.services['verify-service'].environment.INJI_VERIFY_COOKIE_SECURE_VALUE).toBe('false');
+  });
+
   it('mounts the upstream verify-ui config.json unchanged', () => {
     expect(compose.services['verify-ui'].volumes).toContain(
       './config/verify-ui-config.json:/usr/share/nginx/html/assets/config.json:ro',

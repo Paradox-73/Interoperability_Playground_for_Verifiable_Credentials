@@ -178,6 +178,11 @@ services:
       INJI_VERIFY_REDIRECT_URI: http://localhost:28030
       INJI_VERIFY_RESPONSE_CODE_EXPIRY_TIME_IN_MINS: '5'
       INJI_VERIFY_CLAIMS_WITH_META_DATA: _sd,_sd_alg,iss,cnf,sub,aud,exp,nbf,iat,cti
+      # Cookie flag: verify-service marks its transaction cookie Secure by default (application.properties
+      # inji.verify.cookie-secure-value=true). Browsers refuse Secure cookies over plain http on any host other
+      # than localhost, for example the LAN address used when a phone takes part, so the stack serves plain
+      # http and turns the flag off, as the upstream application-local.properties does.
+      INJI_VERIFY_COOKIE_SECURE_VALUE: 'false'
       USE_SYSTEM_CA_CERTS: '1'
     volumes:
       - ${PLAYGROUND_RUN_DIR:-../../run}/stack/ca:/certificates:ro
