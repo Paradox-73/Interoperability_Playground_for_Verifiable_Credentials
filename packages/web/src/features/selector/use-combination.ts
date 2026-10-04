@@ -84,8 +84,8 @@ export function candidateCombination(
 }
 
 /** The body of `POST /api/runs` for a runnable combination. */
-export function runConfigOf(combination: Combination): RunConfigInput | undefined {
+export function runConfigOf(combination: Combination, scenario = 'happy'): RunConfigInput | undefined {
   const { query } = combination;
   if (!query) return undefined;
-  return { ...query, scenario: 'happy' };
+  return { ...query, scenario };
 }

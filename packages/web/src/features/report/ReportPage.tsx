@@ -182,7 +182,10 @@ function ReportBody({ document: doc, runLink }: { document: RunReportDocument; r
           )}
           {report.replayOf && (
             <Field name="replayOf" label={t('report.fields.replayOf')}>
-              <Link to={`/runs/${encodeURIComponent(report.replayOf)}/report`} className="text-accent underline">
+              <Link
+                to={`/runs/${encodeURIComponent(report.replayOf)}/report`}
+                className="text-accent underline"
+              >
                 {report.replayOf}
               </Link>
             </Field>
@@ -225,7 +228,12 @@ function RoleValue({ role, version }: { role: RoleRef; version: string }) {
 }
 
 const STEP_ICON = { ok: CheckIcon, failed: CrossIcon, skipped: SkipIcon, 'not-run': SkipIcon } as const;
-const STEP_STYLE = { ok: 'text-ok', failed: 'text-fail', skipped: 'text-fg-muted', 'not-run': 'text-fg-muted' };
+const STEP_STYLE = {
+  ok: 'text-ok',
+  failed: 'text-fail',
+  skipped: 'text-fg-muted',
+  'not-run': 'text-fg-muted',
+};
 
 function StepTable({ document: doc }: { document: RunReportDocument }) {
   const { t } = useTranslation();
@@ -273,7 +281,12 @@ function StepTable({ document: doc }: { document: RunReportDocument }) {
                   </td>
                   <td className="px-3 py-2">
                     {step.spec ? (
-                      <a href={step.spec.url} target="_blank" rel="noreferrer" className="text-accent underline">
+                      <a
+                        href={step.spec.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent underline"
+                      >
                         {step.spec.name}, {step.spec.section}
                         <span className="sr-only">{t('inspector.opensInNewTab')}</span>
                       </a>

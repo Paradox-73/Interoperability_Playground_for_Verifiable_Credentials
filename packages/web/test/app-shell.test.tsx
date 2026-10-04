@@ -11,7 +11,7 @@ import { renderApp } from './render';
 
 describe('routing', () => {
   it.each([
-    ['/runs', 'Runs'],
+    ['/runs', 'Run history'],
     ['/matrix', 'Compatibility matrix'],
     ['/gaps', 'Interoperability gaps'],
     ['/about', 'About the playground'],

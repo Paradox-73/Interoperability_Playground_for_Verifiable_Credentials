@@ -1,15 +1,16 @@
 /**
  * Every page of the UI. Shared by the browser router (main.tsx) and the memory router in tests.
- * Later features replace the placeholder elements (matrix, gaps) and add the run report under /runs/:id.
  */
 import { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router-dom';
+import { GapsPage } from '../features/gaps/GapsPage';
+import { HistoryPage } from '../features/history/HistoryPage';
+import { MatrixPage } from '../features/matrix/MatrixPage';
+import { ReportPage } from '../features/report/ReportPage';
 import { AboutPage } from '../pages/AboutPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
-import { PlaceholderPage } from '../pages/PlaceholderPage';
 import { PlaygroundPage } from '../pages/PlaygroundPage';
 import { RunPage } from '../pages/RunPage';
-import { RunsPage } from '../pages/RunsPage';
 import { AppShell } from './AppShell';
 
 // Playback brings the diagram and the inspector; it loads when first opened.
@@ -23,8 +24,9 @@ export const routes: RouteObject[] = [
     element: <AppShell />,
     children: [
       { index: true, element: <PlaygroundPage /> },
-      { path: 'runs', element: <RunsPage /> },
+      { path: 'runs', element: <HistoryPage /> },
       { path: 'runs/:id', element: <RunPage /> },
+      { path: 'runs/:id/report', element: <ReportPage /> },
       {
         path: 'runs/:id/playback',
         element: (
@@ -33,8 +35,8 @@ export const routes: RouteObject[] = [
           </Suspense>
         ),
       },
-      { path: 'matrix', element: <PlaceholderPage page="matrix" /> },
-      { path: 'gaps', element: <PlaceholderPage page="gaps" /> },
+      { path: 'matrix', element: <MatrixPage /> },
+      { path: 'gaps', element: <GapsPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

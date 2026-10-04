@@ -21,9 +21,14 @@ export function RunPage() {
       </Link>
       <h1 className="text-xl font-semibold">{t('pages.run.title', { runId: id ?? '' })}</h1>
       {id && (
-        <Link to={`/runs/${encodeURIComponent(id)}/playback`} className="text-sm text-accent underline">
-          {t('pages.run.playback')}
-        </Link>
+        <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+          <Link to={`/runs/${encodeURIComponent(id)}/report`} className="text-accent underline">
+            {t('pages.run.report')}
+          </Link>
+          <Link to={`/runs/${encodeURIComponent(id)}/playback`} className="text-accent underline">
+            {t('pages.run.playback')}
+          </Link>
+        </p>
       )}
       <Timeline runId={id} />
       {id && <LazyRunExplorer key={id} runId={id} events={events} />}

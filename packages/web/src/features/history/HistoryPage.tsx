@@ -69,12 +69,7 @@ export function HistoryPage() {
           ) : (
             <>
               <RunTable runs={runs.data.items} />
-              <Pager
-                page={page}
-                total={runs.data.total}
-                shown={runs.data.items.length}
-                onPage={goToPage}
-              />
+              <Pager page={page} total={runs.data.total} shown={runs.data.items.length} onPage={goToPage} />
             </>
           ))}
       </section>
@@ -160,13 +155,11 @@ function RunRow({ run }: { run: RunSummary }) {
       <td className="px-3 py-2 whitespace-nowrap">
         {run.status === 'finished' && (
           <Link to={`/runs/${id}/report`} className="mr-3 text-accent underline">
-            {t('history.report')}
-            <span className="sr-only"> {t('history.ofRun', { runId: run.runId })}</span>
+            {t('history.report')} <span className="sr-only">{t('history.ofRun', { runId: run.runId })}</span>
           </Link>
         )}
         <Link to={`/runs/${id}`} className="text-accent underline">
-          {t('history.inspect')}
-          <span className="sr-only"> {t('history.ofRun', { runId: run.runId })}</span>
+          {t('history.inspect')} <span className="sr-only">{t('history.ofRun', { runId: run.runId })}</span>
         </Link>
       </td>
     </tr>

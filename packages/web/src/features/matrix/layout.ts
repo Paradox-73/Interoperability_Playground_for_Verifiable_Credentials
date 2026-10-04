@@ -62,7 +62,8 @@ export function layoutMatrix(matrix: Matrix, scenario: string): MatrixLayout {
     const { key } = cell;
     if (key.scenario !== scenario) continue;
     const column = columnId(key.format, key.vpProfile);
-    if (!columns.has(column)) columns.set(column, { id: column, format: key.format, vpProfile: key.vpProfile });
+    if (!columns.has(column))
+      columns.set(column, { id: column, format: key.format, vpProfile: key.vpProfile });
     const rowId = `${key.issuer}/${key.wallet}/${key.verifier}`;
     let row = rows.get(rowId);
     if (!row) {

@@ -42,7 +42,10 @@ export function GapsPage() {
       </div>
 
       {cell && (
-        <p className="rounded-md border border-line bg-surface-muted p-3 text-sm" data-testid="gap-cell-filter">
+        <p
+          className="rounded-md border border-line bg-surface-muted p-3 text-sm"
+          data-testid="gap-cell-filter"
+        >
           {t('gaps.forCell', { count: shown.length })} <span className="font-mono break-all">{cell}</span>{' '}
           <Link to="/gaps" className="text-accent underline">
             {t('gaps.showAll', { count: all.length })}
@@ -81,7 +84,9 @@ export function GapsPage() {
           </h2>
           <ul className="list-disc pl-5 text-sm text-warn">
             {gaps.data.problems.map((problem) => (
-              <li key={problem.index}>{t('gaps.problem', { index: problem.index, message: problem.message })}</li>
+              <li key={problem.index}>
+                {t('gaps.problem', { index: problem.index, message: problem.message })}
+              </li>
             ))}
           </ul>
         </section>
@@ -158,7 +163,10 @@ function GapEntry({ gap }: { gap: Gap }) {
             <dt className="text-fg-muted">{t('gaps.evidence')}</dt>
             <dd>
               {gap.evidence.runId ? (
-                <Link to={`/runs/${encodeURIComponent(gap.evidence.runId)}/report`} className="text-accent underline">
+                <Link
+                  to={`/runs/${encodeURIComponent(gap.evidence.runId)}/report`}
+                  className="text-accent underline"
+                >
                   {t('gaps.evidenceRun', { runId: gap.evidence.runId })}
                 </Link>
               ) : null}
@@ -171,7 +179,12 @@ function GapEntry({ gap }: { gap: Gap }) {
           <>
             <dt className="text-fg-muted">{t('gaps.upstream')}</dt>
             <dd>
-              <a href={gap.upstreamIssue} target="_blank" rel="noreferrer" className="text-accent underline break-all">
+              <a
+                href={gap.upstreamIssue}
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent underline break-all"
+              >
                 {gap.upstreamIssue}
                 <span className="sr-only">{t('inspector.opensInNewTab')}</span>
               </a>

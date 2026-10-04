@@ -1,7 +1,9 @@
 /**
  * Run settings and the Run button. The format and protocol lists offer only values every selected role
- * supports; the scenario is the happy path until the tamper controls arrive. Run posts the selected
- * configuration to `POST /api/runs` and hands the new run id to the timeline.
+ * supports; the scenario picker offers the happy path and the tamper and probe scenarios that fit the
+ * format, and says what a correct verifier must answer before the run. Run posts the selected
+ * configuration to `POST /api/runs` and hands the new run id to the timeline; once the verifier has
+ * answered, the expected outcome is shown next to the actual one.
  */
 import { useId, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +11,8 @@ import { describeError } from '../../api/http';
 import { useCompatibility, useCreateRun } from '../../api/queries';
 import { announce } from '../../state/announcer';
 import { usePlaygroundStore } from '../../state/playground';
+import { ScenarioExpectation, ScenarioPicker, TamperRunResult } from '../tamper/TamperControls';
+import { useScenarioChoice } from '../tamper/use-scenario';
 import type { RunChoice } from '../selector/compatibility';
 import { describeIncompatibility } from '../selector/describe';
 import { runConfigOf, useCombination } from '../selector/use-combination';
@@ -18,9 +22,13 @@ export function RunBar() {
   const combination = useCombination();
   const setPreference = usePlaygroundStore((state) => state.setPreference);
   const runStarted = usePlaygroundStore((state) => state.runStarted);
-  const server = useCompatibility(combination.query);
+  const activeRunId = usePlaygroundStore((state) => state.activeRunId);
+  const { scenario } = useScenarioChoice(combination.choice?.format);
+  // The server also checks the scenario: a tamper variant needs the reference issuer or wallet.
+  const server = useCompatibility(combination.query ? { ...combination.query, scenario: scenario.id } : null);
   const createRun = useCreateRun();
   const statusId = useId();
+  const expectationId = useId();
 
   const { options, choice, complete } = combination;
   const serverReasons = server.data?.reasons ?? [];
@@ -29,7 +37,7 @@ export function RunBar() {
   const warnings = serverReasons.filter((r) => r.severity === 'warning').map((r) => r.message);
   const localBlock = combination.problems.map((problem) => describeIncompatibility(problem, t));
   const blockReasons = [...localBlock, ...serverBlock];
-  const config = serverBlocks ? undefined : runConfigOf(combination);
+  const config = serverBlocks ? undefined : runConfigOf(combination, scenario.id);
 
   let blockedText: string | undefined;
   if (!complete) blockedText = t('runBar.needRoles');
@@ -85,13 +93,12 @@ export function RunBar() {
           optionLabel={(p) => t(`vpProfile.${p}`)}
           onChange={(value) => setPreference('vpProfile', value)}
         />
-        <div className={field}>
-          <span>{t('runBar.scenario')}</span>
-          <span className="rounded-md border border-line bg-surface-muted px-2 py-1.5">
-            {t('runBar.happy')}{' '}
-            <span className="text-fg-muted">· {t('runBar.expected', { outcome: t('outcome.VALID') })}</span>
-          </span>
-        </div>
+        <ScenarioPicker
+          format={choice?.format}
+          describedBy={expectationId}
+          className={field}
+          selectClassName={select}
+        />
         <button
           type="submit"
           disabled={!config || createRun.isPending}
@@ -101,6 +108,8 @@ export function RunBar() {
           {createRun.isPending ? t('runBar.starting') : t('runBar.run')}
         </button>
       </form>
+
+      <ScenarioExpectation id={expectationId} format={choice?.format} />
 
       <div id={statusId} className="mt-3 text-sm">
         {blockedText && <p className="text-fg-muted">{blockedText}</p>}
@@ -115,6 +124,8 @@ export function RunBar() {
           </p>
         )}
       </div>
+
+      <TamperRunResult runId={activeRunId} />
     </section>
   );
 }

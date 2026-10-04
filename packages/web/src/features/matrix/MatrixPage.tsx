@@ -71,7 +71,8 @@ export function MatrixPage() {
 
   const layout = matrix.data ? layoutMatrix(matrix.data, filter.scenario) : undefined;
   const nameOf = (id: string) => layout?.roles.get(id)?.name ?? id;
-  const rowLabel = (row: MatrixRow) => `${nameOf(row.issuer)} → ${nameOf(row.wallet)} → ${nameOf(row.verifier)}`;
+  const rowLabel = (row: MatrixRow) =>
+    `${nameOf(row.issuer)} → ${nameOf(row.wallet)} → ${nameOf(row.verifier)}`;
   const columnLabel = (column: MatrixColumn) =>
     `${t(`format.${column.format}`)}, ${t(`vpProfile.${column.vpProfile}`)}`;
 
@@ -98,7 +99,10 @@ export function MatrixPage() {
             {started.map((item) => (
               <li key={item.runId}>
                 {t('matrix.startedPrefix')}{' '}
-                <Link to={`/runs/${encodeURIComponent(item.runId)}`} className="font-mono text-accent underline">
+                <Link
+                  to={`/runs/${encodeURIComponent(item.runId)}`}
+                  className="font-mono text-accent underline"
+                >
                   {item.runId}
                 </Link>{' '}
                 · {item.label}
@@ -289,14 +293,18 @@ function CellView({ cell, label, disabled, onRun }: CellViewProps) {
           <Link to={`/gaps?cell=${encodeURIComponent(cell.id)}`} className="text-accent underline">
             {cell.gapIds.length > 0
               ? t('matrix.gaps', { ids: cell.gapIds.join(', ') })
-              : t('matrix.checkGaps')}
-            <span className="sr-only"> {t('matrix.forCell', { label })}</span>
+              : t('matrix.checkGaps')}{' '}
+            <span className="sr-only">{t('matrix.forCell', { label })}</span>
           </Link>
         )}
         {isRunnable(cell) && (
-          <button type="button" onClick={onRun} disabled={disabled} className="text-accent underline disabled:text-fg-muted">
-            {t('matrix.runCell')}
-            <span className="sr-only"> {t('matrix.forCell', { label })}</span>
+          <button
+            type="button"
+            onClick={onRun}
+            disabled={disabled}
+            className="text-accent underline disabled:text-fg-muted"
+          >
+            {t('matrix.runCell')} <span className="sr-only">{t('matrix.forCell', { label })}</span>
           </button>
         )}
       </div>
@@ -308,7 +316,14 @@ function Totals({
   totals,
   generatedAt,
 }: {
-  totals: { cells: number; pass: number; fail: number; error: number; notSupported: number; untested: number };
+  totals: {
+    cells: number;
+    pass: number;
+    fail: number;
+    error: number;
+    notSupported: number;
+    untested: number;
+  };
   generatedAt: string;
 }) {
   const { t } = useTranslation();

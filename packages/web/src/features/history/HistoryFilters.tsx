@@ -152,7 +152,8 @@ interface FilterSelectProps {
 function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
   const { t } = useTranslation();
   // A filter value that is not offered any more (for example a role no longer registered) stays visible.
-  const all = value && !options.some((o) => o.value === value) ? [...options, { value, label: value }] : options;
+  const all =
+    value && !options.some((o) => o.value === value) ? [...options, { value, label: value }] : options;
   return (
     <FilterField label={label}>
       {(id) => (

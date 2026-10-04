@@ -86,7 +86,7 @@ export function filterFromParams(params: URLSearchParams): { filter: HistoryFilt
     if (value !== null && isValid(key, value)) filter[key] = value.trim();
   }
   const page = Number.parseInt(params.get('page') ?? '1', 10);
-  return { filter: filter as HistoryFilter, page: Number.isFinite(page) && page >= 1 ? page : 1 };
+  return { filter: filter, page: Number.isFinite(page) && page >= 1 ? page : 1 };
 }
 
 /** The page address for a filter and page; page 1 and empty values are left out. */

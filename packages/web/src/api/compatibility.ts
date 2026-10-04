@@ -36,6 +36,8 @@ export interface CompatibilityQuery {
   format: CredentialFormat;
   vciProfile: VciProfile;
   vpProfile: VpProfile;
+  /** Scenario the run would apply; the server's default (the happy path) when missing. */
+  scenario?: string;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -93,5 +95,6 @@ export function compatibilityPath(query: CompatibilityQuery): string {
     vciProfile: query.vciProfile,
     vpProfile: query.vpProfile,
   });
+  if (query.scenario && query.scenario !== 'happy') params.set('scenario', query.scenario);
   return `/api/compatibility?${params.toString()}`;
 }

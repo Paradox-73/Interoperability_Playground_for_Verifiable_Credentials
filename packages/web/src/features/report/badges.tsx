@@ -57,7 +57,10 @@ export function StatusBadge({ status, className = '' }: { status: MatrixCellStat
   const { t } = useTranslation();
   const { Icon, text } = STATUS_STYLE[status];
   return (
-    <span className={`inline-flex items-center gap-1 font-semibold ${text} ${className}`} data-status={status}>
+    <span
+      className={`inline-flex items-center gap-1 font-semibold ${text} ${className}`}
+      data-status={status}
+    >
       <Icon />
       {t(`matrix.status.${status}`)}
     </span>

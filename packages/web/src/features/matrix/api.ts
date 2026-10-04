@@ -41,7 +41,9 @@ const VOCABULARY: Record<string, ZodType> = {
   scenario: ScenarioIdSchema,
 };
 
-export const MATRIX_FILTER_KEYS = Object.keys(VOCABULARY) as Array<Exclude<keyof MatrixFilter, 'hideNotSupported'>>;
+export const MATRIX_FILTER_KEYS = Object.keys(VOCABULARY) as Array<
+  Exclude<keyof MatrixFilter, 'hideNotSupported'>
+>;
 
 export function matrixFilterFromParams(params: URLSearchParams): MatrixFilter {
   const filter: Record<string, string> = {};

@@ -33,7 +33,7 @@ export function MatrixFilters({ filter, onChange, roles }: MatrixFiltersProps) {
   const update = <K extends keyof MatrixFilter>(key: K, value: MatrixFilter[K] | '') => {
     const next = { ...filter };
     if (value === '' || value === undefined) delete next[key];
-    else next[key] = value as MatrixFilter[K];
+    else next[key] = value;
     onChange({ ...next, scenario: next.scenario ?? HAPPY_FALLBACK.id });
   };
   const roleOptions = (kind: RoleKind) =>
@@ -110,7 +110,8 @@ interface SelectProps {
 function Select({ label, value, options, onChange, required = false }: SelectProps) {
   const { t } = useTranslation();
   const id = useId();
-  const all = value && !options.some((o) => o.value === value) ? [...options, { value, label: value }] : options;
+  const all =
+    value && !options.some((o) => o.value === value) ? [...options, { value, label: value }] : options;
   return (
     <div className="flex flex-col gap-1 text-sm">
       <label htmlFor={id}>{label}</label>

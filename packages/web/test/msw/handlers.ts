@@ -6,6 +6,7 @@
 import type { RoleStatus, RunConfigInput, StackStatus } from '@inji-playground/protocol';
 import { http, HttpResponse, ws } from 'msw';
 import { defaultSocketUrl } from '../../src/api/socket';
+import { emptyGaps, emptyMatrix, emptyRunList, metrics, scenarios } from '../fixtures/evidence';
 import { CHECKED_AT, roleStatuses } from '../fixtures/roles';
 
 export const api = (path: string) => new URL(path, window.location.origin).toString();
@@ -43,6 +44,12 @@ export const defaultHandlers = [
   rolesHandler(roleStatuses()),
   // Every combination that passes the local check is runnable unless a test says otherwise.
   http.get(api('/api/compatibility'), () => HttpResponse.json({ runnable: true, mode: 'live', reasons: [] })),
+  http.get(api('/api/scenarios'), () => HttpResponse.json(scenarios)),
+  // Evidence pages start empty; their tests answer with the fixtures in test/fixtures/evidence.ts.
+  http.get(api('/api/runs'), () => HttpResponse.json(emptyRunList)),
+  http.get(api('/api/metrics'), () => HttpResponse.json({ ...metrics, window: { runs: 0 }, steps: [] })),
+  http.get(api('/api/matrix'), () => HttpResponse.json(emptyMatrix)),
+  http.get(api('/api/gaps'), () => HttpResponse.json(emptyGaps)),
   // Accept connections; tests that stream events add their own listener.
   runSocketLink.addEventListener('connection', () => undefined),
 ];

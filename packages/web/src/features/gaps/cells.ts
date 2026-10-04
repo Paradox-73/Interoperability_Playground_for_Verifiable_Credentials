@@ -15,7 +15,11 @@ export function cellMatches(pattern: string, cellId: string): boolean {
 }
 
 /** The gaps linked to a matrix cell, by pattern or by an explicit id the matrix gave the cell. */
-export function gapsForCell(gaps: readonly Gap[], cellId: string, explicitIds: readonly string[] = []): Gap[] {
+export function gapsForCell(
+  gaps: readonly Gap[],
+  cellId: string,
+  explicitIds: readonly string[] = [],
+): Gap[] {
   return gaps.filter(
     (gap) => explicitIds.includes(gap.id) || gap.cells.some((pattern) => cellMatches(pattern, cellId)),
   );
