@@ -1,0 +1,237 @@
+/**
+ * Credential configurations of the reference issuer and how each is described in issuer metadata.
+ *
+ * Every configuration carries display name, logo, `background_color` and `text_color`. OpenID4VCI
+ * marks them optional, but Mimoto refuses the whole issuer when one configuration lacks them
+ * (`CredentialSupportedDisplayResponse.java:30-54`, measured as gap G4), so the reference issuer
+ * always sends them.
+ *
+ * The same configuration is written differently per protocol version:
+ * - draft 13 (Appendix A): `display` at the top of the configuration; claim descriptions under
+ *   `credential_definition.credentialSubject` (ldp_vc) or `claims` (SD-JWT).
+ * - 1.0 (section 12.2.4, Appendix A): `display` and `claims` (a list of `{path, display}`) move into
+ *   `credential_metadata`.
+ */
+import {
+  CREDENTIALS_V1_URL,
+  CREDENTIALS_V2_URL,
+  PLAYGROUND_CONTEXT_V1_URL,
+  type LdpProofSuite,
+} from '@inji-playground/formats';
+import type { VciProfile } from '@inji-playground/protocol';
+
+export type IssuedFormat = 'ldp_vc' | 'vc+sd-jwt' | 'dc+sd-jwt';
+
+export interface CredentialDisplay {
+  name: string;
+  locale: string;
+  description?: string;
+  logo: { uri: string; alt_text: string };
+  background_color: string;
+  text_color: string;
+}
+
+export interface ClaimDescription {
+  /** Claim name in `credentialSubject` (ldp_vc) or at the top of the SD-JWT payload. */
+  name: string;
+  label: string;
+  mandatory?: boolean;
+}
+
+export interface CredentialConfiguration {
+  id: string;
+  format: IssuedFormat;
+  /** OAuth scope that asks for this credential in the authorization code flow. */
+  scope: string;
+  /** ldp_vc only. */
+  ldp?: { suite: LdpProofSuite; contexts: string[]; types: string[] };
+  /** SD-JWT VC only. */
+  vct?: string;
+  /** SD-JWT VC only: the issuer's JOSE algorithm. */
+  sdJwtAlg?: 'EdDSA' | 'ES256';
+  /** `display.name`; logo and colours are added from the issuer's branding. */
+  name: string;
+  description: string;
+  claims: ClaimDescription[];
+  /** Validity of an issued credential when the offer does not set one. */
+  validitySeconds: number;
+}
+
+/** Algorithms the issuer accepts in key proof JWTs (ES256 first: the combination Certify accepted). */
+export const PROOF_SIGNING_ALGS = ['ES256', 'EdDSA'] as const;
+
+/** Holder binding methods the issuer accepts in proof JWTs (`kid` DID URL, or `jwk` header). */
+export const BINDING_METHODS = ['did:jwk', 'did:key', 'jwk'] as const;
+
+export const FARMER_VCT = 'https://playground.ps02.test/vct/farmer/v1';
+
+const FARMER_CLAIMS: ClaimDescription[] = [
+  { name: 'farmerId', label: 'Farmer ID', mandatory: true },
+  { name: 'givenName', label: 'Given name' },
+  { name: 'familyName', label: 'Family name' },
+  { name: 'birthDate', label: 'Date of birth' },
+  { name: 'state', label: 'State' },
+  { name: 'landArea', label: 'Land area' },
+  { name: 'primaryCropType', label: 'Primary crop' },
+];
+
+/**
+ * Test claims for a credential subject when the offer brings none. Values follow the first row of
+ * the upstream farmer sample (see `as/identity.ts`), so a reference credential and a Certify
+ * credential for the same farmer can be compared side by side.
+ */
+export const DEFAULT_FARMER_CLAIMS: Readonly<Record<string, string>> = {
+  farmerId: '2154189532',
+  givenName: 'Gorge',
+  familyName: 'Cooper',
+  birthDate: '1990-05-25',
+  state: 'Karnataka',
+  landArea: '3 hectares',
+  primaryCropType: 'Maize',
+};
+
+const YEAR = 365 * 24 * 3600;
+
+/** The four configurations the plan asks for: two ldp_vc data models and both SD-JWT VC names. */
+export const DEFAULT_CONFIGURATIONS: readonly CredentialConfiguration[] = [
+  {
+    id: 'FarmerCredential_ldp_vc',
+    format: 'ldp_vc',
+    scope: 'farmer_ldp_vc',
+    ldp: {
+      suite: 'Ed25519Signature2020',
+      contexts: [CREDENTIALS_V1_URL, PLAYGROUND_CONTEXT_V1_URL],
+      types: ['VerifiableCredential', 'FarmerCredential'],
+    },
+    name: 'Farmer credential (W3C VC 1.1)',
+    description: 'Farmer identity, W3C VC Data Model 1.1 signed with Ed25519Signature2020',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+  },
+  {
+    id: 'FarmerCredential_ldp_vc_v2',
+    format: 'ldp_vc',
+    scope: 'farmer_ldp_vc_v2',
+    ldp: {
+      suite: 'eddsa-rdfc-2022',
+      contexts: [CREDENTIALS_V2_URL, PLAYGROUND_CONTEXT_V1_URL],
+      types: ['VerifiableCredential', 'FarmerCredential'],
+    },
+    name: 'Farmer credential (W3C VC 2.0)',
+    description: 'Farmer identity, W3C VC Data Model 2.0 with DataIntegrityProof eddsa-rdfc-2022',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+  },
+  {
+    id: 'FarmerCredential_vc_sd_jwt',
+    format: 'vc+sd-jwt',
+    scope: 'farmer_vc_sd_jwt',
+    vct: FARMER_VCT,
+    sdJwtAlg: 'EdDSA',
+    name: 'Farmer credential (SD-JWT, vc+sd-jwt)',
+    description: 'Farmer identity as an SD-JWT VC with the format name Inji stable uses',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+  },
+  {
+    id: 'FarmerCredential_dc_sd_jwt',
+    format: 'dc+sd-jwt',
+    scope: 'farmer_dc_sd_jwt',
+    vct: FARMER_VCT,
+    sdJwtAlg: 'ES256',
+    name: 'Farmer credential (SD-JWT, dc+sd-jwt)',
+    description: 'Farmer identity as an SD-JWT VC with the format name of OpenID4VCI 1.0',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+  },
+];
+
+export interface IssuerBranding {
+  name: string;
+  logoUri: string;
+  backgroundColor: string;
+  textColor: string;
+  locale: string;
+}
+
+export function credentialDisplay(
+  config: CredentialConfiguration,
+  branding: IssuerBranding,
+): CredentialDisplay[] {
+  return [
+    {
+      name: config.name,
+      locale: branding.locale,
+      description: config.description,
+      logo: { uri: branding.logoUri, alt_text: `${branding.name} logo` },
+      background_color: branding.backgroundColor,
+      text_color: branding.textColor,
+    },
+  ];
+}
+
+/** Algorithms named in `credential_signing_alg_values_supported`. */
+function signingAlgs(config: CredentialConfiguration): string[] {
+  if (config.format === 'ldp_vc') return [config.ldp!.suite];
+  return [config.sdJwtAlg ?? 'EdDSA'];
+}
+
+/** One entry of `credential_configurations_supported` in the shape of the given protocol version. */
+export function configurationMetadata(
+  config: CredentialConfiguration,
+  profile: VciProfile,
+  branding: IssuerBranding,
+): Record<string, unknown> {
+  const display = credentialDisplay(config, branding);
+  const claimDisplay = (claim: ClaimDescription) => [{ name: claim.label, locale: branding.locale }];
+  const common = {
+    format: config.format,
+    scope: config.scope,
+    cryptographic_binding_methods_supported: [...BINDING_METHODS],
+    credential_signing_alg_values_supported: signingAlgs(config),
+    proof_types_supported: { jwt: { proof_signing_alg_values_supported: [...PROOF_SIGNING_ALGS] } },
+  };
+  if (profile === 'draft13') {
+    const claims = Object.fromEntries(
+      config.claims.map((claim) => [
+        claim.name,
+        { ...(claim.mandatory ? { mandatory: true } : {}), display: claimDisplay(claim) },
+      ]),
+    );
+    return config.format === 'ldp_vc'
+      ? {
+          ...common,
+          credential_definition: {
+            '@context': config.ldp!.contexts,
+            type: config.ldp!.types,
+            credentialSubject: claims,
+          },
+          display,
+          order: config.claims.map((claim) => claim.name),
+        }
+      : { ...common, vct: config.vct, claims, display, order: config.claims.map((claim) => claim.name) };
+  }
+  const subjectPath = (claim: ClaimDescription) =>
+    config.format === 'ldp_vc' ? ['credentialSubject', claim.name] : [claim.name];
+  return {
+    ...common,
+    ...(config.format === 'ldp_vc'
+      ? { credential_definition: { '@context': config.ldp!.contexts, type: config.ldp!.types } }
+      : { vct: config.vct }),
+    credential_metadata: {
+      display,
+      claims: config.claims.map((claim) => ({
+        path: subjectPath(claim),
+        ...(claim.mandatory ? { mandatory: true } : {}),
+        display: claimDisplay(claim),
+      })),
+    },
+  };
+}
+
+/** A small logo served by the issuer, so metadata never points at an outside host. */
+export const ISSUER_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Reference issuer">
+<rect width="64" height="64" rx="12" fill="#0b5d4b"/>
+<path d="M18 40c8-16 20-20 28-20-2 10-8 22-24 24" fill="none" stroke="#f4f1e8" stroke-width="4" stroke-linecap="round"/>
+<circle cx="22" cy="44" r="3" fill="#f4f1e8"/>
+</svg>`;

@@ -23,6 +23,7 @@
   "dependencies": {
     "@inji-playground/formats": "0.1.0",
     "@inji-playground/protocol": "0.1.0",
+    "fastify": "^5.12.5",
     "jose": "^6.2.12",
     "zod": "^4.6.5"
   }
