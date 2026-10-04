@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: MIT
+#
+# One-command bundle of the PS02 Inji interoperability playground (Docker Compose project "ps02-bundle"):
+# the local Inji stack (inji-stack/compose.yaml) plus the playground server, which serves the UI, the API and
+# the reference roles on http://localhost:28100.
+#
+#   npm run up                    build the playground image from the last commit, start everything, wait
+#   npm run up -- --build-only    only build the image
+#   npm run down                  stop and remove everything
+#
+# With only Docker installed (no Node on the host), from a clone of the repository:
+#
+#   docker compose -f deploy/compose.yaml --profile holder-web up --build
+#
+# The init service creates the test CA and TLS certificate, and the Mimoto wrapper its client key, so nothing
+# has to be prepared on the host. Add --profile verify-ui for the Inji Verify web UI.
+
+name: ps02-bundle
+
+include:
+  # The stack, plus bundle settings for it (inji-stack/compose.bundle.yaml): ref.ps02.test points at the
+  # playground container instead of the host.
+  - path:
+      - inji-stack/compose.yaml
+      - inji-stack/compose.bundle.yaml
+
+services:
+  playground:
+    image: ${PLAYGROUND_IMAGE:-ps02-playground:bundle}
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - '28100:28100'
+    environment:
+      PLAYGROUND_STACK: bundle
+      # Trust the stack's test CA for https://*.ps02.test (did:web documents behind the TLS front).
+      NODE_EXTRA_CA_CERTS: /stack/ca/ps02-test-ca.crt
+    volumes:
+      - ${PLAYGROUND_RUN_DIR:-../run}/stack/ca:/stack/ca:ro
+      - playground-data:/data
+    depends_on:
+      init:
+        condition: service_completed_successfully
+
+volumes:
+  playground-data:

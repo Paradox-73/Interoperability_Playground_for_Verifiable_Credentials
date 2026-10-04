@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: MIT
+#
+# Bundle settings for compose.yaml, merged by deploy/compose.yaml: the playground runs as the container
+# "playground" on the same network, so ref.ps02.test on the TLS front points there instead of at the host.
+services:
+  tls-front:
+    environment:
+      REF_UPSTREAM: http://playground:28100
