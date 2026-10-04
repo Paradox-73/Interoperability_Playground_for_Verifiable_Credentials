@@ -1,7 +1,202 @@
 # @inji-playground/formats
 
-Keys, DIDs and credential formats used by the reference issuer, wallet and verifier: W3C VC with Data
-Integrity proofs (Ed25519Signature2020, eddsa-rdfc-2022) and SD-JWT VC with key binding.
+Keys, DIDs and credential formats for the playground's reference issuer, wallet and verifier. Every
+reference role issues, presents and verifies credentials through this package, so the formats are
+implemented once and tested once. It is independent of Inji's code: it is built from the
+specifications and from libraries outside the Inji project, which is what lets the playground test
+Inji modules against something that is not Inji.
 
-Status (2026-10-04): skeleton. It exports `isSdJwtFormat()`, and its test checks that every library
-the package will use loads inside Vitest on Node 24.
+Everything works offline. Network access happens only through a `fetch` function the caller passes
+in (did:web documents, JSON-LD contexts that are not pinned).
+
+## What it covers
+
+| Area                | Formats and methods                                                                                                                                    | Main functions                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Keys                | Ed25519 (`EdDSA`) and P-256 (`ES256`) as JWK; RFC 7638 thumbprints; key files in a caller-chosen folder                                                | `generateKeyPair`, `toPublicJwk`, `jwkThumbprint`, `loadOrCreateKeyPair`, `signCompactJws` |
+| X.509               | Test CA and leaf certificates for `x5c`; chain validation against trust anchors                                                                        | `createTestCertificate`, `validateX5c`                                                     |
+| DIDs                | `did:key` (Ed25519, P-256), `did:jwk` (padded form accepted and flagged), `did:web` (injectable fetch, `*.ps02.test` host override map)                | `createDidKey`, `createDidJwk`, `didWebFromUrl`, `buildDidDocument`, `createDidResolver`   |
+| `ldp_vc` / `ldp_vp` | VC 1.1 + `Ed25519Signature2020`; VC 2.0 + `DataIntegrityProof` / `eddsa-rdfc-2022`; presentations with `challenge` and `domain`                        | `issueLdpVc`, `verifyLdpVc`, `createLdpVp`, `verifyLdpVp`, `createDocumentLoader`          |
+| SD-JWT VC           | `typ` `dc+sd-jwt` or `vc+sd-jwt`; `ES256` or `EdDSA`; holder key as `cnf.jwk` or `cnf.kid`; issuer key by DID `kid`, `x5c`, or configured keys; KB-JWT | `issueSdJwtVc`, `presentSdJwtVc`, `verifySdJwtVc`, `decodeSdJwt`                           |
+| Size                | Credential bytes and PixelPass QR text length (Inji's QR encoding: CBOR, zlib, base45) against version 40 QR capacity                                  | `credentialSize`, `pixelPassText`, `qrLevelsThatFit`                                       |
+
+Not covered here: `mso_mdoc` (a stretch goal), status lists (a credential with `credentialStatus`
+verifies with a warning that status was not checked), and the tamper scenarios (`src/tamper/`, added
+by the scenario work package).
+
+## Examples
+
+SD-JWT VC, issuer identified by a did:key, holder key in `cnf.jwk`:
+
+```ts
+import {
+  createDidKey,
+  createDidResolver,
+  didKeyVerificationMethodId,
+  generateKeyPair,
+  issueSdJwtVc,
+  presentSdJwtVc,
+  verifySdJwtVc,
+} from '@inji-playground/formats';
+
+const issuer = generateKeyPair('ES256');
+const holder = generateKeyPair('ES256');
+const issuerDid = createDidKey(issuer.publicJwk);
+
+const credential = await issueSdJwtVc({
+  issuer: { keyPair: issuer, kid: didKeyVerificationMethodId(issuerDid) },
+  iss: issuerDid,
+  typ: 'dc+sd-jwt',
+  vct: 'https://playground.ps02.test/vct/farmer/v1',
+  claims: { given_name: 'Asha', family_name: 'Rao' },
+  holder: { jwk: holder.publicJwk },
+  expiresAt: new Date(Date.now() + 3_600_000),
+});
+
+const presentation = await presentSdJwtVc({
+  sdJwt: credential,
+  disclose: ['given_name'],
+  holderKey: holder,
+  audience: 'redirect_uri:https://verifier.ps02.test/response', // the verifier's client_id
+  nonce: requestNonce,
+});
+
+const result = await verifySdJwtVc(presentation, {
+  didResolver: createDidResolver(),
+  keyBinding: { nonce: requestNonce, audience: 'redirect_uri:https://verifier.ps02.test/response' },
+});
+// result.claims.given_name === 'Asha'; family_name was not disclosed.
+```
+
+`ldp_vc` (VC 1.1, Ed25519Signature2020) and an `ldp_vp` with challenge and domain:
+
+```ts
+import {
+  createDidKey,
+  createDidResolver,
+  createDocumentLoader,
+  didKeyVerificationMethodId,
+  generateKeyPair,
+  issueLdpVc,
+  createLdpVp,
+  verifyLdpVp,
+} from '@inji-playground/formats';
+
+const documentLoader = createDocumentLoader({ didResolver: createDidResolver() }); // no network
+const issuerKeys = generateKeyPair('EdDSA');
+const issuerDid = createDidKey(issuerKeys.publicJwk);
+const issuer = { keyPair: issuerKeys, verificationMethod: didKeyVerificationMethodId(issuerDid) };
+const holderKeys = generateKeyPair('EdDSA');
+const holder = {
+  keyPair: holderKeys,
+  verificationMethod: didKeyVerificationMethodId(createDidKey(holderKeys.publicJwk)),
+};
+// unsignedVc11: '@context' starting with https://www.w3.org/2018/credentials/v1, issuer = issuerDid
+
+const vc = await issueLdpVc({
+  credential: unsignedVc11,
+  suite: 'Ed25519Signature2020',
+  key: issuer,
+  documentLoader,
+});
+const vp = await createLdpVp({
+  credentials: [vc],
+  suite: 'Ed25519Signature2020',
+  key: holder,
+  challenge: nonce,
+  domain: clientId,
+  documentLoader,
+});
+await verifyLdpVp(vp, { documentLoader, expectedChallenge: nonce, expectedDomain: clientId });
+```
+
+Use `suite: 'eddsa-rdfc-2022'` with a VC 2.0 credential (`@context` starting with
+`https://www.w3.org/ns/credentials/v2`, dates in `validFrom` / `validUntil`).
+
+did:web in local runs, where the host names do not exist on the internet:
+
+```ts
+const resolver = createDidResolver({
+  hostOverrides: { 'issuer.ps02.test': 'http://localhost:28110' },
+  fetch: recordingFetch, // optional: the recording layer passes its own client
+});
+// did:web:issuer.ps02.test -> GET http://localhost:28110/.well-known/did.json
+```
+
+Only `*.ps02.test` and `localhost` hosts can be overridden, so a configuration mistake cannot redirect
+the DID of a real domain. Without an override the document is fetched over HTTPS, as the did:web
+specification requires.
+
+## Errors
+
+Every failure is a `FormatError` with a stable `code` (the full list is `FORMAT_ERROR_CODES` in
+`src/errors.ts`), a `spec` string naming the rule that was broken, and `details` with the expected and
+received values. `error.toJSON()` gives a plain object for run reports. Examples:
+
+| Code                                                | Meaning                                                                                              |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `KB_JWT_NONCE_MISMATCH`, `KB_JWT_AUDIENCE_MISMATCH` | The KB-JWT was made for another request or another verifier (RFC 9901 section 7.3 step 5f)           |
+| `KB_JWT_SD_HASH_MISMATCH`                           | Disclosures were added or removed after the holder signed (RFC 9901 section 4.3.1)                   |
+| `SDJWT_DISCLOSURE_INVALID`                          | A disclosure does not match a digest in the issuer-signed JWT (RFC 9901 section 7.1 steps 3-5)       |
+| `LDP_PROOF_INVALID`                                 | A Data Integrity proof does not verify (credential changed, wrong key)                               |
+| `LDP_CHALLENGE_MISMATCH`, `LDP_DOMAIN_MISMATCH`     | The presentation was made for another nonce or client_id (OpenID4VP 1.0 Appendix B.1.3.2.5)          |
+| `LDP_EXPIRED`, `SDJWT_EXPIRED`                      | Outside the validity period; checked before the proof so reports show EXPIRED, not a generic failure |
+| `CONTEXT_NOT_PINNED`                                | A JSON-LD context is neither pinned nor fetchable because network access is off                      |
+
+## Design notes
+
+- **Key binding is checked by this package, not by the SD-JWT library.** `@sd-jwt/sd-jwt-vc` 0.21.1
+  verifies a KB-JWT only when it is given a nonce and skips it silently otherwise, and compares `aud`
+  only when the caller also passes `expectedKeyBindingAudience` (`@sd-jwt/core` 0.21.1,
+  `dist/index.mjs` lines 1091 and 641). A verifier that forgets one option would accept a replayed or
+  misdirected presentation. `verifySdJwtVc` therefore requires an explicit `keyBinding` policy
+  (`{ nonce, audience }` or `false`) and performs every check of RFC 9901 section 7.3 step 5 itself.
+  The library is used only for disclosure processing.
+- **Padded did:jwk.** Inji Certify writes did:jwk values with base64 padding (`=`), which the did:jwk
+  specification does not allow (inji/inji-certify#1054). `resolveDidJwk` accepts them and sets
+  `didResolutionMetadata.nonCanonical`, `canonicalDid` and a warning, so a run report can show the gap
+  instead of failing without explanation. `verifyLdpVp` compares the holder DID literally, so a padded
+  and an unpadded DID of the same key are reported as `LDP_HOLDER_MISMATCH`.
+- **did:key verification method types differ between resolvers** (measured 2026-10-04:
+  `key-did-resolver` gives `Ed25519VerificationKey2018`, `@digitalbazaar/did-method-key`
+  `Ed25519VerificationKey2020` or `Multikey`). The type is an option of `resolveDidKey`; the default is
+  `Ed25519VerificationKey2020` for Ed25519 and `JsonWebKey2020` for P-256. Verification accepts all of
+  them.
+- **Pinned JSON-LD contexts.** Served offline: DID v1, credentials v1 and v2 (with
+  `undefined-terms/v2`), ed25519-2020, x25519-2020, veres-one (all from the npm context packages, fixed
+  by `package-lock.json`), plus this project's vocabulary at
+  `https://playground.ps02.test/contexts/v1.jsonld`. That vocabulary sets `@vocab`, so no claim of a
+  reference credential is dropped from the signed data. Other contexts fail with `CONTEXT_NOT_PINNED`
+  unless the loader is created with `network` (HTTPS only, cached in a folder the caller chooses), or
+  passed in `contexts`. The standalone Data Integrity (`https://w3id.org/security/data-integrity/v2`)
+  and Multikey (`https://w3id.org/security/multikey/v1`) contexts are not pinned: no package in the
+  lock file ships them. VC 2.0 credentials do not need the Data Integrity context, because the
+  credentials v2 context already defines `DataIntegrityProof`; a VC 1.1 credential with a
+  `DataIntegrityProof` would, which is one reason `eddsa-rdfc-2022` is only offered for VC 2.0.
+- **Raw signatures, not a JOSE library, for JWS.** `signCompactJws` signs with `node:crypto` so tamper
+  scenarios can re-sign altered payloads byte for byte and the inspector shows exactly what was
+  signed. `jose` is used in tests as an independent cross-check (thumbprints).
+- **Untyped libraries.** The Digital Bazaar libraries and PixelPass ship without TypeScript types.
+  `src/vendor.d.ts` declares only the members this package calls; files that import them reference it
+  with `/// <reference path>` so other packages that compile these sources (through the `source`
+  export condition) see the declarations too. Their types are not re-exported from `src/index.ts`.
+
+## Tests
+
+`npm test -w @inji-playground/formats` runs 122 tests in 6 files (measured 2026-10-04: all pass in about
+3 s on the team laptop, Node 24.19.0). Test names start with the specification rule they check.
+
+| File                        | What it shows                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `test/sd-jwt.test.ts`       | Issue, present and verify for ES256 and EdDSA; wrong nonce, wrong aud, altered disclosure, removed disclosure (sd_hash), foreign KB key, changed payload, missing KB-JWT, stale KB-JWT, expired, not yet valid, `vc+sd-jwt` accepted, wrong `vct`, kid/iss mismatch, `alg: none`, wrong KB `typ`, nested disclosures, `cnf.kid`, configured issuer keys, `x5c` with and without a trust anchor               |
+| `test/ldp.test.ts`          | VC 1.1 + Ed25519Signature2020 and VC 2.0 + eddsa-rdfc-2022 round trips with global `fetch` replaced by a function that fails the test if called; tampered credential, wrong key, expired and not-yet-valid; did:jwk and did:web issuers; presentations with challenge and domain enforced, rewritten challenge, holder mismatch, tampered embedded credential; document loader offline and with a file cache |
+| `test/did.test.ts`          | did:key specification test vectors (Ed25519, P-256) and agreement with `key-did-resolver`; did:jwk specification example, padded and unpadded forms, private key refused; did:web URL rules from the specification, host override map, refused overrides, id mismatch, HTTP errors; verification relationships                                                                                               |
+| `test/keys.test.ts`         | Sign/verify, RFC 7638 thumbprints checked against `jose`, JWS round trip, alg/key mismatch, key files, x5c chains                                                                                                                                                                                                                                                                                            |
+| `test/size.test.ts`         | PixelPass round trip, a small credential fits QR version 40, a credential with an 8 KB photo does not                                                                                                                                                                                                                                                                                                        |
+| `test/dependencies.test.ts` | Every library loads as ESM inside Vitest on Node 24                                                                                                                                                                                                                                                                                                                                                          |
+
+## Specifications
+
+RFC 9901 (SD-JWT), draft-ietf-oauth-sd-jwt-vc-19, RFC 7515/7517/7518/7519/7638/7800/8037/8725,
+W3C VC Data Model 1.1 and 2.0, VC Data Integrity 1.0, vc-di-eddsa 1.0, the Ed25519Signature2020 CCG
+report, DID Core 1.0, did:key, did:jwk and did:web method specifications, OpenID4VP 1.0 Appendix B.
