@@ -42,16 +42,24 @@ export interface CreateLdpVpOptions {
   /** Presentation data model. Default: the version of the first credential. */
   dataModel?: '1.1' | '2.0';
   created?: Date;
+  /**
+   * Default `true`: refuse credentials that are expired or malformed, as `@digitalbazaar/vc` does.
+   * `false` wraps them unchecked, so a test wallet can present an expired credential and the
+   * verifier under test is the one that has to reject it.
+   */
+  checkCredentials?: boolean;
 }
 
 export async function createLdpVp(options: CreateLdpVpOptions): Promise<JsonObject> {
   const first = options.credentials[0];
   const dataModel = options.dataModel ?? (first ? dataModelVersion(first) : '2.0');
+  const verifiableCredential = options.credentials.map((credential) => structuredClone(credential));
   let presentation = vc.createPresentation({
-    verifiableCredential: options.credentials.map((credential) => structuredClone(credential)),
+    ...(options.checkCredentials === false ? {} : { verifiableCredential }),
     holder: options.holder ?? parseDidUrl(options.key.verificationMethod).did,
     version: dataModel === '1.1' ? 1.0 : 2.0,
   });
+  if (options.checkCredentials === false) presentation = { ...presentation, verifiableCredential };
   if (options.suite === 'Ed25519Signature2020')
     presentation = withContext(presentation, ED25519_2020_SUITE_URL);
   const suite = await signingSuite(options.suite, options.key, options.created);
