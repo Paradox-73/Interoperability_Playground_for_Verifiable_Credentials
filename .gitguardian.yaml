@@ -13,4 +13,33 @@ version: 2
 secret:
   ignored_paths:
     - '**/*.synthetic.json'
-  ignored_matches: []
+  ignored_matches:
+    # Upstream sample values in files imported unchanged into deploy/inji-stack/ (see deploy/inji-stack/UPSTREAM.md).
+    # They are the defaults published in the Inji sample configurations and only reach throw-away local containers.
+    # inji-certify@e54539a docker-compose/docker-compose-injistack/config/certify-default.properties
+    - name: upstream inji-certify sample database password (spring.datasource.password)
+      match: postgres
+    - name: upstream inji-certify sample Redis password (spring.data.redis.password)
+      match: redis
+    - name: upstream inji-certify sample PKCS#12 key store password (mosip.kernel.keymanager.hsm.keystore-pass)
+      match: local
+    # mimoto@91692cd docker-compose/config/mimoto-default.properties
+    - name: upstream mimoto sample WebSub secret (mosip.event.secret)
+      match: Kslk30SNF2AChs2
+    - name: upstream mimoto sample partner key store and token request passwords
+      match: abc123
+    - name: upstream mimoto sample partner encryption key (mosip.partner.encryption.key)
+      match: '123456'
+    - name: upstream mimoto sample IAM client secret (mosip.iam.adapter.clientsecret)
+      match: 1234secret
+    - name: upstream mimoto sample IdP partner encryption key (mosip.idp.partner.encryption.key)
+      match: Aci9jg28B8mO_LDfDXo3ZTp5_HKgEMun2tYyHCa1e8k
+    - name: upstream mimoto sample wallet binding API key (wallet.binding.partner.api.key)
+      match: 1234walletbindingkey
+    # deploy/inji-stack/compose.yaml passes the same sample values the upstream compose files use:
+    # the key store password baked into the inji-verify-service 0.18.2 image (INJI_KEYSTORE_FILE_PASS) and
+    # placeholder Google OAuth credentials that Mimoto requires to start.
+    - name: upstream inji-verify sample key store password (INJI_KEYSTORE_FILE_PASS)
+      match: mosip
+    - name: upstream mimoto placeholder Google OAuth client secret (GOOGLE_OAUTH_CLIENT_SECRET)
+      match: clientSecret
