@@ -1,0 +1,46 @@
+# Weekly dependency update pull requests. Versions pinned on purpose are excluded, with the reason.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+      runtime:
+        dependency-type: production
+        update-types: [minor, patch]
+    ignore:
+      # The Inji Verify SDK 0.18.1 matches verify-service 0.18.2; newer SDK lines call endpoints that
+      # service does not have (docs/adr/0001-typescript-monorepo.md).
+      - dependency-name: '@injistack/react-inji-verify-sdk'
+      # The Inji Verify SDK 0.18.1 needs React 18.
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react-dom'
+        update-types: ['version-update:semver-major']
+      # typescript-eslint supports TypeScript below 6.1; ESLint 10 is not yet supported by jsx-a11y.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+      # Node 24 is the supported runtime.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly

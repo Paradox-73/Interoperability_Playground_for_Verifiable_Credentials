@@ -1,0 +1,31 @@
+{
+  "name": "@inji-playground/oid4vp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reference OpenID4VP verifier (Presentation Exchange and DCQL) and wallet presentation client.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project oid4vp"
+  },
+  "dependencies": {
+    "@inji-playground/formats": "0.1.0",
+    "@inji-playground/protocol": "0.1.0",
+    "dcql": "^4.0.0",
+    "jose": "^6.2.12",
+    "jsonpath-plus": "^11.1.1",
+    "zod": "^4.6.5"
+  }
+}

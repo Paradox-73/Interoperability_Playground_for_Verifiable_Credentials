@@ -1,0 +1,44 @@
+{
+  "name": "@inji-playground/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playground UI: issuer, wallet and verifier selector, live timeline, protocol inspector, matrix and history.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project web"
+  },
+  "dependencies": {
+    "@inji-playground/protocol": "0.1.0",
+    "@injistack/react-inji-verify-sdk": "0.18.1",
+    "@tanstack/react-query": "^5.104.1",
+    "i18next": "^26.4.2",
+    "mermaid": "^11.17.2",
+    "qrcode.react": "^4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^17.0.15",
+    "react-router-dom": "^7.18.4",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "axe-core": "^4.13.0",
+    "jsdom": "^30.1.1",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

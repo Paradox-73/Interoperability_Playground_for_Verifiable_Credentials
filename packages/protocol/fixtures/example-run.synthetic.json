@@ -1,0 +1,471 @@
+{
+  "description": "Synthetic example run for tests and UI development. Every payload is made up; tokens and codes are placeholders. It must never be shown as a recorded run.",
+  "synthetic": true,
+  "config": {
+    "issuer": "ref-issuer",
+    "wallet": "ref-wallet",
+    "verifier": "ref-verifier",
+    "format": "vc+sd-jwt",
+    "vciProfile": "draft13",
+    "vpProfile": "inji-draft",
+    "scenario": "happy"
+  },
+  "events": [
+    {
+      "type": "run.started",
+      "runId": "example-run-0001",
+      "config": {
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "ref-verifier",
+        "format": "vc+sd-jwt",
+        "vciProfile": "draft13",
+        "vpProfile": "inji-draft",
+        "scenario": "happy"
+      },
+      "at": "2026-10-04T10:00:00.000Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "issuer.offer",
+      "label": "Issuer prepares a credential offer for the wallet",
+      "at": "2026-10-04T10:00:00.005Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x1",
+        "runId": "example-run-0001",
+        "seq": 1,
+        "capture": "outbound",
+        "step": "issuer.offer",
+        "from": "playground",
+        "to": "ref-issuer",
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:28100/ref/issuer/offers",
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"credential_configuration_id\":\"ExampleIdentityCredential_sd_jwt\"}"
+        },
+        "response": {
+          "status": 201,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"credential_offer_uri\":\"http://localhost:28100/ref/issuer/offers/synthetic-offer-1\"}"
+        },
+        "startedAt": "2026-10-04T10:00:00.006Z",
+        "durationMs": 8,
+        "redacted": true
+      }
+    },
+    {
+      "type": "artifact",
+      "runId": "example-run-0001",
+      "kind": "offer",
+      "raw": "{\"credential_issuer\":\"http://localhost:28100/ref/issuer\",\"credential_configuration_ids\":[\"ExampleIdentityCredential_sd_jwt\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted]\"}}}"
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "issuer.offer",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.015Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "issuer.metadata",
+      "label": "Wallet reads what the issuer can issue",
+      "at": "2026-10-04T10:00:00.020Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x2",
+        "runId": "example-run-0001",
+        "seq": 2,
+        "capture": "outbound",
+        "step": "issuer.metadata",
+        "from": "ref-wallet",
+        "to": "ref-issuer",
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:28100/ref/issuer/.well-known/openid-credential-issuer",
+          "headers": {}
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"credential_issuer\":\"http://localhost:28100/ref/issuer\",\"credential_endpoint\":\"http://localhost:28100/ref/issuer/credential\",\"credential_configurations_supported\":{\"ExampleIdentityCredential_sd_jwt\":{\"format\":\"vc+sd-jwt\",\"vct\":\"ExampleIdentityCredential\",\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\"]}}}}}"
+        },
+        "startedAt": "2026-10-04T10:00:00.021Z",
+        "durationMs": 10,
+        "redacted": true
+      }
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "issuer.metadata",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.032Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "token",
+      "label": "Wallet exchanges the one-time code for an access token",
+      "at": "2026-10-04T10:00:00.035Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x3",
+        "runId": "example-run-0001",
+        "seq": 3,
+        "capture": "outbound",
+        "step": "token",
+        "from": "ref-wallet",
+        "to": "ref-issuer",
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:28100/ref/issuer/token",
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded"
+          },
+          "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=[redacted]"
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"access_token\":\"[redacted]\",\"token_type\":\"Bearer\",\"expires_in\":300,\"c_nonce\":\"synthetic-c-nonce\",\"c_nonce_expires_in\":300}"
+        },
+        "startedAt": "2026-10-04T10:00:00.036Z",
+        "durationMs": 12,
+        "redacted": true
+      }
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "token",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.050Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "credential",
+      "label": "Wallet proves it holds its key and receives the credential",
+      "at": "2026-10-04T10:00:00.055Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x4",
+        "runId": "example-run-0001",
+        "seq": 4,
+        "capture": "outbound",
+        "step": "credential",
+        "from": "ref-wallet",
+        "to": "ref-issuer",
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:28100/ref/issuer/credential",
+          "headers": {
+            "content-type": "application/json",
+            "authorization": "[redacted]"
+          },
+          "body": "{\"format\":\"vc+sd-jwt\",\"vct\":\"ExampleIdentityCredential\",\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"SYNTHETIC.PROOF.JWT\"}}"
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"credential\":\"eyJhbGciOiJFUzI1NiIsInR5cCI6InZjK3NkLWp3dCJ9.SYNTHETIC-PAYLOAD.SYNTHETIC-SIGNATURE~WyJzYWx0IiwiZ2l2ZW5fbmFtZSIsIkFzaGEiXQ~\"}"
+        },
+        "startedAt": "2026-10-04T10:00:00.056Z",
+        "durationMs": 25,
+        "redacted": true
+      }
+    },
+    {
+      "type": "artifact",
+      "runId": "example-run-0001",
+      "kind": "credential",
+      "format": "vc+sd-jwt",
+      "raw": "eyJhbGciOiJFUzI1NiIsInR5cCI6InZjK3NkLWp3dCJ9.SYNTHETIC-PAYLOAD.SYNTHETIC-SIGNATURE~WyJzYWx0IiwiZ2l2ZW5fbmFtZSIsIkFzaGEiXQ~"
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "credential",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.085Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "verifier.request",
+      "label": "Verifier creates a request saying which credential it needs",
+      "at": "2026-10-04T10:00:00.090Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x5",
+        "runId": "example-run-0001",
+        "seq": 5,
+        "capture": "outbound",
+        "step": "verifier.request",
+        "from": "playground",
+        "to": "ref-verifier",
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:28100/ref/verifier/requests",
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"format\":\"vc+sd-jwt\"}"
+        },
+        "response": {
+          "status": 201,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"request_uri\":\"openid4vp://authorize?client_id=http%3A%2F%2Flocalhost%3A28100%2Fref%2Fverifier%2Fresponse&request_uri=http%3A%2F%2Flocalhost%3A28100%2Fref%2Fverifier%2Frequests%2Fsynthetic-request-1\",\"transaction_id\":\"synthetic-txn-1\"}"
+        },
+        "startedAt": "2026-10-04T10:00:00.091Z",
+        "durationMs": 7,
+        "redacted": true
+      }
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "verifier.request",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.100Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "wallet.fetch-request",
+      "label": "Wallet downloads the verifier’s signed request",
+      "at": "2026-10-04T10:00:00.105Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x6",
+        "runId": "example-run-0001",
+        "seq": 6,
+        "capture": "outbound",
+        "step": "wallet.fetch-request",
+        "from": "ref-wallet",
+        "to": "ref-verifier",
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:28100/ref/verifier/requests/synthetic-request-1",
+          "headers": {}
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/oauth-authz-req+jwt"
+          },
+          "body": "SYNTHETIC.REQUEST-OBJECT.JWT"
+        },
+        "startedAt": "2026-10-04T10:00:00.106Z",
+        "durationMs": 8,
+        "redacted": true
+      }
+    },
+    {
+      "type": "artifact",
+      "runId": "example-run-0001",
+      "kind": "request-object",
+      "raw": "SYNTHETIC.REQUEST-OBJECT.JWT"
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "wallet.fetch-request",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.115Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "wallet.submit",
+      "label": "Wallet sends the presentation to the verifier",
+      "at": "2026-10-04T10:00:00.120Z"
+    },
+    {
+      "type": "exchange",
+      "runId": "example-run-0001",
+      "exchange": {
+        "id": "example-run-0001-x7",
+        "runId": "example-run-0001",
+        "seq": 7,
+        "capture": "outbound",
+        "step": "wallet.submit",
+        "from": "ref-wallet",
+        "to": "ref-verifier",
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:28100/ref/verifier/response",
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded"
+          },
+          "body": "vp_token=SYNTHETIC-VP-TOKEN&presentation_submission=%7B%7D&state=synthetic-state"
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{}"
+        },
+        "startedAt": "2026-10-04T10:00:00.121Z",
+        "durationMs": 15,
+        "redacted": true
+      }
+    },
+    {
+      "type": "artifact",
+      "runId": "example-run-0001",
+      "kind": "vp-token",
+      "format": "vc+sd-jwt",
+      "raw": "eyJhbGciOiJFUzI1NiIsInR5cCI6InZjK3NkLWp3dCJ9.SYNTHETIC-PAYLOAD.SYNTHETIC-SIGNATURE~WyJzYWx0IiwiZ2l2ZW5fbmFtZSIsIkFzaGEiXQ~SYNTHETIC.KB.JWT"
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "wallet.submit",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.140Z"
+    },
+    {
+      "type": "step.started",
+      "runId": "example-run-0001",
+      "step": "verifier.result",
+      "label": "Verifier checks signatures, dates and holder binding",
+      "at": "2026-10-04T10:00:00.145Z"
+    },
+    {
+      "type": "artifact",
+      "runId": "example-run-0001",
+      "kind": "result",
+      "raw": "{\"outcome\":\"VALID\",\"checks\":[{\"id\":\"signature\",\"status\":\"pass\"},{\"id\":\"expiry\",\"status\":\"pass\"},{\"id\":\"holder-binding\",\"status\":\"pass\"}]}"
+    },
+    {
+      "type": "step.finished",
+      "runId": "example-run-0001",
+      "step": "verifier.result",
+      "status": "ok",
+      "at": "2026-10-04T10:00:00.155Z"
+    },
+    {
+      "type": "run.finished",
+      "runId": "example-run-0001",
+      "report": {
+        "runId": "example-run-0001",
+        "createdAt": "2026-10-04T10:00:00.160Z",
+        "mode": "reference",
+        "issuer": {
+          "id": "ref-issuer",
+          "name": "Reference issuer",
+          "version": "0.1.0",
+          "ecosystem": "reference"
+        },
+        "wallet": {
+          "id": "ref-wallet",
+          "name": "Reference wallet",
+          "version": "0.1.0",
+          "ecosystem": "reference"
+        },
+        "verifier": {
+          "id": "ref-verifier",
+          "name": "Reference verifier",
+          "version": "0.1.0",
+          "ecosystem": "reference"
+        },
+        "format": "vc+sd-jwt",
+        "credentialProof": "ES256",
+        "holderProof": "ES256",
+        "issuerDid": "did:jwk:SYNTHETIC",
+        "vciProfile": "draft13",
+        "vpProfile": "inji-draft",
+        "scenario": {
+          "id": "happy",
+          "expected": "VALID"
+        },
+        "outcome": "VALID",
+        "verdict": "pass",
+        "steps": [
+          {
+            "step": "issuer.offer",
+            "status": "ok",
+            "durationMs": 10
+          },
+          {
+            "step": "issuer.metadata",
+            "status": "ok",
+            "durationMs": 12
+          },
+          {
+            "step": "token",
+            "status": "ok",
+            "durationMs": 15
+          },
+          {
+            "step": "credential",
+            "status": "ok",
+            "durationMs": 30
+          },
+          {
+            "step": "verifier.request",
+            "status": "ok",
+            "durationMs": 10
+          },
+          {
+            "step": "wallet.fetch-request",
+            "status": "ok",
+            "durationMs": 10
+          },
+          {
+            "step": "wallet.submit",
+            "status": "ok",
+            "durationMs": 20
+          },
+          {
+            "step": "verifier.result",
+            "status": "ok",
+            "durationMs": 10
+          }
+        ],
+        "credentialSize": {
+          "bytes": 122,
+          "pixelpassChars": 164,
+          "fitsQrV40": true
+        }
+      }
+    }
+  ]
+}

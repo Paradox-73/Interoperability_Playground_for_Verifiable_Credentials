@@ -1,0 +1,76 @@
+{
+  "name": "inji-interop-playground",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interoperability playground for verifiable credentials across Inji Certify, Inji Wallet, Inji Web and Inji Verify, with independent OpenID4VCI and OpenID4VP reference roles.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "workspaces": [
+    "packages/protocol",
+    "packages/formats",
+    "packages/scenarios",
+    "packages/oid4vci",
+    "packages/oid4vp",
+    "packages/server",
+    "packages/cli",
+    "packages/web"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "node packages/server/dist/main.js",
+    "build": "tsc -b tsconfig.build.json && npm run build -w @inji-playground/web",
+    "clean": "tsc -b tsconfig.build.json --clean && node scripts/clean.mjs",
+    "typecheck": "tsc -p tsconfig.json && npm run typecheck --workspaces",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project \"!live\"",
+    "test:watch": "vitest --project \"!live\"",
+    "test:coverage": "vitest run --project \"!live\" --coverage",
+    "test:live": "vitest run --project live",
+    "smoke": "node --conditions=source --import tsx packages/server/scripts/smoke-run.ts",
+    "openapi": "node --conditions=source --import tsx packages/server/scripts/openapi.ts",
+    "e2e": "node scripts/e2e.mjs",
+    "e2e:live": "node scripts/e2e.mjs --live",
+    "stack:init": "node deploy/inji-stack/scripts/stack.mjs init",
+    "stack:up": "node deploy/inji-stack/scripts/stack.mjs up",
+    "stack:down": "node deploy/inji-stack/scripts/stack.mjs down",
+    "stack:status": "node deploy/inji-stack/scripts/stack.mjs status",
+    "stack:smoke": "node deploy/inji-stack/scripts/stack.mjs smoke",
+    "up": "node scripts/bundle.mjs up",
+    "down": "node scripts/bundle.mjs down",
+    "matrix:reference": "node packages/cli/scripts/matrix.mjs reference",
+    "matrix:live": "node packages/cli/scripts/matrix.mjs live",
+    "demo": "node scripts/demo.mjs",
+    "test:report": "node scripts/test-report.mjs",
+    "docs:check": "node scripts/docs-check.mjs"
+  },
+  "dependencies": {
+    "@peculiar/x509": "^2.1.0",
+    "reflect-metadata": "^0.2.2",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^24.19.1",
+    "@vitest/coverage-v8": "^5.0.3",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "msw": "^3.0.2",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

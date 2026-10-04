@@ -1,0 +1,29 @@
+{
+  "name": "@inji-playground/oid4vci",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reference OpenID4VCI issuer (draft 13 and 1.0), test authorization server and wallet issuance client.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project oid4vci"
+  },
+  "dependencies": {
+    "@inji-playground/formats": "0.1.0",
+    "@inji-playground/protocol": "0.1.0",
+    "jose": "^6.2.12",
+    "zod": "^4.6.5"
+  }
+}

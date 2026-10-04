@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/protocol/tsconfig.build.json" },
+    { "path": "./packages/formats/tsconfig.build.json" },
+    { "path": "./packages/scenarios/tsconfig.build.json" },
+    { "path": "./packages/oid4vci/tsconfig.build.json" },
+    { "path": "./packages/oid4vp/tsconfig.build.json" },
+    { "path": "./packages/server/tsconfig.build.json" },
+    { "path": "./packages/cli/tsconfig.build.json" }
+  ]
+}

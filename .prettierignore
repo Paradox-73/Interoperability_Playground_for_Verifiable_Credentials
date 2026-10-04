@@ -1,0 +1,13 @@
+# Generated output and lock files
+**/dist/
+**/coverage/
+**/playwright-report/
+**/test-results/
+package-lock.json
+run/
+# Upstream files are kept byte-for-byte as imported
+deploy/inji-stack/config/
+deploy/inji-stack/sql/
+deploy/inji-stack/nginx/
+# Recorded payloads keep their exact bytes
+packages/protocol/fixtures/*.recorded.json

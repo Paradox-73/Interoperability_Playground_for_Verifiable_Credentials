@@ -1,0 +1,14 @@
+# Only what the image build copies explicitly is needed; keep the build context small and free of
+# local state (run directory, keys, databases) and build output from the host.
+.git
+.github
+**/node_modules
+**/dist
+**/coverage
+**/playwright-report
+**/test-results
+run
+secrets
+*.log
+.env
+.env.*

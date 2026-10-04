@@ -1,0 +1,42 @@
+{
+  "name": "@inji-playground/server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playground server: run orchestrator, recording proxy, SQLite store, REST and WebSocket API, role adapters.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project server",
+    "dev": "tsx watch --conditions=source src/main.ts",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^9.0.0",
+    "@fastify/static": "^10.1.5",
+    "@fastify/swagger": "^9.9.1",
+    "@fastify/swagger-ui": "^6.1.1",
+    "@fastify/websocket": "^11.3.3",
+    "@inji-playground/formats": "0.1.0",
+    "@inji-playground/oid4vci": "0.1.0",
+    "@inji-playground/oid4vp": "0.1.0",
+    "@inji-playground/protocol": "0.1.0",
+    "@inji-playground/scenarios": "0.1.0",
+    "fastify": "^5.12.5",
+    "fastify-type-provider-zod": "^7.0.0",
+    "undici": "^8.11.2",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  }
+}

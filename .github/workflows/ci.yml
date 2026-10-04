@@ -1,0 +1,51 @@
+# Checks every push and pull request: lint, formatting, types, unit and integration tests, build, and
+# the playground container image. Later work adds the reference matrix and browser tests as jobs here.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  image:
+    name: container image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker build -t ps02-playground:ci .
+      - name: health check of the built image
+        run: |
+          docker run -d --name ps02-playground-ci -p 28100:28100 ps02-playground:ci
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:28100/api/health; then exit_code=0; break; fi
+            exit_code=1; sleep 1
+          done
+          docker rm -f ps02-playground-ci
+          exit $exit_code

@@ -1,0 +1,34 @@
+{
+  "name": "@inji-playground/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Headless matrix runner: runs issuer x wallet x verifier x format cells against a playground server and writes the compatibility matrix.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "inji-playground": "./dist/main.js"
+  },
+  "files": [
+    "dist",
+    "specs"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project cli"
+  },
+  "dependencies": {
+    "@inji-playground/protocol": "0.1.0",
+    "@inji-playground/scenarios": "0.1.0",
+    "@inji-playground/server": "0.1.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  }
+}

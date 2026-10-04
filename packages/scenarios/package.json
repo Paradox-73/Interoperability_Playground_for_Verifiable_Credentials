@@ -1,0 +1,26 @@
+{
+  "name": "@inji-playground/scenarios",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Happy-path and tamper scenarios with their expected verification outcomes.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. --project scenarios"
+  },
+  "dependencies": {
+    "@inji-playground/protocol": "0.1.0"
+  }
+}
