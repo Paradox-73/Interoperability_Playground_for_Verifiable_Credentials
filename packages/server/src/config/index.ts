@@ -3,6 +3,7 @@
  * variable fails at start-up with a clear message instead of misbehaving later.
  */
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { StackModeSchema } from '@inji-playground/protocol';
 import { z } from 'zod';
@@ -24,8 +25,31 @@ export const ConfigSchema = z.object({
   /** URL the stack and phones use to reach this server, when it differs from http://localhost:<port>. */
   publicUrl: z.url().optional(),
   logLevel: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
+  /** SQLite database file; `:memory:` keeps nothing after the process ends (tests). Default `<runDir>/playground.db`. */
+  dbPath: z.string().min(1).optional(),
+  /**
+   * Registers the development-only fake roles ("Test role (fake)"), so the UI can be exercised before
+   * real roles exist. Off by default; never used in docs or the demo.
+   */
+  fakeRoles: z
+    .enum(['1', 'true', 'yes', 'on', '0', 'false', 'no', 'off'])
+    .transform((value) => ['1', 'true', 'yes', 'on'].includes(value))
+    .default(false),
+  /**
+   * Step timeouts. Reference roles answer in milliseconds; Inji roles get 90 s because Certify's first
+   * metadata call took 52 s and one Inji Verify LDP verification up to 13 s (measured 2026-10-04);
+   * a step that waits for a person gets 10 minutes.
+   */
+  referenceStepTimeoutMs: z.coerce.number().int().positive().default(15_000),
+  injiStepTimeoutMs: z.coerce.number().int().positive().default(90_000),
+  personTimeoutMs: z.coerce.number().int().positive().default(600_000),
 });
 export type Config = z.infer<typeof ConfigSchema>;
+
+/** Path of the SQLite database for this configuration. */
+export function databasePath(config: Pick<Config, 'dbPath' | 'runDir'>): string {
+  return config.dbPath ?? join(config.runDir, 'playground.db');
+}
 
 /** Maps environment variable names to configuration keys. */
 const ENV_KEYS = {
@@ -36,6 +60,11 @@ const ENV_KEYS = {
   PLAYGROUND_STACK: 'stack',
   PLAYGROUND_PUBLIC_URL: 'publicUrl',
   PLAYGROUND_LOG_LEVEL: 'logLevel',
+  PLAYGROUND_DB: 'dbPath',
+  PLAYGROUND_FAKE_ROLES: 'fakeRoles',
+  PLAYGROUND_TIMEOUT_REFERENCE_MS: 'referenceStepTimeoutMs',
+  PLAYGROUND_TIMEOUT_INJI_MS: 'injiStepTimeoutMs',
+  PLAYGROUND_TIMEOUT_PERSON_MS: 'personTimeoutMs',
 } as const satisfies Record<string, keyof Config>;
 
 /**

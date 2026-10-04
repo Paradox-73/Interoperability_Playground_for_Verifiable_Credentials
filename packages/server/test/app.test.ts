@@ -10,7 +10,7 @@ import { loadConfig } from '../src/config/index.js';
 describe('GET /api/health', () => {
   it('answers with the health body defined in the protocol package', async () => {
     const app = await buildApp({
-      config: loadConfig({ PLAYGROUND_WEB_DIST: '/nonexistent' }),
+      config: loadConfig({ PLAYGROUND_DB: ':memory:', PLAYGROUND_WEB_DIST: '/nonexistent' }),
       logger: false,
     });
     const res = await app.inject({ method: 'GET', url: '/api/health' });
@@ -22,7 +22,7 @@ describe('GET /api/health', () => {
 
   it('returns a JSON 404 for an unknown API path', async () => {
     const app = await buildApp({
-      config: loadConfig({ PLAYGROUND_WEB_DIST: '/nonexistent' }),
+      config: loadConfig({ PLAYGROUND_DB: ':memory:', PLAYGROUND_WEB_DIST: '/nonexistent' }),
       logger: false,
     });
     const res = await app.inject({ method: 'GET', url: '/api/nope' });
@@ -38,7 +38,10 @@ describe('serving the built UI', () => {
   afterAll(() => rmSync(dist, { recursive: true, force: true }));
 
   it('serves index.html for client-side routes but not for missing files or API paths', async () => {
-    const app = await buildApp({ config: loadConfig({ PLAYGROUND_WEB_DIST: dist }), logger: false });
+    const app = await buildApp({
+      config: loadConfig({ PLAYGROUND_DB: ':memory:', PLAYGROUND_WEB_DIST: dist }),
+      logger: false,
+    });
     const page = await app.inject({ method: 'GET', url: '/runs/42' });
     expect(page.statusCode).toBe(200);
     expect(page.headers['content-type']).toMatch(/text\/html/);

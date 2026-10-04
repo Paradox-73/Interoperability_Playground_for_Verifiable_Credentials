@@ -2,5 +2,10 @@
  * @inji-playground/server as a library: lets the CLI and tests start a server in-process.
  */
 export { buildApp, type BuildAppOptions } from './app.js';
-export { ConfigSchema, loadConfig, type Config } from './config/index.js';
+export type { PlaygroundServices } from './api/services.js';
+export { ConfigSchema, databasePath, loadConfig, type Config } from './config/index.js';
+export { EventBus } from './events/index.js';
+export * from './orchestrator/index.js';
+export * from './recording/index.js';
+export * from './store/index.js';
 export { SERVER_VERSION } from './version.js';
