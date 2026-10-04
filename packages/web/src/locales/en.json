@@ -5,7 +5,7 @@
     "nav": {
       "label": "Main",
       "playground": "Playground",
-      "runs": "Runs",
+      "runs": "History",
       "matrix": "Matrix",
       "gaps": "Gaps",
       "about": "About"
@@ -341,23 +341,18 @@
     "runFinished": "Run finished. {{verdict}}: {{outcome}}"
   },
   "pages": {
-    "runs": {
-      "title": "Runs",
-      "empty": "The run history arrives with the history dashboard. Runs started in this browser tab are listed below.",
-      "none": "No runs yet: press Run on the Playground page."
-    },
     "run": {
       "title": "Run {{runId}}",
       "back": "Back to the playground",
-      "playback": "Play back this run step by step"
+      "playback": "Play back this run step by step",
+      "report": "Interoperability report of this run"
     },
     "matrix": {
       "title": "Compatibility matrix",
-      "empty": "The matrix fills as runs are stored: press Run on the Playground page, or run `npm run matrix:reference`."
+      "empty": "No combinations match these filters. The matrix lists every combination of registered roles; clear a filter, or press Run on the Playground page."
     },
     "gaps": {
-      "title": "Interoperability gaps",
-      "empty": "Gaps found by runs are written up here with the run that shows each one."
+      "title": "Interoperability gaps"
     },
     "about": {
       "title": "About the playground",
@@ -380,5 +375,224 @@
   "common": {
     "loading": "Loading…",
     "duration": "{{value}}"
+  },
+  "matrix": {
+    "intro": "Each row is one issuer → wallet → verifier combination, each column a credential format and presentation protocol. A cell shows the verdict of its newest finished run and links to that run’s report; red cells link to the gap register.",
+    "status": {
+      "pass": "Pass",
+      "fail": "Fail",
+      "error": "Error",
+      "not-supported": "Not supported",
+      "untested": "Not tested"
+    },
+    "error": "The matrix could not be loaded: {{reason}}",
+    "caption": "Compatibility matrix, scenario “{{scenario}}”: newest run per combination",
+    "rowHeader": "Issuer → wallet → verifier",
+    "runRow_one": "Run row ({{count}} cell)",
+    "runRow_other": "Run row ({{count}} cells)",
+    "runCell": "Run cell",
+    "forCell": "for {{label}}",
+    "noCell": "This combination is not listed",
+    "openRun": ": open the report of the newest run of {{label}}",
+    "outcome": "Verifier: {{outcome}} · {{date}}",
+    "counts_one": "{{count}} run: {{pass}} passed, {{fail}} failed",
+    "counts_other": "{{count}} runs: {{pass}} passed, {{fail}} failed",
+    "gaps": "Gap register: {{ids}}",
+    "checkGaps": "Check the gap register",
+    "startedPrefix": "Started run",
+    "started": "Run {{runId}} started: {{label}}",
+    "totals": "Totals",
+    "cells_one": "{{count}} combination",
+    "cells_other": "{{count}} combinations",
+    "generated": "Computed {{date}} from the stored runs",
+    "downloadMarkdown": "Download this matrix as Markdown (dated, with versions)",
+    "filters": {
+      "heading": "Filters",
+      "hideNotSupported": "Hide combinations that cannot run"
+    }
+  },
+  "history": {
+    "title": "Run history",
+    "intro": "Every stored run, newest first. Filter by role, module version, format, scenario, outcome or date to track regressions across Inji releases.",
+    "filters": {
+      "heading": "Filters",
+      "any": "Any",
+      "format": "Credential format",
+      "scenario": "Scenario",
+      "outcome": "Verifier outcome",
+      "verdict": "Verdict",
+      "mode": "Mode",
+      "version": "Module version",
+      "versionPlaceholder": "for example 0.18.2",
+      "from": "From (UTC day)",
+      "to": "To (UTC day)",
+      "clear": "Clear filters"
+    },
+    "metricsHeading": "Metrics",
+    "metricsError": "The metrics could not be loaded: {{reason}}",
+    "window": "Runs from {{from}} to {{to}}",
+    "tiles": {
+      "runs": "Finished runs",
+      "runsHint": "Outcome and verdict filters do not apply here",
+      "successRate": "Success rate",
+      "successRateHint": "Pass ÷ (pass + fail + error)",
+      "pass": "Pass",
+      "fail": "Fail",
+      "error": "Error",
+      "notSupported": "Not supported"
+    },
+    "steps": {
+      "caption": "Step timings",
+      "step": "Step",
+      "executed": "Ran",
+      "successRate": "Success rate",
+      "p50": "p50",
+      "p95": "p95"
+    },
+    "runsHeading": "Runs",
+    "tableCaption": "Stored runs, newest first",
+    "error": "The run history could not be loaded: {{reason}}",
+    "empty": "No runs are stored yet: press Run on the Playground page, or run `npm run matrix:reference`.",
+    "noMatch": "No stored run matches these filters.",
+    "columns": {
+      "created": "Created",
+      "roles": "Issuer → wallet → verifier",
+      "format": "Format",
+      "scenario": "Scenario",
+      "outcome": "Outcome",
+      "verdict": "Verdict",
+      "versions": "Versions",
+      "links": "Open"
+    },
+    "status": {
+      "queued": "Queued",
+      "running": "Running",
+      "finished": "Finished"
+    },
+    "report": "Report",
+    "inspect": "Timeline and inspector",
+    "ofRun": "of run {{runId}}",
+    "pager": {
+      "label": "Pages of the run history",
+      "showing": "Runs {{first}}–{{last}} of {{total}}",
+      "previous": "Previous page",
+      "next": "Next page"
+    }
+  },
+  "report": {
+    "title": "Interoperability report of run {{runId}}",
+    "back": "Back to the run history",
+    "notFinished": "This run has not finished yet, so its report does not exist yet. The page updates when it ends.",
+    "followRun": "Follow the run",
+    "error": "The report could not be loaded: {{reason}}",
+    "actions": "Report actions",
+    "print": "Print",
+    "downloadMarkdown": "Download Markdown",
+    "downloadJson": "Download JSON",
+    "downloadExport": "Download redacted export",
+    "openInspector": "Open the timeline and protocol inspector",
+    "playback": "Play back step by step",
+    "mandatoryHeading": "Result",
+    "fields": {
+      "format": "Credential format",
+      "proof": "Proof type",
+      "holderProof": "holder key binding: {{proof}}",
+      "outcome": "Outcome",
+      "error": "Error detail",
+      "issuerDid": "Issuer DID",
+      "created": "Created",
+      "duration": "Duration",
+      "credentialSize": "Credential size",
+      "replayOf": "Replay of run",
+      "playground": "Playground"
+    },
+    "errorAt": "At “{{step}}”:",
+    "openExchange": "Open message {{seq}} ({{method}}) in the inspector",
+    "noError": "None: every step completed",
+    "comparisonHeading": "Expected and actual outcome",
+    "detailsHeading": "Run details",
+    "durationValue": "{{total}} in steps (started {{started}}, finished {{finished}})",
+    "sizeValue": "{{bytes}} bytes; {{chars}} characters as PixelPass QR text.",
+    "fitsQr": "Fits one version 40 QR code.",
+    "tooBigForQr": "Too large for one version 40 QR code.",
+    "generated": "version {{version}}, report generated {{date}}",
+    "stepsHeading": "Steps",
+    "stepsCaption": "Steps of run {{runId}} with status, duration and specification",
+    "steps": {
+      "step": "Step",
+      "status": "Status",
+      "duration": "Duration",
+      "spec": "Specification"
+    },
+    "stepStatus": {
+      "ok": "Done",
+      "failed": "Failed",
+      "skipped": "Skipped",
+      "not-run": "Not reached"
+    }
+  },
+  "tamper": {
+    "target": {
+      "none": "No tampering",
+      "credential": "Corrupts the credential",
+      "presentation": "Corrupts the presentation"
+    },
+    "expectedLabel": "Expected outcome:",
+    "reference": "Why: {{reference}}",
+    "catalogueError": "The tamper scenarios could not be loaded ({{reason}}); only the happy path is offered.",
+    "resultHeading": "Expected and actual outcome of run {{runId}}",
+    "waiting": "Scenario “{{scenario}}”: waiting for the verifier’s answer.",
+    "scenario": "Scenario",
+    "expected": "Expected",
+    "actual": "Actual",
+    "verdict": "Verdict",
+    "explain": {
+      "as-expected": "The verifier answered exactly what this scenario requires.",
+      "accepted-tampered": "The verifier accepted a credential or presentation it should have refused. This is a gap to report.",
+      "rejected-valid": "The verifier refused a credential that is valid by the specifications: an interoperability gap.",
+      "different": "The verifier refused, but with a different result than the scenario expects.",
+      "not-run": "The run stopped before the verifier answered, so nothing about the verifier was learned."
+    },
+    "replayHeading": "Replay with tamper",
+    "replayIntro": "Runs this configuration again with a deliberate corruption, so you can see how the verifier handles the negative path.",
+    "replayScenario": "Tamper scenario",
+    "replay": "Replay with this scenario",
+    "replayStarted": "Replay run {{runId}} started"
+  },
+  "gaps": {
+    "intro": "Interoperability gaps found by runs: what does not work, in which module and version, the run that shows it, and the issue draft for the Inji repository.",
+    "forCell_one": "{{count}} gap is linked to the matrix cell",
+    "forCell_other": "{{count}} gaps are linked to the matrix cell",
+    "showAll": "Show all {{count}}",
+    "noneForCell": "No gap in the register matches this cell yet. Open the run report to see what failed; if it is a gap, add it to the register.",
+    "error": "The gap register could not be loaded: {{reason}}",
+    "noFile": "The gap register is empty: docs/gaps/gaps.json does not exist yet.",
+    "emptyFile": "The gap register ({{source}}) has no entries yet.",
+    "howToAdd": "A gap is added by writing an entry to docs/gaps/gaps.json (or the file named by PLAYGROUND_GAPS_FILE): an id, a title, the repository, the version, a summary and the run that shows it, for example:",
+    "howToLink": "The cells list links the gap to matrix cells as issuer/wallet/verifier/format/profile/scenario, where * matches anything and trailing parts may be left out. Linked cells show the gap id.",
+    "problemsHeading": "Entries that could not be read",
+    "problem": "Entry {{index}}: {{message}}",
+    "privateTitle": "Security-relevant finding, reported privately",
+    "privateNote": "Details are withheld until the maintainers have handled the report.",
+    "repository": "Repository",
+    "severity": "Severity",
+    "severityValue": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "status": "Status",
+    "statusValue": {
+      "new": "New",
+      "existing-upstream": "Already reported upstream",
+      "fixed-locally": "Worked around in this playground",
+      "resolved": "Resolved"
+    },
+    "cells": "Matrix cells",
+    "evidence": "Evidence",
+    "evidenceRun": "Report of run {{runId}}",
+    "upstream": "Upstream issue",
+    "issueDraft": "Issue draft"
   }
 }
