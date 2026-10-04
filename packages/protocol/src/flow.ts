@@ -47,6 +47,12 @@ export const HeldCredentialSchema = z.object({
   credentialConfigurationId: z.string().optional(),
   /** Key id (often a DID URL) of the holder key the credential is bound to. */
   holderKeyId: z.string().optional(),
+  /** Proof type of the credential as issued, for example `Ed25519Signature2020` or `ES256`; copied into the report. */
+  proofType: z.string().min(1).optional(),
+  /** Proof type of the wallet's proof of possession sent with the credential request, for example `ES256`. */
+  holderProofType: z.string().min(1).optional(),
+  /** DID (or other identifier) of the issuer key that signed the credential. */
+  issuerDid: z.string().min(1).optional(),
   receivedAt: IsoDateTimeSchema,
 });
 export type HeldCredential = z.infer<typeof HeldCredentialSchema>;

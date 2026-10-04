@@ -88,3 +88,27 @@ export const STEP_INFO: Readonly<Record<StepId, StepInfo>> = {
     protocolTerm: 'Set-up call (not part of the protocol)',
   },
 };
+
+/** The four phases of every run, in order. */
+export type RunPhase = 'issue' | 'hold' | 'present' | 'verify';
+
+/** One call the orchestrator makes on a role, and the protocol step the timeline shows when it begins. */
+export interface RoleCall {
+  phase: RunPhase;
+  role: 'issuer' | 'wallet' | 'verifier';
+  method: 'startIssuance' | 'receiveCredential' | 'createRequest' | 'present' | 'awaitResult';
+  /** Step the call starts in; the role moves on with `RunContext.enterStep` (for example to `token`). */
+  firstStep: StepId;
+}
+
+/**
+ * The role calls of a run, in the order the orchestrator makes them: issue -> hold -> present -> verify.
+ * The UI can draw the timeline skeleton from this before the first event arrives.
+ */
+export const ROLE_CALLS: readonly RoleCall[] = [
+  { phase: 'issue', role: 'issuer', method: 'startIssuance', firstStep: 'issuer.offer' },
+  { phase: 'hold', role: 'wallet', method: 'receiveCredential', firstStep: 'issuer.metadata' },
+  { phase: 'present', role: 'verifier', method: 'createRequest', firstStep: 'verifier.request' },
+  { phase: 'present', role: 'wallet', method: 'present', firstStep: 'wallet.fetch-request' },
+  { phase: 'verify', role: 'verifier', method: 'awaitResult', firstStep: 'verifier.result' },
+];

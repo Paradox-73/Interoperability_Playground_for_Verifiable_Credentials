@@ -4,8 +4,10 @@
  * Data shapes are zod schemas (`...Schema`) with the TypeScript type inferred from each; behaviour
  * (role adapters, run context) is described by TypeScript interfaces in `roles-api.ts`.
  */
+export * from './api.js';
 export * from './common.js';
 export * from './enums.js';
+export * from './errors.js';
 export * from './events.js';
 export * from './exchange.js';
 export * from './flow.js';

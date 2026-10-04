@@ -24,14 +24,19 @@ export type VciProfile = z.infer<typeof VciProfileSchema>;
 export const VpProfileSchema = z.enum(['inji-draft', 'final-1.0']);
 export type VpProfile = z.infer<typeof VpProfileSchema>;
 
-/** What the verifier answered. `NOT_RUN` means the run stopped before verification. */
+/**
+ * What the verifier answered. `ERROR` is also used when a role rejected a protocol message before the
+ * verifier answered; `NOT_RUN` means the run stopped for a reason unrelated to interoperability.
+ */
 export const OutcomeSchema = z.enum(['VALID', 'INVALID', 'EXPIRED', 'ERROR', 'NOT_RUN']);
 export type Outcome = z.infer<typeof OutcomeSchema>;
 
 /**
- * Judgement of a run against its scenario. `pass` / `fail` compare the outcome with the expected one;
- * `error` means the run could not reach a verification outcome (infrastructure or protocol failure
- * before the verifier answered); `not-supported` means the combination was rejected before it started.
+ * Judgement of a run against its scenario. `pass` / `fail` compare the outcome with the expected one
+ * (a role that rejects the other side's message before the verifier answers gives the outcome `ERROR`,
+ * which is a `fail` unless the scenario expects it); `error` means nothing about interoperability was
+ * learned (a step timed out, the run was cancelled, a service was unreachable); `not-supported` means
+ * the combination was rejected by the compatibility check before it started.
  */
 export const VerdictSchema = z.enum(['pass', 'fail', 'error', 'not-supported']);
 export type Verdict = z.infer<typeof VerdictSchema>;
