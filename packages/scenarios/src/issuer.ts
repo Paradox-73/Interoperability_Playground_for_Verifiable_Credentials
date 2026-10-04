@@ -25,7 +25,9 @@ export function issuanceOptionsFor(
   if (!variant) return undefined;
   const at = (offsetSeconds: number) => new Date(now.getTime() + offsetSeconds * 1000);
   const options: ScenarioIssuanceOptions = {
-    ...(variant.validFromOffsetSeconds === undefined ? {} : { validFrom: at(variant.validFromOffsetSeconds) }),
+    ...(variant.validFromOffsetSeconds === undefined
+      ? {}
+      : { validFrom: at(variant.validFromOffsetSeconds) }),
     ...(variant.validUntilOffsetSeconds === undefined
       ? {}
       : { validUntil: at(variant.validUntilOffsetSeconds) }),

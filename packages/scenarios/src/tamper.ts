@@ -26,14 +26,15 @@ import {
   type JsonObject,
   type KeyPair,
 } from '@inji-playground/formats';
-import type { CredentialFormat, VpProfile } from '@inji-playground/protocol';
+import type { VpProfile } from '@inji-playground/protocol';
 import type { CredentialTamper, PresentationTamper } from './catalogue.js';
 
 const isSdJwt = (format: string): boolean => format === 'vc+sd-jwt' || format === 'dc+sd-jwt';
 
 /** A credential as a wallet holds it: the format and the raw text (JSON for ldp_vc). */
 export interface RawCredential {
-  format: CredentialFormat | string;
+  /** A `CredentialFormat`, or the format id another role reported. */
+  format: string;
   raw: string;
 }
 
@@ -55,7 +56,8 @@ export async function tamperCredential(tamper: CredentialTamper, credential: Raw
 
 /** What a presentation tamper needs from the wallet and the request it answers. */
 export interface PresentationTamperContext {
-  format: CredentialFormat | string;
+  /** A `CredentialFormat`, or the format id another role reported. */
+  format: string;
   profile: VpProfile;
   /** Nonce and client_id of the request being answered. */
   nonce: string;
@@ -115,7 +117,8 @@ async function tamperOne(
     }
   }
   if (isRecord(presentation) && context.format === 'ldp_vc' && tamper === 'present-as-other-holder') {
-    if (!context.documentLoader) throw new TypeError('present-as-other-holder needs a document loader for ldp_vp');
+    if (!context.documentLoader)
+      throw new TypeError('present-as-other-holder needs a document loader for ldp_vp');
     const keyPair = generateKeyPair('EdDSA');
     const did = createDidKey(keyPair.publicJwk);
     return representLdpVp(presentation, {

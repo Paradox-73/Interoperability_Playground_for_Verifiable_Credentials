@@ -10,8 +10,10 @@ import {
   RunDetailSchema,
   RunEventListSchema,
   RunListResponseSchema,
+  ScenarioSpecSchema,
   StackStatusResponseSchema,
 } from '@inji-playground/protocol';
+import { listScenarios } from '@inji-playground/scenarios';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
 import { FAKE_CELL, buildTestApp, fakeSet, registrations, type FakeSetOptions } from './helpers.js';
@@ -56,7 +58,14 @@ describe('catalogue routes', () => {
   it('lists scenarios', async () => {
     const server = await start();
     const res = await server.inject('/api/scenarios');
-    expect(res.json()).toEqual([expect.objectContaining({ id: 'happy', expected: 'VALID' })]);
+    const listed = ScenarioSpecSchema.strict().array().parse(res.json());
+    expect(listed.map((scenario) => scenario.id)).toEqual(listScenarios().map((scenario) => scenario.id));
+    expect(listed[0]).toMatchObject({ id: 'happy', expected: 'VALID', category: 'happy' });
+    expect(listed.find((scenario) => scenario.id === 'expired')).toMatchObject({
+      expected: 'EXPIRED',
+      category: 'tamper',
+      requires: { issuer: ['ref-issuer'] },
+    });
   });
 
   it('answers the compatibility question with reasons', async () => {

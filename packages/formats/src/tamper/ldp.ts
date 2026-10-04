@@ -58,7 +58,10 @@ export interface RepresentOptions {
  * holder proof verifies, but `holder` differs from `credentialSubject.id` (VC Data Model 1.1 section
  * 5.8; OpenID4VP 1.0 Appendix B.1.3.2.5 asks the verifier to check holder binding).
  */
-export async function representLdpVp(presentation: JsonObject, options: RepresentOptions): Promise<JsonObject> {
+export async function representLdpVp(
+  presentation: JsonObject,
+  options: RepresentOptions,
+): Promise<JsonObject> {
   const embedded = presentation.verifiableCredential;
   const credentials = (Array.isArray(embedded) ? (embedded as unknown[]) : [embedded]).filter(isRecord);
   if (credentials.length === 0) throw new TypeError('the presentation embeds no credential');

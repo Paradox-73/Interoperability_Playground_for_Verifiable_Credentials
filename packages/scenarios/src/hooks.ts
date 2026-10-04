@@ -33,7 +33,9 @@ export function scenarioHooks(scenario: ScenarioDefinition): ScenarioHooks {
   if (scenario.issuer?.configurationIds) {
     hooks.beforeIssuance = (request) => {
       const configurationId = configurationIdFor(scenario, request.format);
-      return configurationId === undefined ? request : { ...request, credentialConfigurationId: configurationId };
+      return configurationId === undefined
+        ? request
+        : { ...request, credentialConfigurationId: configurationId };
     };
   }
   const tamper = scenario.credentialTamper;
@@ -46,7 +48,9 @@ export function scenarioHooks(scenario: ScenarioDefinition): ScenarioHooks {
   if (scenario.wallet?.presentUnmatched) {
     // The verifier asks for the farmer credential explicitly, so the type the issuer used is wrong.
     hooks.beforeRequest = (spec) =>
-      spec.credentialType === undefined ? { ...spec, credentialType: requestedCredentialType(spec.format) } : spec;
+      spec.credentialType === undefined
+        ? { ...spec, credentialType: requestedCredentialType(spec.format) }
+        : spec;
   }
   return hooks;
 }
@@ -86,7 +90,11 @@ export function scenarioApplies(scenario: ScenarioSpec, cell: ScenarioCell): App
 }
 
 /** The roles the playground implements itself. */
-export const REFERENCE_ROLES = { issuer: 'ref-issuer', wallet: 'ref-wallet', verifier: 'ref-verifier' } as const;
+export const REFERENCE_ROLES = {
+  issuer: 'ref-issuer',
+  wallet: 'ref-wallet',
+  verifier: 'ref-verifier',
+} as const;
 
 export interface ReferenceCell {
   scenario: ScenarioDefinition;

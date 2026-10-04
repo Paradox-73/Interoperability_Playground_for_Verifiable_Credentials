@@ -48,11 +48,14 @@ describe('scenario catalogue', () => {
       const parsed = ScenarioSpecSchema.safeParse(scenario);
       expect(parsed.success, `${scenario.id}: ${parsed.error?.message ?? ''}`).toBe(true);
     }
-    for (const spec of listScenarios()) expect(ScenarioSpecSchema.strict().safeParse(spec).success).toBe(true);
+    for (const spec of listScenarios())
+      expect(ScenarioSpecSchema.strict().safeParse(spec).success).toBe(true);
   });
 
   it('has at least 10 tamper scenarios, and each non-happy entry names the rule behind its expected outcome', () => {
-    expect(scenarioCatalog.filter((scenario) => scenario.category === 'tamper').length).toBeGreaterThanOrEqual(10);
+    expect(
+      scenarioCatalog.filter((scenario) => scenario.category === 'tamper').length,
+    ).toBeGreaterThanOrEqual(10);
     for (const scenario of scenarioCatalog.filter((entry) => entry.id !== 'happy')) {
       expect(scenario.reference, scenario.id).toMatch(/section|Appendix|specification|Method/);
       expect(scenario.formats?.length, scenario.id).toBeGreaterThan(0);
@@ -95,7 +98,9 @@ describe('scenarioApplies', () => {
   const reference = { issuer: 'ref-issuer', wallet: 'ref-wallet', verifier: 'ref-verifier' };
 
   it('accepts any combination for the happy path', () => {
-    expect(scenarioApplies(happy, { issuer: 'inji-certify', wallet: 'inji-web', format: 'mso_mdoc' })).toEqual({
+    expect(
+      scenarioApplies(happy, { issuer: 'inji-certify', wallet: 'inji-web', format: 'mso_mdoc' }),
+    ).toEqual({
       applies: true,
       reasons: [],
     });
@@ -109,11 +114,14 @@ describe('scenarioApplies', () => {
 
   it('refuses a role the scenario cannot drive', () => {
     const result = scenarioApplies(definition('bad-signature'), { ...reference, wallet: 'inji-web' });
-    expect(result).toEqual({ applies: false, reasons: ['bad-signature needs the wallet ref-wallet, not inji-web'] });
+    expect(result).toEqual({
+      applies: false,
+      reasons: ['bad-signature needs the wallet ref-wallet, not inji-web'],
+    });
     expect(scenarioApplies(definition('expired'), { issuer: 'inji-certify' }).applies).toBe(false);
-    expect(scenarioApplies(definition('holder-did-canonical'), { ...reference, format: 'ldp_vc' }).applies).toBe(
-      false,
-    );
+    expect(
+      scenarioApplies(definition('holder-did-canonical'), { ...reference, format: 'ldp_vc' }).applies,
+    ).toBe(false);
   });
 
   it('refuses a profile the scenario does not list', () => {
@@ -141,7 +149,7 @@ describe('issuer variants', () => {
       types: ['VerifiableCredential', 'LandRecordCredential'],
       vct: 'https://playground.ps02.test/vct/land-record/v1',
     });
-    expect(issuanceOptionsFor(happy, now)).toBeUndefined();
+    expect(issuanceOptionsFor(definition('happy'), now)).toBeUndefined();
     // A DID method is a property of the issuer, not of one offer.
     expect(issuanceOptionsFor(definition('issuer-did-jwk'), now)).toBeUndefined();
   });
@@ -172,12 +180,13 @@ describe('hooks', () => {
   });
 
   it('presentation tampering is left to the wallet (no protocol tamperPresentation hook)', () => {
-    for (const scenario of scenarioCatalog) expect(scenarioHooks(scenario).tamperPresentation).toBeUndefined();
+    for (const scenario of scenarioCatalog)
+      expect(scenarioHooks(scenario)).not.toHaveProperty('tamperPresentation');
   });
 
   it('holder-did-canonical configures the wallet client; other scenarios do not', () => {
     expect(walletClientOptions(definition('holder-did-canonical'))).toEqual({ holderDidForm: 'canonical' });
-    expect(walletClientOptions(happy)).toEqual({});
+    expect(walletClientOptions(definition('happy'))).toEqual({});
   });
 
   it('refuses a tamper on a format it does not apply to', async () => {

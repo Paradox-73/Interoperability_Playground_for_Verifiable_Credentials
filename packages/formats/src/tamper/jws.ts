@@ -6,7 +6,7 @@
  * Misuse (input that is not the shape a primitive works on) throws a `TypeError`: it is a bug in the
  * scenario, not a finding about the role under test.
  */
-import { decodeCompactJws, signCompactJws, type JoseHeader, type JwtPayload } from '../keys/jws.js';
+import { decodeCompactJws, signCompactJws, type JwtPayload } from '../keys/jws.js';
 import type { KeyPair } from '../keys/keys.js';
 import { base64UrlDecode, base64UrlEncode } from '../util/encoding.js';
 
@@ -56,7 +56,7 @@ export interface ResignJwsChanges {
 export function resignJws(compact: string, changes: ResignJwsChanges, keyPair: KeyPair): string {
   const decoded = decodeCompactJws(compact);
   return signCompactJws(
-    applyChanges(decoded.header, changes.header) as JoseHeader,
+    applyChanges(decoded.header, changes.header),
     applyChanges(decoded.payload, changes.payload),
     keyPair,
   );

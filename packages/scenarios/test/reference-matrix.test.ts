@@ -31,7 +31,12 @@ import {
   type FetchFn,
   type StoredCredential,
 } from '@inji-playground/oid4vp';
-import type { CredentialFormat, HeldCredential, PresentationSpec, VpProfile } from '@inji-playground/protocol';
+import type {
+  CredentialFormat,
+  HeldCredential,
+  PresentationSpec,
+  VpProfile,
+} from '@inji-playground/protocol';
 import {
   configurationIdFor,
   issuanceOptionsFor,
@@ -104,7 +109,9 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
   const offer = issuer.createOffer({
     profile: vciProfile,
     configurationId:
-      request.credentialConfigurationId ?? configurationIdFor(scenario, format) ?? DEFAULT_CONFIGURATION[format]!,
+      request.credentialConfigurationId ??
+      configurationIdFor(scenario, format) ??
+      DEFAULT_CONFIGURATION[format]!,
     ...(issuanceOptionsFor(scenario) ? { issuance: issuanceOptionsFor(scenario)! } : {}),
   });
   const issued = await acceptOffer(offer.offerUri, { fetch, holderKey });
@@ -127,7 +134,10 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
     didResolver: resolver,
     ...walletClientOptions(scenario),
   });
-  const spec: PresentationSpec = (await hooks.beforeRequest?.({ format, vpProfile })) ?? { format, vpProfile };
+  const spec: PresentationSpec = (await hooks.beforeRequest?.({ format, vpProfile })) ?? {
+    format,
+    vpProfile,
+  };
   const ask = (type?: string) =>
     verifier.createRequest({ profile: vpProfile, format, ...(type ? { query: { type } } : {}) });
 
@@ -135,7 +145,13 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
   if (scenario.presentationTamper === 'replay-earlier') {
     // A genuine earlier exchange with the same verifier, whose vp_token is then replayed.
     const earlier = ask(spec.credentialType);
-    const answered = await respondWithScenario(wallet, earlier.uri, [stored], {}, { holderKey: holderKeyPair });
+    const answered = await respondWithScenario(
+      wallet,
+      earlier.uri,
+      [stored],
+      {},
+      { holderKey: holderKeyPair },
+    );
     expect((await verifier.awaitResult(earlier.handle, { timeoutMs: 10_000 })).outcome).toBe('VALID');
     earlierVpToken = answered.form.vp_token;
   }

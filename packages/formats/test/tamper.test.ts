@@ -160,14 +160,18 @@ describe('SD-JWT VC primitives (RFC 9901)', () => {
     // Without a new KB-JWT the sd_hash check could fail first; the issuer's digests are checked first anyway.
     await expect(verifySdJwtVc(altered, options)).rejects.toMatchObject({ code: 'SDJWT_DISCLOSURE_INVALID' });
     const tampered = resignKeyBinding(altered, {}, holder);
-    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({ code: 'SDJWT_DISCLOSURE_INVALID' });
+    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({
+      code: 'SDJWT_DISCLOSURE_INVALID',
+    });
   });
 
   it('unreferenced extra disclosure, KB-JWT signed again -> SDJWT_DISCLOSURE_INVALID (section 7.1 step 3)', async () => {
     const presented = await present(issued);
     const tampered = resignKeyBinding(addUnreferencedDisclosure(presented, 'is_over_65', true), {}, holder);
     expect(splitSdJwt(tampered).disclosures).toHaveLength(splitSdJwt(presented).disclosures.length + 1);
-    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({ code: 'SDJWT_DISCLOSURE_INVALID' });
+    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({
+      code: 'SDJWT_DISCLOSURE_INVALID',
+    });
   });
 
   it('a disclosure dropped before presenting is selective disclosure and still verifies', async () => {
@@ -206,11 +210,15 @@ describe('SD-JWT VC primitives (RFC 9901)', () => {
 
   it('KB-JWT signed by another key -> KB_JWT_SIGNATURE_INVALID (section 7.3 step 5c)', async () => {
     const tampered = resignKeyBinding(await present(issued), {}, generateKeyPair('EdDSA'));
-    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({ code: 'KB_JWT_SIGNATURE_INVALID' });
+    await expect(verifySdJwtVc(tampered, options)).rejects.toMatchObject({
+      code: 'KB_JWT_SIGNATURE_INVALID',
+    });
   });
 
   it('flipped KB-JWT signature -> KB_JWT_SIGNATURE_INVALID; no KB-JWT -> TypeError', async () => {
-    await expect(verifySdJwtVc(flipKeyBindingSignature(await present(issued)), options)).rejects.toMatchObject({
+    await expect(
+      verifySdJwtVc(flipKeyBindingSignature(await present(issued)), options),
+    ).rejects.toMatchObject({
       code: 'KB_JWT_SIGNATURE_INVALID',
     });
     expect(() => flipKeyBindingSignature(issued)).toThrow(TypeError);
@@ -265,7 +273,9 @@ describe.each<{ version: '1.1' | '2.0'; suite: LdpProofSuite }>([
     expect(after.proofValue).not.toBe(before.proofValue);
     expect({ ...after, proofValue: undefined }).toEqual({ ...before, proofValue: undefined });
     expect((credential.proof as JsonObject).proofValue).toBe(before.proofValue);
-    await expect(verifyLdpVc(tampered, { documentLoader })).rejects.toMatchObject({ code: 'LDP_PROOF_INVALID' });
+    await expect(verifyLdpVc(tampered, { documentLoader })).rejects.toMatchObject({
+      code: 'LDP_PROOF_INVALID',
+    });
     expect(() => flipProofValue({ type: ['VerifiableCredential'] })).toThrow(TypeError);
   });
 
@@ -280,9 +290,9 @@ describe.each<{ version: '1.1' | '2.0'; suite: LdpProofSuite }>([
     const tampered = flipEmbeddedCredentialProof(vp);
     const embedded = (tampered.verifiableCredential as JsonObject[])[0]!;
     expect((embedded.proof as JsonObject).proofValue).not.toBe((credential.proof as JsonObject).proofValue);
-    await expect(
-      verifyLdpVp(tampered, { documentLoader, expectedChallenge: NONCE }),
-    ).rejects.toMatchObject({ code: expect.stringMatching(/^LDP_PROOF_INVALID$/) as unknown });
+    await expect(verifyLdpVp(tampered, { documentLoader, expectedChallenge: NONCE })).rejects.toMatchObject({
+      code: expect.stringMatching(/^LDP_PROOF_INVALID$/) as unknown,
+    });
   });
 
   it('representLdpVp: a valid holder proof by another key, so holder != credentialSubject.id', async () => {
@@ -294,7 +304,12 @@ describe.each<{ version: '1.1' | '2.0'; suite: LdpProofSuite }>([
       documentLoader,
     });
     const thief = didKeyParty();
-    const stolen = await representLdpVp(vp, { key: thief, challenge: NONCE, domain: AUDIENCE, documentLoader });
+    const stolen = await representLdpVp(vp, {
+      key: thief,
+      challenge: NONCE,
+      domain: AUDIENCE,
+      documentLoader,
+    });
     expect(stolen.holder).toBe(thief.did);
     const verified = await verifyLdpVp(stolen, {
       documentLoader,
@@ -304,8 +319,8 @@ describe.each<{ version: '1.1' | '2.0'; suite: LdpProofSuite }>([
     // The format library checks proofs; comparing holder and subject is the verifier's job (oid4vp).
     expect(verified.holder).toBe(thief.did);
     expect((verified.credentials[0] as unknown as { issuer: string }).issuer).toBe(issuer.did);
-    expect(
-      ((stolen.verifiableCredential as JsonObject[])[0]!.credentialSubject as JsonObject).id,
-    ).toBe(holder.did);
+    expect(((stolen.verifiableCredential as JsonObject[])[0]!.credentialSubject as JsonObject).id).toBe(
+      holder.did,
+    );
   });
 });

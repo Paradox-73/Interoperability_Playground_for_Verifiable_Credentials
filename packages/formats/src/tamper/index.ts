@@ -19,9 +19,4 @@ export {
   type ForgedX5c,
   type KeyBindingChanges,
 } from './sd-jwt.js';
-export {
-  flipEmbeddedCredentialProof,
-  flipProofValue,
-  representLdpVp,
-  type RepresentOptions,
-} from './ldp.js';
+export { flipEmbeddedCredentialProof, flipProofValue, representLdpVp, type RepresentOptions } from './ldp.js';
