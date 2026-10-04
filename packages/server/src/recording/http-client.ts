@@ -3,9 +3,12 @@
  * the whole response, stores both (headers, body, status, timing) as a `RecordedExchange`, and hands
  * the caller an equivalent `Response` built from the bytes it read.
  *
- * Step tagging is minimal here: an exchange gets the step the caller names or the run's current step.
- * Rules that recognise steps from paths and bodies, the reverse proxy and the network map come with
- * the full recording layer.
+ * Step tagging: an exchange gets the step the caller names, else the step the tagging rules recognise
+ * from the wire (`step-tagging.ts`), else the run's current step.
+ *
+ * No duplicates: a call to one of the playground's own capture points (its reverse proxy or a hosted
+ * reference role, see `selfCapture`) is recorded there, not here. This client then only adds the
+ * attribution headers that tell the capture point which run, step and sender the call belongs to.
  */
 import {
   RoleError,
@@ -15,6 +18,8 @@ import {
   type RecordingHttpClient,
   type StepId,
 } from '@inji-playground/protocol';
+import { ATTRIBUTION_HEADERS } from './capture-hub.js';
+import { tagStep } from './step-tagging.js';
 
 /** An exchange before the run assigns its id and sequence number. */
 export type ExchangeDraft = Omit<RecordedExchange, 'id' | 'runId' | 'seq'>;
@@ -37,6 +42,13 @@ export interface RecordingFetchOptions {
   /** The underlying fetch; the global one by default. */
   fetch?: typeof globalThis.fetch;
   now?: () => Date;
+  /**
+   * True for URLs served by one of this server's own capture points (reverse proxy, hosted reference
+   * roles). Such calls are recorded by that capture point, so this client does not record them too.
+   */
+  selfCapture?: (url: URL) => boolean;
+  /** Run id sent in the attribution header on self-captured calls. */
+  runId?: string;
 }
 
 /** Status codes whose responses never have a body; `new Response(body)` rejects one for them. */
@@ -62,13 +74,23 @@ export class RecordingFetch implements RecordingHttpClient {
   async fetch(input: string | URL, init: RecordedRequestInit = {}): Promise<Response> {
     const { step, from, to, ...requestInit } = init;
     const signal = requestInit.signal ?? this.#options.defaultSignal?.() ?? null;
-    const request = new Request(input, { ...requestInit, signal });
+    const selfCaptured = this.#options.selfCapture?.(new URL(input)) === true;
+    const sender = from ?? this.#options.from;
+    const contextStep = this.#options.currentStep?.();
+    const headers = new Headers(requestInit.headers);
+    if (selfCaptured) {
+      if (this.#options.runId) headers.set(ATTRIBUTION_HEADERS.run, this.#options.runId);
+      const hint = step ?? contextStep;
+      if (hint) headers.set(ATTRIBUTION_HEADERS.step, hint);
+      headers.set(ATTRIBUTION_HEADERS.from, sender);
+    }
+    const request = new Request(input, { ...requestInit, headers, signal });
     const requestBody = request.body ? encodeBody(new Uint8Array(await request.clone().arrayBuffer())) : {};
     const url = new URL(request.url);
 
     const base = {
       capture: 'outbound' as const,
-      from: from ?? this.#options.from,
+      from: sender,
       to: to ?? url.host,
       request: {
         method: request.method,
@@ -77,8 +99,22 @@ export class RecordingFetch implements RecordingHttpClient {
         ...requestBody,
       },
     };
-    const taggedStep = step ?? this.#options.currentStep?.();
-    const tagged = taggedStep ? { step: taggedStep } : {};
+    const requestContentType = request.headers.get('content-type');
+    const stepOf = (responseContentType?: string | null): { step?: StepId } => {
+      const chosen =
+        step ??
+        tagStep({
+          method: request.method,
+          url: request.url,
+          ...(requestContentType ? { contentType: requestContentType } : {}),
+          ...(requestBody.bodyEncoding === 'utf8' && requestBody.body !== undefined
+            ? { body: requestBody.body }
+            : {}),
+          ...(responseContentType ? { responseContentType } : {}),
+        }) ??
+        contextStep;
+      return chosen ? { step: chosen } : {};
+    };
     const startedAt = this.#now();
     const started = performance.now();
 
@@ -90,7 +126,7 @@ export class RecordingFetch implements RecordingHttpClient {
     } catch (error) {
       const exchange = this.#options.recorder.record({
         ...base,
-        ...tagged,
+        ...stepOf(),
         startedAt: startedAt.toISOString(),
         durationMs: performance.now() - started,
         error: describeError(error, signal),
@@ -109,17 +145,20 @@ export class RecordingFetch implements RecordingHttpClient {
       );
     }
 
-    this.#options.recorder.record({
-      ...base,
-      ...tagged,
-      response: {
-        status: response.status,
-        headers: headersToRecord(response.headers),
-        ...encodeBody(bytes),
-      },
-      startedAt: startedAt.toISOString(),
-      durationMs: performance.now() - started,
-    });
+    // A self-captured call was stored by the proxy or inbound recorder; storing it here would duplicate it.
+    if (!selfCaptured) {
+      this.#options.recorder.record({
+        ...base,
+        ...stepOf(response.headers.get('content-type')),
+        response: {
+          status: response.status,
+          headers: headersToRecord(response.headers),
+          ...encodeBody(bytes),
+        },
+        startedAt: startedAt.toISOString(),
+        durationMs: performance.now() - started,
+      });
+    }
 
     // The body has been consumed for recording; give the caller a fresh Response with the same bytes.
     const copy = new Response(NULL_BODY_STATUSES.has(response.status) ? null : bytes, {

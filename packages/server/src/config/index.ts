@@ -45,6 +45,22 @@ export const ConfigSchema = z.object({
   referenceStepTimeoutMs: z.coerce.number().int().positive().default(15_000),
   injiStepTimeoutMs: z.coerce.number().int().positive().default(90_000),
   personTimeoutMs: z.coerce.number().int().positive().default(600_000),
+  /**
+   * How long the reverse proxy waits for an Inji service. Above the 55 s the Inji Verify SDK's status
+   * poll holds a request open, below the server's 120 s request timeout.
+   */
+  proxyTimeoutMs: z.coerce.number().int().positive().default(110_000),
+  /** Upstream URLs of the proxied Inji services; defaults depend on `stack` (see `recording/targets.ts`). */
+  injiCertifyUrl: z.url().optional(),
+  injiCertifyAcUrl: z.url().optional(),
+  injiVerifyUrl: z.url().optional(),
+  injiMimotoUrl: z.url().optional(),
+  /** Network map file for host mode (`deploy/inji-stack/network-map.host.json`); none by default. */
+  networkMap: z.string().min(1).optional(),
+  /** Extra CA certificate (PEM file) trusted for outbound HTTPS, for example the stack's test CA. */
+  extraCaFile: z.string().min(1).optional(),
+  /** DID method of the reference issuer's keys. did:key resolves offline; did:web needs the TLS front for Inji Verify. */
+  refIssuerDid: z.enum(['did:key', 'did:jwk', 'did:web']).default('did:key'),
 });
 export type Config = z.infer<typeof ConfigSchema>;
 
@@ -68,6 +84,14 @@ const ENV_KEYS = {
   PLAYGROUND_TIMEOUT_REFERENCE_MS: 'referenceStepTimeoutMs',
   PLAYGROUND_TIMEOUT_INJI_MS: 'injiStepTimeoutMs',
   PLAYGROUND_TIMEOUT_PERSON_MS: 'personTimeoutMs',
+  PLAYGROUND_PROXY_TIMEOUT_MS: 'proxyTimeoutMs',
+  PLAYGROUND_NETWORK_MAP: 'networkMap',
+  PLAYGROUND_EXTRA_CA: 'extraCaFile',
+  PLAYGROUND_REF_ISSUER_DID: 'refIssuerDid',
+  INJI_CERTIFY_URL: 'injiCertifyUrl',
+  INJI_CERTIFY_AC_URL: 'injiCertifyAcUrl',
+  INJI_VERIFY_URL: 'injiVerifyUrl',
+  INJI_MIMOTO_URL: 'injiMimotoUrl',
 } as const satisfies Record<string, keyof Config>;
 
 /**

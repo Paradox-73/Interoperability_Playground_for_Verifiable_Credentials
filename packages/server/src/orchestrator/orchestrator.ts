@@ -60,7 +60,12 @@ import {
 import { z } from 'zod';
 import type { EventBus } from '../events/bus.js';
 import { measureCredential } from '../reports/credential-size.js';
-import { RecordingFetch, type ExchangeDraft, type ExchangeRecorder } from '../recording/http-client.js';
+import {
+  RecordingFetch,
+  type ExchangeDraft,
+  type ExchangeRecorder,
+  type RecordingFetchOptions,
+} from '../recording/http-client.js';
 import type { RunStore } from '../store/run-store.js';
 import { checkCompatibility, runModeOf } from './compatibility.js';
 import { RunCancelledError, RunRequestError, StepTimeoutError } from './errors.js';
@@ -91,6 +96,12 @@ export interface OrchestratorOptions {
   stackLock?: StackLock;
   logger?: OrchestratorLogger;
   newRunId?: () => string;
+  /**
+   * Transport and self-capture test for the roles' recording fetch: `fetch` sends the request (network
+   * map, in-process dispatch to this server); `selfCapture` names URLs that this server's proxy or
+   * inbound recorder records, so the outbound client does not record them a second time.
+   */
+  http?: Pick<RecordingFetchOptions, 'fetch' | 'selfCapture'>;
 }
 
 /** Why a run stopped before the verifier answered, in the form the report needs. */
@@ -165,6 +176,7 @@ export class Orchestrator {
   readonly #lock: StackLock;
   readonly #log: OrchestratorLogger;
   readonly #newRunId: () => string;
+  readonly #http: OrchestratorOptions['http'];
   readonly #active = new Map<string, ActiveRun>();
 
   constructor(options: OrchestratorOptions) {
@@ -177,6 +189,7 @@ export class Orchestrator {
     this.#lock = options.stackLock ?? new StackLock();
     this.#log = options.logger ?? { warn: () => undefined, error: () => undefined };
     this.#newRunId = options.newRunId ?? defaultRunId;
+    this.#http = options.http;
   }
 
   /**
@@ -502,6 +515,8 @@ export class Orchestrator {
         from: caller.descriptor.id,
         currentStep: () => run.step?.step,
         defaultSignal: () => signal,
+        runId: run.id,
+        ...this.#http,
       }),
       scenario: run.scenario,
       hooks: run.hooks,
