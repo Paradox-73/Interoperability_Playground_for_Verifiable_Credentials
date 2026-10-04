@@ -267,6 +267,9 @@ services:
       DEFAULT_LANG: en
       INTERNET_CONNECTIVITY_CHECK_ENDPOINT: https://dns.google/
       INTERNET_CONNECTIVITY_CHECK_TIMEOUT: '10000'
+      # G10: the upstream inji-verify compose writes {OVP_QR_HEADER-INJI_OVP://payload=} without the "$", so
+      # the braces themselves became the QR header. The intended value is set plainly.
+      OVP_QR_HEADER: INJI_OVP://payload=
       VERIFIABLE_CLAIMS_CONFIG_URL: /assets/config.json
       VP_SUBMISSION_SUPPORTED: 'false'
       CLIENT_ID: inji-verify-ui

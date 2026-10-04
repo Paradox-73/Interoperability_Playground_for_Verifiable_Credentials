@@ -36,6 +36,10 @@ describe('compose.yaml', () => {
     expect(compose.services['verify-ui'].profiles).toEqual(['verify-ui']);
   });
 
+  it('sets the Inji Verify UI QR header plainly (gap G10: the upstream sample lacks the "$")', () => {
+    expect(compose.services['verify-ui'].environment.OVP_QR_HEADER).toBe('INJI_OVP://payload=');
+  });
+
   it('mounts the upstream verify-ui config.json unchanged', () => {
     expect(compose.services['verify-ui'].volumes).toContain(
       './config/verify-ui-config.json:/usr/share/nginx/html/assets/config.json:ro',
