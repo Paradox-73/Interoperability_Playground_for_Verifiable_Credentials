@@ -36,5 +36,8 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}', 'test/**/*.test.{ts,tsx}'],
     setupFiles: ['./test/setup.ts'],
+    // Page tests render the whole app in jsdom and run axe-core; on a laptop that is also building
+    // other packages one test measured 7 s, so the 5 s default made them fail without a real fault.
+    testTimeout: 30_000,
   },
 });

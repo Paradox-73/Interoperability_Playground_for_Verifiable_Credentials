@@ -1,0 +1,144 @@
+{
+  "description": "Synthetic role catalogue for UI tests, modelled on the planned role catalogue (ids, versions and capabilities). Health is added per test. Not a server response recorded from a real run.",
+  "synthetic": true,
+  "roles": [
+    {
+      "id": "inji-certify",
+      "kind": "issuer",
+      "name": "Inji Certify (pre-authorized code)",
+      "ecosystem": "inji",
+      "version": "0.14.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "EdDSA"],
+        "didMethods": ["did:web"],
+        "vciProfiles": ["draft13"],
+        "issuance": ["credential-offer"]
+      }
+    },
+    {
+      "id": "inji-certify-ac",
+      "kind": "issuer",
+      "name": "Inji Certify (authorization code)",
+      "ecosystem": "inji",
+      "version": "0.14.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc"],
+        "proofTypes": ["Ed25519Signature2020"],
+        "didMethods": ["did:web"],
+        "vciProfiles": ["draft13"],
+        "issuance": ["credential-offer", "wallet-initiated"]
+      }
+    },
+    {
+      "id": "ref-issuer",
+      "kind": "issuer",
+      "name": "Reference issuer",
+      "ecosystem": "reference",
+      "version": "0.1.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt", "dc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "eddsa-rdfc-2022", "ES256", "EdDSA"],
+        "didMethods": ["did:key", "did:jwk", "did:web"],
+        "vciProfiles": ["draft13", "v1"],
+        "issuance": ["credential-offer", "wallet-initiated"]
+      }
+    },
+    {
+      "id": "ref-wallet",
+      "kind": "wallet",
+      "name": "Reference wallet (headless)",
+      "ecosystem": "reference",
+      "version": "0.1.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt", "dc+sd-jwt"],
+        "proofTypes": ["ES256", "EdDSA", "Ed25519Signature2020"],
+        "didMethods": ["did:key", "did:jwk"],
+        "vciProfiles": ["draft13", "v1"],
+        "vpProfiles": ["inji-draft", "final-1.0"],
+        "issuance": ["credential-offer", "wallet-initiated"]
+      }
+    },
+    {
+      "id": "inji-web",
+      "kind": "wallet",
+      "name": "Inji Web (through Mimoto)",
+      "ecosystem": "inji",
+      "version": "0.17.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt", "dc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "EdDSA"],
+        "didMethods": ["did:jwk"],
+        "vciProfiles": ["draft13"],
+        "vpProfiles": ["inji-draft"],
+        "issuance": ["wallet-initiated"]
+      }
+    },
+    {
+      "id": "mobile-wallet",
+      "kind": "wallet",
+      "name": "Phone wallet (QR code)",
+      "ecosystem": "external",
+      "version": "any",
+      "interaction": "manual",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "ES256"],
+        "didMethods": ["did:jwk"],
+        "vciProfiles": ["draft13"],
+        "vpProfiles": ["inji-draft"],
+        "issuance": ["credential-offer"]
+      }
+    },
+    {
+      "id": "inji-verify",
+      "kind": "verifier",
+      "name": "Inji Verify (API)",
+      "ecosystem": "inji",
+      "version": "0.18.2",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "EdDSA"],
+        "didMethods": ["did:web", "did:key", "did:jwk"],
+        "vpProfiles": ["inji-draft"],
+        "responseModes": ["direct_post"]
+      }
+    },
+    {
+      "id": "inji-verify-sdk",
+      "kind": "verifier",
+      "name": "Inji Verify SDK (this browser tab)",
+      "ecosystem": "inji",
+      "version": "0.18.1",
+      "interaction": "browser",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "EdDSA"],
+        "didMethods": ["did:web", "did:key", "did:jwk"],
+        "vpProfiles": ["inji-draft"],
+        "responseModes": ["direct_post"]
+      }
+    },
+    {
+      "id": "ref-verifier",
+      "kind": "verifier",
+      "name": "Reference verifier",
+      "ecosystem": "reference",
+      "version": "0.1.0",
+      "interaction": "automatic",
+      "capabilities": {
+        "formats": ["ldp_vc", "vc+sd-jwt", "dc+sd-jwt"],
+        "proofTypes": ["Ed25519Signature2020", "eddsa-rdfc-2022", "ES256", "EdDSA"],
+        "didMethods": ["did:key", "did:jwk", "did:web"],
+        "vpProfiles": ["inji-draft", "final-1.0"],
+        "responseModes": ["direct_post", "direct_post.jwt"]
+      }
+    }
+  ]
+}

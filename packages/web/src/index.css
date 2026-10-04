@@ -1,1 +1,90 @@
 @import 'tailwindcss';
+
+/*
+ * Colour tokens of the light and dark themes. Components use only these tokens (through the Tailwind
+ * names declared in @theme below), so a theme switch is one attribute on <html>.
+ *
+ * Every text/background pair used by the UI is checked for WCAG 2.2 AA contrast (4.5:1 for text,
+ * 3:1 for focus rings and control borders) by test/theme-contrast.test.ts, which parses this file.
+ * Keep the values as 6-digit hex colours so that test can read them.
+ */
+:root {
+  color-scheme: light;
+  --c-bg: #f8fafc;
+  --c-surface: #ffffff;
+  --c-surface-muted: #f1f5f9;
+  --c-line: #cbd5e1;
+  --c-line-strong: #64748b;
+  --c-text: #0f172a;
+  --c-text-muted: #475569;
+  --c-accent: #1d4ed8;
+  --c-accent-text: #ffffff;
+  --c-accent-soft: #dbeafe;
+  --c-ok: #166534;
+  --c-fail: #b91c1c;
+  --c-warn: #92400e;
+  --c-info: #1d4ed8;
+  --c-focus: #1d4ed8;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --c-bg: #0b1120;
+  --c-surface: #111827;
+  --c-surface-muted: #1e293b;
+  --c-line: #334155;
+  --c-line-strong: #94a3b8;
+  --c-text: #f1f5f9;
+  --c-text-muted: #cbd5e1;
+  --c-accent: #93c5fd;
+  --c-accent-text: #0b1120;
+  --c-accent-soft: #1e3a8a;
+  --c-ok: #4ade80;
+  --c-fail: #fca5a5;
+  --c-warn: #fcd34d;
+  --c-info: #93c5fd;
+  --c-focus: #93c5fd;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-muted: var(--c-surface-muted);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-fg: var(--c-text);
+  --color-fg-muted: var(--c-text-muted);
+  --color-accent: var(--c-accent);
+  --color-accent-fg: var(--c-accent-text);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-ok: var(--c-ok);
+  --color-fail: var(--c-fail);
+  --color-warn: var(--c-warn);
+  --color-info: var(--c-info);
+  --color-focus: var(--c-focus);
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+  }
+
+  /* One visible focus style for every interactive element (WCAG 2.4.7, 2.4.13). */
+  :focus-visible {
+    outline: 3px solid var(--c-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

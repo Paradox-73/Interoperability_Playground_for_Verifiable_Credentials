@@ -1,0 +1,217 @@
+{
+  "app": {
+    "name": "Inji Interoperability Playground",
+    "skipToContent": "Skip to main content",
+    "nav": {
+      "label": "Main",
+      "playground": "Playground",
+      "runs": "Runs",
+      "matrix": "Matrix",
+      "gaps": "Gaps",
+      "about": "About"
+    }
+  },
+  "mode": {
+    "label": "Mode",
+    "live": "Live",
+    "reference": "Reference",
+    "playback": "Playback",
+    "liveHint": "At least one Inji module takes part",
+    "referenceHint": "Only the playground's own reference roles take part",
+    "playbackHint": "A stored run is being replayed"
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "health": {
+    "up": "Healthy",
+    "degraded": "Degraded",
+    "down": "Down",
+    "unknown": "Unknown",
+    "latency": "{{ms}} ms"
+  },
+  "stack": {
+    "label": "Service status",
+    "server": "Playground server",
+    "serverUp": "Playground server {{version}}",
+    "serverDown": "Playground server unreachable: {{reason}}",
+    "serverChecking": "Checking the playground server…",
+    "checking": "Checking the Inji stack…",
+    "unavailable": "Inji stack status unavailable: {{reason}}",
+    "off": "Inji stack not configured: reference roles only",
+    "empty": "The Inji stack reports no services",
+    "socket": {
+      "idle": "Live updates: not connected yet",
+      "connecting": "Live updates: connecting…",
+      "open": "Live updates: connected",
+      "closed": "Live updates: reconnecting…"
+    }
+  },
+  "role": {
+    "kind": {
+      "issuer": "Issuer",
+      "wallet": "Wallet",
+      "verifier": "Verifier"
+    },
+    "ecosystem": {
+      "inji": "Inji",
+      "reference": "Reference (non-Inji)",
+      "external": "External (non-Inji)"
+    },
+    "interaction": {
+      "automatic": "Runs automatically",
+      "manual": "Needs a person (QR code or link)",
+      "browser": "Runs in this browser tab"
+    },
+    "version": "Version {{version}}",
+    "formats": "Formats",
+    "proofs": "Proofs",
+    "selected": "Selected",
+    "incompatible": "Not compatible with the current selection",
+    "limitation": "Runs, with a known limitation",
+    "checkingCompatibility": "Checking compatibility…",
+    "gaps": "gap register: {{ids}}"
+  },
+  "format": {
+    "ldp_vc": "JSON-LD VC (ldp_vc)",
+    "vc+sd-jwt": "SD-JWT VC (vc+sd-jwt)",
+    "dc+sd-jwt": "SD-JWT VC (dc+sd-jwt)",
+    "mso_mdoc": "mdoc (mso_mdoc)"
+  },
+  "vciProfile": {
+    "draft13": "OpenID4VCI draft 13",
+    "v1": "OpenID4VCI 1.0"
+  },
+  "vpProfile": {
+    "inji-draft": "OpenID4VP drafts 21-23 (Presentation Exchange)",
+    "final-1.0": "OpenID4VP 1.0 (DCQL)"
+  },
+  "issuanceMode": {
+    "credential-offer": "a credential offer",
+    "wallet-initiated": "a wallet-initiated request"
+  },
+  "outcome": {
+    "VALID": "Valid",
+    "INVALID": "Invalid",
+    "EXPIRED": "Valid but expired",
+    "ERROR": "Error",
+    "NOT_RUN": "Not reached"
+  },
+  "verdict": {
+    "pass": "Pass",
+    "fail": "Fail",
+    "error": "Error",
+    "not-supported": "Not supported"
+  },
+  "selector": {
+    "heading": "Choose the roles",
+    "intro": "Pick one issuer, one wallet and one verifier. Cards that cannot work with the current selection stay visible and say why.",
+    "column": {
+      "issuer": "Issues the credential (OpenID4VCI)",
+      "wallet": "Holds the credential and presents it",
+      "verifier": "Asks for the credential and checks it (OpenID4VP)"
+    },
+    "loading": "Loading the available roles…",
+    "error": "The role list could not be loaded: {{reason}}",
+    "emptyColumn": "No {{kind}} is registered on the server.",
+    "defaultInji": "Healthy Inji modules were selected in every column.",
+    "defaultReference": "The Inji modules are not all healthy, so the playground's reference roles were selected."
+  },
+  "compat": {
+    "noIssuableFormat": "{{wallet}} cannot hold any format {{issuer}} issues ({{formats}})",
+    "noPresentableFormat": "{{verifier}} accepts none of the formats {{wallet}} can present ({{formats}})",
+    "noCommonFormat": "No credential format is supported by {{issuer}}, {{wallet}} and {{verifier}} together",
+    "vciProfile": "{{issuer}} and {{wallet}} speak different OpenID4VCI versions ({{issuerProfiles}} / {{walletProfiles}})",
+    "vpProfile": "{{wallet}} and {{verifier}} speak different OpenID4VP versions ({{walletProfiles}} / {{verifierProfiles}})",
+    "issuance": "{{issuer}} starts issuance only with {{issuerModes}}, but {{wallet}} accepts only {{walletModes}}",
+    "or": " or "
+  },
+  "runBar": {
+    "heading": "Run settings",
+    "format": "Credential format",
+    "vciProfile": "Issuance protocol",
+    "vpProfile": "Presentation protocol",
+    "scenario": "Scenario",
+    "happy": "Happy path",
+    "expected": "expected outcome: {{outcome}}",
+    "run": "Run",
+    "starting": "Starting…",
+    "needRoles": "Choose an issuer, a wallet and a verifier to run.",
+    "incompatible": "This combination cannot run: {{reason}}",
+    "noFormat": "No common format",
+    "warning": "Known limitation: {{reason}}",
+    "failed": "The run could not be started: {{reason}}",
+    "started": "Run {{runId}} started"
+  },
+  "timeline": {
+    "heading": "Timeline",
+    "empty": "No run yet: pick an issuer, a wallet and a verifier, then press Run.",
+    "waitingForEvents": "Waiting for the first event of run {{runId}}…",
+    "run": "Run {{runId}}",
+    "steps": "Steps of run {{runId}}",
+    "status": {
+      "running": "In progress",
+      "ok": "Done",
+      "failed": "Failed",
+      "skipped": "Skipped",
+      "waiting": "Waiting for a person"
+    },
+    "spec": "Specification: {{section}}",
+    "specContext": ", {{name}}, opens in a new tab",
+    "exchanges_one": "{{count}} HTTP exchange recorded",
+    "exchanges_other": "{{count}} HTTP exchanges recorded",
+    "result": "{{verdict}}: the verifier answered “{{outcome}}” (expected “{{expected}}”)",
+    "resultError": "Stopped at “{{step}}”: {{message}}",
+    "openRun": "Open this run on its own page"
+  },
+  "announce": {
+    "stepOk": "Step done: {{label}}",
+    "stepFailed": "Step failed: {{label}}. {{message}}",
+    "stepSkipped": "Step skipped: {{label}}",
+    "personNeeded": "Action needed: {{title}}",
+    "runFinished": "Run finished. {{verdict}}: {{outcome}}"
+  },
+  "pages": {
+    "runs": {
+      "title": "Runs",
+      "empty": "The run history arrives with the history dashboard. Runs started in this browser tab are listed below.",
+      "none": "No runs yet: press Run on the Playground page."
+    },
+    "run": {
+      "title": "Run {{runId}}",
+      "back": "Back to the playground"
+    },
+    "matrix": {
+      "title": "Compatibility matrix",
+      "empty": "The matrix fills as runs are stored: press Run on the Playground page, or run `npm run matrix:reference`."
+    },
+    "gaps": {
+      "title": "Interoperability gaps",
+      "empty": "Gaps found by runs are written up here with the run that shows each one."
+    },
+    "about": {
+      "title": "About the playground",
+      "what": "The playground runs one verifiable-credential flow at a time: an issuer issues a credential to a wallet, the wallet presents it to a verifier, and the verifier checks it. Each role can be an Inji module or a reference implementation written independently from the published standards.",
+      "capture": "Every HTTP request between the roles passes through the playground server, which records it. The timeline and the inspector show those recorded messages, never prepared examples.",
+      "versions": "Role versions",
+      "versionsCaption": "Implementations registered on this server",
+      "columnRole": "Role",
+      "columnKind": "Column",
+      "columnEcosystem": "Origin",
+      "columnVersion": "Version",
+      "server": "Playground server version: {{version}}"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "body": "There is no page at this address.",
+      "home": "Go to the playground"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "duration": "{{value}}"
+  }
+}
