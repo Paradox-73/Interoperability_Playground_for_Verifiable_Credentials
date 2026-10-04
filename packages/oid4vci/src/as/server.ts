@@ -21,7 +21,7 @@
  *
  * Signing: RS256 by default, because Mimoto validates ID tokens with a default Spring
  * `NimbusJwtDecoder` (`JwtConfig.java`), which accepts RS256 only; Certify accepts ES256, RS256 and
- * PS256 (`AccessTokenValidationFilter.java:67-71`).
+ * PS256 (`AccessTokenValidationFilter.java:68-72`).
  */
 import type { FastifyInstance, FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 import {
