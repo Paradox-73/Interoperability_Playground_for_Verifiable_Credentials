@@ -4,12 +4,13 @@ Start with the [README](../README.md) for what the playground is and how to run 
 
 ## Available now
 
-| Document                                    | Contents                                                         |
-| ------------------------------------------- | ---------------------------------------------------------------- |
-| [Architecture decisions](adr/README.md)     | Why the code is built the way it is, one record per decision     |
-| [Contracts](../packages/protocol/README.md) | The shared types: roles, run events, recorded exchanges, reports |
-| [Contributing](../CONTRIBUTING.md)          | Layout, commands, tests, dependency and commit rules             |
-| [Security](../SECURITY.md)                  | Test keys, recorded data, reporting                              |
+| Document                                            | Contents                                                              |
+| --------------------------------------------------- | --------------------------------------------------------------------- |
+| [Architecture decisions](adr/README.md)             | Why the code is built the way it is, one record per decision          |
+| [Contracts](../packages/protocol/README.md)         | The shared types: roles, run events, recorded exchanges, reports      |
+| [Credential formats](../packages/formats/README.md) | Keys, DIDs, ldp_vc / ldp_vp and SD-JWT VC used by the reference roles |
+| [Contributing](../CONTRIBUTING.md)                  | Layout, commands, tests, dependency and commit rules                  |
+| [Security](../SECURITY.md)                          | Test keys, recorded data, reporting                                   |
 
 ## Planned (added with the features they describe)
 

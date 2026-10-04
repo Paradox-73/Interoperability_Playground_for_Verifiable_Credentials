@@ -15,6 +15,11 @@
       "source": "./src/size/qr.ts",
       "types": "./dist/size/qr.d.ts",
       "default": "./dist/size/qr.js"
+    },
+    "./tamper": {
+      "source": "./src/tamper/index.ts",
+      "types": "./dist/tamper/index.d.ts",
+      "default": "./dist/tamper/index.js"
     }
   },
   "files": [

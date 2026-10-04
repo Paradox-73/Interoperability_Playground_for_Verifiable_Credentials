@@ -2,7 +2,7 @@
   "name": "@inji-playground/scenarios",
   "version": "0.1.0",
   "private": true,
-  "description": "Happy-path and tamper scenarios with their expected verification outcomes.",
+  "description": "Happy path, tamper scenarios and probe variants with their expected verification outcomes and spec references.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -21,6 +21,11 @@
     "test": "vitest run --root ../.. --project scenarios"
   },
   "dependencies": {
+    "@inji-playground/formats": "0.1.0",
+    "@inji-playground/oid4vp": "0.1.0",
     "@inji-playground/protocol": "0.1.0"
+  },
+  "devDependencies": {
+    "@inji-playground/oid4vci": "0.1.0"
   }
 }

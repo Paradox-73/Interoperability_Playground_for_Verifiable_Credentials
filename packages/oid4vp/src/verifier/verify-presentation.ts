@@ -186,7 +186,9 @@ async function verifySdJwtPresentation(
     keyBinding: { nonce: context.nonce, audience: context.clientId },
     ...(context.didResolver ? { didResolver: context.didResolver } : {}),
     ...(context.sdJwtIssuerKeys ? { issuerKeys: context.sdJwtIssuerKeys } : {}),
-    ...(context.x5cTrustAnchors ? { x5c: { trustAnchors: context.x5cTrustAnchors } } : {}),
+    // An x5c chain must end at a configured trust anchor (SD-JWT VC draft 19 section 2.5): checking
+    // the signature against a self-signed leaf alone would accept any forger's key (scenario forged-x5c).
+    x5c: { trustAnchors: context.x5cTrustAnchors ?? [], requireTrusted: true },
     ...(context.now ? { now: context.now } : {}),
     ...(context.clockSkewSeconds === undefined ? {} : { clockSkewSeconds: context.clockSkewSeconds }),
   });
