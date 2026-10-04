@@ -1,0 +1,8 @@
+{
+  "iss": "${iss}",
+  "vct": "${vct}",
+  "cnf": { "kid": "${cnf.kid}" },
+  "fullName": "${fullName}",
+  "dateOfBirth": "${dateOfBirth}",
+  "farmerID": "${farmerID}"
+}

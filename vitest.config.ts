@@ -43,6 +43,11 @@ export default defineConfig({
           fileParallelism: false,
         },
       },
+      // Scripts that manage the local Inji stack (deploy/inji-stack/scripts/test).
+      {
+        extends: true as const,
+        test: { name: 'deploy', root: 'deploy', environment: 'node', include: ['**/test/**/*.test.mjs'] },
+      },
       // The web package brings its own Vite config (React plugin, jsdom, setup file).
       'packages/web',
     ],

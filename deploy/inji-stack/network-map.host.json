@@ -1,0 +1,18 @@
+{
+  "description": "How a client on the host reaches the URLs that the ps02-inji stack advertises inside its compose network (host mode). Each entry maps a URL prefix to a host URL; the longest matching prefix wins. hostHeader is the name to send as TLS server name and Host header when the host URL differs from the advertised name. The bundle does not need this file: the playground container is on the compose network.",
+  "entries": [
+    { "from": "http://certify-nginx:80", "to": "http://localhost:28091" },
+    { "from": "http://certify-nginx", "to": "http://localhost:28091" },
+    { "from": "http://nginx", "to": "http://localhost:28091" },
+    { "from": "http://certify:8090", "to": "http://localhost:28090" },
+    { "from": "http://verify-service:8080", "to": "http://localhost:28080" },
+    { "from": "http://mimoto-service:8099", "to": "http://localhost:28099" },
+    {
+      "from": "https://certify.ps02.test",
+      "to": "https://localhost:28443",
+      "hostHeader": "certify.ps02.test"
+    },
+    { "from": "https://verify.ps02.test", "to": "https://localhost:28443", "hostHeader": "verify.ps02.test" },
+    { "from": "https://ref.ps02.test", "to": "https://localhost:28443", "hostHeader": "ref.ps02.test" }
+  ]
+}

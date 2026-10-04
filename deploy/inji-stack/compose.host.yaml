@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+#
+# Host-mode additions to compose.yaml, used by scripts/stack.mjs (npm run stack:up) when the playground server
+# runs on the host: debug ports for Certify and Postgres, bound to 127.0.0.1 only. The one-command bundle
+# (deploy/compose.yaml) does not use this file, so the database is never published there.
+services:
+  database:
+    ports:
+      - '127.0.0.1:28432:5432'
+  certify:
+    ports:
+      - '127.0.0.1:28090:8090'

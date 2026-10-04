@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: MIT
+#
+# TLS front of the ps02-inji stack (written for the PS02 playground; not an upstream file).
+#
+# Inji's verifier library resolves did:web only over https (gap G2), so a locally hosted issuer DID such as
+# did:web:certify.ps02.test needs a real TLS endpoint inside the compose network. This nginx carries the
+# network aliases certify.ps02.test, verify.ps02.test and ref.ps02.test (.test is a reserved top-level domain)
+# and serves them on port 443 with a certificate from the stack's test CA (scripts/stack-init.sh). Java services
+# trust that CA through the Temurin entrypoint (USE_SYSTEM_CA_CERTS=1); Node clients through NODE_EXTRA_CA_CERTS.
+#
+# The nginx image renders this template with envsubst at start; only ${REF_UPSTREAM} is substituted.
+# Upstream names are resolved per request (resolver + variables), so this front starts even when an upstream,
+# such as the playground on the host, is not running yet.
+
+resolver 127.0.0.11 valid=10s ipv6=off;
+
+ssl_certificate     /etc/nginx/tls/server.crt;
+ssl_certificate_key /etc/nginx/tls/server.key;
+ssl_protocols       TLSv1.2 TLSv1.3;
+
+proxy_http_version 1.1;
+proxy_set_header Connection "";
+proxy_set_header X-Forwarded-Proto https;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_read_timeout 120s;
+
+# Unknown host names get no answer rather than another site's content.
+server {
+    listen 443 ssl default_server;
+    server_name _;
+    return 421;
+}
+
+# Inji Certify: https://certify.ps02.test/.well-known/did.json is the did:web document of
+# did:web:certify.ps02.test; everything else goes through certify-nginx, as plain-HTTP clients see it.
+server {
+    listen 443 ssl;
+    server_name certify.ps02.test;
+
+    location / {
+        set $certify_nginx http://certify-nginx:80;
+        proxy_pass $certify_nginx;
+        proxy_set_header Host certify-nginx;
+    }
+}
+
+# Inji Verify: did:web:verify.ps02.test:v1:verify resolves to https://verify.ps02.test/v1/verify/did.json.
+server {
+    listen 443 ssl;
+    server_name verify.ps02.test;
+
+    location / {
+        set $verify_service http://verify-service:8080;
+        proxy_pass $verify_service;
+        proxy_set_header Host $host;
+    }
+}
+
+# Playground server: DID documents and endpoints of the reference roles. REF_UPSTREAM is the playground
+# container in the bundle, or the host (host.docker.internal) when the playground runs outside Docker.
+server {
+    listen 443 ssl;
+    server_name ref.ps02.test;
+
+    location / {
+        set $playground ${REF_UPSTREAM};
+        proxy_pass $playground;
+        proxy_set_header Host $host;
+    }
+}
