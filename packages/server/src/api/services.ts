@@ -1,5 +1,6 @@
 import type { Config } from '../config/index.js';
 import type { EventBus } from '../events/bus.js';
+import type { GapRegister } from '../gaps/register.js';
 import type { Orchestrator, ScenarioCatalogue } from '../orchestrator/orchestrator.js';
 import type { RoleRegistry } from '../orchestrator/registry.js';
 import type { RunStore } from '../store/run-store.js';
@@ -12,6 +13,8 @@ export interface PlaygroundServices {
   registry: RoleRegistry;
   orchestrator: Orchestrator;
   scenarios: ScenarioCatalogue;
+  /** The interoperability gap register (`docs/gaps/gaps.json`). */
+  gaps: GapRegister;
 }
 
 /** Options every route plugin of the playground receives. */

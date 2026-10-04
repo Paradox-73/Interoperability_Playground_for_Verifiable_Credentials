@@ -21,6 +21,7 @@ import {
   type RunConfig,
   type RunDetail,
   type RunEvent,
+  type RunFilter,
   type RunListQuery,
   type RunListResponse,
   type RunMode,
@@ -38,6 +39,18 @@ export interface NewRun {
   config: RunConfig;
   versions: { issuer: string; wallet: string; verifier: string };
   createdAt: string;
+}
+
+/** A finished run with its report, as returned by `listFinishedReports`. */
+export interface StoredReport {
+  summary: RunSummary;
+  report: InteropReport;
+}
+
+/** The newest finished run of a matrix cell and the verdict counts of all its runs. */
+export interface CellLatestRun {
+  run: RunDetail;
+  counts: { runs: number; pass: number; fail: number; error: number; notSupported: number };
 }
 
 /** An artefact row, as returned by `listArtifacts`. */
@@ -244,38 +257,78 @@ export class RunStore {
     return row ? RunConfigSchema.parse(JSON.parse(row.config_json)) : undefined;
   }
 
-  /** Runs matching every given filter, newest first, with the total count for paging. */
-  listRuns(query: RunListQuery): RunListResponse {
-    const where: string[] = [];
-    const params: SQLInputValue[] = [];
-    for (const [field, column] of Object.entries(EQUALITY_FILTERS)) {
-      const value = query[field as keyof typeof EQUALITY_FILTERS];
-      if (value !== undefined) {
-        where.push(`${column} = ?`);
-        params.push(value);
-      }
-    }
-    if (query.version !== undefined) {
-      where.push('(issuer_version = ? OR wallet_version = ? OR verifier_version = ?)');
-      params.push(query.version, query.version, query.version);
-    }
-    // Timestamps are stored as UTC ISO strings, so text order is time order; normalise the bounds the same way.
-    if (query.from !== undefined) {
-      where.push('created_at >= ?');
-      params.push(new Date(query.from).toISOString());
-    }
-    if (query.to !== undefined) {
-      where.push('created_at < ?');
-      params.push(new Date(query.to).toISOString());
-    }
-    const clause = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
-    const { total } = this.#db.prepare(`SELECT COUNT(*) AS total FROM runs ${clause}`).get(...params) as {
+  /** Runs matching every given filter, in the requested order, with the total count for paging. */
+  listRuns(query: Omit<RunListQuery, 'order'> & { order?: RunListQuery['order'] }): RunListResponse {
+    const { clause, params } = filterClause(query);
+    const where = clause ? `WHERE ${clause}` : '';
+    const direction = query.order === 'oldest' ? 'ASC' : 'DESC';
+    const { total } = this.#db.prepare(`SELECT COUNT(*) AS total FROM runs ${where}`).get(...params) as {
       total: number;
     };
     const rows = this.#db
-      .prepare(`SELECT * FROM runs ${clause} ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`)
+      .prepare(
+        `SELECT * FROM runs ${where} ORDER BY created_at ${direction}, id ${direction} LIMIT ? OFFSET ?`,
+      )
       .all(...params, query.limit, query.offset) as unknown as RunRow[];
     return { total, limit: query.limit, offset: query.offset, items: rows.map(toSummary) };
+  }
+
+  /**
+   * Finished runs that have a report and match the filter, oldest first, with their reports. Used by
+   * the metrics, which need every step of every run in the window.
+   */
+  listFinishedReports(filter: RunFilter = {}): StoredReport[] {
+    const { clause, params } = filterClause(filter);
+    const rows = this.#db
+      .prepare(
+        `SELECT * FROM runs WHERE status = 'finished' AND report_json IS NOT NULL ${clause ? `AND ${clause}` : ''}
+         ORDER BY created_at, id`,
+      )
+      .all(...params) as unknown as RunRow[];
+    return rows.map((row) => ({
+      summary: toSummary(row),
+      report: InteropReportSchema.parse(JSON.parse(row.report_json as string)),
+    }));
+  }
+
+  /**
+   * The newest finished run of every matrix cell (issuer, wallet, verifier, format, VP profile,
+   * scenario) among the runs matching the filter, with the cell's verdict counts.
+   */
+  latestRunPerCell(filter: RunFilter = {}): CellLatestRun[] {
+    const { clause, params } = filterClause(filter);
+    const cell = 'issuer, wallet, verifier, format, vp_profile, scenario';
+    const rows = this.#db
+      .prepare(
+        `WITH finished AS (SELECT * FROM runs WHERE status = 'finished' ${clause ? `AND ${clause}` : ''}),
+         ranked AS (
+           SELECT finished.*,
+             ROW_NUMBER() OVER (PARTITION BY ${cell} ORDER BY created_at DESC, id DESC) AS rank_in_cell,
+             COUNT(*) OVER cell AS n_runs,
+             SUM(verdict = 'pass') OVER cell AS n_pass,
+             SUM(verdict = 'fail') OVER cell AS n_fail,
+             SUM(verdict = 'error') OVER cell AS n_error,
+             SUM(verdict = 'not-supported') OVER cell AS n_not_supported
+           FROM finished
+           WINDOW cell AS (PARTITION BY ${cell})
+         )
+         SELECT * FROM ranked WHERE rank_in_cell = 1 ORDER BY ${cell}`,
+      )
+      .all(...params) as unknown as Array<
+      RunRow & { n_runs: number; n_pass: number; n_fail: number; n_error: number; n_not_supported: number }
+    >;
+    return rows.map((row) => ({
+      run: row.report_json
+        ? { ...toSummary(row), report: InteropReportSchema.parse(JSON.parse(row.report_json)) }
+        : toSummary(row),
+      counts: {
+        runs: row.n_runs,
+        pass: row.n_pass,
+        fail: row.n_fail,
+        error: row.n_error,
+        notSupported: row.n_not_supported,
+      },
+    }));
   }
 
   /** Events of a run in emission order; `afterSeq` skips the ones a client already has. */
@@ -358,6 +411,39 @@ export class RunStore {
     }
     return statement;
   }
+}
+
+/**
+ * SQL condition (without `WHERE`) and parameters for a run filter. Every filter is optional and they
+ * combine with AND.
+ */
+function filterClause(filter: RunFilter & { status?: RunStatus }): {
+  clause: string;
+  params: SQLInputValue[];
+} {
+  const where: string[] = [];
+  const params: SQLInputValue[] = [];
+  for (const [field, column] of Object.entries(EQUALITY_FILTERS)) {
+    const value = filter[field as keyof typeof EQUALITY_FILTERS];
+    if (value !== undefined) {
+      where.push(`${column} = ?`);
+      params.push(value);
+    }
+  }
+  if (filter.version !== undefined) {
+    where.push('(issuer_version = ? OR wallet_version = ? OR verifier_version = ?)');
+    params.push(filter.version, filter.version, filter.version);
+  }
+  // Timestamps are stored as UTC ISO strings, so text order is time order; normalise the bounds the same way.
+  if (filter.from !== undefined) {
+    where.push('created_at >= ?');
+    params.push(new Date(filter.from).toISOString());
+  }
+  if (filter.to !== undefined) {
+    where.push('created_at < ?');
+    params.push(new Date(filter.to).toISOString());
+  }
+  return { clause: where.join(' AND '), params };
 }
 
 function toSummary(row: RunRow): RunSummary {

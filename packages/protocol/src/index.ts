@@ -12,6 +12,7 @@ export * from './events.js';
 export * from './exchange.js';
 export * from './flow.js';
 export * from './health.js';
+export * from './insights.js';
 export * from './person.js';
 export * from './report.js';
 export * from './roles.js';

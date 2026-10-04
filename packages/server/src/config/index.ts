@@ -25,6 +25,8 @@ export const ConfigSchema = z.object({
   /** URL the stack and phones use to reach this server, when it differs from http://localhost:<port>. */
   publicUrl: z.url().optional(),
   logLevel: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
+  /** Interoperability gap register served by `GET /api/gaps`; a missing file means no gaps yet. */
+  gapsFile: z.string().min(1).default(`${repoRoot}docs/gaps/gaps.json`),
   /** SQLite database file; `:memory:` keeps nothing after the process ends (tests). Default `<runDir>/playground.db`. */
   dbPath: z.string().min(1).optional(),
   /**
@@ -61,6 +63,7 @@ const ENV_KEYS = {
   PLAYGROUND_PUBLIC_URL: 'publicUrl',
   PLAYGROUND_LOG_LEVEL: 'logLevel',
   PLAYGROUND_DB: 'dbPath',
+  PLAYGROUND_GAPS_FILE: 'gapsFile',
   PLAYGROUND_FAKE_ROLES: 'fakeRoles',
   PLAYGROUND_TIMEOUT_REFERENCE_MS: 'referenceStepTimeoutMs',
   PLAYGROUND_TIMEOUT_INJI_MS: 'injiStepTimeoutMs',

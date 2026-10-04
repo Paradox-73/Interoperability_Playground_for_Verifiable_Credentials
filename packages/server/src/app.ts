@@ -16,12 +16,15 @@ import { injiRoles } from './adapters/inji/index.js';
 import { catalogueRoutes } from './api/catalogue.js';
 import { installErrorHandler } from './api/errors.js';
 import { healthRoutes } from './api/health.js';
+import { insightRoutes } from './api/insights.js';
 import { registerOpenApi } from './api/openapi.js';
+import { reportRoutes } from './api/reports.js';
 import { runRoutes } from './api/runs.js';
 import type { PlaygroundServices } from './api/services.js';
 import { websocketRoutes } from './api/ws.js';
 import { databasePath, hasWebDist, type Config } from './config/index.js';
 import { EventBus } from './events/bus.js';
+import { GapRegister } from './gaps/register.js';
 import { devFakeRoles } from './orchestrator/fake-roles.js';
 import { Orchestrator, type ScenarioCatalogue } from './orchestrator/orchestrator.js';
 import { RoleRegistry, type RoleRegistration } from './orchestrator/registry.js';
@@ -98,7 +101,15 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     logger: app.log,
   });
 
-  const services: PlaygroundServices = { config, store, bus, registry, orchestrator, scenarios };
+  const services: PlaygroundServices = {
+    config,
+    store,
+    bus,
+    registry,
+    orchestrator,
+    scenarios,
+    gaps: new GapRegister(config.gapsFile),
+  };
   app.decorate('playground', services);
   app.addHook('onClose', async () => {
     await orchestrator.close();
@@ -110,6 +121,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(healthRoutes);
   await app.register(catalogueRoutes, { services });
   await app.register(runRoutes, { services });
+  await app.register(reportRoutes, { services });
+  await app.register(insightRoutes, { services });
   await app.register(websocketRoutes, { services });
 
   const serveUi = hasWebDist(config);

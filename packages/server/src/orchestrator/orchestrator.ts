@@ -31,6 +31,7 @@ import {
   type CompatibilityResult,
   type CreateRunRequest,
   type CredentialFormat,
+  type CredentialSize,
   type HeldCredential,
   type InteropReport,
   type IssuanceRequest,
@@ -58,6 +59,7 @@ import {
 } from '@inji-playground/protocol';
 import { z } from 'zod';
 import type { EventBus } from '../events/bus.js';
+import { measureCredential } from '../reports/credential-size.js';
 import { RecordingFetch, type ExchangeDraft, type ExchangeRecorder } from '../recording/http-client.js';
 import type { RunStore } from '../store/run-store.js';
 import { checkCompatibility, runModeOf } from './compatibility.js';
@@ -138,6 +140,8 @@ interface RunState {
   pendingPerson?: { action: PersonAction; complete: () => void };
   callbacks: VerifierCallback[];
   callbackWaiters: Array<(callback: VerifierCallback) => void>;
+  /** Size and PixelPass length of the credential as issued, once one was received. */
+  credentialSize?: CredentialSize;
 }
 
 interface ActiveRun extends RunState {
@@ -373,6 +377,8 @@ export class Orchestrator {
           (wallet.role as WalletRole).receiveCredential(ctx, start),
         );
         this.#artifact(run, 'credential', held.raw, held.format);
+        // Measured before any tamper hook changes the credential: the figure describes what was issued.
+        run.credentialSize = measureCredential(held.raw);
         held = HeldCredentialSchema.parse(
           await this.#hook(run, 'afterCredential', hooks.afterCredential?.bind(hooks), held),
         );
@@ -749,6 +755,7 @@ export class Orchestrator {
       verdict,
       ...(error ? { error } : {}),
       steps: [...run.steps, ...notRun],
+      ...(run.credentialSize ? { credentialSize: run.credentialSize } : {}),
       ...(run.config.replayOf ? { replayOf: run.config.replayOf } : {}),
     };
 

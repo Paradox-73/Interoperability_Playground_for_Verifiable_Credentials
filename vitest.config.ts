@@ -27,6 +27,9 @@ export default defineConfig({
           environment: 'node',
           include: ['test/**/*.test.ts', 'src/**/*.test.ts'],
           exclude: ['test/live/**', '**/node_modules/**', '**/dist/**'],
+          // Each server test file builds the whole Fastify app on a cold module cache, in parallel with
+          // the others; on a busy laptop the first build took over 5 s (measured 2026-10-04).
+          ...(name === 'server' ? { testTimeout: 20_000, hookTimeout: 20_000 } : {}),
         },
       })),
       {

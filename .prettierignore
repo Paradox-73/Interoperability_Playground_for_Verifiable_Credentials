@@ -4,6 +4,7 @@
 **/playwright-report/
 **/test-results/
 package-lock.json
+docs/api/openapi.json
 run/
 # Upstream files are kept byte-for-byte as imported
 deploy/inji-stack/config/

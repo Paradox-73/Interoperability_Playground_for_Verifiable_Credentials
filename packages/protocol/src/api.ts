@@ -92,13 +92,15 @@ export const RunListQuerySchema = z.object({
   from: IsoDateTimeSchema.optional(),
   /** Runs created before this time. */
   to: IsoDateTimeSchema.optional(),
+  /** `newest` first (default) or `oldest` first, by creation time. */
+  order: z.enum(['newest', 'oldest']).default('newest'),
   limit: z.coerce.number().int().min(1).max(500).default(50),
   offset: z.coerce.number().int().min(0).default(0),
 });
 export type RunListQuery = z.infer<typeof RunListQuerySchema>;
 export type RunListQueryInput = z.input<typeof RunListQuerySchema>;
 
-/** Body of `GET /api/runs`: newest first. */
+/** Body of `GET /api/runs`, in the requested order. */
 export const RunListResponseSchema = z.object({
   total: z.number().int().nonnegative(),
   limit: z.number().int(),

@@ -25,6 +25,15 @@ export async function registerOpenApi(app: FastifyInstance): Promise<void> {
         { name: 'system', description: 'Server health and API description' },
         { name: 'roles', description: 'Roles, scenarios, Inji stack health and the compatibility check' },
         { name: 'runs', description: 'Starting, following and controlling runs' },
+        {
+          name: 'reports',
+          description:
+            'Run reports (JSON, Markdown), redacted exports, the compatibility matrix and the gap register',
+        },
+        {
+          name: 'metrics',
+          description: 'Success rates, step latencies and credential sizes from stored runs',
+        },
       ],
     },
     transform: jsonSchemaTransform,

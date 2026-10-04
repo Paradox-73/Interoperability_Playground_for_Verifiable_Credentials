@@ -17,7 +17,7 @@ describe('API schemas', () => {
   });
 
   it('coerce list paging from query strings and apply defaults', () => {
-    expect(RunListQuerySchema.parse({ limit: '10' })).toEqual({ limit: 10, offset: 0 });
+    expect(RunListQuerySchema.parse({ limit: '10' })).toEqual({ order: 'newest', limit: 10, offset: 0 });
     expect(RunListQuerySchema.safeParse({ limit: '0' }).success).toBe(false);
     expect(RunListQuerySchema.safeParse({ from: 'yesterday' }).success).toBe(false);
   });
