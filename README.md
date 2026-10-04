@@ -17,6 +17,13 @@ MOSIP Decode 2026, problem statement 02, team Badmosip.
 Commands that print `not implemented yet (WP-xx)` exist so the command list below is complete; the
 named work package replaces them. Nothing below claims more than has been run.
 
+## Status and contributing
+
+- [docs/STATUS.md](docs/STATUS.md): every task with its status, the unfinished work, one card per remaining
+  task with its acceptance check, and how to split the work between people.
+- [CONTRIBUTING.md](CONTRIBUTING.md): tools, set-up, build and test commands, the local Inji stack, commit and
+  pull request rules, troubleshooting.
+
 ## Quick start (reference mode, no Docker)
 
 Requires Node.js 24 (`.nvmrc`).
