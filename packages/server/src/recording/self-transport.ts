@@ -34,7 +34,7 @@ export function selfTransport(
   app: Pick<FastifyInstance, 'inject'>,
   options: SelfTransportOptions,
 ): typeof globalThis.fetch {
-  return (async (input: string | URL | Request, init?: RequestInit) => {
+  return async (input: string | URL | Request, init?: RequestInit) => {
     const request = new Request(input, init);
     const url = new URL(request.url);
     if (!isSelfUrl(url, options.selfOrigins)) return options.network(request);
@@ -64,22 +64,13 @@ export function selfTransport(
     });
     Object.defineProperty(result, 'url', { value: url.toString() });
     return result;
-  }) as typeof globalThis.fetch;
+  };
 }
 
 function raceSignal<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     const onAbort = (): void => reject(signal.reason as Error);
     signal.addEventListener('abort', onAbort, { once: true });
-    promise.then(
-      (value) => {
-        signal.removeEventListener('abort', onAbort);
-        resolve(value);
-      },
-      (error: unknown) => {
-        signal.removeEventListener('abort', onAbort);
-        reject(error as Error);
-      },
-    );
+    void promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort));
   });
 }

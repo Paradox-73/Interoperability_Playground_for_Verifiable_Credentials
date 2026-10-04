@@ -18,6 +18,9 @@ import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it } from 'vitest';
 import { FAKE_CELL, buildTestApp, fakeSet, registrations, type FakeSetOptions } from './helpers.js';
 
+/** Roles every server registers: no Inji adapter yet (WP-10), the reference roles, the phone wallet. */
+const BUILT_IN_ROLES = ['ref-issuer', 'ref-wallet', 'ref-verifier', 'mobile-wallet'];
+
 let app: FastifyInstance | undefined;
 afterEach(async () => {
   await app?.close();
@@ -39,13 +42,35 @@ async function createRun(server: FastifyInstance, body: object): Promise<string>
 
 describe('catalogue routes', () => {
   it('lists roles with health, filtered by kind', async () => {
-    const server = await start();
+    app = await buildTestApp({ roles: registrations(fakeSet().roles), builtInRoles: false });
+    const server = app;
     const all = RoleListResponseSchema.parse((await server.inject('/api/roles')).json());
     expect(all.map((entry) => entry.descriptor.id)).toEqual(['fake-issuer', 'fake-wallet', 'fake-verifier']);
     expect(all.every((entry) => entry.health.status === 'up')).toBe(true);
     const wallets = RoleListResponseSchema.parse((await server.inject('/api/roles?kind=wallet')).json());
     expect(wallets.map((entry) => entry.descriptor.id)).toEqual(['fake-wallet']);
     expect((await server.inject('/api/roles?kind=printer')).statusCode).toBe(400);
+  });
+
+  it('registers the reference roles and the phone wallet by default, ahead of roles passed in', async () => {
+    const server = await start();
+    const all = RoleListResponseSchema.parse((await server.inject('/api/roles')).json());
+    expect(all.map((entry) => entry.descriptor.id)).toEqual([
+      ...BUILT_IN_ROLES,
+      'fake-issuer',
+      'fake-wallet',
+      'fake-verifier',
+    ]);
+    const health = new Map(all.map((entry) => [entry.descriptor.id, entry.health.status]));
+    for (const id of ['ref-issuer', 'ref-wallet', 'ref-verifier']) expect(health.get(id), id).toBe('up');
+    // A phone cannot be probed before someone scans.
+    expect(health.get('mobile-wallet')).toBe('unknown');
+    const wallets = RoleListResponseSchema.parse((await server.inject('/api/roles?kind=wallet')).json());
+    expect(wallets.map((entry) => entry.descriptor.id)).toEqual([
+      'ref-wallet',
+      'mobile-wallet',
+      'fake-wallet',
+    ]);
   });
 
   it('reports the stack mode and role health on /api/stack/status', async () => {
@@ -291,11 +316,16 @@ describe('OpenAPI', () => {
 describe('development-only fake roles', () => {
   it('are registered only when PLAYGROUND_FAKE_ROLES is on', async () => {
     app = await buildTestApp();
-    expect((await app.inject('/api/roles')).json()).toEqual([]);
+    const without = RoleListResponseSchema.parse((await app.inject('/api/roles')).json());
+    expect(without.map((entry) => entry.descriptor.id)).toEqual(BUILT_IN_ROLES);
     await app.close();
 
     app = await buildTestApp({ env: { PLAYGROUND_FAKE_ROLES: '1' } });
-    const roles = RoleListResponseSchema.parse((await app.inject('/api/roles')).json());
+    const roles = RoleListResponseSchema.parse(
+      (await app.inject('/api/roles'))
+        .json<Array<{ descriptor: { id: string } }>>()
+        .slice(BUILT_IN_ROLES.length),
+    );
     expect(roles.map((entry) => entry.descriptor.id)).toEqual([
       'fake-issuer',
       'fake-wallet',

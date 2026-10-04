@@ -14,7 +14,11 @@ import { Oid4vpError } from '@inji-playground/oid4vp';
 
 /** Reference roles live in this process: they are up whenever the server answers. */
 export function processHealth(): Promise<Health> {
-  return Promise.resolve({ status: 'up', checkedAt: new Date().toISOString(), detail: 'runs in the playground server' });
+  return Promise.resolve({
+    status: 'up',
+    checkedAt: new Date().toISOString(),
+    detail: 'runs in the playground server',
+  });
 }
 
 /**
@@ -38,7 +42,10 @@ export function toRoleError(error: unknown, prefix: 'vci' | 'vp'): unknown {
     cause = cause instanceof Error ? cause.cause : undefined;
   }
   if (error instanceof Oid4vciClientError) {
-    const status = error.status === undefined ? '' : ` (HTTP ${error.status}${error.oauthError ? `, ${error.oauthError}` : ''})`;
+    const status =
+      error.status === undefined
+        ? ''
+        : ` (HTTP ${error.status}${error.oauthError ? `, ${error.oauthError}` : ''})`;
     return new RoleError(`${prefix}.${error.code}`, `${error.message}${status}`, { cause: error });
   }
   if (error instanceof Oid4vpError) {

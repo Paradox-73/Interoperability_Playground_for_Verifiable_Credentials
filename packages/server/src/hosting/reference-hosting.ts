@@ -8,7 +8,9 @@
  * | `/ref/as`       | Test authorization server (stands in for eSignet)            | `@inji-playground/oid4vci`   |
  * | `/ref/verifier` | OpenID4VP reference verifier (request objects, direct_post)  | `@inji-playground/oid4vp`    |
  *
- * plus the RFC 8615 "insert" well-known URLs at the host root.
+ * plus the RFC 8615 "insert" well-known URLs at the host root. Scenarios that probe another issuer DID
+ * method use a second issuer on the same keys under `/ref/issuer/did-key` or `/ref/issuer/did-jwk`
+ * (`issuerFor`); the issuer DID is a property of the issuer, not of one offer.
  *
  * Keys live in `$PLAYGROUND_RUN_DIR/keys/` (outside git) and are created on first start, so the
  * issuer's and verifier's DIDs stay the same across restarts. A server on an in-memory database keeps
@@ -40,6 +42,9 @@ import {
 import { ReferenceVerifier, registerVerifierRoutes } from '@inji-playground/oid4vp';
 import type { FastifyInstance } from 'fastify';
 
+/** DID methods with a variant issuer next to the main one. */
+const VARIANT_DID_METHODS: readonly IssuerDidMethod[] = ['did:key', 'did:jwk'];
+
 /** Client id of the reference wallet at the test authorization server (wallet-initiated issuance). */
 export const REFERENCE_WALLET_CLIENT_ID = 'playground-reference-wallet';
 
@@ -58,7 +63,10 @@ export interface ReferenceHostingOptions {
 
 export interface ReferenceHosting {
   readonly publicUrl: string;
+  /** The issuer at `/ref/issuer`, signing with the configured DID method. */
   readonly issuer: ReferenceIssuer;
+  /** The issuer signing with `method`: the main one, or the variant for a DID-method probe. */
+  issuerFor(method: IssuerDidMethod): ReferenceIssuer | undefined;
   readonly authorizationServer: TestAuthorizationServer;
   readonly verifier: ReferenceVerifier;
   readonly didResolver: DidResolver;
@@ -110,12 +118,21 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
     scopesSupported: ['openid', ...DEFAULT_CONFIGURATIONS.map((configuration) => configuration.scope)],
     audience: urls.issuer,
   });
-  const issuer = createReferenceIssuer({
-    baseUrl: urls.issuer,
-    keys: { ed25519: issuerEd25519, p256: issuerP256 },
-    didMethod: options.issuerDidMethod,
-    authorizationServer: { issuer: authorizationServer.issuer, jwks: authorizationServer.jwks() },
-  });
+  const issuerAt = (baseUrl: string, didMethod: IssuerDidMethod): ReferenceIssuer =>
+    createReferenceIssuer({
+      baseUrl,
+      keys: { ed25519: issuerEd25519, p256: issuerP256 },
+      didMethod,
+      authorizationServer: { issuer: authorizationServer.issuer, jwks: authorizationServer.jwks() },
+    });
+  const issuer = issuerAt(urls.issuer, options.issuerDidMethod);
+  // did:key and did:jwk resolve offline, so their variants work with every verifier; a did:web variant
+  // would need its own TLS name for Inji Verify (gap G2) and no scenario asks for one.
+  const issuers = new Map<IssuerDidMethod, ReferenceIssuer>([[options.issuerDidMethod, issuer]]);
+  for (const method of VARIANT_DID_METHODS) {
+    if (!issuers.has(method))
+      issuers.set(method, issuerAt(`${urls.issuer}/${method.replace(':', '-')}`, method));
+  }
   const verifier = new ReferenceVerifier({
     baseUrl: urls.verifier,
     signingKey: verifierKey,
@@ -127,20 +144,26 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   return {
     publicUrl,
     issuer,
+    issuerFor: (method) => issuers.get(method),
     authorizationServer,
     verifier,
     didResolver,
     documentLoader,
     urls,
     async register(app) {
-      await app.register(issuer.plugin, { prefix: new URL(urls.issuer).pathname });
+      for (const hosted of issuers.values()) {
+        await app.register(hosted.plugin, { prefix: new URL(hosted.baseUrl).pathname });
+      }
       await app.register(authorizationServer.plugin, { prefix: new URL(urls.as).pathname });
       await app.register(async (scope) => {
         // OpenID4VP direct_post responses are form-encoded.
         await scope.register(formbody);
         registerVerifierRoutes(scope, verifier, new URL(urls.verifier).pathname);
       });
-      registerRootWellKnown(app, [...issuer.wellKnownDocuments, ...authorizationServer.wellKnownDocuments]);
+      registerRootWellKnown(app, [
+        ...[...issuers.values()].flatMap((hosted) => hosted.wellKnownDocuments),
+        ...authorizationServer.wellKnownDocuments,
+      ]);
     },
   };
 }

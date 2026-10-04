@@ -13,7 +13,12 @@ import { join } from 'node:path';
 import fastifyStatic from '@fastify/static';
 import fastifyWebsocket from '@fastify/websocket';
 import { type ScenarioHooks, type ScenarioSpec } from '@inji-playground/protocol';
-import { findScenario, listScenarios } from '@inji-playground/scenarios';
+import {
+  findScenario,
+  findScenarioDefinition,
+  listScenarios,
+  scenarioHooks,
+} from '@inji-playground/scenarios';
 import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastify';
 import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fastify-type-provider-zod';
 import { injiRoles } from './adapters/inji/index.js';
@@ -56,9 +61,17 @@ export interface BuildAppOptions {
   logger?: FastifyServerOptions['logger'];
   /** Roles to register after the Inji adapters and the fake roles. */
   roles?: RoleRegistration[];
+  /**
+   * Registers the Inji adapters, the reference roles and the phone wallet (default `true`). Tests that
+   * check exactly the roles they pass set it to `false`; the reference roles are still hosted.
+   */
+  builtInRoles?: boolean;
   /** Scenario catalogue; `@inji-playground/scenarios` by default. */
   scenarios?: ScenarioCatalogue;
-  /** Hooks of a scenario (tamper variants); none by default. */
+  /**
+   * Hooks of a scenario (tamper variants). By default the hooks of `@inji-playground/scenarios` when
+   * that catalogue is used, and none for a catalogue passed in `scenarios`.
+   */
   hooksFor?: (scenario: ScenarioSpec) => ScenarioHooks;
 }
 
@@ -106,8 +119,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       url.pathname.startsWith('/v1/verify/'));
 
   // The orchestrator is created below; the hub only asks it for recorders while runs are active.
-  let orchestratorRef: Orchestrator | undefined;
-  const capture = new CaptureHub({ recorderFor: (runId) => orchestratorRef?.recorderFor(runId), bus });
+  const orchestratorRef: { current?: Orchestrator } = {};
+  const capture = new CaptureHub({
+    recorderFor: (runId) => orchestratorRef.current?.recorderFor(runId),
+    bus,
+  });
   const reference = await createReferenceHosting({
     publicUrl: config.publicUrl ?? `http://localhost:${config.port}`,
     // An in-memory database keeps nothing after the process ends; the reference keys follow it.
@@ -117,21 +133,23 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
 
   const registry = new RoleRegistry();
-  for (const role of injiRoles()) registry.register({ role });
-  for (const role of referenceRoles(reference, capture)) registry.register({ role });
-  registry.register({
-    role: new MobileWalletRole({
-      hub: capture,
-      completePerson: (runId, actionId) => {
-        try {
-          orchestratorRef?.personDone(runId, actionId);
-        } catch {
-          // The person pressed "done" first, or the run ended: nothing is waiting any more.
-        }
-      },
-      timeoutMs: config.personTimeoutMs,
-    }),
-  });
+  if (options.builtInRoles ?? true) {
+    for (const role of injiRoles()) registry.register({ role });
+    for (const role of referenceRoles(reference, capture)) registry.register({ role });
+    registry.register({
+      role: new MobileWalletRole({
+        hub: capture,
+        completePerson: (runId, actionId) => {
+          try {
+            orchestratorRef.current?.personDone(runId, actionId);
+          } catch {
+            // The person pressed "done" first, or the run ended: nothing is waiting any more.
+          }
+        },
+        timeoutMs: config.personTimeoutMs,
+      }),
+    });
+  }
   if (config.fakeRoles) {
     app.log.warn('PLAYGROUND_FAKE_ROLES is on: development-only fake roles are registered');
     for (const role of devFakeRoles()) registry.register({ role });
@@ -139,6 +157,14 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   for (const registration of options.roles ?? []) registry.register(registration);
 
   const scenarios = options.scenarios ?? { findScenario, listScenarios };
+  const hooksFor =
+    options.hooksFor ??
+    (options.scenarios
+      ? undefined
+      : (scenario: ScenarioSpec): ScenarioHooks => {
+          const definition = findScenarioDefinition(scenario.id);
+          return definition ? scenarioHooks(definition) : {};
+        });
   const orchestrator = new Orchestrator({
     store,
     bus,
@@ -149,11 +175,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       injiMs: config.injiStepTimeoutMs,
       personMs: config.personTimeoutMs,
     },
-    ...(options.hooksFor ? { hooksFor: options.hooksFor } : {}),
+    ...(hooksFor ? { hooksFor } : {}),
     logger: app.log,
     http: { fetch: transport, selfCapture },
   });
-  orchestratorRef = orchestrator;
+  orchestratorRef.current = orchestrator;
 
   const services: PlaygroundServices = {
     config,

@@ -6,6 +6,11 @@
  * Holder keys are made per run: Ed25519 for ldp_vc (an ldp_vp is signed with Ed25519Signature2020 or
  * eddsa-rdfc-2022), ES256 for SD-JWT VC (the combination Inji Certify accepted in the local trial). Both
  * are bound by did:jwk. The key is kept until the run presents, in a small per-run store.
+ *
+ * The run's scenario (`@inji-playground/scenarios`) decides how the wallet presents: the holder DID
+ * form, presenting a credential the request did not ask for, and the presentation tamper applied just
+ * before the post. For `vp-replay` the wallet replays the `vp_token` it last sent, untampered, to the
+ * same verifier in the same format and profile, so such a run needs an earlier happy run.
  */
 import {
   RoleError,
@@ -26,17 +31,26 @@ import {
   type HolderKey,
   type IssuanceResult,
 } from '@inji-playground/oid4vci';
-import { PresentationClient } from '@inji-playground/oid4vp';
+import { PresentationClient, type ResolvedRequest } from '@inji-playground/oid4vp';
+import {
+  findScenarioDefinition,
+  respondWithScenario,
+  walletClientOptions,
+  type ScenarioDefinition,
+} from '@inji-playground/scenarios';
 import { REFERENCE_WALLET_CLIENT_ID, type ReferenceHosting } from '../../hosting/reference-hosting.js';
 import { SERVER_VERSION } from '../../version.js';
 import { credentialFacts, processHealth, runFetch, toRoleError } from './common.js';
 
 /** Runs whose holder keys are kept at most; older ones are dropped (their runs have long ended). */
 const MAX_HELD_RUNS = 100;
+/** Earlier presentations kept for `vp-replay`, one per verifier, profile and format. */
+const MAX_EARLIER_PRESENTATIONS = 100;
 
 export class ReferenceWalletRole implements WalletRole {
   readonly #hosting: ReferenceHosting;
   readonly #holderKeys = new Map<string, HolderKey>();
+  readonly #earlier = new Map<string, string>();
 
   constructor(hosting: ReferenceHosting) {
     this.#hosting = hosting;
@@ -133,6 +147,7 @@ export class ReferenceWalletRole implements WalletRole {
         { category: 'environment' },
       );
     }
+    const scenario: Partial<ScenarioDefinition> = findScenarioDefinition(ctx.scenario.id) ?? {};
     const client = new PresentationClient({
       fetch: runFetch(ctx),
       holder: {
@@ -142,30 +157,46 @@ export class ReferenceWalletRole implements WalletRole {
       },
       documentLoader: this.#hosting.documentLoader,
       didResolver: this.#hosting.didResolver,
+      ...walletClientOptions(scenario),
     });
+    const hookTamper = ctx.hooks.tamperPresentation?.bind(ctx.hooks);
+    const earlierKey = (resolved: ResolvedRequest): string =>
+      `${resolved.clientId} ${resolved.profile} ${credential.format}`;
+    let sentVpToken: string | undefined;
     try {
-      const resolved = await client.resolveRequest(request.requestUri, ctx.signal);
-      const matches = client.selectCredentials(resolved, [
-        { id: credential.id, format: credential.format, raw: credential.raw },
-      ]);
-      const response = await client.buildResponse(resolved, matches);
-      ctx.enterStep('wallet.submit');
-      const tamper = ctx.hooks.tamperPresentation?.bind(ctx.hooks);
-      let sentVpToken = response.form.vp_token ?? '';
-      const submission = await client.submit(resolved, response, {
-        signal: ctx.signal,
-        beforeSubmit: async (vpToken, { format }) => {
-          sentVpToken = tamper ? await tamper(vpToken, format) : vpToken;
-          return sentVpToken;
+      const submission = await respondWithScenario(
+        client,
+        request.requestUri,
+        [{ id: credential.id, format: credential.format, raw: credential.raw }],
+        scenario,
+        {
+          holderKey: holderKey.keyPair,
+          documentLoader: this.#hosting.documentLoader,
+          earlierVpToken: (resolved) =>
+            scenario.presentationTamper === 'replay-earlier'
+              ? this.#earlierFor(earlierKey(resolved), resolved)
+              : undefined,
+          signal: ctx.signal,
+          beforePost: () => ctx.enterStep('wallet.submit'),
+          finalVpToken: async (vpToken, format) => {
+            sentVpToken = hookTamper ? await hookTamper(vpToken, format as CredentialFormat) : vpToken;
+            return sentVpToken;
+          },
         },
-      });
-      ctx.emit({
-        type: 'artifact',
-        runId: ctx.runId,
-        kind: 'vp-token',
-        format: credential.format,
-        raw: sentVpToken,
-      });
+      );
+      if (sentVpToken !== undefined) {
+        ctx.emit({
+          type: 'artifact',
+          runId: ctx.runId,
+          kind: 'vp-token',
+          format: credential.format,
+          raw: sentVpToken,
+        });
+        const genuine = !scenario.presentationTamper && !scenario.credentialTamper && !hookTamper;
+        if (genuine && submission.status >= 200 && submission.status < 300) {
+          this.#keepEarlier(earlierKey(submission.request), sentVpToken);
+        }
+      }
       return {
         submittedAt: new Date().toISOString(),
         status: submission.status,
@@ -175,6 +206,27 @@ export class ReferenceWalletRole implements WalletRole {
       throw toRoleError(error, 'vp');
     } finally {
       this.#holderKeys.delete(ctx.runId);
+    }
+  }
+
+  /** The presentation to replay; throws, before anything is posted, when there is none. */
+  #earlierFor(key: string, resolved: ResolvedRequest): string {
+    const earlier = this.#earlier.get(key);
+    if (earlier !== undefined) return earlier;
+    throw new RoleError(
+      'wallet.no-earlier-presentation',
+      `vp-replay sends again a vp_token this wallet sent earlier to the same verifier (${resolved.clientId}, ${resolved.profile}); run the happy path with this verifier and format first`,
+      { category: 'environment' },
+    );
+  }
+
+  #keepEarlier(key: string, vpToken: string): void {
+    this.#earlier.delete(key);
+    this.#earlier.set(key, vpToken);
+    while (this.#earlier.size > MAX_EARLIER_PRESENTATIONS) {
+      const oldest = this.#earlier.keys().next().value;
+      if (oldest === undefined) break;
+      this.#earlier.delete(oldest);
     }
   }
 

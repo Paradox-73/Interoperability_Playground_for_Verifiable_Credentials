@@ -43,16 +43,18 @@ type CountedStream = Readable & { receivedEncodedLength?: number };
 export function installInboundRecorder(app: FastifyInstance, hub: CaptureHub): void {
   const pending = new WeakMap<FastifyRequest, PendingInbound>();
 
-  app.addHook('onRequest', async (request) => {
+  app.addHook('onRequest', (request, _reply, done) => {
     const target = inboundTargetOf(request.url);
     if (target) pending.set(request, { target, startedAt: new Date(), started: performance.now() });
+    done();
   });
 
   app.addHook('preParsing', async (request, _reply, payload) => {
     const state = pending.get(request);
     if (!state) return payload;
     const chunks: Buffer[] = [];
-    for await (const chunk of payload) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    for await (const chunk of payload)
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array));
     state.body = Buffer.concat(chunks);
     const copy: CountedStream = Readable.from([state.body]);
     copy.receivedEncodedLength = state.body.length;
@@ -92,7 +94,9 @@ function recordInbound(
       method: request.method,
       url,
       ...(requestHeaders['content-type'] ? { contentType: requestHeaders['content-type'] } : {}),
-      ...(requestBody.bodyEncoding === 'utf8' && requestBody.body !== undefined ? { body: requestBody.body } : {}),
+      ...(requestBody.bodyEncoding === 'utf8' && requestBody.body !== undefined
+        ? { body: requestBody.body }
+        : {}),
       ...(responseHeaders['content-type'] ? { responseContentType: responseHeaders['content-type'] } : {}),
     }) ?? parseStep(headerValue(request, ATTRIBUTION_HEADERS.step));
   hub.record(runId, {

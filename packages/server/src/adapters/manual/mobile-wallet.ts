@@ -25,7 +25,6 @@ import {
   type WalletRole,
 } from '@inji-playground/protocol';
 import type { CaptureHub } from '../../recording/capture-hub.js';
-import { SERVER_VERSION } from '../../version.js';
 
 export interface MobileWalletOptions {
   hub: CaptureHub;
@@ -101,7 +100,9 @@ export class MobileWalletRole implements WalletRole {
     return {
       id: `${ctx.runId}-credential`,
       format: observedFormat(observed) ?? 'ldp_vc',
-      raw: observed ? credentialOf(observed) ?? '(held by the phone; the credential response was not observed)' : '(held by the phone; completed by the person)',
+      raw: observed
+        ? (credentialOf(observed) ?? '(held by the phone; the credential response was not observed)')
+        : '(held by the phone; completed by the person)',
       credentialIssuer: start.credentialIssuer,
       credentialConfigurationId: start.credentialConfigurationIds[0],
       receivedAt: new Date().toISOString(),

@@ -3,6 +3,8 @@
 # The repository holds no real secrets. Two kinds of values look like secrets and are listed here:
 # 1. Test-only fixtures written by the team: synthetic payloads whose tokens are placeholders. They are
 #    named *.synthetic.json.
+#    Recorded reference runs (*.recorded.json) are redacted exports: tokens and codes are replaced, and
+#    the credentials in them are signed by keys that lived only in memory for that one run.
 # 2. Sample values that are part of configuration files imported unchanged from the upstream Inji
 #    repositories (for example sample keystore and database passwords). Each entry names the file and
 #    the upstream source; the values only work against throw-away local containers.
@@ -13,6 +15,7 @@ version: 2
 secret:
   ignored_paths:
     - '**/*.synthetic.json'
+    - 'packages/protocol/fixtures/*.recorded.json'
   ignored_matches:
     # Upstream sample values in files imported unchanged into deploy/inji-stack/ (see deploy/inji-stack/UPSTREAM.md).
     # They are the defaults published in the Inji sample configurations and only reach throw-away local containers.

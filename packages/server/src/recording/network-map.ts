@@ -107,7 +107,7 @@ export function networkFetch(map: NetworkMap, options: { ca?: string } = {}): ty
   if (map.size === 0 && !options.ca) return globalThis.fetch;
   const dispatcher = map.dispatcher(options);
   type UndiciInit = NonNullable<Parameters<typeof undiciFetch>[1]>;
-  return (async (input: string | URL | Request, init?: RequestInit) => {
+  return async (input: string | URL | Request, init?: RequestInit) => {
     // The npm undici does not recognise the global Request class (Node bundles its own copy of
     // undici), so a Request is taken apart into URL and init.
     let url: string;
@@ -127,6 +127,6 @@ export function networkFetch(map: NetworkMap, options: { ca?: string } = {}): ty
       url = input.toString();
     }
     const response = await undiciFetch(url, { ...requestInit, dispatcher } as UndiciInit);
-    return response as unknown as Response;
-  }) as typeof globalThis.fetch;
+    return response;
+  };
 }

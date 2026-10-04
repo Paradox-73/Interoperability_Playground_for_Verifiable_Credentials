@@ -82,7 +82,10 @@ export class ReferenceVerifierRole implements VerifierRole {
   async awaitResult(ctx: RunContext, ref: PresentationRequestRef): Promise<VerificationResult> {
     try {
       // The step timeout ends the wait through the signal; the library's own timeout is only a backstop.
-      const report = await this.#hosting.verifier.awaitResult(ref.handle, { signal: ctx.signal, timeoutMs: 3_600_000 });
+      const report = await this.#hosting.verifier.awaitResult(ref.handle, {
+        signal: ctx.signal,
+        timeoutMs: 3_600_000,
+      });
       return toVerificationResult(report);
     } catch (error) {
       throw toRoleError(error, 'vp');

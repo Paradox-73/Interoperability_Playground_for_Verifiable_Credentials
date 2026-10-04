@@ -30,9 +30,16 @@ export interface WalletScenarioBinding {
   /** The holder key the client was created with (KB-JWTs are signed again with it). */
   holderKey: KeyPair;
   documentLoader?: DocumentLoader;
-  /** The `vp_token` form field this wallet posted to an earlier request of the same verifier. */
-  earlierVpToken?: string;
+  /**
+   * The `vp_token` form field this wallet posted to an earlier request of the same verifier, or a
+   * function that looks it up once the request (and so the verifier) is known.
+   */
+  earlierVpToken?: string | ((request: ResolvedRequest) => string | undefined);
   signal?: AbortSignal;
+  /** Called once the response is built, just before it is posted (a host moves its timeline here). */
+  beforePost?(request: ResolvedRequest): void;
+  /** Sees the `vp_token` last, after the scenario's tamper; what it returns is posted. */
+  finalVpToken?(vpToken: string, format: string): string | Promise<string>;
 }
 
 export type ScenarioSubmission = SubmissionResult & {
@@ -62,21 +69,26 @@ export async function respondWithScenario(
   }
   const response = await client.buildResponse(request, matches);
   const tamper = scenario.presentationTamper;
+  const earlierVpToken =
+    typeof binding.earlierVpToken === 'function' ? binding.earlierVpToken(request) : binding.earlierVpToken;
+  const finalVpToken = binding.finalVpToken?.bind(binding);
+  const beforeSubmit = async (vpToken: string, { format }: { format: string }): Promise<string> => {
+    const tampered = tamper
+      ? await tamperPresentation(tamper, vpToken, {
+          format,
+          profile: request.profile,
+          nonce: request.nonce,
+          clientId: request.clientId,
+          holderKey: binding.holderKey,
+          ...(binding.documentLoader ? { documentLoader: binding.documentLoader } : {}),
+          ...(earlierVpToken === undefined ? {} : { earlierVpToken }),
+        })
+      : vpToken;
+    return finalVpToken ? finalVpToken(tampered, format) : tampered;
+  };
+  binding.beforePost?.(request);
   const submission = await client.submit(request, response, {
-    ...(tamper
-      ? {
-          beforeSubmit: (vpToken: string, { format }: { format: string }) =>
-            tamperPresentation(tamper, vpToken, {
-              format,
-              profile: request.profile,
-              nonce: request.nonce,
-              clientId: request.clientId,
-              holderKey: binding.holderKey,
-              ...(binding.documentLoader ? { documentLoader: binding.documentLoader } : {}),
-              ...(binding.earlierVpToken === undefined ? {} : { earlierVpToken: binding.earlierVpToken }),
-            }),
-        }
-      : {}),
+    ...(tamper || finalVpToken ? { beforeSubmit } : {}),
     ...(binding.signal ? { signal: binding.signal } : {}),
   });
   return { ...submission, request, response };

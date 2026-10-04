@@ -64,7 +64,7 @@ const DROP_RESPONSE_HEADERS = new Set([
 
 export async function registerProxyRoutes(app: FastifyInstance, options: ProxyOptions): Promise<void> {
   const verifyTarget = options.verifyTarget ?? 'verify';
-  await app.register(async (scope) => {
+  await app.register((scope, _options, done) => {
     // Bodies stay raw bytes in this scope: the proxy forwards them unchanged, whatever their type.
     scope.removeAllContentTypeParsers();
     scope.addContentTypeParser('*', { parseAs: 'buffer' }, (_request, body, done) => done(null, body));
@@ -84,11 +84,14 @@ export async function registerProxyRoutes(app: FastifyInstance, options: ProxyOp
     scope.all('/v1/verify/*', async (request, reply) => {
       const upstream = options.targets[verifyTarget];
       if (!upstream) {
-        return reply.code(503).send({ error: 'verify-not-configured', message: 'no Inji Verify URL configured' });
+        return reply
+          .code(503)
+          .send({ error: 'verify-not-configured', message: 'no Inji Verify URL configured' });
       }
       const origin = new URL(upstream.url).origin;
       return forward(request, reply, options, verifyTarget, upstream, `${origin}${request.url}`);
     });
+    done();
   });
 }
 
@@ -126,7 +129,10 @@ async function forward(
   };
   const draftBase = {
     capture: 'proxy' as const,
-    from: headerValue(request, ATTRIBUTION_HEADERS.from) ?? (runId ? options.hub.configOf(runId)?.wallet : undefined) ?? 'browser',
+    from:
+      headerValue(request, ATTRIBUTION_HEADERS.from) ??
+      (runId ? options.hub.configOf(runId)?.wallet : undefined) ??
+      'browser',
     to: target.label,
     request: requestRecord,
     startedAt: startedAt.toISOString(),
@@ -188,7 +194,13 @@ async function forward(
 }
 
 function stepFor(
-  request: { method: string; url: string; headers: Record<string, string>; body?: string; bodyEncoding?: string },
+  request: {
+    method: string;
+    url: string;
+    headers: Record<string, string>;
+    body?: string;
+    bodyEncoding?: string;
+  },
   responseContentType?: string,
 ) {
   return tagStep({

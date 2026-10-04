@@ -104,6 +104,26 @@ export function checkCompatibility(input: CompatibilityInput): CompatibilityResu
       roles: [],
     });
   }
+  // Issuer variants and wallet-side tampering are carried out by the reference roles; with any other
+  // role the scenario cannot be produced at all, which is "not supported", not a failure of that role.
+  for (const role of [issuer, wallet, verifier]) {
+    const needed = scenario.requires?.[role.kind];
+    if (needed && !needed.includes(role.id)) {
+      block(
+        `scenario.${role.kind}-unsupported`,
+        `The scenario "${scenario.title}" needs the ${role.kind} ${needed.join(' or ')}; ${role.name} cannot produce it.`,
+        [role],
+      );
+    }
+  }
+  if (scenario.vpProfiles && !scenario.vpProfiles.includes(vpProfile)) {
+    reasons.push({
+      code: 'scenario.vp-profile-unsupported',
+      severity: 'blocking',
+      message: `The scenario "${scenario.title}" applies only to OpenID4VP ${listOrNone(scenario.vpProfiles)}.`,
+      roles: [],
+    });
+  }
 
   // DID methods and proof types are declared coarsely (one list for issuing and resolving, credential
   // and holder proofs together), so a mismatch is only a warning: the run is still attempted.

@@ -2,6 +2,9 @@
  * `ref-issuer`: the playground's own OpenID4VCI issuer (hosted at `/ref/issuer`) as the issuer column
  * of a run. It creates a pre-authorized credential offer passed by reference, so the wallet's first
  * request (fetching the offer) is a recorded exchange like every other step.
+ *
+ * The run's scenario may change what is signed (validity window, type, `vct`, `x5c`) and which DID
+ * the issuer signs with (`@inji-playground/scenarios`); the signature itself is always genuine.
  */
 import {
   RoleError,
@@ -13,6 +16,7 @@ import {
   type RoleDescriptor,
   type RunContext,
 } from '@inji-playground/protocol';
+import { findScenarioDefinition, issuanceOptionsFor, issuerDidMethodFor } from '@inji-playground/scenarios';
 import type { CaptureHub } from '../../recording/capture-hub.js';
 import { INBOUND_TARGETS } from '../../recording/inbound.js';
 import type { ReferenceHosting } from '../../hosting/reference-hosting.js';
@@ -61,8 +65,20 @@ export class ReferenceIssuerRole implements IssuerRole {
   }
 
   startIssuance(ctx: RunContext, request: IssuanceRequest): Promise<IssuanceStart> {
-    const configurationId = request.credentialConfigurationId ?? DEFAULT_CONFIGURATION_FOR_FORMAT[request.format];
-    const configuration = this.#hosting.issuer.configurations.find((entry) => entry.id === configurationId);
+    const scenario = findScenarioDefinition(ctx.scenario.id);
+    const didMethod = scenario ? issuerDidMethodFor(scenario) : undefined;
+    const issuer = didMethod ? this.#hosting.issuerFor(didMethod) : this.#hosting.issuer;
+    if (!issuer) {
+      throw new RoleError(
+        'issuer.did-method-unavailable',
+        `the reference issuer has no ${didMethod ?? ''} variant for the scenario "${ctx.scenario.id}"`,
+        { category: 'environment' },
+      );
+    }
+    const issuance = scenario ? issuanceOptionsFor(scenario) : undefined;
+    const configurationId =
+      request.credentialConfigurationId ?? DEFAULT_CONFIGURATION_FOR_FORMAT[request.format];
+    const configuration = issuer.configurations.find((entry) => entry.id === configurationId);
     if (!configurationId || !configuration) {
       throw new RoleError(
         'issuer.configuration-unknown',
@@ -73,11 +89,12 @@ export class ReferenceIssuerRole implements IssuerRole {
     // saying which run it belongs to; the claims tie its requests to this run.
     this.#hub.claim(ctx.runId, INBOUND_TARGETS.issuer);
     this.#hub.claim(ctx.runId, INBOUND_TARGETS.as);
-    const offer = this.#hosting.issuer.createOffer({
+    const offer = issuer.createOffer({
       profile: request.vciProfile,
       configurationId,
       byReference: true,
       ...(request.claims ? { claims: request.claims } : {}),
+      ...(issuance ? { issuance } : {}),
     });
     return Promise.resolve({
       mode: 'credential-offer',

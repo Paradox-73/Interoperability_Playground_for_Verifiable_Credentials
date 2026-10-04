@@ -3,9 +3,13 @@
 The playground server (Fastify): REST and WebSocket API, run orchestrator, recording HTTP client,
 SQLite store (Node's built-in `node:sqlite`) and the registry of roles (issuers, wallets, verifiers).
 
-Status (2026-10-04): the server foundation is in place and tested with stand-in roles. The real roles
-(reference issuer, wallet and verifier; Inji adapters) are registered by later work and plug into the
-interfaces described below without changes to the orchestrator.
+Status (2026-10-04): the reference issuer, wallet and verifier are hosted on the server's own port and
+registered as roles, with the phone wallet (`mobile-wallet`); every HTTP exchange of a run is recorded
+once, at one of three capture points. Reference runs pass end to end for `ldp_vc`, `vc+sd-jwt` and
+`dc+sd-jwt` in both OpenID4VP profiles, and every tamper and probe scenario of
+`@inji-playground/scenarios` that the reference roles can produce gives its expected outcome through
+the server (`test/reference-scenarios.test.ts`). The Inji adapters (`src/adapters/inji/`) are not
+written yet.
 
 ## Run it
 
@@ -13,7 +17,21 @@ interfaces described below without changes to the orchestrator.
 npm run build && npm start            # http://localhost:28100, UI + API + WebSocket
 npm run dev -w @inji-playground/server # from source, reloads on change
 npm test -w @inji-playground/server    # unit and API tests (in-memory database)
+npm run smoke                          # one reference run end to end, from the repository root
 ```
+
+`npm run smoke` (`scripts/smoke-run.ts`) builds the server for the first free port in 28600-28699,
+listens, runs one cell and prints the recorded exchanges and `verdict=<verdict>`; it exits 0 only for
+`pass`. Flags: `--issuer`, `--wallet`, `--verifier` (default the reference roles), `--format` (default
+`vc+sd-jwt`), `--vci-profile`, `--vp-profile` (draft13 pairs with inji-draft, v1 with final-1.0),
+`--scenario` (default `happy`; `vp-replay` runs a happy run first so there is something to replay),
+`--export <file>` (the run's redacted export), `--json`. Its database is in memory unless `PLAYGROUND_DB`
+is set.
+
+Measured 2026-10-04 on a Windows 11 laptop with Node 24.11:
+`npm run smoke -- --issuer ref-issuer --wallet ref-wallet --verifier ref-verifier --format vc+sd-jwt`
+printed 7 recorded exchanges (`issuer.offer`, `issuer.metadata`, `as.metadata`, `token`, `credential`,
+`wallet.fetch-request`, `wallet.submit`, all captured inbound) and `verdict=pass`, exit code 0.
 
 Measured 2026-10-04 on the development laptop: `npm run build && npm start`, then
 `curl -s http://localhost:28100/api/openapi.json` listed `/api/runs`, `/api/roles`,
@@ -26,21 +44,29 @@ returned by `GET /api/runs?format=vc%2Bsd-jwt&verdict=pass`.
 Environment variables, parsed with zod at start-up (`src/config/index.ts`). An invalid value stops the
 server with a message naming the variable.
 
-| Variable                          | Default                      | Meaning                                                           |
-| --------------------------------- | ---------------------------- | ----------------------------------------------------------------- |
-| `PLAYGROUND_PORT`                 | `28100`                      | Port of UI, API and WebSocket                                     |
-| `PLAYGROUND_HOST`                 | `127.0.0.1`                  | Interface to listen on (`0.0.0.0` in the image)                   |
-| `PLAYGROUND_RUN_DIR`              | `<repo>/run`                 | Database, generated keys and certificates                         |
-| `PLAYGROUND_DB`                   | `<run dir>/playground.db`    | SQLite file; `:memory:` keeps nothing (tests)                     |
-| `PLAYGROUND_GAPS_FILE`            | `<repo>/docs/gaps/gaps.json` | Gap register served by `/api/gaps`; a missing file means no gaps  |
-| `PLAYGROUND_WEB_DIST`             | `<repo>/packages/web/dist`   | Built UI to serve                                                 |
-| `PLAYGROUND_STACK`                | `off`                        | `off`, `host` or `bundle`: where the Inji stack runs              |
-| `PLAYGROUND_PUBLIC_URL`           | (none)                       | URL phones and containers use to reach the server                 |
-| `PLAYGROUND_LOG_LEVEL`            | `info`                       | Log level                                                         |
-| `PLAYGROUND_TIMEOUT_REFERENCE_MS` | `15000`                      | Step timeout when only playground reference roles take part       |
-| `PLAYGROUND_TIMEOUT_INJI_MS`      | `90000`                      | Step timeout when an Inji module or other outside role takes part |
-| `PLAYGROUND_TIMEOUT_PERSON_MS`    | `600000`                     | Step timeout while a person must act (scan a QR code)             |
-| `PLAYGROUND_FAKE_ROLES`           | `0`                          | `1` registers the development-only "Test role (fake)" roles       |
+| Variable                                                                        | Default                                    | Meaning                                                                                               |
+| ------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `PLAYGROUND_PORT`                                                               | `28100`                                    | Port of UI, API and WebSocket                                                                         |
+| `PLAYGROUND_HOST`                                                               | `127.0.0.1`                                | Interface to listen on (`0.0.0.0` in the image)                                                       |
+| `PLAYGROUND_RUN_DIR`                                                            | `<repo>/run`                               | Database, generated keys and certificates                                                             |
+| `PLAYGROUND_DB`                                                                 | `<run dir>/playground.db`                  | SQLite file; `:memory:` keeps nothing (tests)                                                         |
+| `PLAYGROUND_GAPS_FILE`                                                          | `<repo>/docs/gaps/gaps.json`               | Gap register served by `/api/gaps`; a missing file means no gaps                                      |
+| `PLAYGROUND_WEB_DIST`                                                           | `<repo>/packages/web/dist`                 | Built UI to serve                                                                                     |
+| `PLAYGROUND_STACK`                                                              | `off`                                      | `off`, `host` or `bundle`: where the Inji stack runs                                                  |
+| `PLAYGROUND_PUBLIC_URL`                                                         | (none)                                     | URL phones and containers use to reach the server                                                     |
+| `PLAYGROUND_LOG_LEVEL`                                                          | `info`                                     | Log level                                                                                             |
+| `PLAYGROUND_TIMEOUT_REFERENCE_MS`                                               | `15000`                                    | Step timeout when only playground reference roles take part                                           |
+| `PLAYGROUND_TIMEOUT_INJI_MS`                                                    | `90000`                                    | Step timeout when an Inji module or other outside role takes part                                     |
+| `PLAYGROUND_TIMEOUT_PERSON_MS`                                                  | `600000`                                   | Step timeout while a person must act (scan a QR code)                                                 |
+| `PLAYGROUND_FAKE_ROLES`                                                         | `0`                                        | `1` registers the development-only "Test role (fake)" roles                                           |
+| `PLAYGROUND_REF_ISSUER_DID`                                                     | `did:key`                                  | DID method of the reference issuer at `/ref/issuer`: `did:key`, `did:jwk`, `did:web`                  |
+| `PLAYGROUND_PROXY_TIMEOUT_MS`                                                   | `110000`                                   | How long the reverse proxy waits for an Inji service                                                  |
+| `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL` | host ports, or service names in the bundle | Upstreams of `/proxy/:target/*` and `/v1/verify/*` (`src/recording/targets.ts`)                       |
+| `PLAYGROUND_NETWORK_MAP`                                                        | (none)                                     | Host mode: maps the stack's container names to host ports (`deploy/inji-stack/network-map.host.json`) |
+| `PLAYGROUND_EXTRA_CA`                                                           | (none)                                     | PEM file trusted for outbound HTTPS, for example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`      |
+
+Why 110 s for the proxy: the Inji Verify SDK's status poll holds a request open for up to 55 s, and the
+server's own request timeout is 120 s.
 
 Why 90 s for Inji: Certify's first issuer-metadata call took 52 s and one Inji Verify ldp_vc
 verification took up to 13 s in the local trial (2026-10-04).
@@ -74,7 +100,18 @@ POST /api/runs ──► Orchestrator.create ──► store: runs row (queued)
   stops.
 - Scenario hooks (`ScenarioHooks`): `beforeIssuance`, `afterCredential`, `beforeRequest` run between
   phases; wallets call `tamperPresentation` just before sending. A hook that throws stops the run with
-  the code `scenario.hook-failed`.
+  the code `scenario.hook-failed`. `buildApp` uses the hooks of `@inji-playground/scenarios`
+  (`scenarioHooks`) unless it is given another catalogue or its own `hooksFor`.
+- Scenario variants the hooks cannot express are carried out by the reference roles, which look the
+  scenario up by id (`findScenarioDefinition`). `ref-issuer` signs with the scenario's validity window,
+  type, `vct` or DID method. `ref-wallet` presents with the scenario's holder DID form, presents a
+  credential the request did not ask for (`wrong-type`), and applies the presentation tamper just before
+  the post. For `vp-replay` the wallet sends again the untampered `vp_token` it last posted to the same
+  verifier in the same format and profile. If there is none, the run stops before posting with
+  `wallet.no-earlier-presentation` (verdict `error`); run the happy path first.
+- The compatibility check also reads the scenario. A format, OpenID4VP profile or role that it does not
+  list in `formats`, `vpProfiles` or `requires` (issuer variants need `ref-issuer`, wallet tampering
+  needs `ref-wallet`) makes the cell `not-supported` with the code `scenario.<kind>-unsupported`.
 - Live runs (any Inji module) run one at a time per Inji stack; runs made only of reference roles run
   in parallel.
 
@@ -125,6 +162,74 @@ WebSocket: connect to `/ws?runId=<id>` (or `*` for every run), or send
 `{"type":"subscribe","runId":"<id>"}` after connecting. A subscription to one run first replays the
 stored events, then streams new ones; the server acknowledges with `{"type":"subscribed",...}`.
 
+## Roles registered by the server
+
+| Id              | Kind     | What it is                                                                                     |
+| --------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `ref-issuer`    | issuer   | OpenID4VCI reference issuer at `/ref/issuer` (`@inji-playground/oid4vci`), offers by reference |
+| `ref-wallet`    | wallet   | Headless wallet: the OpenID4VCI and OpenID4VP clients of `oid4vci` and `oid4vp`                |
+| `ref-verifier`  | verifier | OpenID4VP reference verifier at `/ref/verifier` (`@inji-playground/oid4vp`)                    |
+| `mobile-wallet` | wallet   | A wallet app on a phone, driven by a person through QR codes (`src/adapters/manual/`)          |
+
+`buildApp({ builtInRoles: false })` leaves them out, for tests that check exactly the roles they pass;
+the reference roles are still hosted. `mobile-wallet` shows the offer and then the presentation request
+as `person.action-needed`. It completes when recorded traffic shows the phone acted (a successful
+credential response after the offer, a posted presentation), or when the person presses "done"
+(`POST /api/runs/{id}/person-done`) for traffic that does not pass through the playground. A phone must
+reach the server: set `PLAYGROUND_PUBLIC_URL` to a LAN or tunnel address and `PLAYGROUND_HOST=0.0.0.0`.
+
+## Hosted reference roles
+
+`src/hosting/reference-hosting.ts` serves, on the playground's own port:
+
+| Path                                             | What                                                                       |
+| ------------------------------------------------ | -------------------------------------------------------------------------- |
+| `/ref/issuer/draft13/*`, `/ref/issuer/v1/*`      | Reference issuer, OpenID4VCI draft 13 and 1.0                              |
+| `/ref/issuer/did-key/*`, `/ref/issuer/did-jwk/*` | The same issuer keys under the other DID method, for the DID-method probes |
+| `/ref/as/*`                                      | Test authorization server (authorization code flow, stands in for eSignet) |
+| `/ref/verifier/*`                                | Reference verifier: request objects and `direct_post` responses            |
+| `/.well-known/*/ref/...`                         | RFC 8615 well-known documents of the above, at the host root               |
+
+Keys are created on first start in `$PLAYGROUND_RUN_DIR/keys/`, so DIDs stay the same across restarts;
+with `PLAYGROUND_DB=:memory:` they live only in memory.
+
+## Recording
+
+Every HTTP exchange of a run is recorded exactly once, at the capture point that sees it:
+
+| Capture point | Where                                           | Sees                                                                                |
+| ------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `outbound`    | the `RecordingFetch` each role gets             | calls the playground's roles make to anything other than this server                |
+| `inbound`     | Fastify hooks on `/ref/*` (`inbound.ts`)        | requests to the hosted reference roles, from the playground's roles or from outside |
+| `proxy`       | `/proxy/:target/*`, `/v1/verify/*` (`proxy.ts`) | traffic to an Inji service routed through the playground                            |
+
+- Calls a role makes to the server itself are dispatched in-process (`self-transport.ts`) and recorded
+  by the inbound recorder or the proxy, not by the outbound client.
+- Each exchange is tagged with its protocol step from what the wire shows (`step-tagging.ts`): method,
+  path, content types and form fields.
+- Requests from outside (a phone, Mimoto, the browser SDK) carry no run id. They belong to the run that
+  most recently claimed the target (`capture-hub.ts`): the issuer role claims `/ref/issuer` and `/ref/as`
+  when it makes an offer, and the verifier role claims `/ref/verifier` when it makes a request. The
+  playground's own roles send `x-playground-run`, `-step` and `-from` headers, which are never recorded
+  or forwarded. Exchanges that no run claims are counted, not stored.
+- `/v1/verify/*` keeps its path because verify-service scopes its `transaction_id` cookie to it; it is
+  needed because verify-service sends no CORS headers, so the Inji Verify SDK must use the page's origin.
+- In host mode, `PLAYGROUND_NETWORK_MAP` lets the server reach the stack's container names (for example
+  the `response_uri` Inji Verify hands the wallet) through the host ports.
+
+Exports (`GET /api/runs/{id}/export`, reports, fixtures) redact access tokens, pre-authorized and
+authorization codes, client assertions, cookies and private keys, and keep the payload's shape.
+
+## Recorded fixtures
+
+`packages/protocol/fixtures/*.recorded.json` are redacted exports of real reference runs, for UI tests
+and playback. Prettier leaves that name alone, so the bytes stay as recorded. Regenerate them with:
+
+```bash
+npm run smoke -- --format ldp_vc --export packages/protocol/fixtures/reference-ldp-vc.recorded.json
+npm run smoke -- --format vc+sd-jwt --vp-profile final-1.0 --export packages/protocol/fixtures/reference-sd-jwt-final.recorded.json
+```
+
 ## Storage
 
 `src/store/migrations.ts` holds the schema as numbered migrations, applied once at start-up inside a
@@ -149,24 +254,29 @@ Runs left `queued` or `running` by a previous process are closed with verdict `e
    when a service could not be reached.
 5. Register it: Inji adapters in `src/adapters/inji/index.ts`; other roles through
    `buildApp({ roles: [{ role, stepTimeoutMs? }] })`.
+6. A role that hands a URL to an outside party (a QR code for a phone) claims the capture target with
+   `services.capture.claim(runId, target)`, so the requests that come back are recorded in its run.
 
 ## Code map
 
-| Path                 | Contents                                                                                |
-| -------------------- | --------------------------------------------------------------------------------------- |
-| `src/app.ts`         | `buildApp(options)`: wires store, bus, registry, orchestrator, routes, UI               |
-| `src/main.ts`        | Listens on the configured port; closes runs cleanly on SIGINT / SIGTERM                 |
-| `src/config/`        | Environment variables -> typed configuration                                            |
-| `src/store/`         | Migrations and `RunStore` (all SQL lives here)                                          |
-| `src/events/`        | `EventBus`: per-run and all-run subscribers; a failing listener never stops others      |
-| `src/orchestrator/`  | `Orchestrator`, compatibility check, role registry, step timers, stack lock, fake roles |
-| `src/recording/`     | `RecordingFetch`: records request, response, timing and errors of each call             |
-| `src/api/`           | REST routes, WebSocket route, OpenAPI registration, error handler                       |
-| `src/reports/`       | Report document and Markdown, redaction, export, credential size                        |
-| `src/matrix/`        | Compatibility matrix and its Markdown rendering                                         |
-| `src/metrics/`       | Success rates, percentiles, Prometheus text format                                      |
-| `src/gaps/`          | Gap register reader and matrix cell patterns                                            |
-| `src/adapters/inji/` | Inji Certify, Verify and Mimoto adapters (filled by the Inji adapter work)              |
+| Path                      | Contents                                                                                     |
+| ------------------------- | -------------------------------------------------------------------------------------------- |
+| `src/app.ts`              | `buildApp(options)`: wires store, bus, registry, orchestrator, routes, UI                    |
+| `src/main.ts`             | Listens on the configured port; closes runs cleanly on SIGINT / SIGTERM                      |
+| `src/config/`             | Environment variables -> typed configuration                                                 |
+| `src/store/`              | Migrations and `RunStore` (all SQL lives here)                                               |
+| `src/events/`             | `EventBus`: per-run and all-run subscribers; a failing listener never stops others           |
+| `src/orchestrator/`       | `Orchestrator`, compatibility check, role registry, step timers, stack lock, fake roles      |
+| `src/recording/`          | Capture points (outbound client, inbound recorder, reverse proxy), step tagging, attribution |
+| `src/hosting/`            | Hosts the reference issuer, test authorization server and verifier under `/ref/*`            |
+| `src/adapters/reference/` | The `ref-issuer`, `ref-wallet` and `ref-verifier` roles                                      |
+| `src/adapters/manual/`    | `mobile-wallet`: a person with a phone wallet                                                |
+| `src/api/`                | REST routes, WebSocket route, OpenAPI registration, error handler                            |
+| `src/reports/`            | Report document and Markdown, redaction, export, credential size                             |
+| `src/matrix/`             | Compatibility matrix and its Markdown rendering                                              |
+| `src/metrics/`            | Success rates, percentiles, Prometheus text format                                           |
+| `src/gaps/`               | Gap register reader and matrix cell patterns                                                 |
+| `src/adapters/inji/`      | Inji Certify, Verify and Mimoto adapters (filled by the Inji adapter work)                   |
 
 The fake roles (`src/orchestrator/fake-roles.ts`) speak no protocol: the issuer hands the wallet an
 in-memory credential and the verifier checks a digest. They exist for tests and for exercising the UI
@@ -176,4 +286,13 @@ and are off by default.
 ## Tests
 
 `test/` runs with `npm test`; `test/live/` needs the Inji stack and runs with `npm run test:live`.
-Test names carry the test-case ids of the test plan (`TC_PG_RUN_01` and so on).
+
+- `reference-flow.test.ts`: the reference trio for `ldp_vc` and `vc+sd-jwt`, both profiles, with the
+  exchanges, steps and artefacts each run records.
+- `reference-scenarios.test.ts`: every applicable (scenario, format, profile) cell of the catalogue
+  through `POST /api/runs`, plus the `not-supported` and `vp-replay` cases.
+- `capture-points.test.ts`: the reverse proxy records request and response bodies; the inbound recorder
+  records outside requests at `/ref/issuer`; a `mobile-wallet` run completes when a scripted wallet
+  consumes the QR payloads.
+- `recorded-fixtures.test.ts`: the recorded fixtures are valid, passing and redacted.
+  Test names carry the test-case ids of the test plan (`TC_PG_RUN_01` and so on).

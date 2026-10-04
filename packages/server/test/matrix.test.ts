@@ -232,7 +232,12 @@ describe('GET /api/matrix', () => {
       ]),
     );
     const { roles } = fakeSet({ issuer: { formats: ['vc+sd-jwt', 'ldp_vc'] } });
-    app = await buildTestApp({ roles: registrations(roles), env: { PLAYGROUND_GAPS_FILE: gapsFile } });
+    // Only the fake trio: the built-in roles would add their own combinations to the matrix.
+    app = await buildTestApp({
+      roles: registrations(roles),
+      builtInRoles: false,
+      env: { PLAYGROUND_GAPS_FILE: gapsFile },
+    });
     const created = await app.inject({ method: 'POST', url: '/api/runs', payload: FAKE_CELL });
     await app.playground.orchestrator.wait(created.json<{ runId: string }>().runId);
 

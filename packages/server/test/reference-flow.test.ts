@@ -31,56 +31,61 @@ function steps(exchanges: readonly RecordedExchange[]): string[] {
 }
 
 describe('reference flow (OpenID4VCI draft 13 + OpenID4VP inji-draft)', () => {
-  it.each(['ldp_vc', 'vc+sd-jwt'] as const)('%s: issue, hold, present, verify -> verdict pass', async (format) => {
-    const { report, exchanges } = await runCell({ ...REFERENCE_CELL, format });
-    expect(InteropReportSchema.parse(report)).toMatchObject({
-      mode: 'reference',
-      format,
-      outcome: 'VALID',
-      verdict: 'pass',
-      vciProfile: 'draft13',
-      vpProfile: 'inji-draft',
-    });
-    expect(report.error).toBeUndefined();
-    expect(report.credentialProof).toBe(format === 'ldp_vc' ? 'Ed25519Signature2020' : 'EdDSA');
-    expect(report.issuerDid).toMatch(/^did:key:/);
+  it.each(['ldp_vc', 'vc+sd-jwt'] as const)(
+    '%s: issue, hold, present, verify -> verdict pass',
+    async (format) => {
+      const { report, exchanges } = await runCell({ ...REFERENCE_CELL, format });
+      expect(InteropReportSchema.parse(report)).toMatchObject({
+        mode: 'reference',
+        format,
+        outcome: 'VALID',
+        verdict: 'pass',
+        vciProfile: 'draft13',
+        vpProfile: 'inji-draft',
+      });
+      expect(report.error).toBeUndefined();
+      expect(report.credentialProof).toBe(format === 'ldp_vc' ? 'Ed25519Signature2020' : 'EdDSA');
+      expect(report.issuerDid).toMatch(/^did:key:/);
 
-    // Every protocol exchange went to a hosted role, so the inbound recorder stored all of them.
-    expect(exchanges.every((exchange) => exchange.capture === 'inbound')).toBe(true);
-    expect(steps(exchanges)).toEqual([
-      'issuer.offer',
-      'issuer.metadata',
-      'as.metadata',
-      'token',
-      'credential',
-      'wallet.fetch-request',
-      'wallet.submit',
-    ]);
-    expect(exchanges.map((exchange) => exchange.to)).toEqual([
-      'ref-issuer',
-      'ref-issuer',
-      'ref-issuer',
-      'ref-issuer',
-      'ref-issuer',
-      'ref-verifier',
-      'ref-verifier',
-    ]);
-    expect(new Set(exchanges.map((exchange) => exchange.from))).toEqual(new Set(['ref-wallet']));
-    // No duplicates: one record per request.
-    const keys = exchanges.map((exchange) => `${exchange.request.method} ${exchange.request.url}`);
-    expect(new Set(keys).size).toBe(keys.length);
-    expect(exchanges.map((exchange) => exchange.seq)).toEqual(exchanges.map((_, index) => index + 1));
+      // Every protocol exchange went to a hosted role, so the inbound recorder stored all of them.
+      expect(exchanges.every((exchange) => exchange.capture === 'inbound')).toBe(true);
+      expect(steps(exchanges)).toEqual([
+        'issuer.offer',
+        'issuer.metadata',
+        'as.metadata',
+        'token',
+        'credential',
+        'wallet.fetch-request',
+        'wallet.submit',
+      ]);
+      expect(exchanges.map((exchange) => exchange.to)).toEqual([
+        'ref-issuer',
+        'ref-issuer',
+        'ref-issuer',
+        'ref-issuer',
+        'ref-issuer',
+        'ref-verifier',
+        'ref-verifier',
+      ]);
+      expect(new Set(exchanges.map((exchange) => exchange.from))).toEqual(new Set(['ref-wallet']));
+      // No duplicates: one record per request.
+      const keys = exchanges.map((exchange) => `${exchange.request.method} ${exchange.request.url}`);
+      expect(new Set(keys).size).toBe(keys.length);
+      expect(exchanges.map((exchange) => exchange.seq)).toEqual(exchanges.map((_, index) => index + 1));
 
-    const credential = exchanges.find((exchange) => exchange.step === 'credential');
-    expect(credential?.response?.status).toBe(200);
-    expect(credential?.request.body).toContain('"proof"');
-    const submit = exchanges.find((exchange) => exchange.step === 'wallet.submit');
-    expect(submit?.request.headers['content-type']).toContain('application/x-www-form-urlencoded');
-    expect(submit?.request.body).toContain('vp_token=');
-    expect(submit?.request.body).toContain('presentation_submission=');
-    // Attribution headers are a playground detail and never part of the recorded request.
-    expect(Object.keys(submit?.request.headers ?? {}).some((name) => name.startsWith('x-playground-'))).toBe(false);
-  });
+      const credential = exchanges.find((exchange) => exchange.step === 'credential');
+      expect(credential?.response?.status).toBe(200);
+      expect(credential?.request.body).toContain('"proof"');
+      const submit = exchanges.find((exchange) => exchange.step === 'wallet.submit');
+      expect(submit?.request.headers['content-type']).toContain('application/x-www-form-urlencoded');
+      expect(submit?.request.body).toContain('vp_token=');
+      expect(submit?.request.body).toContain('presentation_submission=');
+      // Attribution headers are a playground detail and never part of the recorded request.
+      expect(
+        Object.keys(submit?.request.headers ?? {}).some((name) => name.startsWith('x-playground-')),
+      ).toBe(false);
+    },
+  );
 
   it('final-1.0 (DCQL) with OpenID4VCI 1.0 also passes for vc+sd-jwt', async () => {
     const { report, exchanges } = await runCell({
