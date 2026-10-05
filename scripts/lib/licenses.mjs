@@ -20,6 +20,7 @@ export const OSI_APPROVED = new Set([
   'BlueOak-1.0.0',
   'BSD-2-Clause',
   'BSD-3-Clause',
+  'EPL-2.0',
   'ISC',
   'MIT',
   'MIT-0',
@@ -153,9 +154,15 @@ function npmCommand(args) {
   return existsSync(script) ? [process.execPath, [script, ...args]] : ['npm', args];
 }
 
-/** Installed packages of `npm ls`, one entry per name and version; workspace packages are left out. */
+/**
+ * Installed packages of `npm ls`, one entry per name and version; workspace packages are left out.
+ *
+ * Uses `--parseable` (one installed path per line) and reads each package's own package.json. The JSON
+ * form needs `--long` for paths and licences, and `npm ls --long` of npm 11.17 fails on this tree since
+ * mermaid 12 ("Cannot read properties of undefined (reading 'description')", 2026-10-06).
+ */
 function packagesOf(root, omitDev) {
-  const args = ['ls', '--all', '--json', '--long', ...(omitDev ? ['--omit=dev'] : [])];
+  const args = ['ls', '--all', '--parseable', ...(omitDev ? ['--omit=dev'] : [])];
   let text;
   try {
     text = execFileSync(...npmCommand(args), {
@@ -166,26 +173,25 @@ function packagesOf(root, omitDev) {
     });
   } catch (error) {
     // npm ls exits 1 for extraneous or missing optional packages but still prints the tree.
-    text = error.stdout;
+    text = error.stdout ?? '';
   }
-  const tree = JSON.parse(text);
   const found = new Map();
-  const walk = (dependencies) => {
-    for (const [name, node] of Object.entries(dependencies ?? {})) {
-      // Not installed (an optional package for another platform) or a workspace of this repository.
-      if (!node.version || !node.path || name.startsWith('@inji-playground/')) {
-        walk(node.dependencies);
-        continue;
-      }
-      const key = `${name}@${node.version}`;
-      if (!found.has(key) && existsSync(node.path)) {
-        const license = licenseOf(name, node);
-        found.set(key, { name, version: node.version, license: license ?? 'UNKNOWN', path: node.path });
-      }
-      walk(node.dependencies);
+  for (const path of text.split(/\r?\n/).map((line) => line.trim())) {
+    // The root and the workspaces are this repository's own code; only installed packages count.
+    if (!path || !/[\\/]node_modules[\\/]/.test(path)) continue;
+    let manifest;
+    try {
+      manifest = JSON.parse(readFileSync(join(path, 'package.json'), 'utf8'));
+    } catch {
+      continue;
     }
-  };
-  walk(tree.dependencies);
+    const { name, version } = manifest;
+    if (!name || !version || name.startsWith('@inji-playground/')) continue;
+    const key = `${name}@${version}`;
+    if (!found.has(key)) {
+      found.set(key, { name, version, license: licenseOf(name, manifest) ?? 'UNKNOWN', path });
+    }
+  }
   return [...found.values()].sort(
     (a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version),
   );
