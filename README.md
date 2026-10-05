@@ -14,8 +14,9 @@ MOSIP Decode 2026, problem statement 02, team Badmosip.
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-10-04 | Repository scaffold: eight npm workspaces, the shared contracts (`packages/protocol`), a server answering `GET /api/health`, a skeleton UI, the test and build tooling, CI and image.                                                                                                                                                                                                  |
 | 2026-10-05 | Every work package built and measured (branches awaiting review, [docs/STATUS.md](docs/STATUS.md)): reference roles in both protocol profiles, recording, Inji Certify, certify-ac, Inji Web through Mimoto and Inji Verify (API and web component) as roles, the UI with matrix, history, reports and gaps, the headless matrix, browser tests, the demo command and the test report. |
+| 2026-10-06 | Reviewed and merged to `main`; every acceptance check run again ([docs/STATUS.md](docs/STATUS.md)). Fixed in review: redaction of PKCE verifiers, keyboard access to scrollable message bodies, a flaky browser test, the licence audit; Dependabot updates applied.                                                                                                                   |
 
-Measured on 2026-10-05 ([test report](docs/test-report/README.md)): 964 unit and integration tests, 6
+Measured on 2026-10-06 ([test report](docs/test-report/README.md)): 972 unit and integration tests, 7
 browser tests and 20 live tests against the Inji stack pass; the reference matrix has 82 of 82 cells as
 specified, the live matrices 20 of 20. Nothing in this README claims more than has been run.
 
@@ -99,10 +100,10 @@ where traffic is recorded: [docs/architecture.md](docs/architecture.md).
 ## Interoperability matrix and gaps
 
 - Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
-  82 of 82 cells as specified (2026-10-05).
+  82 of 82 cells as specified (2026-10-06).
 - Live matrix against Inji Certify 0.14.0, certify-ac, Inji Web 0.17.0 with Mimoto 0.22.0 and Inji Verify
   0.18.2: [docs/interop-report/live/matrix.md](docs/interop-report/live/matrix.md), 20 of 20 cells as
-  specified (2026-10-05). All-Inji SD-JWT VC issuance and verification is `VALID`; the cells that fail are
+  specified (2026-10-06). All-Inji SD-JWT VC issuance and verification is `VALID`; the cells that fail are
   blocked by recorded gaps.
 - Gaps: [docs/gaps/README.md](docs/gaps/README.md) lists 23 public gaps in Inji Certify, Inji Verify and
   Mimoto, each with an issue draft (repository, version, steps, expected and actual result, playground case

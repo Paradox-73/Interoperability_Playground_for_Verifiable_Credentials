@@ -9,6 +9,7 @@ for set-up and the rules every change follows.
 - Work stopped: 2026-10-04 20:45 IST.
 - `main` at that time: commit `447f05d` (2026-10-04 17:04 IST), pushed to
   <https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials>.
+- Review: 2026-10-06, every task DONE on `main` (not pushed yet).
 - Unfinished work of 2026-10-04: branch `wip/2026-10-04-stop`, commit `6778946` (WP-08, WP-11, WP-13). On
   2026-10-05 it was split into one branch per task as described below, finished, and WP-15 was added;
   see [Branches awaiting review](#branches-awaiting-review).
@@ -16,6 +17,7 @@ for set-up and the rules every change follows.
 ## Contents
 
 - [Task table](#task-table)
+- [Review of 2026-10-06](#review-of-2026-10-06)
 - [Branches awaiting review](#branches-awaiting-review)
 - [State of the unfinished branch](#state-of-the-unfinished-branch)
 - [Task cards](#task-cards)
@@ -40,20 +42,21 @@ started.
 | WP-05 | D-stack     | Import upstream Inji configuration unchanged; local Inji stack and one-command bundle    | WP-01                      | DONE   | `e491c2d`, `ab5da50`, `dcb0cce`, `2a809f5`, `ba25dc6`, `33cbae5`, `af9e36d`, `67d01b3`, `60a699f`, `d4b9a35`, `e19cb30`, `76f2b67`, `5546f31`, `46b042b`, `981256e`, `0454a87` |
 | WP-06 | A-reference | OpenID4VCI reference issuer, test authorization server and wallet issuance client        | WP-02                      | DONE   | `79b2612`, `6276a87`, `1294ea0`                                                                                                                                                |
 | WP-07 | D-stack     | OpenID4VP reference verifier and wallet presentation client                              | WP-02                      | DONE   | `dba2418`                                                                                                                                                                      |
-| WP-08 | B-server    | Recording proxy, reference and manual roles, first reference run end to end              | WP-03, WP-06, WP-07        | REVIEW | `d5eae9c`, `304854e` (branch `wp-08-recording`)                                                                                                                                |
+| WP-08 | B-server    | Recording proxy, reference and manual roles, first reference run end to end              | WP-03, WP-06, WP-07        | DONE   | `d5eae9c`, `304854e` (branch `wp-08-recording`)                                                                                                                                |
 | WP-09 | C-web       | Protocol inspector, animated sequence diagram and run playback                           | WP-04                      | DONE   | `447f05d`                                                                                                                                                                      |
-| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | REVIEW | `400f951`, `3a4fbdc` (branch `wp-10-inji-adapters`)                                                                                                                            |
-| WP-11 | A-reference | Tamper and negative-path scenario catalogue                                              | WP-06, WP-07               | REVIEW | `48e2dfc`, `5f9e0f5` (branch `wp-11-scenarios`)                                                                                                                                |
+| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | DONE   | `400f951`, `3a4fbdc` (branch `wp-10-inji-adapters`)                                                                                                                            |
+| WP-11 | A-reference | Tamper and negative-path scenario catalogue                                              | WP-06, WP-07               | DONE   | `48e2dfc`, `5f9e0f5` (branch `wp-11-scenarios`)                                                                                                                                |
 | WP-12 | B-server    | Reports, history, compatibility matrix and metrics API                                   | WP-03                      | DONE   | `b010184`                                                                                                                                                                      |
-| WP-13 | C-web       | Matrix view, history dashboard, run report page and tamper controls                      | WP-09, WP-12               | REVIEW | `0dec756`, `d1c8879` (branch `wp-13-pages`)                                                                                                                                    |
-| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | REVIEW | `af7ff15`, `bde2071` (branch `wp-14-inji-web`)                                                                                                                                 |
-| WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | REVIEW | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
-| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | REVIEW | `167e675`, `647e281` (branch `wp-16-browser-tests`)                                                                                                                            |
-| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | REVIEW | `1cedbd3`, `05a13ea`, `61f0917` (branch `wp-17-demo`)                                                                                                                          |
-| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | REVIEW | `99971bd`, `10443c6` (branch `wp-18-docs`)                                                                                                                                     |
+| WP-13 | C-web       | Matrix view, history dashboard, run report page and tamper controls                      | WP-09, WP-12               | DONE   | `0dec756`, `d1c8879` (branch `wp-13-pages`)                                                                                                                                    |
+| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | DONE   | `af7ff15`, `bde2071` (branch `wp-14-inji-web`)                                                                                                                                 |
+| WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | DONE   | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
+| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | DONE   | `167e675`, `647e281` (branch `wp-16-browser-tests`)                                                                                                                            |
+| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | DONE   | `1cedbd3`, `05a13ea`, `61f0917` (branch `wp-17-demo`)                                                                                                                          |
+| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | DONE   | `99971bd`, `10443c6` (branch `wp-18-docs`)                                                                                                                                     |
 
-Every task is finished: DONE on `main`, or in review on its branch (merge them in the order below). What is
-left is review and merge, and the optional extras at the end of this file.
+Every task is DONE: the branches below were reviewed on 2026-10-06 on `main` (which holds all of them), with
+every acceptance check run again; see [Review of 2026-10-06](#review-of-2026-10-06). What is left is for
+people (the demo video, the slides, filing the issue drafts) and the optional extras at the end of this file.
 
 ### What the DONE tasks give you
 
@@ -70,6 +73,22 @@ left is review and merge, and the optional extras at the end of this file.
   [server](../packages/server/README.md), [web](../packages/web/README.md),
   [inspector](../packages/web/src/inspector/README.md), [Inji stack](../deploy/inji-stack/README.md),
   [set-up](setup.md), [API](api/README.md).
+
+## Review of 2026-10-06
+
+Run on `main` (Windows 11, Node 24.19.0, npm 11.17.0, Docker Desktop 29.7 with 8 GB), dates in IST:
+
+- `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`: exit 0.
+- `npm test`: 68 files, 972 tests, 0 failures. `npm run e2e`: 7 of 7. `npm run test:live`: 20 of 20.
+- `npm run smoke`: `verdict=pass`, 7 exchanges. `npm run matrix:reference`: 82 of 82. Live matrices: 14 of
+  14 and 6 of 6. `npm run demo`: `DEMO PASS`. `npm run docs:check`: exit 0.
+- README quick start from a fresh clone (`npm ci`, `npm run build`, `npm start`): `/api/health` and the UI
+  answer on 28100. Clean-clone bundle with Docker only: healthy.
+- Dependabot: `actions/checkout` 7 and `actions/setup-node` 7 applied to both workflows (`1989131`,
+  `6190ac1`); `did-resolver` 6.0.0 (`6df8073`) and `mermaid` 12 (`45ca6ec`, resolves to 12.1.0) applied after
+  build and every suite passed with them.
+- Problems fixed in review, one commit each: `f93e045`, `294dd2d`, `324eb2e`, `c9d4709`, `cf0d103`,
+  `fef7445`, `e153d70`, `9e1ae2c`. The live run records are now kept in git (`d350e56`).
 
 ## Branches awaiting review
 
@@ -169,7 +188,9 @@ Every command below runs from the repository root in Git Bash (Windows) or a nor
 Workspace names are `@inji-playground/<folder>`. Commands that start Docker end by stopping it, so a failed
 check never leaves containers running.
 
-### WP-08 Recording proxy, reference and manual roles, first reference run end to end (REVIEW)
+### WP-08 Recording proxy, reference and manual roles, first reference run end to end (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm test -w @inji-playground/server` 24 files, 250 tests pass (the card's four tests included); `npm run smoke -- --issuer ref-issuer --wallet ref-wallet --verifier ref-verifier --format vc+sd-jwt` printed `verdict=pass` with 7 recorded exchanges, exit 0. Found in review and fixed: exports left PKCE code verifiers and the JSON authorization code of Mimoto's download body in clear; two contract recordings held them (`324eb2e`).
 
 - **Goal:** a run started from the UI or the API goes reference issuer -> reference wallet -> reference
   verifier; every HTTP exchange is recorded once, streamed over the WebSocket, and the report is stored.
@@ -245,7 +266,9 @@ check never leaves containers running.
   - Exports (reports, fixtures, matrix files) redact access tokens, pre-authorized codes, authorization
     codes, client assertions, cookies and private keys, and keep the payload shape.
 
-### WP-10 Inji Certify and Inji Verify adapters with live runs in both formats (REVIEW)
+### WP-10 Inji Certify and Inji Verify adapters with live runs in both formats (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm run stack:up && npm run test:live; rc=$?; npm run stack:down; exit $rc` exit 0, 20 live tests (2 files) pass; `npm run matrix:live -- --spec live-core` 14 of 14 cells as specified (Certify -> reference wallet -> Inji Verify `VALID` for `vc+sd-jwt`; `ldp_vc` blocked by G15 with G9, as the card allows); contract tests on recorded fixtures pass.
 
 - **Goal:** real Inji modules in the loop: Inji Certify issues, Inji Verify verifies, in `ldp_vc` and
   `vc+sd-jwt`, with every exchange recorded.
@@ -298,7 +321,9 @@ check never leaves containers running.
   - Live runs against one stack run one at a time; the Vitest `live` project already sets
     `fileParallelism: false` and a 180 s test timeout.
 
-### WP-11 Tamper and negative-path scenario catalogue (REVIEW)
+### WP-11 Tamper and negative-path scenario catalogue (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm test -w @inji-playground/scenarios` 100 tests and `npm test -w @inji-playground/formats` 148 tests pass. The `forged-x5c` scenario no longer links the privately reported gap (`c9d4709`).
 
 - **Goal:** reusable scenarios, each with an expected outcome and the specification text that makes it
   correct, plus valid "probe" variants that show interoperability gaps.
@@ -347,7 +372,9 @@ check never leaves containers running.
   - `holder-did-canonical` is expected `VALID`: the did:jwk specification forbids padding, and the padded
     and unpadded strings name the same key.
 
-### WP-13 Matrix view, history dashboard, run report page and tamper controls (REVIEW)
+### WP-13 Matrix view, history dashboard, run report page and tamper controls (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm test -w @inji-playground/web` 17 files, 240 tests pass; `npm run build -w @inji-playground/web` exits 0. A new browser test found an axe violation on the run page (scrollable message bodies not reachable by keyboard), fixed in `294dd2d`.
 
 - **Goal:** pages that turn stored runs into evidence anyone can browse.
 - **Depends on:** WP-09, WP-12 (both DONE). Tamper controls show the WP-11 catalogue once it is merged.
@@ -387,7 +414,9 @@ check never leaves containers running.
 - **Notes:** the UI shows recorded exchanges only; test data imitating protocol payloads is named
   `*.synthetic.json`. Strings go in `src/locales/en.json`. Keep AA contrast in light and dark themes.
 
-### WP-14 Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer (REVIEW)
+### WP-14 Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** the live suite of WP-10's check includes `test/live/inji-web.test.ts` (5 tests) and passed with every profile up; `npm run matrix:live -- --spec live-holder-web` against a server with `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test` gave 6 of 6 cells as specified (certify-ac -> reference wallet -> Inji Verify `VALID` for `vc+sd-jwt`; Inji Web presentation blocked by G22 and G25).
 
 - **Goal:** Inji Web as a real wallet, and an all-Inji issuance path Inji Certify -> Inji Web through Mimoto
   with no eSignet and no phone. Then presentation from Inji Web if Mimoto's login can be satisfied locally.
@@ -468,7 +497,9 @@ check never leaves containers running.
   - Measure the `holder-web` profile's memory with `docker stats` and replace the estimate in
     `docs/setup.md` (about 3 GiB total expected, not measured).
 
-### WP-15 Headless matrix CLI and nightly interoperability workflow (REVIEW)
+### WP-15 Headless matrix CLI and nightly interoperability workflow (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm run matrix:reference` exit 0, 82 of 82 cells as specified (78 pass, 4 not supported) in 22 s; `npm test -w @inji-playground/cli` 25 tests pass; the YAML check of `interop-nightly.yml` exits 0. The nightly workflow has still never run on GitHub.
 
 - **Goal:** the compatibility matrix runs with no UI, locally and nightly, and publishes `matrix.md`.
 - **Depends on:** WP-08, WP-11, WP-12.
@@ -505,7 +536,9 @@ check never leaves containers running.
     yet; the first run measures it.
   - Add the reference matrix job to `.github/workflows/ci.yml` (minimal change to a shared file).
 
-### WP-16 Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests (REVIEW)
+### WP-16 Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm run e2e` 7 of 7 browser tests pass (one more than the card: run, playback, gaps and not-found pages with axe, `294dd2d`); the keyboard-only test failed once in four runs on a focus race and was fixed (`f93e045`); the SDK is its own lazy chunk (main chunk 260 kB, SDK 1.8 MB); `playwright test --list --project e2e-live` lists `sdk-verify.spec.ts`; `docs/ux/README.md` has 12 screenshots of 2026-10-06.
 
 - **Goal:** the phone path and the official Inji Verify component in the UI, plus browser tests proving the
   whole UI works and is accessible.
@@ -544,7 +577,9 @@ check never leaves containers running.
   - Write `e2e/live/sdk-verify.spec.ts` (project `e2e-live`, not part of `npm run e2e`): the panel draws its
     QR, the reference wallet answers through the server, the page shows `VALID`. WP-17 runs it.
 
-### WP-17 End-to-end demo script, bundle check and test report (REVIEW)
+### WP-17 End-to-end demo script, bundle check and test report (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm run demo -- --ci --keep-up && npm run e2e:live; rc=$?; npm run down; exit $rc` exit 0: `DEMO PASS`, 4 of 4 cells (bundle up in 205 s including the image build), live SDK browser test passed; both live matrices as above, each in its own stack session; the clean-clone Docker-only check exit 0 (`/api/health` answered); `npm run test:report -- --all` exit 0 (972 unit, 7 browser, 20 live; stack start 71 s, 2.52 GiB). Found and fixed: the licence audit failed with npm 11.17 after the mermaid 12 update (`cf0d103`), the report dated runs in UTC and always said 'with uncommitted changes' (`fef7445`, `9e1ae2c`).
 
 - **Goal:** one command proves the demo path, and one command regenerates the test report from real
   results.
@@ -583,7 +618,9 @@ check never leaves containers running.
   28000-28999 and memory before a recording). The report states measured numbers only, with dates. Use the
   Vitest JSON reporter (`--reporter=json --outputFile=<file>`) to collect totals.
 
-### WP-18 Documentation set and interoperability gap write-up with issue drafts (REVIEW)
+### WP-18 Documentation set and interoperability gap write-up with issue drafts (DONE)
+
+- **Accepted on 2026-10-06 (review of `main`):** `npm run docs:check` exit 0 (70 Markdown files); from a separate clone `npm ci` (npm 11.17.0), `npm run matrix:reference` (82 of 82) and `npm run docs:check` exit 0. Fixed in review: the status file described the privately reported G7 (`c9d4709`); the set-up table left out `PLAYGROUND_STACK=host`, and the contributing guide still described 2026-10-04 (`e153d70`).
 
 - **Goal:** anyone can install, understand and evaluate the playground from the docs, and the Inji team
   gets gap reports it can act on.
