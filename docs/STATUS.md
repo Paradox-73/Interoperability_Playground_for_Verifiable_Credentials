@@ -9,13 +9,14 @@ for set-up and the rules every change follows.
 - Work stopped: 2026-10-04 20:45 IST.
 - `main` at that time: commit `447f05d` (2026-10-04 17:04 IST), pushed to
   <https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials>.
-- Unfinished work: branch `wip/2026-10-04-stop`, commit `6778946`, one commit on top of `main` holding 65 files
-  (about 6,600 added lines) from three tasks (WP-08, WP-11, WP-13). The branch is on GitHub (pushed
-  2026-10-04): run `git fetch origin wip/2026-10-04-stop` before you start a PARTIAL task.
+- Unfinished work of 2026-10-04: branch `wip/2026-10-04-stop`, commit `6778946` (WP-08, WP-11, WP-13). On
+  2026-10-05 it was split into one branch per task as described below, finished, and WP-15 was added;
+  see [Branches awaiting review](#branches-awaiting-review).
 
 ## Contents
 
 - [Task table](#task-table)
+- [Branches awaiting review](#branches-awaiting-review)
 - [State of the unfinished branch](#state-of-the-unfinished-branch)
 - [Task cards](#task-cards)
 - [How to split the remaining work between people](#how-to-split-the-remaining-work-between-people)
@@ -25,39 +26,42 @@ for set-up and the rules every change follows.
 
 ## Task table
 
-Status meanings: DONE = merged to `main` with its acceptance check run; PARTIAL = code exists on
-`wip/2026-10-04-stop` but is not finished or not merged; TODO = not started.
+Status meanings: DONE = merged to `main` with its acceptance check run; REVIEW = finished on its own
+branch with the definition-of-done checks and the acceptance check run, waiting for a teammate's review
+and merge; PARTIAL = code exists on `wip/2026-10-04-stop` but is not finished or not merged; TODO = not
+started.
 
-| Id    | Lane        | Title                                                                                    | Depends on                 | Status  | Commits on `main`                                                                                                                                                              |
-| ----- | ----------- | ---------------------------------------------------------------------------------------- | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| WP-01 | B-server    | Repository scaffold, shared contracts and build tooling                                  | -                          | DONE    | `6d15729`, `356727b`                                                                                                                                                           |
-| WP-02 | A-reference | Credential formats, keys and DID resolution library                                      | WP-01                      | DONE    | `d7925bc`                                                                                                                                                                      |
-| WP-03 | B-server    | Server foundation: store, events, orchestrator, REST and WebSocket API                   | WP-01                      | DONE    | `a4e5636`, `326f9db`                                                                                                                                                           |
-| WP-04 | C-web       | UI foundation: app shell, three-column role selector, run bar, live timeline             | WP-01                      | DONE    | `81f971e`                                                                                                                                                                      |
-| WP-05 | D-stack     | Import upstream Inji configuration unchanged; local Inji stack and one-command bundle    | WP-01                      | DONE    | `e491c2d`, `ab5da50`, `dcb0cce`, `2a809f5`, `ba25dc6`, `33cbae5`, `af9e36d`, `67d01b3`, `60a699f`, `d4b9a35`, `e19cb30`, `76f2b67`, `5546f31`, `46b042b`, `981256e`, `0454a87` |
-| WP-06 | A-reference | OpenID4VCI reference issuer, test authorization server and wallet issuance client        | WP-02                      | DONE    | `79b2612`, `6276a87`, `1294ea0`                                                                                                                                                |
-| WP-07 | D-stack     | OpenID4VP reference verifier and wallet presentation client                              | WP-02                      | DONE    | `dba2418`                                                                                                                                                                      |
-| WP-08 | B-server    | Recording proxy, reference and manual roles, first reference run end to end              | WP-03, WP-06, WP-07        | PARTIAL | -                                                                                                                                                                              |
-| WP-09 | C-web       | Protocol inspector, animated sequence diagram and run playback                           | WP-04                      | DONE    | `447f05d`                                                                                                                                                                      |
-| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | TODO    | -                                                                                                                                                                              |
-| WP-11 | A-reference | Tamper and negative-path scenario catalogue                                              | WP-06, WP-07               | PARTIAL | -                                                                                                                                                                              |
-| WP-12 | B-server    | Reports, history, compatibility matrix and metrics API                                   | WP-03                      | DONE    | `b010184`                                                                                                                                                                      |
-| WP-13 | C-web       | Matrix view, history dashboard, run report page and tamper controls                      | WP-09, WP-12               | PARTIAL | -                                                                                                                                                                              |
-| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | TODO    | -                                                                                                                                                                              |
-| WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | TODO    | -                                                                                                                                                                              |
-| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | TODO    | -                                                                                                                                                                              |
-| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | TODO    | -                                                                                                                                                                              |
-| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | TODO    | -                                                                                                                                                                              |
+| Id    | Lane        | Title                                                                                    | Depends on                 | Status | Commits on `main`                                                                                                                                                              |
+| ----- | ----------- | ---------------------------------------------------------------------------------------- | -------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| WP-01 | B-server    | Repository scaffold, shared contracts and build tooling                                  | -                          | DONE   | `6d15729`, `356727b`                                                                                                                                                           |
+| WP-02 | A-reference | Credential formats, keys and DID resolution library                                      | WP-01                      | DONE   | `d7925bc`                                                                                                                                                                      |
+| WP-03 | B-server    | Server foundation: store, events, orchestrator, REST and WebSocket API                   | WP-01                      | DONE   | `a4e5636`, `326f9db`                                                                                                                                                           |
+| WP-04 | C-web       | UI foundation: app shell, three-column role selector, run bar, live timeline             | WP-01                      | DONE   | `81f971e`                                                                                                                                                                      |
+| WP-05 | D-stack     | Import upstream Inji configuration unchanged; local Inji stack and one-command bundle    | WP-01                      | DONE   | `e491c2d`, `ab5da50`, `dcb0cce`, `2a809f5`, `ba25dc6`, `33cbae5`, `af9e36d`, `67d01b3`, `60a699f`, `d4b9a35`, `e19cb30`, `76f2b67`, `5546f31`, `46b042b`, `981256e`, `0454a87` |
+| WP-06 | A-reference | OpenID4VCI reference issuer, test authorization server and wallet issuance client        | WP-02                      | DONE   | `79b2612`, `6276a87`, `1294ea0`                                                                                                                                                |
+| WP-07 | D-stack     | OpenID4VP reference verifier and wallet presentation client                              | WP-02                      | DONE   | `dba2418`                                                                                                                                                                      |
+| WP-08 | B-server    | Recording proxy, reference and manual roles, first reference run end to end              | WP-03, WP-06, WP-07        | REVIEW | `d5eae9c`, `304854e` (branch `wp-08-recording`)                                                                                                                                |
+| WP-09 | C-web       | Protocol inspector, animated sequence diagram and run playback                           | WP-04                      | DONE   | `447f05d`                                                                                                                                                                      |
+| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | TODO   | -                                                                                                                                                                              |
+| WP-11 | A-reference | Tamper and negative-path scenario catalogue                                              | WP-06, WP-07               | REVIEW | `48e2dfc`, `5f9e0f5` (branch `wp-11-scenarios`)                                                                                                                                |
+| WP-12 | B-server    | Reports, history, compatibility matrix and metrics API                                   | WP-03                      | DONE   | `b010184`                                                                                                                                                                      |
+| WP-13 | C-web       | Matrix view, history dashboard, run report page and tamper controls                      | WP-09, WP-12               | REVIEW | `0dec756`, `d1c8879` (branch `wp-13-pages`)                                                                                                                                    |
+| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | TODO   | -                                                                                                                                                                              |
+| WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | REVIEW | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
+| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | TODO   | -                                                                                                                                                                              |
+| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | TODO   | -                                                                                                                                                                              |
+| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | TODO   | -                                                                                                                                                                              |
 
-Longest chain of remaining work: WP-08 -> WP-10 -> WP-14 -> WP-17 -> WP-18. Start WP-08 first; everything
-on that chain waits for it.
+Longest chain of remaining work: WP-10 -> WP-14 -> WP-17 -> WP-18. WP-08 is finished (in review), so WP-10
+can start; WP-16 can start too (WP-08, WP-09 and WP-13 are finished).
 
 ### What the DONE tasks give you
 
-- Every root `npm run` command exists. Six still call a placeholder that prints `not implemented yet (WP-xx)`
-  and exits 1: `smoke` (WP-08), `matrix:reference` / `matrix:live` (WP-15), `e2e` / `e2e:live` (WP-16),
-  `demo` and `test:report` (WP-17), `docs:check` (WP-18). Implementing a command means replacing the file
-  the script calls, never editing `package.json`.
+- Every root `npm run` command exists. With the branches in review merged, four still call a placeholder that
+  prints `not implemented yet (WP-xx)` and exits 1: `e2e` / `e2e:live` (WP-16), `demo` and `test:report`
+  (WP-17), `docs:check` (WP-18). `smoke` (WP-08) and `matrix:reference` / `matrix:live` (WP-15) are
+  implemented. Implementing a command means replacing the file the script calls, never editing
+  `package.json`.
 - Measured on `main` on 2026-10-04 (before work stopped): `npm ci`, lint, typecheck, `npm test` and
   `npm run build` exit 0; `npm run stack:smoke` printed `SMOKE PASS` in 166 s, including Inji Verify
   `SUCCESS` for a Certify `ldp_vc` under `did:web:certify.ps02.test` and for a `vc+sd-jwt`; `npm run up`
@@ -68,7 +72,38 @@ on that chain waits for it.
   [inspector](../packages/web/src/inspector/README.md), [Inji stack](../deploy/inji-stack/README.md),
   [set-up](setup.md), [API](api/README.md).
 
+## Branches awaiting review
+
+Work of 2026-10-05. The branches are stacked, each on the one before, so merge them in this order (or
+open each pull request against the branch before it, and retarget after each merge):
+
+| Order | Branch             | Task  | Based on           | Commits                            |
+| ----- | ------------------ | ----- | ------------------ | ---------------------------------- |
+| 1     | `wp-11-scenarios`  | WP-11 | `main` (`cf0c535`) | `48e2dfc`, `5f9e0f5`               |
+| 2     | `wp-08-recording`  | WP-08 | `wp-11-scenarios`  | `d5eae9c`, `304854e`               |
+| 3     | `wp-13-pages`      | WP-13 | `wp-08-recording`  | `0dec756`, `d1c8879`               |
+| 4     | `wp-15-matrix-cli` | WP-15 | `wp-13-pages`      | `36591c6`, then this status update |
+
+The first commit of each PARTIAL task is the work from `wip/2026-10-04-stop` as it was, so reviewers can
+tell old work from new. Checks run on 2026-10-05 on the tip of `wp-15-matrix-cli` (Windows 11, Node
+24.11.1): `npm run lint`, `npm run format:check`, `npm run typecheck` and `npm run build` exit 0;
+`npm test`: 62 files, 913 tests, 0 failures. One web page test once ran past its timeout while every
+package was tested in parallel on a cold cache, and passed on the next runs.
+
+Changes outside a task's own folders, for the owning lane to review:
+
+- WP-11: `packages/server/test/api.test.ts` ("lists scenarios" checks the whole catalogue);
+  `packages/oid4vp/src/verifier/verify-presentation.ts` (from the wip branch: `x5c` chains must end at a
+  trust anchor).
+- WP-08: `packages/scenarios/src/wallet.ts` (`respondWithScenario` takes host callbacks for the server's
+  wallet); `.gitguardian.yaml` (ignores the redacted `packages/protocol/fixtures/*.recorded.json`).
+- WP-13: `packages/web/src/api/compatibility.ts` (optional `scenario` in the compatibility query).
+- WP-15: `.github/workflows/ci.yml` (reference matrix job), `.gitignore` (`docs/interop-report/*/runs/`),
+  `.prettierignore` (`docs/interop-report/`).
+
 ## State of the unfinished branch
+
+Kept for the record; everything listed here is now on the branches above.
 
 Checked on 2026-10-04 at about 21:20 IST on a working tree identical to `wip/2026-10-04-stop` (all 65 files
 compared byte for byte):
@@ -140,7 +175,24 @@ check never leaves containers running.
     `did:jwk`, `did:web`), `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`.
   - `test/reference-flow.test.ts`: happy path for both formats, `final-1.0` + OpenID4VCI 1.0 for
     `vc+sd-jwt`, and step and artefact events. These pass.
-- **What remains:**
+- **Done on 2026-10-05 (branch `wp-08-recording`):**
+  - `npm test -w @inji-playground/server`: 19 files, 206 tests pass. The 4 failing tests now build their app
+    with `buildApp({ builtInRoles: false })` where they check exactly the roles they pass, and a new test
+    checks that the reference roles and the phone wallet are registered by default.
+  - `npm run smoke -- --issuer ref-issuer --wallet ref-wallet --verifier ref-verifier --format vc+sd-jwt`:
+    `verdict=pass`, 7 recorded exchanges (`issuer.offer`, `issuer.metadata`, `as.metadata`, `token`,
+    `credential`, `wallet.fetch-request`, `wallet.submit`), exit code 0.
+  - Scenarios through the server: `buildApp` uses `scenarioHooks()` by default; `ref-issuer` applies issuer
+    variants (validity, type, `vct`, DID method through variant issuers at `/ref/issuer/did-key` and
+    `/ref/issuer/did-jwk`); `ref-wallet` applies wallet behaviour and presentation tampers through
+    `respondWithScenario`, and replays its last genuine presentation for `vp-replay`. The compatibility
+    check reads `requires` and `vpProfiles`, so cells a scenario cannot be produced on are `not-supported`.
+    `test/reference-scenarios.test.ts` runs all 79 applicable catalogue cells through `POST /api/runs`.
+  - New tests: proxy body recording, inbound recorder at `/ref/issuer`, `mobile-wallet` completed by a
+    scripted wallet (`test/capture-points.test.ts`), recorded fixtures.
+  - `packages/protocol/fixtures/reference-ldp-vc.recorded.json` and `reference-sd-jwt-final.recorded.json`
+    (redacted, from `npm run smoke -- --export`); server README updated.
+- **What remained on 2026-10-04 (all done):**
   - Fix the 4 failing server tests. They assert the state before reference roles and the full scenario list
     existed: `api.test.ts` "lists roles with health, filtered by kind", "lists scenarios", "development-only
     fake roles are registered only when PLAYGROUND_FAKE_ROLES is on" (expects `[]` from `/api/roles`), and
@@ -237,7 +289,10 @@ check never leaves containers running.
     chain to end at a configured trust anchor, so `forged-x5c` is rejected. This file is in lane D's folder;
     tell that lane in the pull request.
   - Formats and scenarios tests pass on the branch.
-- **What remains:**
+- **Done on 2026-10-05 (branch `wp-11-scenarios`):** `npm test -w @inji-playground/scenarios` 100 tests
+  pass (the table-driven reference matrix included), `npm test -w @inji-playground/formats` 146 pass;
+  typecheck, lint and format are clean; catalogue table in `packages/scenarios/README.md`.
+- **What remained on 2026-10-04 (all done):**
   - Fix the 2 type errors in `packages/scenarios/test/catalogue.test.ts` (lines 144 and 180: a
     `ScenarioSpec` passed where `Pick<ScenarioDefinition, 'issuer' | 'wallet'>` is expected); then
     `npm run typecheck` must exit 0 for the scenarios workspace.
@@ -276,7 +331,13 @@ check never leaves containers running.
   - `features/tamper/` (`TamperControls.tsx`, `ReplayWithTamper.tsx`, store, scenario list);
   - `features/gaps/` (`GapsPage.tsx` for `GET /api/gaps`);
   - 224 new lines in `src/locales/en.json`.
-- **What remains:**
+- **Done on 2026-10-05 (branch `wp-13-pages`):** `npm test -w @inji-playground/web` 17 files, 235 tests
+  pass, including `test/evidence-pages.test.tsx` (every item of the acceptance check, and axe on the
+  matrix, history and report pages); `npm run build -w @inji-playground/web` exits 0. `/runs` is the history
+  dashboard, `/runs/:id/report` the report, `/matrix` and `/gaps` their pages; `RunsPage` and
+  `PlaceholderPage` were removed with the locale keys only they used. The run bar has the scenario picker,
+  the expected outcome before the run and expected vs actual after it.
+- **What remained on 2026-10-04 (all done):**
   - `en.json` on the branch removed keys still used on `main`: `pages.runs.title`, `pages.runs.empty`,
     `pages.runs.none`, the `runs` navigation label, `pages.matrix.empty`, `pages.gaps.title` and
     `pages.gaps.empty` among them. This causes the 5 type errors in `src/pages/RunsPage.tsx` and
@@ -367,8 +428,14 @@ check never leaves containers running.
   rendering, exit code on mismatch, duration estimate);
   `node -e "require('yaml').parse(require('fs').readFileSync('.github/workflows/interop-nightly.yml','utf8'))"`
   exits 0.
+- **Done on 2026-10-05 (branch `wp-15-matrix-cli`):** `npm run matrix:reference` exits 0 with 82 of 82 cells
+  as specified (78 pass, 4 not supported) in 21 s and writes `docs/interop-report/reference/matrix.md` and
+  `matrix.json`; `npm test -w @inji-playground/cli` 23 tests pass; the YAML check of
+  `interop-nightly.yml` exits 0. The live specs (`live-core`, `live-holder-web`, `demo`) are written but
+  cannot run until WP-10 and WP-14 add the Inji roles; the nightly workflow has not run yet. The per-cell
+  `runs/` folders are git-ignored (about 5 MB per reference run) and uploaded by the nightly workflow.
 - **Notes:**
-  - Today `packages/cli` has an argument parser (`src/main.ts`, `test/args.test.ts`) and
+  - Before this work `packages/cli` had an argument parser (`src/main.ts`, `test/args.test.ts`) and
     `scripts/matrix.mjs` is a placeholder; `specs/` holds only a README.
   - Commands: `run` (one cell) and `matrix --spec <file>`; talk to a server over REST (`--server`, default
     `http://localhost:28100`) or start an in-process reference server (`--reference`, temporary run
@@ -476,12 +543,12 @@ check never leaves containers running.
 
 Each lane owns folders; a person works only in their lane's folders. Lanes:
 
-| Lane        | Folders it owns                                                                                                                                                                                                          | Remaining tasks            |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
-| A-reference | `packages/formats/`, `packages/oid4vci/`, `packages/scenarios/`, `packages/cli/`, `.github/workflows/interop-nightly.yml`, `docs/interop-report/reference/`                                                              | WP-11, WP-15               |
-| B-server    | root tooling files, `packages/protocol/`, `packages/server/` except `src/adapters/inji/`, `test/live/`, `test/contract/inji/`; `.github/workflows/ci.yml`; `docs/api/`                                                   | WP-08                      |
-| C-web       | `packages/web/` (including `e2e/`), `docs/ux/`, `scripts/e2e.mjs`                                                                                                                                                        | WP-13, WP-16               |
-| D-stack     | `deploy/`, `packages/oid4vp/`, `packages/server/src/adapters/inji/`, `packages/server/test/live/`, `packages/server/test/contract/inji/`, `scripts/` (except `e2e.mjs`), `docs/` (except the folders above), `README.md` | WP-10, WP-14, WP-17, WP-18 |
+| Lane        | Folders it owns                                                                                                                                                                                                          | Remaining tasks               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
+| A-reference | `packages/formats/`, `packages/oid4vci/`, `packages/scenarios/`, `packages/cli/`, `.github/workflows/interop-nightly.yml`, `docs/interop-report/reference/`                                                              | none (WP-11, WP-15 in review) |
+| B-server    | root tooling files, `packages/protocol/`, `packages/server/` except `src/adapters/inji/`, `test/live/`, `test/contract/inji/`; `.github/workflows/ci.yml`; `docs/api/`                                                   | none (WP-08 in review)        |
+| C-web       | `packages/web/` (including `e2e/`), `docs/ux/`, `scripts/e2e.mjs`                                                                                                                                                        | WP-16 (WP-13 in review)       |
+| D-stack     | `deploy/`, `packages/oid4vp/`, `packages/server/src/adapters/inji/`, `packages/server/test/live/`, `packages/server/test/contract/inji/`, `scripts/` (except `e2e.mjs`), `docs/` (except the folders above), `README.md` | WP-10, WP-14, WP-17, WP-18    |
 
 With two people:
 

@@ -107,7 +107,8 @@ npm exec -w @inji-playground/web -- playwright install chromium
 | `docker build -t ps02-playground:dev .`   | the playground container image                                                        |
 
 Commands that print `not implemented yet (WP-xx)` and exit 1 belong to unfinished tasks:
-`npm run smoke`, `matrix:reference`, `matrix:live`, `e2e`, `e2e:live`, `demo`, `test:report`, `docs:check`.
+`npm run e2e`, `e2e:live`, `demo`, `test:report`, `docs:check`. `npm run smoke` runs one reference cell
+end to end and `npm run matrix:reference` the reference matrix (both without Docker).
 The task id in the message points to the card in [docs/STATUS.md](docs/STATUS.md).
 
 Before every pull request: `npm run lint && npm run format:check && npm run typecheck && npm test && npm run build`.
@@ -178,7 +179,7 @@ Environment variables read by the server (`packages/server/src/config/index.ts`)
 | `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`               | image tag the bundle builds and runs                                                  |
 | `PLAYWRIGHT_BASE_URL`                                                                                                | `http://localhost:28174`               | where Playwright points; `http://localhost:28100` for the bundle                      |
 
-Added on the unfinished branch `wip/2026-10-04-stop` (WP-08), not on `main` yet: `PLAYGROUND_PROXY_TIMEOUT_MS`,
+Added by WP-08 (branch `wp-08-recording`, in review): `PLAYGROUND_PROXY_TIMEOUT_MS`,
 `PLAYGROUND_NETWORK_MAP` (host mode: `deploy/inji-stack/network-map.host.json`), `PLAYGROUND_EXTRA_CA` (for
 example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`), `PLAYGROUND_REF_ISSUER_DID` (`did:key`, `did:jwk` or
 `did:web`), and the server's own `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`
@@ -204,8 +205,10 @@ What works, as of 2026-10-04:
    `SMOKE PASS` in 166 s on 2026-10-04. The report with every request and response is in
    `$PLAYGROUND_RUN_DIR/stack/smoke/`.
 
-3. **Reference issuer -> reference wallet -> reference verifier (branch `wip/2026-10-04-stop`, no Docker).**
-   On that branch a run through the API completes. Run on 2026-10-04 (server on port 28655):
+3. **Reference issuer -> reference wallet -> reference verifier (no Docker).** `npm run smoke` runs one
+   cell end to end and printed `verdict=pass` with 7 recorded exchanges on 2026-10-05; `npm run
+matrix:reference` runs the 82 cells of `packages/cli/specs/reference.yaml` (82 as specified on
+   2026-10-05). The same run through the API, measured on 2026-10-04 (server on port 28655):
 
    ```bash
    PLAYGROUND_PORT=28655 node --conditions=source --import tsx packages/server/src/main.ts &
@@ -219,9 +222,10 @@ What works, as of 2026-10-04:
    The 7 exchanges were tagged `issuer.offer`, `issuer.metadata`, `as.metadata`, `token`, `credential`,
    `wallet.fetch-request`, `wallet.submit`.
 
-Not working yet: Inji roles inside a playground run (WP-10, WP-14), tamper scenarios through the server
-(WP-08 wiring after WP-11), matrix, history and report pages (WP-13), the phone path and Inji Verify SDK panel
-(WP-16), `npm run smoke`, matrix, demo and report commands.
+Not working yet: Inji roles inside a playground run (WP-10, WP-14), the live matrices (they need those
+roles), the manual-wallet modal and Inji Verify SDK panel in the UI (WP-16), the demo and report commands
+(WP-17). Tamper scenarios through the server, the matrix, history and report pages, `npm run smoke` and
+`npm run matrix:reference` work on the branches in review (see [docs/STATUS.md](docs/STATUS.md)).
 
 ## Repository layout
 

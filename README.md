@@ -68,11 +68,11 @@ The design decisions are recorded in [docs/adr](docs/adr/README.md).
 | `npm run lint` / `npm run format:check` / `npm run typecheck`                     | ESLint, Prettier, TypeScript                                                                    |
 | `npm test`                                                                        | All unit and integration tests (Vitest), without the live Inji stack                            |
 | `npm run test:live`                                                               | Tests against the running Inji stack                                                            |
-| `npm run smoke`                                                                   | One reference run end to end (not implemented yet)                                              |
+| `npm run smoke`                                                                   | One reference run end to end, printing the recorded exchanges and the verdict                   |
 | `npm run e2e` / `npm run e2e:live`                                                | Browser tests (not implemented yet)                                                             |
 | `npm run stack:init` / `stack:up` / `stack:down` / `stack:status` / `stack:smoke` | Local Inji stack ([docs/setup.md](docs/setup.md#local-inji-stack))                              |
 | `npm run up` / `npm run down`                                                     | One-command bundle: Inji stack + playground ([docs/setup.md](docs/setup.md#one-command-bundle)) |
-| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix (not implemented yet)                                             |
+| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                          |
 | `npm run demo`                                                                    | Demo check before recording (not implemented yet)                                               |
 | `npm run test:report` / `npm run docs:check` / `npm run openapi`                  | Test report, documentation check, OpenAPI export (not implemented yet)                          |
 
@@ -82,7 +82,10 @@ To be written with the flows themselves.
 
 ## Interoperability matrix and gaps
 
-To be published with the first dated runs.
+Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
+run on 2026-10-05, 82 of 82 cells as specified. The live matrix against Inji Certify, Inji Verify and Inji
+Web follows with the Inji adapters (WP-10, WP-14); the gaps found so far are listed in
+[docs/STATUS.md](docs/STATUS.md#gap-ids-used-in-commits-and-docs).
 
 ## Contributing and security
 
