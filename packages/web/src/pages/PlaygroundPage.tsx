@@ -5,6 +5,8 @@
  */
 import { useTranslation } from 'react-i18next';
 import { RunBar } from '../features/run-bar/RunBar';
+import { SdkPanelForRun } from '../features/inji-verify-sdk/SdkPanelForRun';
+import { ManualWalletModal } from '../features/manual-wallet/ManualWalletModal';
 import { RoleSelector } from '../features/selector/RoleSelector';
 import { Timeline } from '../features/timeline/Timeline';
 import { LazyRunExplorer } from '../inspector/LazyRunExplorer';
@@ -22,8 +24,10 @@ export function PlaygroundPage() {
       <h1 className="sr-only">{t('app.nav.playground')}</h1>
       <RoleSelector />
       <RunBar />
+      <SdkPanelForRun runId={activeRunId} />
       <Timeline runId={activeRunId} linkToRun />
       {activeRunId && <LazyRunExplorer key={activeRunId} runId={activeRunId} events={events} />}
+      <ManualWalletModal runId={activeRunId} />
     </div>
   );
 }

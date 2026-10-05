@@ -5,6 +5,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Timeline } from '../features/timeline/Timeline';
+import { SdkPanelForRun } from '../features/inji-verify-sdk/SdkPanelForRun';
+import { ManualWalletModal } from '../features/manual-wallet/ManualWalletModal';
 import { useDocumentTitle } from '../app/use-document-title';
 import { LazyRunExplorer } from '../inspector/LazyRunExplorer';
 import { useRunEvents } from '../state/run-events';
@@ -30,8 +32,10 @@ export function RunPage() {
           </Link>
         </p>
       )}
+      <SdkPanelForRun runId={id} />
       <Timeline runId={id} />
       {id && <LazyRunExplorer key={id} runId={id} events={events} />}
+      <ManualWalletModal runId={id} />
     </div>
   );
 }

@@ -594,5 +594,35 @@
     "evidenceRun": "Report of run {{runId}}",
     "upstream": "Upstream issue",
     "issueDraft": "Issue draft"
+  },
+  "manualWallet": {
+    "intro": "Run {{runId}} is waiting for a wallet app on a phone.",
+    "qrLabel": "QR code for the wallet app",
+    "qrCaption": "Scan with the wallet app",
+    "linkHeading": "Or open this link on the phone",
+    "copy": "Copy link",
+    "copiedButton": "Copied",
+    "copied": "Link copied",
+    "openLink": "Open on this device",
+    "waiting": "Waiting for the wallet. The run continues as soon as the playground sees its request.",
+    "timeLeft": "Time left: {{time}}",
+    "done": "Done",
+    "doneHint": "Press Done if the wallet finished but its traffic does not pass through the playground.",
+    "doneSent": "Marked as done; the run continues.",
+    "cancel": "Cancel run",
+    "cancelled": "Run cancelled",
+    "failed": "That did not work: {{reason}}"
+  },
+  "injiVerifySdk": {
+    "heading": "Inji Verify (official web component)",
+    "intro": "The verifier of this run is the Inji Verify SDK in this page. Its QR code is the request the wallet answers; every call it makes passes through the playground and is recorded.",
+    "loading": "Loading the Inji Verify component...",
+    "received": "Inji Verify received the presentation",
+    "status": {
+      "waiting": "Waiting for the wallet to answer the QR code.",
+      "received": "Presentation received; the playground is fetching the result.",
+      "error": "The Inji Verify component reported a problem; the run records it."
+    },
+    "callbackFailed": "The playground did not accept the component's signal: {{reason}}"
   }
 }
