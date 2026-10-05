@@ -47,6 +47,10 @@ services:
     depends_on:
       init:
         condition: service_completed_successfully
+      # The demo cells need Certify's SD-JWT configuration. A dependency also lets `up --wait` accept the
+      # seed container exiting (it fails on an exited container that nothing waits for).
+      certify-seed:
+        condition: service_completed_successfully
       # The playground reads Mimoto's client certificate at start; Mimoto's wrapper creates it on first start.
       # Without the holder-web profile there is no Mimoto and no wait.
       mimoto-service:

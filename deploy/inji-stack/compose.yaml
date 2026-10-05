@@ -359,7 +359,8 @@ services:
     depends_on:
       - mimoto-service
     healthcheck:
-      test: ['CMD-SHELL', 'wget -q -O /dev/null -T 5 http://localhost:3004/']
+      # 127.0.0.1: nginx listens on IPv4 only, and busybox wget tries localhost as ::1 (refused).
+      test: ['CMD-SHELL', 'wget -q -O /dev/null -T 5 http://127.0.0.1:3004/']
       interval: 10s
       timeout: 6s
       retries: 30
@@ -389,7 +390,7 @@ services:
     depends_on:
       - verify-service
     healthcheck:
-      test: ['CMD-SHELL', 'wget -q -O /dev/null -T 5 http://localhost:8000/']
+      test: ['CMD-SHELL', 'wget -q -O /dev/null -T 5 http://127.0.0.1:8000/']
       interval: 10s
       timeout: 6s
       retries: 30
