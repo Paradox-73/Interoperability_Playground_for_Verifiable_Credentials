@@ -7,7 +7,7 @@ is left is in [docs/STATUS.md](docs/STATUS.md).
 - [One-time set-up](#one-time-set-up)
 - [Build and test](#build-and-test)
 - [Local Inji stack and ports](#local-inji-stack-and-ports)
-- [Running the end-to-end path today](#running-the-end-to-end-path-today)
+- [Running the end-to-end path](#running-the-end-to-end-path)
 - [Repository layout](#repository-layout)
 - [How packages fit together](#how-packages-fit-together)
 - [Tests](#tests)
