@@ -8,7 +8,8 @@
  * fake roles when enabled, then roles passed by the caller), orchestrator, OpenAPI generator, routes
  * (API, inbound recorder + hosted reference roles, reverse proxy), built UI.
  */
-import { readFileSync } from 'node:fs';
+import { X509Certificate } from 'node:crypto';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import fastifyStatic from '@fastify/static';
 import fastifyWebsocket from '@fastify/websocket';
@@ -41,7 +42,12 @@ import { websocketRoutes } from './api/ws.js';
 import { databasePath, extraCaPath, hasWebDist, networkMapPath, type Config } from './config/index.js';
 import { EventBus } from './events/bus.js';
 import { GapRegister } from './gaps/register.js';
-import { createReferenceHosting } from './hosting/reference-hosting.js';
+import {
+  CERTIFY_AC_SCOPES,
+  MIMOTO_CLIENT_ID,
+  createReferenceHosting,
+  type ReferenceHostingOptions,
+} from './hosting/reference-hosting.js';
 import { devFakeRoles } from './orchestrator/fake-roles.js';
 import { Orchestrator, type ScenarioCatalogue } from './orchestrator/orchestrator.js';
 import { RoleRegistry, type RoleRegistration } from './orchestrator/registry.js';
@@ -85,7 +91,16 @@ export interface BuildAppOptions {
  * JSON 404; any other GET for a page (no file extension) gets the UI's index.html, so client-side
  * routes such as /runs/42 work after a browser reload.
  */
-const SERVER_PREFIXES = ['/api/', '/ws', '/v1/', '/ref/', '/proxy/', '/metrics'];
+const SERVER_PREFIXES = [
+  '/api/',
+  '/ws',
+  '/v1/',
+  '/ref/',
+  '/proxy/',
+  '/metrics',
+  '/.well-known/',
+  '/contexts/',
+];
 
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const { config } = options;
@@ -136,7 +151,12 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     ...(config.dbPath === ':memory:' ? {} : { keysDir: join(config.runDir, 'keys') }),
     issuerDidMethod: config.refIssuerDid,
     fetch: () => transport,
-    ...(config.stack === 'off' ? {} : { remoteContexts: { cacheDir: join(config.runDir, 'contexts') } }),
+    ...(config.stack === 'off'
+      ? {}
+      : {
+          remoteContexts: { cacheDir: join(config.runDir, 'contexts') },
+          ...holderWebResources(config),
+        }),
   });
 
   const registry = new RoleRegistry();
@@ -145,6 +165,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       config,
       hub: capture,
       onCertifyTrustAnchors: (pems) => reference.verifier.addX5cTrustAnchors(pems),
+      reference,
     })) {
       // The web component's run waits for a person to have the page open, so it gets the person timeout.
       const browser = role.describe().interaction === 'browser';
@@ -256,4 +277,34 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
 
   return app;
+}
+
+/**
+ * What the test authorization server needs for the holder-web profile: certify-ac's scope and audience, and
+ * Mimoto as a private_key_jwt client with the key from the certificate the stack generated for it
+ * (`$PLAYGROUND_RUN_DIR/stack/mimoto/oidc-client.crt`), when that file exists.
+ */
+function holderWebResources(
+  config: Config,
+): Pick<ReferenceHostingOptions, 'extraResources' | 'extraClients'> {
+  const extraResources = [
+    {
+      scopes: [...CERTIFY_AC_SCOPES],
+      audience: `${config.injiCertifyAcIssuer.replace(/\/+$/, '')}/v1/certify/issuance/credential`,
+    },
+  ];
+  const certificate = join(config.runDir, 'stack', 'mimoto', 'oidc-client.crt');
+  if (!existsSync(certificate)) return { extraResources };
+  const jwk = new X509Certificate(readFileSync(certificate)).publicKey.export({ format: 'jwk' });
+  return {
+    extraResources,
+    extraClients: [
+      {
+        clientId: MIMOTO_CLIENT_ID,
+        redirectUris: [`${config.injiWebUrl.replace(/\/+$/, '')}/redirect`],
+        authMethod: 'private_key_jwt',
+        jwks: { keys: [{ ...jwk, alg: 'RS256', use: 'sig' }] },
+      },
+    ],
+  };
 }

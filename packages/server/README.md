@@ -62,8 +62,10 @@ server with a message naming the variable.
 | `PLAYGROUND_FAKE_ROLES`                                                         | `0`                                        | `1` registers the development-only "Test role (fake)" roles                                           |
 | `PLAYGROUND_REF_ISSUER_DID`                                                     | `did:key`                                  | DID method of the reference issuer at `/ref/issuer`: `did:key`, `did:jwk`, `did:web`                  |
 | `PLAYGROUND_PROXY_TIMEOUT_MS`                                                   | `110000`                                   | How long the reverse proxy waits for an Inji service                                                  |
-| `INJI_VERIFY_SUBMISSION_BASE_URL`                                               | `http://verify-service:8080/v1/verify`     | `response_uri` base Inji Verify gives wallets; the reference wallet accepts responses there           |
+| `INJI_VERIFY_SUBMISSION_BASE_URL`                                               | `https://verify.ps02.test/v1/verify`       | `response_uri` base Inji Verify gives wallets; the reference wallet accepts responses there           |
 | `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL` | host ports, or service names in the bundle | Upstreams of `/proxy/:target/*` and `/v1/verify/*` (`src/recording/targets.ts`)                       |
+| `INJI_CERTIFY_AC_ISSUER`                                                        | `https://ref.ps02.test/proxy/certify-ac`   | certify-ac's credential issuer id; the test authorization server gives its scopes this audience       |
+| `INJI_WEB_URL`                                                                  | `http://localhost:28004`                   | Inji Web's address; `<url>/redirect` is Mimoto's redirect URI at the test authorization server        |
 | `PLAYGROUND_NETWORK_MAP`                                                        | (none)                                     | Host mode: maps the stack's container names to host ports (`deploy/inji-stack/network-map.host.json`) |
 | `PLAYGROUND_EXTRA_CA`                                                           | (none)                                     | PEM file trusted for outbound HTTPS, for example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`      |
 
@@ -189,6 +191,8 @@ Registered only when `PLAYGROUND_STACK` is `host` or `bundle` (`src/adapters/inj
 | `inji-certify`    | issuer   | Inji Certify 0.14.0: `POST /v1/certify/pre-authorized-data` with the farmer claims the configuration advertises, returns the offer (`FarmerCredential`, `FarmerSdJwt`)  |
 | `inji-verify`     | verifier | Inji Verify 0.18.2 API: `POST /vp-request`, the wallet request built as Inji's front ends build it, status long poll, `POST /v2/vp-results/{transactionId}`             |
 | `inji-verify-sdk` | verifier | The official web component in the page creates the request through `/v1/verify`; the role rebuilds it from the recorded answer and fetches the result on `onVPReceived` |
+| `inji-certify-ac` | issuer   | certify-ac, Inji Certify 0.14.0 in authorization code mode: wallet-initiated issuance (no offer); the wallet starts at its issuer metadata through `/proxy/certify-ac`  |
+| `inji-web`        | wallet   | Inji Web through Mimoto 0.22.0: guest download, then sign-in with a test ID token, a wallet (create, unlock), store, and the presentation through Mimoto's API          |
 
 - Results: every check valid -> `VALID`; a genuine signature with a failed expiry check -> `EXPIRED`;
   anything else, including an HTTP 5xx from verify-service, -> `INVALID` with the failing checks named.
@@ -208,12 +212,40 @@ Registered only when `PLAYGROUND_STACK` is `host` or `bundle` (`src/adapters/inj
 - Outbound calls to the stack are drawn as `inji-certify` and `inji-verify` on the sequence diagram
   (`serviceLabels` in `src/recording/targets.ts`).
 
+### Inji Web and certify-ac
+
+`inji-web` drives Mimoto's HTTP API the way Inji Web's pages do, without a browser:
+
+1. Receive: Mimoto's issuer list names the run's issuer by `credential_issuer_host`; the role builds Inji
+   Web's authorization request (PKCE S256, client `ps02-mimoto`, redirect `<INJI_WEB_URL>/redirect`), lets
+   the test authorization server approve it, and posts the code to `POST /v1/mimoto/credentials/download`
+   (guest mode, which answers a PDF). Mimoto's token and credential requests pass `/ref/*` and
+   `/proxy/certify-ac`, where the role claims them for the run; the credential is read from that recording.
+2. Present: `POST /auth/google/token-login` with an ID token from the test authorization server (Mimoto's
+   Google provider points there), a wallet created and unlocked with a test PIN, the credential stored again
+   with a new code (`POST /wallets/{id}/credentials`), then `POST /wallets/{id}/presentations` with the
+   verifier's request, the matching-credentials list, and `PATCH` with the selection.
+
+Both need the server on 28100 with `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test`: certify-ac accepts only
+tokens issued by `https://ref.ps02.test/ref/as`. With a stack, the test authorization server registers
+certify-ac's scopes (`mock_identity_vc_ldp`, `farmer_sd_jwt`) with certify-ac's credential endpoint as
+audience, and Mimoto as a `private_key_jwt` client with the certificate in
+`$PLAYGROUND_RUN_DIR/stack/mimoto/oidc-client.crt`. The reference issuer answers Inji Web through the
+wallet-initiated mode of `ref-issuer` (the orchestrator asks for it when the wallet cannot take an offer).
+Presentation definitions sent to Inji Verify carry a `pattern` in every field filter, because Mimoto refuses
+filters without one (G23); JSON Schema ignores `pattern` for arrays, so other wallets match as before.
+
 Measured on 2026-10-05 (`npm run stack:up && npm run test:live`, 15 tests pass): Inji Certify -> reference
 wallet -> Inji Verify is `VALID` for `vc+sd-jwt`; for `ldp_vc` it is `INVALID` because Inji Verify rejects
 the `ecdsa-rdfc-2019` holder proof a P-256 holder makes (G15) and Certify accepts only ES256 and RS256
 holder keys (G9). Certify -> reference verifier is `VALID` for `vc+sd-jwt` and `INVALID` for `ldp_vc`
 (G14: Certify's DID document does not authorise its key for `assertionMethod`). Reference issuer ->
 Inji Verify: `ldp_vc` `VALID`, expired `EXPIRED`; an SD-JWT VC with a DID-named key `INVALID` (G16).
+With certify-ac and Inji Web (`test/live/inji-web.test.ts`, 5 more tests): certify-ac -> reference wallet
+-> Inji Verify is `VALID` for `vc+sd-jwt`; Inji Web downloads from certify-ac and from the reference issuer,
+signs in and presents, and Inji Verify answers `INVALID` for its `ldp_vc` presentations (G22: the ldp_vp is
+signed with an Ed25519 key, the credential is bound to a P-256 key); Inji Web offers nothing for an SD-JWT
+VC request (G25) and refuses the reference verifier's requests (G23).
 The gaps are in [docs/gaps/gaps.json](../../docs/gaps/gaps.json). Contract tests replay the recorded
 Inji answers without containers (`test/contract/inji/`, fixtures from
 `scripts/capture-inji-fixtures.ts`).
@@ -335,4 +367,8 @@ and are off by default.
   records outside requests at `/ref/issuer`; a `mobile-wallet` run completes when a scripted wallet
   consumes the QR payloads.
 - `recorded-fixtures.test.ts`: the recorded fixtures are valid, passing and redacted.
+- `holder-web.test.ts`: the test authorization server gives certify-ac's scopes certify-ac's audience, only
+  when a stack is configured.
+- `test/live/inji-core.test.ts`, `test/live/inji-web.test.ts`: the live cells against the stack, with the
+  gap each blocked cell depends on.
   Test names carry the test-case ids of the test plan (`TC_PG_RUN_01` and so on).

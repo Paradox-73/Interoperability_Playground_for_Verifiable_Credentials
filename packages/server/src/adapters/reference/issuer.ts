@@ -85,6 +85,17 @@ export class ReferenceIssuerRole implements IssuerRole {
         `the reference issuer has no credential configuration for ${request.format}${configurationId ? ` (${configurationId})` : ''}`,
       );
     }
+    if (request.mode === 'wallet-initiated') {
+      // The wallet starts from the issuer's metadata; its requests to /ref/issuer and /ref/as come from
+      // outside (Mimoto), so the claims below record them in this run.
+      this.#hub.claim(ctx.runId, INBOUND_TARGETS.issuer);
+      this.#hub.claim(ctx.runId, INBOUND_TARGETS.as);
+      return Promise.resolve({
+        mode: 'wallet-initiated',
+        credentialIssuer: `${issuer.baseUrl}/${request.vciProfile}`,
+        credentialConfigurationId: configurationId,
+      });
+    }
     // A phone or another outside wallet that scans the offer reaches /ref/issuer and /ref/as without
     // saying which run it belongs to; the claims tie its requests to this run.
     this.#hub.claim(ctx.runId, INBOUND_TARGETS.issuer);

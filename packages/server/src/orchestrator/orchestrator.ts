@@ -378,6 +378,9 @@ export class Orchestrator {
           {
             format: run.config.format,
             vciProfile: run.config.vciProfile,
+            ...(walletInitiatedOnly(run.roles.wallet.descriptor, run.roles.issuer.descriptor)
+              ? { mode: 'wallet-initiated' as const }
+              : {}),
           },
         );
 
@@ -918,4 +921,14 @@ function raceAbort<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
     signal.addEventListener('abort', onAbort, { once: true });
     promise.finally(() => signal.removeEventListener('abort', onAbort)).then(resolve, reject);
   });
+}
+
+/** The wallet cannot take a credential offer, and the issuer can be contacted by the wallet instead. */
+function walletInitiatedOnly(wallet: RoleDescriptor, issuer: RoleDescriptor): boolean {
+  const walletModes = wallet.capabilities.issuance;
+  return (
+    walletModes !== undefined &&
+    !walletModes.includes('credential-offer') &&
+    (issuer.capabilities.issuance ?? []).includes('wallet-initiated')
+  );
 }

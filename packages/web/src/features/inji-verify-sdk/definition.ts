@@ -27,9 +27,13 @@ export function presentationDefinitionFor(format: CredentialFormat): SdkPresenta
   const formats = sdJwt
     ? { [format]: { 'sd-jwt_alg_values': ['ES256', 'EdDSA'], 'kb-jwt_alg_values': ['ES256', 'EdDSA'] } }
     : { ldp_vc: { proof_type: ['Ed25519Signature2020', 'Ed25519Signature2018', 'RsaSignature2018'] } };
+  // `pattern` as well: Inji wallets (Mimoto) refuse a field filter without one (gap G23).
   const field = sdJwt
-    ? { path: ['$.vct'], filter: { type: 'string', const: FARMER_VCT } }
-    : { path: ['$.type'], filter: { type: 'array', contains: { const: FARMER_TYPE } } };
+    ? {
+        path: ['$.vct'],
+        filter: { type: 'string', const: FARMER_VCT, pattern: FARMER_VCT.replace(/\./g, '\\.') },
+      }
+    : { path: ['$.type'], filter: { type: 'array', contains: { const: FARMER_TYPE }, pattern: FARMER_TYPE } };
   return {
     id: `ps02-farmer-${format.replace(/\W+/g, '-')}`,
     purpose: 'Inji Interoperability Playground: present the farmer credential issued in this run',

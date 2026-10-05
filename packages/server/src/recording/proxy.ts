@@ -24,6 +24,12 @@ export interface ProxyTarget {
   url: string;
   /** Name drawn on the sequence diagram, for example `inji-verify`. */
   label: string;
+  /**
+   * Where the upstream serves `/.well-known/*`: Inji Certify answers its issuer and authorization-server
+   * metadata only under `/v1/certify`, and the upstream sample nginx maps the root paths there (gap G3).
+   * The proxy does the same for a Certify without that nginx (certify-ac).
+   */
+  wellKnownBase?: string;
 }
 
 export interface ProxyOptions {
@@ -78,7 +84,11 @@ export async function registerProxyRoutes(app: FastifyInstance, options: ProxyOp
           message: `no proxy target "${target}"; known: ${Object.keys(options.targets).join(', ')}`,
         });
       }
-      return forward(request, reply, options, target, upstream, joinUrl(upstream.url, rest, request.url));
+      const path =
+        upstream.wellKnownBase && rest.startsWith('.well-known/')
+          ? `${upstream.wellKnownBase.replace(/^\/+|\/+$/g, '')}/${rest}`
+          : rest;
+      return forward(request, reply, options, target, upstream, joinUrl(upstream.url, path, request.url));
     });
 
     scope.all('/v1/verify/*', async (request, reply) => {

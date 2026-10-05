@@ -157,7 +157,13 @@ describe('inji-verify against recorded Inji Verify 0.18.2 answers', () => {
         ...(preRegistered
           ? {
               preRegisteredClients: [
-                { clientId: INJI_VERIFY_CLIENT_ID, responseUris: injiVerifyResponseUris(testConfig()) },
+                {
+                  clientId: INJI_VERIFY_CLIENT_ID,
+                  // The fixture was recorded with the sample's http submission base.
+                  responseUris: injiVerifyResponseUris(
+                    testConfig({ INJI_VERIFY_SUBMISSION_BASE_URL: 'http://verify-service:8080/v1/verify' }),
+                  ),
+                },
               ],
             }
           : {}),
@@ -257,16 +263,18 @@ describe('inji-verify against recorded Inji Verify 0.18.2 answers', () => {
 });
 
 describe('registration and stack status', () => {
-  it('registers no Inji role without a stack, and Certify, Inji Verify and its web component with one', () => {
+  it('registers no Inji role without a stack, and Certify, certify-ac, Inji Verify and its web component with one', () => {
     const hub = new CaptureHub({ recorderFor: () => undefined });
     expect(injiRoles({ config: testConfig(), hub })).toEqual([]);
     const roles = injiRoles({ config: testConfig({ PLAYGROUND_STACK: 'host' }), hub });
+    // inji-web needs the hosted test authorization server (`reference`), which this call does not pass.
     expect(roles.map((role) => role.describe().id)).toEqual([
       'inji-certify',
+      'inji-certify-ac',
       'inji-verify',
       'inji-verify-sdk',
     ]);
-    expect(roles.map((role) => role.describe().ecosystem)).toEqual(['inji', 'inji', 'inji']);
+    expect(new Set(roles.map((role) => role.describe().ecosystem))).toEqual(new Set(['inji']));
   });
 
   it('probes each service and names its image', async () => {

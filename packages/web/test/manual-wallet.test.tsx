@@ -196,7 +196,12 @@ describe('Inji Verify SDK panel', () => {
   it('asks for the farmer credential by vct for SD-JWT VC and by type for ldp_vc', () => {
     expect(presentationDefinitionFor('vc+sd-jwt').input_descriptors[0]!.constraints.fields[0]).toEqual({
       path: ['$.vct'],
-      filter: { type: 'string', const: 'https://playground.ps02.test/vct/farmer/v1' },
+      // `pattern` too: Mimoto refuses a field filter without one (gap G23).
+      filter: {
+        type: 'string',
+        const: 'https://playground.ps02.test/vct/farmer/v1',
+        pattern: 'https://playground\\.ps02\\.test/vct/farmer/v1',
+      },
     });
     expect(presentationDefinitionFor('ldp_vc').input_descriptors[0]!.constraints.fields[0]!.path).toEqual([
       '$.type',

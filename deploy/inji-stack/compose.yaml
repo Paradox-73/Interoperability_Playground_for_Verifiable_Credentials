@@ -138,7 +138,8 @@ services:
       - host.docker.internal:host-gateway
     networks:
       default:
-        aliases: [certify.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test]
+        aliases:
+          [certify.ps02.test, certify-ac.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test]
     volumes:
       - ./nginx/tls-front.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ${PLAYGROUND_RUN_DIR:-../../run}/stack/tls:/etc/nginx/tls:ro
@@ -168,9 +169,9 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: trust-auth-no-password
       INJI_VP_REQUEST_LONG_POLLING_TIMEOUT: '55000'
-      # response_uri the wallet posts to. The default is reachable from containers on this network; set a LAN
-      # address when a phone wallet is used.
-      INJI_VP_SUBMISSION_BASE_URL: ${INJI_VERIFY_SUBMISSION_BASE_URL:-http://verify-service:8080/v1/verify}
+      # response_uri the wallet posts to: the TLS front, reachable from containers on this network and from the
+      # host. Mimoto refuses an http response_uri (gap G24). Set a LAN address when a phone wallet is used.
+      INJI_VP_SUBMISSION_BASE_URL: ${INJI_VERIFY_SUBMISSION_BASE_URL:-https://verify.ps02.test/v1/verify}
       INJI_DID_VERIFY_URI: did:web:verify.ps02.test:v1:verify
       INJI_DID_VERIFY_PUBLIC_KEY_URI: did:web:verify.ps02.test:v1:verify#key-0
       # Password of the sample key store baked into the image (same value as the upstream compose files).
@@ -198,6 +199,100 @@ services:
       retries: 60
       start_period: 180s
 
+  # certify-ac (holder-web, WP-14): a second Inji Certify 0.14.0 in authorization code mode whose authorization
+  # server is the playground's test authorization server, so Inji Web through Mimoto can download a credential
+  # without eSignet. Its own database (the unchanged certify_init.sql), its own key store, the upstream farmer CSV
+  # as data provider, and config/certify-ac.properties for what differs. Debug port 28093 on 127.0.0.1; its public
+  # URL is https://ref.ps02.test/proxy/certify-ac (the playground's recording proxy).
+  database-ac:
+    image: postgres:15
+    profiles: [holder-web]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PS02_INIT_SQL: certify_init.sql /ps02-sql-team/certify-ac.sql
+    volumes:
+      - ./scripts/postgres-init.sh:/docker-entrypoint-initdb.d/00-ps02-init.sh:ro
+      - ./sql:/ps02-sql:ro
+      - ./sql-team:/ps02-sql-team:ro
+      - pgdata-ac:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'psql -h 127.0.0.1 -U postgres -d inji_certify -tAc "select 1" >/dev/null']
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+
+  certify-ac:
+    image: injistack/inji-certify-with-plugins:0.14.0
+    profiles: [holder-web]
+    user: root
+    # The image starts with ./configure_start.sh, which does not import /certificates. The Temurin CA entrypoint
+    # of the same image does, then hands over to the image's own entrypoint and command (both end in exec "$$@").
+    entrypoint: ['/__cacert_entrypoint.sh', './configure_start.sh']
+    command:
+      [
+        'java',
+        '-jar',
+        '-Dloader.path=$${loader_path_env}',
+        '-Dspring.cloud.config.label=$${spring_config_label_env}',
+        '-Dspring.profiles.active=$${active_profile_env}',
+        '-Dspring.cloud.config.uri=$${spring_config_url_env}',
+        'certify-service.jar',
+      ]
+    ports:
+      - '127.0.0.1:28093:8090'
+    environment:
+      container_user: mosip
+      active_profile_env: default,csvdp-farmer,ac
+      SPRING_CONFIG_NAME: certify
+      SPRING_CONFIG_LOCATION: /home/mosip/config/
+      enable_certify_artifactory: 'false'
+      download_hsm_client: 'false'
+      mosip_certify_domain_url: https://ref.ps02.test/proxy/certify-ac
+      # Trust the stack's test CA (the test authorization server's JWKS is on https://ref.ps02.test).
+      USE_SYSTEM_CA_CERTS: '1'
+    volumes:
+      - ./config/certify-default.properties:/home/mosip/config/certify-default.properties:ro
+      - ./config/certify-csvdp-farmer.properties:/home/mosip/config/certify-csvdp-farmer.properties:ro
+      - ./config/certify-ac.properties:/home/mosip/config/certify-ac.properties:ro
+      - ./config/farmer_identity_data.csv:/home/mosip/config/farmer_identity_data.csv:ro
+      - ./config/vp_request_config.json:/home/mosip/config/vp_request_config.json:ro
+      - certify-ac-keys:/home/inji/CERTIFY_PKCS12
+      - ${PLAYGROUND_RUN_DIR:-../../run}/stack/ca:/certificates:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      database-ac:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl -sf -o /dev/null --max-time 90 http://localhost:8090/v1/certify/issuance/.well-known/openid-credential-issuer',
+        ]
+      interval: 10s
+      timeout: 95s
+      retries: 60
+      start_period: 300s
+
+  # One-shot: adds the SD-JWT credential configuration to certify-ac (config/seed-ac/, certify-ac's DID).
+  certify-ac-seed:
+    image: nginx:stable
+    profiles: [holder-web]
+    entrypoint: ['/bin/sh', '/ps02/certify-seed.sh']
+    restart: 'no'
+    environment:
+      CERTIFY_URL: http://certify-ac:8090/v1/certify
+    volumes:
+      - ./scripts/certify-seed.sh:/ps02/certify-seed.sh:ro
+      - ./config/seed-ac:/seed:ro
+    depends_on:
+      certify-ac:
+        condition: service_healthy
+
   # Mimoto 0.22.0, the backend of Inji Web. The service name is fixed: the inji-web image proxies /v1/mimoto/
   # to mimoto-service:8099. scripts/mimoto-start.sh creates the client key store, then starts the image as usual.
   mimoto-service:
@@ -216,9 +311,14 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/inji_mimoto
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: trust-auth-no-password
-      # Placeholders Mimoto needs to start; Google sign-in is not used by the playground.
-      GOOGLE_OAUTH_CLIENT_ID: clientId
-      GOOGLE_OAUTH_CLIENT_SECRET: clientSecret
+      # Mimoto's sign-in is Google only. For the logged-in wallet (WP-14) its "Google" provider is the playground's
+      # test authorization server: Mimoto checks the ID token's issuer (google.issuer), its audience (the client id)
+      # and its signature (the provider's JWKS); the test server issues ID tokens with an email claim.
+      GOOGLE_OAUTH_CLIENT_ID: ps02-mimoto-login
+      GOOGLE_OAUTH_CLIENT_SECRET: not-used-by-token-login
+      GOOGLE_ISSUER: https://ref.ps02.test/ref/as
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_JWKSETURI: https://ref.ps02.test/ref/as/jwks.json
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_USERINFOURI: https://ref.ps02.test/ref/as/userinfo
       USE_SYSTEM_CA_CERTS: '1'
     volumes:
       - ./scripts/mimoto-start.sh:/ps02/mimoto-start.sh:ro
@@ -235,6 +335,10 @@ services:
         condition: service_completed_successfully
       certify-nginx:
         condition: service_started
+      # Started before the seed, Mimoto answered RESIDENT-APP-028 for certify-ac's SD-JWT configuration until it
+      # was recreated (2026-10-05).
+      certify-ac-seed:
+        condition: service_completed_successfully
     healthcheck:
       # /actuator/health reports 503 without Redis although the APIs work, so the issuer list is checked.
       test: ['CMD-SHELL', 'curl -sf -o /dev/null --max-time 20 http://localhost:8099/v1/mimoto/issuers']
@@ -292,4 +396,6 @@ services:
 
 volumes:
   pgdata:
+  pgdata-ac:
+  certify-ac-keys:
   certify-keys:

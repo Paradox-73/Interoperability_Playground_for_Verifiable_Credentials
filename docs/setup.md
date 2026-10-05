@@ -13,12 +13,12 @@ measured on the date given next to it; nothing here claims more than was run.
 
 ## Prerequisites
 
-| What                               | Needed for                                            | Version used by the team                                  |
-| ---------------------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
-| Node.js and npm                    | reference mode, the stack and bundle commands         | Node 24, npm 11 (`.nvmrc`)                                |
-| Docker with Compose v2.24 or newer | the local Inji stack and the bundle                   | Docker Desktop 29 (Linux containers)                      |
-| Git                                | `npm run up` builds the image from `git archive HEAD` | any recent                                                |
-| Memory for Docker                  | the stack                                             | about 2 GiB in use, see [memory](#memory-and-start-times) |
+| What                               | Needed for                                            | Version used by the team                                                       |
+| ---------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Node.js and npm                    | reference mode, the stack and bundle commands         | Node 24, npm 11 (`.nvmrc`)                                                     |
+| Docker with Compose v2.24 or newer | the local Inji stack and the bundle                   | Docker Desktop 29 (Linux containers)                                           |
+| Git                                | `npm run up` builds the image from `git archive HEAD` | any recent                                                                     |
+| Memory for Docker                  | the stack                                             | about 2.7 GiB in use with every profile, see [memory](#memory-and-start-times) |
 
 Only Docker is needed to run the bundle from a clone (see [without Node](#without-node)).
 
@@ -63,7 +63,7 @@ otherwise (for example `PLAYGROUND_STACK_PROFILES=none` for the core only).
 | Profile           | Services                                                                                      | Use                                                  |
 | ----------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | core (no profile) | `init`, `database`, `certify`, `certify-nginx`, `certify-seed`, `tls-front`, `verify-service` | issuance with Certify, verification with Inji Verify |
-| `holder-web`      | `mimoto-service`, `inji-web`                                                                  | the Inji Web wallet                                  |
+| `holder-web`      | `database-ac`, `certify-ac`, `certify-ac-seed`, `mimoto-service`, `inji-web`                  | the Inji Web wallet, and certify-ac to feed it       |
 | `verify-ui`       | `verify-ui`                                                                                   | the Inji Verify web page                             |
 
 ### What the smoke test checks
@@ -137,46 +137,54 @@ All host ports are in the project range 28000-28999.
 | 28030 | Inji Verify UI (`verify-ui` profile)            | stack, bundle |
 | 28099 | Mimoto (`holder-web` profile)                   | stack, bundle |
 | 28004 | Inji Web (`holder-web` profile)                 | stack, bundle |
+| 28093 | certify-ac on 127.0.0.1 (`holder-web` profile)  | stack, bundle |
 | 28090 | Certify directly, on 127.0.0.1 (debug)          | stack only    |
 | 28432 | Postgres, on 127.0.0.1 (debug)                  | stack only    |
 
 ## Environment variables
 
-| Variable                                                                                                             | Default                                | Meaning                                                                          |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------- |
-| `PLAYGROUND_RUN_DIR`                                                                                                 | `<repo>/run`                           | everything generated at run time; must be absolute when compose is used directly |
-| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`                 | profiles the npm commands start; `none` for the core only                        |
-| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`    | where the TLS front sends `ref.ps02.test` in host mode                           |
-| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `http://verify-service:8080/v1/verify` | `response_uri` base Inji Verify gives wallets; set a LAN address for a phone     |
-| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                   | host URLs the stack scripts probe                                                |
-| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                  | `1` keeps the compose logs of a passing smoke run too                            |
-| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`               | image tag the bundle builds and runs                                             |
+| Variable                                                                                                             | Default                              | Meaning                                                                          |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------- |
+| `PLAYGROUND_RUN_DIR`                                                                                                 | `<repo>/run`                         | everything generated at run time; must be absolute when compose is used directly |
+| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`               | profiles the npm commands start; `none` for the core only                        |
+| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`  | where the TLS front sends `ref.ps02.test` in host mode                           |
+| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `https://verify.ps02.test/v1/verify` | `response_uri` base Inji Verify gives wallets; set a LAN address for a phone     |
+| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                 | host URLs the stack scripts probe                                                |
+| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                | `1` keeps the compose logs of a passing smoke run too                            |
+| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`             | image tag the bundle builds and runs                                             |
 
 ## Memory and start times
 
 Measured on this team's Windows 11 laptop (Docker Desktop 29, 8 GB Docker VM shared with other projects),
 images already pulled:
 
-| Item                                                                                                     | Measured                                                                                                                           | Date       |
-| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `npm run stack:smoke`, all profiles: every service answering on its host port                            | 80 s after `up` (Certify 73 s, Mimoto 80 s)                                                                                        | 2026-10-04 |
-| `npm run stack:smoke` from start to the stack being removed                                              | 166 s, `SMOKE PASS`                                                                                                                | 2026-10-04 |
-| Inji Verify `/vc-verification` of the Certify `ldp_vc` (did:web over the TLS front) / of the `vc+sd-jwt` | 2.9 s / 0.08 s, both `SUCCESS`                                                                                                     | 2026-10-04 |
-| Inji Verify `vp-request` status long poll with no wallet answering                                       | 56.5 s (55 s timeout configured)                                                                                                   | 2026-10-04 |
-| `npm run up` (bundle, all profiles): stack and playground answering                                      | 194 s                                                                                                                              | 2026-10-04 |
-| Memory of the stack in steady state (research trial, same images)                                        | about 1.75-2.1 GiB: Mimoto 636-921 MiB, Certify 621-696 MiB, verify-service 305-359 MiB, Postgres 88-121 MiB, each nginx 10-15 MiB | 2026-10-04 |
-| Cold first start of the images (research trial)                                                          | Certify 231 s, verify-service 297 s                                                                                                | 2026-10-04 |
+| Item                                                                                                     | Measured                                                                                                                                | Date       |
+| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `npm run stack:smoke`, all profiles: every service answering on its host port                            | 80 s after `up` (Certify 73 s, Mimoto 80 s)                                                                                             | 2026-10-04 |
+| `npm run stack:smoke` from start to the stack being removed                                              | 166 s, `SMOKE PASS`                                                                                                                     | 2026-10-04 |
+| Inji Verify `/vc-verification` of the Certify `ldp_vc` (did:web over the TLS front) / of the `vc+sd-jwt` | 2.9 s / 0.08 s, both `SUCCESS`                                                                                                          | 2026-10-04 |
+| Inji Verify `vp-request` status long poll with no wallet answering                                       | 56.5 s (55 s timeout configured)                                                                                                        | 2026-10-04 |
+| `npm run up` (bundle, all profiles): stack and playground answering                                      | 194 s                                                                                                                                   | 2026-10-04 |
+| Memory of the stack in steady state (research trial, same images)                                        | about 1.75-2.1 GiB: Mimoto 636-921 MiB, Certify 621-696 MiB, verify-service 305-359 MiB, Postgres 88-121 MiB, each nginx 10-15 MiB      | 2026-10-04 |
+| Memory with every profile, after live runs (`docker stats`)                                              | about 2.7 GiB: Mimoto 762 MiB, Certify 714 MiB, certify-ac 647 MiB, verify-service 400 MiB, both Postgres 123 MiB, nginx 12-20 MiB each | 2026-10-05 |
+| `holder-web` profile on its own (Mimoto, certify-ac, `database-ac`, Inji Web)                            | about 1.46 GiB                                                                                                                          | 2026-10-05 |
+| Cold first start of the images (research trial)                                                          | Certify 231 s, verify-service 297 s                                                                                                     | 2026-10-04 |
 
 The whole acceptance check (smoke, then bundle up, health check, bundle down) took 8 min 19 s.
 
 ## Troubleshooting
 
-| Symptom                                                  | Cause and fix                                                                                                                                                                                                                                                                    |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A probe waits for Certify for minutes                    | The first Certify start creates its keys and the first metadata call is slow (52 s in the 2026-10-04 research trial). `stack:up` waits up to 10 minutes per service.                                                                                                             |
-| Inji Verify says `INVALID` for the Certify `ldp_vc`      | verify-service cannot fetch `https://certify.ps02.test/.well-known/did.json`. Check that its log has `Adding certificate with alias PS02 Playground Test CA (test only) to the JVM truststore` and that `tls-front` is healthy; `npm run stack:init` recreates the certificates. |
-| Mimoto `/actuator/health` answers 503                    | Expected: it reports Redis as down. The APIs work; the stack checks `/v1/mimoto/issuers` instead.                                                                                                                                                                                |
-| Bind-mount errors with a relative `PLAYGROUND_RUN_DIR`   | Compose resolves relative paths against the compose file. Use an absolute path (the npm commands do this for you).                                                                                                                                                               |
-| Paths like `C:/Program Files/Git/...` inside a container | Git Bash rewrote a container path in a `docker` command typed by hand. Prefix it with `MSYS_NO_PATHCONV=1`; the npm commands are not affected.                                                                                                                                   |
-| `ref.ps02.test` does not reach the playground on Linux   | `host.docker.internal` comes from Docker Desktop. Set `PLAYGROUND_REF_UPSTREAM` to the host bridge address, for example `http://172.17.0.1:28100`.                                                                                                                               |
-| Port already in use                                      | Another stack uses a port of the table above. `npm run stack:status` shows what is running; stop it with `npm run stack:down` or `npm run down`.                                                                                                                                 |
+| Symptom                                                        | Cause and fix                                                                                                                                                                                                                                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A probe waits for Certify for minutes                          | The first Certify start creates its keys and the first metadata call is slow (52 s in the 2026-10-04 research trial). `stack:up` waits up to 10 minutes per service.                                                                                                             |
+| Inji Verify says `INVALID` for the Certify `ldp_vc`            | verify-service cannot fetch `https://certify.ps02.test/.well-known/did.json`. Check that its log has `Adding certificate with alias PS02 Playground Test CA (test only) to the JVM truststore` and that `tls-front` is healthy; `npm run stack:init` recreates the certificates. |
+| Mimoto `/actuator/health` answers 503                          | Expected: it reports Redis as down. The APIs work; the stack checks `/v1/mimoto/issuers` instead.                                                                                                                                                                                |
+| Bind-mount errors with a relative `PLAYGROUND_RUN_DIR`         | Compose resolves relative paths against the compose file. Use an absolute path (the npm commands do this for you).                                                                                                                                                               |
+| Paths like `C:/Program Files/Git/...` inside a container       | Git Bash rewrote a container path in a `docker` command typed by hand. Prefix it with `MSYS_NO_PATHCONV=1`; the npm commands are not affected.                                                                                                                                   |
+| `ref.ps02.test` does not reach the playground on Linux         | `host.docker.internal` comes from Docker Desktop. Set `PLAYGROUND_REF_UPSTREAM` to the host bridge address, for example `http://172.17.0.1:28100`.                                                                                                                               |
+| Inji Web runs fail at the token or credential step             | certify-ac and Mimoto reach the playground at `https://ref.ps02.test`, and certify-ac accepts only tokens whose issuer is `https://ref.ps02.test/ref/as`. Run the playground on 28100 with `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test` (bundle: set it before `npm run up`).   |
+| `docker restart` of Mimoto exits at once                       | The image's CA entrypoint stops when the test CA alias is already in the JVM trust store. Recreate the container instead: `docker compose -p ps02-inji ... up -d --force-recreate mimoto-service`, or `npm run stack:down` and `npm run stack:up`.                               |
+| Mimoto sign-in answers 500 for a user who signed in before     | Gap G21: the first ID token lacked `picture` or `phone_number`. The playground's test identity now has both; remove a stale user with `npm run stack:down` and `npm run stack:up` (the Mimoto database is recreated).                                                            |
+| Mimoto `RESIDENT-APP-028` for certify-ac's SD-JWT              | Mimoto started before `certify-ac-seed` added the configuration. The stack now starts Mimoto after the seed; for a stack started by hand, recreate `mimoto-service`.                                                                                                             |
+| Mimoto `signature_verification_failed` on an `ldp_vc` download | Mimoto fetches the credential's JSON-LD contexts from the internet on every download, and a context host answered HTTP 429 (seen once on 2026-10-05, in its log as `LOADING_REMOTE_CONTEXT_FAILED`). Wait a minute and run again.                                                |
+| Port already in use                                            | Another stack uses a port of the table above. `npm run stack:status` shows what is running; stop it with `npm run stack:down` or `npm run down`.                                                                                                                                 |

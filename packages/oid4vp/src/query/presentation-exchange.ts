@@ -201,7 +201,11 @@ function pathSegments(normalised: string): string[] {
   );
 }
 
-/** JSON Schema keywords used in PE filters. Unknown keywords are ignored, as JSON Schema does. */
+/**
+ * JSON Schema keywords used in PE filters. Unknown keywords are ignored, as JSON Schema does, and so are
+ * keywords for another type than the value's (`pattern` on an array, `minimum` on a string): only `type`
+ * restricts the type.
+ */
 export function matchesFilter(value: unknown, filter: JsonSchemaFilter): boolean {
   if (filter.type !== undefined && !matchesType(value, filter.type)) return false;
   if ('const' in filter && JSON.stringify(value) !== JSON.stringify(filter.const)) return false;
@@ -210,16 +214,16 @@ export function matchesFilter(value: unknown, filter: JsonSchemaFilter): boolean
     !filter.enum.some((entry) => JSON.stringify(entry) === JSON.stringify(value))
   )
     return false;
-  if (
-    filter.pattern !== undefined &&
-    (typeof value !== 'string' || !new RegExp(filter.pattern, 'u').test(value))
-  )
-    return false;
-  if (filter.minimum !== undefined && (typeof value !== 'number' || value < filter.minimum)) return false;
-  if (filter.maximum !== undefined && (typeof value !== 'number' || value > filter.maximum)) return false;
-  if (filter.contains !== undefined) {
+  if (typeof value === 'string' && filter.pattern !== undefined) {
+    if (!new RegExp(filter.pattern, 'u').test(value)) return false;
+  }
+  if (typeof value === 'number') {
+    if (filter.minimum !== undefined && value < filter.minimum) return false;
+    if (filter.maximum !== undefined && value > filter.maximum) return false;
+  }
+  if (Array.isArray(value) && filter.contains !== undefined) {
     const contains = filter.contains;
-    if (!Array.isArray(value) || !value.some((entry) => matchesFilter(entry, contains))) return false;
+    if (!value.some((entry) => matchesFilter(entry, contains))) return false;
   }
   return true;
 }

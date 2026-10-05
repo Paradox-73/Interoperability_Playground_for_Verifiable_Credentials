@@ -4,7 +4,13 @@
  */
 import { z } from 'zod';
 import { IsoDateTimeSchema } from './common.js';
-import { CredentialFormatSchema, OutcomeSchema, VciProfileSchema, VpProfileSchema } from './enums.js';
+import {
+  CredentialFormatSchema,
+  IssuanceModeSchema,
+  OutcomeSchema,
+  VciProfileSchema,
+  VpProfileSchema,
+} from './enums.js';
 
 /** What the orchestrator asks the issuer for. */
 export const IssuanceRequestSchema = z.object({
@@ -14,6 +20,11 @@ export const IssuanceRequestSchema = z.object({
   credentialConfigurationId: z.string().optional(),
   /** Subject claims for issuers that accept them (pre-authorized data); test data only. */
   claims: z.record(z.string(), z.unknown()).optional(),
+  /**
+   * How the wallet will start: set to `wallet-initiated` when the wallet cannot take a credential offer
+   * (Inji Web through Mimoto, gap G5), so an issuer that supports both answers with its entry point.
+   */
+  mode: IssuanceModeSchema.optional(),
 });
 export type IssuanceRequest = z.infer<typeof IssuanceRequestSchema>;
 

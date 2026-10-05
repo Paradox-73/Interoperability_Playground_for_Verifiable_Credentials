@@ -18,11 +18,15 @@ SQL_DIR=${PS02_SQL_DIR:-/ps02-sql}
 
 run_sql() {
   echo "ps02-init: running $1"
-  psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER:-postgres}" --dbname postgres -f "$SQL_DIR/$1"
+  case "$1" in
+    /*) file=$1 ;;
+    *) file="$SQL_DIR/$1" ;;
+  esac
+  psql -v ON_ERROR_STOP=1 --username "${POSTGRES_USER:-postgres}" --dbname postgres -f "$file"
 }
 
-run_sql certify_init.sql
-run_sql mimoto_init.sql
-run_sql inji_verify/db.sql
-run_sql inji_verify/ddl.sql
-echo "ps02-init: databases inji_certify, inji_mimoto and inji_verify are ready"
+# PS02_INIT_SQL picks the files (database-ac of the holder-web profile runs only certify_init.sql).
+for file in ${PS02_INIT_SQL:-certify_init.sql mimoto_init.sql inji_verify/db.sql inji_verify/ddl.sql}; do
+  run_sql "$file"
+done
+echo "ps02-init: databases ready (${PS02_INIT_SQL:-inji_certify, inji_mimoto and inji_verify})"

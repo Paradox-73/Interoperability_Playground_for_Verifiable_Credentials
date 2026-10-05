@@ -50,7 +50,11 @@ export function proxyTargets(config: Config): Record<string, ProxyTarget> {
   const defaults = config.stack === 'bundle' ? BUNDLE_DEFAULTS : HOST_DEFAULTS;
   return {
     certify: { url: config.injiCertifyUrl ?? defaults.certify, label: 'inji-certify' },
-    'certify-ac': { url: config.injiCertifyAcUrl ?? defaults['certify-ac'], label: 'inji-certify-ac' },
+    'certify-ac': {
+      url: config.injiCertifyAcUrl ?? defaults['certify-ac'],
+      label: 'inji-certify-ac',
+      wellKnownBase: '/v1/certify',
+    },
     verify: { url: config.injiVerifyUrl ?? defaults.verify, label: 'inji-verify' },
     mimoto: { url: config.injiMimotoUrl ?? defaults.mimoto, label: 'mimoto' },
   };

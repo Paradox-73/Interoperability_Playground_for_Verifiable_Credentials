@@ -206,3 +206,68 @@ export class InjiCertifyRole implements IssuerRole {
     }
   }
 }
+
+export interface InjiCertifyAcOptions {
+  /** Base URL this server reaches certify-ac on directly (health only). */
+  baseUrl: string;
+  /** certify-ac's credential issuer identifier (its domain URL, through the playground proxy). */
+  credentialIssuer: string;
+}
+
+/**
+ * `inji-certify-ac`: the second Inji Certify 0.14.0 of the holder-web profile, in authorization code mode
+ * with the playground's test authorization server (deploy/inji-stack/config/certify-ac.properties). The run
+ * starts wallet-initiated: the wallet reads certify-ac's metadata, gets a code from the test server (which
+ * logs in the farmer CSV row 2154189532 without a login page) and redeems it, as Inji Web through Mimoto does.
+ */
+export class InjiCertifyAcRole implements IssuerRole {
+  readonly #options: InjiCertifyAcOptions;
+
+  constructor(options: InjiCertifyAcOptions) {
+    this.#options = {
+      baseUrl: options.baseUrl.replace(/\/+$/, ''),
+      credentialIssuer: options.credentialIssuer.replace(/\/+$/, ''),
+    };
+  }
+
+  describe(): RoleDescriptor {
+    return {
+      id: 'inji-certify-ac',
+      kind: 'issuer',
+      name: 'Inji Certify (authorization code)',
+      ecosystem: 'inji',
+      version: INJI_VERSIONS.certify,
+      interaction: 'automatic',
+      description:
+        'A second Inji Certify from the holder-web profile, in authorization code mode with the playground test authorization server and the upstream farmer CSV data provider (FarmerCredential ldp_vc, FarmerSdJwt vc+sd-jwt), issuing under did:web:certify-ac.ps02.test.',
+      capabilities: {
+        formats: ['ldp_vc', 'vc+sd-jwt'],
+        proofTypes: ['Ed25519Signature2020', 'EdDSA'],
+        didMethods: ['did:web'],
+        vciProfiles: ['draft13'],
+        issuance: ['wallet-initiated'],
+      },
+      notes: [
+        'Holder proofs must be ES256 or RS256 (gap G9).',
+        'Needs the server on 28100 with PLAYGROUND_PUBLIC_URL=https://ref.ps02.test: certify-ac checks tokens of the test authorization server there.',
+      ],
+    };
+  }
+
+  health(): Promise<Health> {
+    return probe(`${this.#options.baseUrl}/v1/certify/issuance/.well-known/openid-credential-issuer`);
+  }
+
+  startIssuance(_ctx: RunContext, request: IssuanceRequest): Promise<IssuanceStart> {
+    const configurationId =
+      request.credentialConfigurationId ?? CERTIFY_CONFIGURATION_FOR_FORMAT[request.format];
+    if (!configurationId) {
+      throw new RoleError('issuer.format-unsupported', `certify-ac does not issue ${request.format}`);
+    }
+    return Promise.resolve({
+      mode: 'wallet-initiated',
+      credentialIssuer: this.#options.credentialIssuer,
+      credentialConfigurationId: configurationId,
+    });
+  }
+}

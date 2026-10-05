@@ -36,6 +36,7 @@ export function injiUrls(config: Config) {
   const targets = proxyTargets(config);
   return {
     certify: targets.certify!.url.replace(/\/+$/, ''),
+    certifyAc: targets['certify-ac']!.url.replace(/\/+$/, ''),
     verify: targets.verify!.url.replace(/\/+$/, ''),
     mimoto: targets.mimoto!.url.replace(/\/+$/, ''),
   };
@@ -43,7 +44,7 @@ export function injiUrls(config: Config) {
 
 /**
  * The `response_uri` Inji Verify hands wallets: `INJI_VERIFY_SUBMISSION_BASE_URL` of the stack (default
- * `http://verify-service:8080/v1/verify`) plus its direct-post path.
+ * `https://verify.ps02.test/v1/verify`, the TLS front) plus its direct-post path.
  */
 export function injiVerifyResponseUris(
   config: Pick<Config, 'injiVerifySubmissionBaseUrl' | 'publicUrl'>,
@@ -89,15 +90,19 @@ export function farmerPresentationDefinition(
         },
       }
     : { ldp_vc: { proof_type: ['Ed25519Signature2020', 'Ed25519Signature2018', 'RsaSignature2018'] } };
+  // Each filter carries `pattern` too: Mimoto's OpenID4VP library refuses a field filter without one (gap
+  // G23), and JSON Schema ignores `pattern` for non-strings, so conformant wallets still match on the rest.
+  // Without a requested type, any farmer credential: the reference issuer's vct is an https URL, Inji
+  // Certify's an urn, and both contain "farmer"; ldp_vc types are FarmerCredential everywhere.
+  const type = credentialType ?? 'FarmerCredential';
   const field = sdJwt
     ? {
         path: ['$.vct'],
-        filter: { type: 'string', ...(credentialType ? { const: credentialType } : {}) },
+        filter: credentialType
+          ? { type: 'string', const: credentialType, pattern: escapeRegex(credentialType) }
+          : { type: 'string', pattern: '[Ff]armer' },
       }
-    : {
-        path: ['$.type'],
-        filter: { type: 'array', contains: { const: credentialType ?? 'FarmerCredential' } },
-      };
+    : { path: ['$.type'], filter: { type: 'array', contains: { const: type }, pattern: escapeRegex(type) } };
   return {
     id: `ps02-farmer-${format.replace(/\W+/g, '-')}`,
     purpose: 'Inji Interoperability Playground: present the farmer credential issued in this run',
@@ -162,4 +167,8 @@ export function walletRequestUri(
     );
   }
   return `openid4vp://authorize?${params.toString()}`;
+}
+
+function escapeRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

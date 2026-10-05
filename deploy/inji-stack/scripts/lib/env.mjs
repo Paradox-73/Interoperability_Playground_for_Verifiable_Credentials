@@ -67,6 +67,7 @@ export function selectedProfiles(env = process.env) {
 export function hostUrls(env = process.env) {
   return {
     certifyNginx: env.INJI_CERTIFY_URL ?? 'http://localhost:28091',
+    certifyAc: env.INJI_CERTIFY_AC_URL ?? 'http://localhost:28093',
     tlsFront: env.INJI_TLS_FRONT_URL ?? 'https://localhost:28443',
     verifyService: env.INJI_VERIFY_URL ?? 'http://localhost:28080',
     mimoto: env.INJI_MIMOTO_URL ?? 'http://localhost:28099',

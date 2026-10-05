@@ -44,6 +44,22 @@ server {
     }
 }
 
+# certify-ac (holder-web profile): https://certify-ac.ps02.test/.well-known/did.json is the did:web document of
+# did:web:certify-ac.ps02.test. Everything else of certify-ac goes through the playground proxy.
+server {
+    listen 443 ssl;
+    server_name certify-ac.ps02.test;
+
+    location = /.well-known/did.json {
+        set $certify_ac http://certify-ac:8090;
+        proxy_pass $certify_ac/v1/certify/.well-known/did.json;
+        proxy_set_header Host $host;
+    }
+    location / {
+        return 404;
+    }
+}
+
 # Inji Verify: did:web:verify.ps02.test:v1:verify resolves to https://verify.ps02.test/v1/verify/did.json.
 server {
     listen 443 ssl;

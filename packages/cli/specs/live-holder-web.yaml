@@ -1,34 +1,58 @@
-# Live holder-web matrix (WP-14): Inji Web through Mimoto as the wallet, fed by certify-ac (a second Inji
-# Certify whose authorization server is the playground test authorization server) and by the reference
-# issuer. Planned: the inji-certify-ac and inji-web roles are written by WP-14; until then every cell
-# stops with "unknown role". Run with the holder-web profile up:
-#   npm run stack:up && npm run matrix:live -- --spec live-holder-web; rc=$?; npm run stack:down; exit $rc
+# Live holder-web matrix (WP-14): Inji Web 0.17.0 through Mimoto 0.22.0 as the wallet, fed by certify-ac (a
+# second Inji Certify 0.14.0 whose authorization server is the playground's test authorization server) and by
+# the reference issuer. The holder-web profile is part of the default stack; the playground server must run on
+# 28100 with the public URL https://ref.ps02.test, because Mimoto and certify-ac reach it there:
+#   npm run stack:up
+#   PLAYGROUND_STACK=host PLAYGROUND_PUBLIC_URL=https://ref.ps02.test npm start &
+#   npm run matrix:live -- --spec live-holder-web
+#   npm run stack:down
+# Expected outcomes are what the specifications require; where a known upstream gap decides the outcome, the
+# case expects verdict fail and names the gap (docs/gaps/gaps.json), so a fixed gap turns the cell into a DIFF.
 name: live-holder-web
-description: Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer (planned, needs WP-14).
+description: Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certify-ac with the reference wallet.
 mode: live
-cellSeconds: 90
+cellSeconds: 40
 cases:
+  # certify-ac on its own: the authorization code flow with the playground's authorization server.
   - uniqueIdentifier: TC_PG_WEB_01
-    description: certify-ac -> Inji Web (Mimoto guest download) -> Inji Verify, ldp_vc
+    description: certify-ac -> reference wallet -> Inji Verify, SD-JWT VC
     issuer: inji-certify-ac
-    wallet: inji-web
+    wallet: ref-wallet
     verifier: inji-verify
-    format: ldp_vc
+    format: vc+sd-jwt
   - uniqueIdentifier: TC_PG_WEB_02
-    description: certify-ac -> reference wallet -> Inji Verify, ldp_vc
+    description: certify-ac -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9, as for the core Certify
     issuer: inji-certify-ac
     wallet: ref-wallet
     verifier: inji-verify
     format: ldp_vc
+    verdict: fail
+  # Inji Web as the wallet: Mimoto downloads, a signed-in wallet stores and presents.
   - uniqueIdentifier: TC_PG_WEB_03
-    description: Reference issuer -> Inji Web (Mimoto) -> reference verifier, ldp_vc
-    issuer: ref-issuer
+    description: certify-ac -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (the ldp_vp is signed with another key than the one the credential is bound to)
+    issuer: inji-certify-ac
     wallet: inji-web
-    verifier: ref-verifier
+    verifier: inji-verify
     format: ldp_vc
+    verdict: fail
   - uniqueIdentifier: TC_PG_WEB_04
-    description: Reference issuer -> Inji Web (Mimoto) -> Inji Verify, ldp_vc
+    description: certify-ac -> Inji Web -> Inji Verify, SD-JWT VC; blocked by G25 (Mimoto matches only ldp_vc for presentation)
+    issuer: inji-certify-ac
+    wallet: inji-web
+    verifier: inji-verify
+    format: vc+sd-jwt
+    verdict: fail
+  - uniqueIdentifier: TC_PG_WEB_05
+    description: Reference issuer -> Inji Web -> Inji Verify, ldp_vc; blocked by G22
     issuer: ref-issuer
     wallet: inji-web
     verifier: inji-verify
     format: ldp_vc
+    verdict: fail
+  - uniqueIdentifier: TC_PG_WEB_06
+    description: Reference issuer -> Inji Web -> reference verifier, ldp_vc; blocked by G23 (Mimoto requires a pattern in every field filter)
+    issuer: ref-issuer
+    wallet: inji-web
+    verifier: ref-verifier
+    format: ldp_vc
+    verdict: fail

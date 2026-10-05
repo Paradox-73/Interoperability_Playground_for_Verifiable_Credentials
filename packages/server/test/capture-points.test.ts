@@ -134,6 +134,27 @@ describe('reverse proxy capture point', () => {
     await app.inject({ method: 'POST', url: `/api/runs/${runId}/cancel` });
   });
 
+  it('maps certify-ac metadata under /v1/certify, as the sample nginx does for the core Certify', async () => {
+    const received: string[] = [];
+    const listening = await listenInTestRange((request, response) => {
+      received.push(request.url ?? '');
+      response.writeHead(200, { 'content-type': 'application/json' });
+      response.end('{}');
+    });
+    upstream = listening.server;
+    app = await buildTestApp({ env: { INJI_CERTIFY_AC_URL: listening.url } });
+    for (const path of [
+      '/proxy/certify-ac/.well-known/openid-credential-issuer',
+      '/proxy/certify-ac/v1/certify/issuance/credential',
+    ]) {
+      expect((await app.inject({ method: 'GET', url: path })).statusCode).toBe(200);
+    }
+    expect(received).toEqual([
+      '/v1/certify/.well-known/openid-credential-issuer',
+      '/v1/certify/issuance/credential',
+    ]);
+  });
+
   it('records an unreachable service as an exchange with an error and answers 502', async () => {
     app = await buildTestApp({ env: { INJI_CERTIFY_URL: 'http://127.0.0.1:9' } });
     const runId = await startRun(app, PHONE_CELL);

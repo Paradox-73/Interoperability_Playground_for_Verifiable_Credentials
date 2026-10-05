@@ -60,8 +60,12 @@ export const ConfigSchema = z.object({
    * host mode `deploy/inji-stack/network-map.host.json` is used when this is not set (see `networkMapPath`).
    */
   networkMap: z.string().min(1).optional(),
+  /** Credential issuer identifier of certify-ac (its domain URL in deploy/inji-stack/config/certify-ac.properties). */
+  injiCertifyAcIssuer: z.string().min(1).default('https://ref.ps02.test/proxy/certify-ac'),
+  /** Inji Web's address for a browser; its /redirect page is Mimoto's redirect URI at the test authorization server. */
+  injiWebUrl: z.string().min(1).default('http://localhost:28004'),
   /** `response_uri` base Inji Verify gives wallets (the stack's INJI_VERIFY_SUBMISSION_BASE_URL). */
-  injiVerifySubmissionBaseUrl: z.string().min(1).default('http://verify-service:8080/v1/verify'),
+  injiVerifySubmissionBaseUrl: z.string().min(1).default('https://verify.ps02.test/v1/verify'),
   /** Extra CA certificate (PEM file) trusted for outbound HTTPS, for example the stack's test CA. */
   extraCaFile: z.string().min(1).optional(),
   /** DID method of the reference issuer's keys. did:key resolves offline; did:web needs the TLS front for Inji Verify. */
@@ -114,6 +118,8 @@ const ENV_KEYS = {
   INJI_VERIFY_URL: 'injiVerifyUrl',
   INJI_MIMOTO_URL: 'injiMimotoUrl',
   INJI_VERIFY_SUBMISSION_BASE_URL: 'injiVerifySubmissionBaseUrl',
+  INJI_CERTIFY_AC_ISSUER: 'injiCertifyAcIssuer',
+  INJI_WEB_URL: 'injiWebUrl',
 } as const satisfies Record<string, keyof Config>;
 
 /**

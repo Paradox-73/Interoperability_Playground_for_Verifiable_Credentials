@@ -40,6 +40,13 @@ export function serviceProbes(urls) {
       label: 'Mimoto issuer list',
       url: `${urls.mimoto}/v1/mimoto/issuers`,
     },
+    {
+      service: 'certify-ac',
+      profile: 'holder-web',
+      label: 'certify-ac issuer metadata (debug port)',
+      url: `${urls.certifyAc}/v1/certify/issuance/.well-known/openid-credential-issuer`,
+      timeoutMs: 120_000,
+    },
     { service: 'inji-web', profile: 'holder-web', label: 'Inji Web', url: `${urls.injiWeb}/` },
     { service: 'verify-ui', profile: 'verify-ui', label: 'Inji Verify UI', url: `${urls.verifyUi}/` },
   ];

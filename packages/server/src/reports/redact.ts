@@ -55,6 +55,9 @@ const SECRET_HEADERS = new Set([
   'dpop',
   'x-api-key',
   'api-key',
+  // CSRF tokens echo a session cookie (Mimoto's XSRF-TOKEN).
+  'x-xsrf-token',
+  'x-csrf-token',
 ]);
 
 /** Secret `name=value` pairs inside text that is neither JSON nor a URL. */

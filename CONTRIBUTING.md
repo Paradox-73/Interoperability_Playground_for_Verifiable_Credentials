@@ -41,8 +41,9 @@ Platform differences:
   `PLAYGROUND_REF_UPSTREAM=http://172.17.0.1:28100` (the Docker bridge address) so the stack can reach a
   playground server running on the host.
 - **macOS:** Docker Desktop, same as Windows apart from the Git Bash note.
-- **Memory:** the Inji stack used about 1.75-2.1 GiB in steady state (measured 2026-10-04); the Inji Web
-  profile with the planned second Certify is estimated at about 3 GiB. Give Docker at least 4 GB.
+- **Memory:** the Inji stack with every profile used about 2.7 GiB after live runs (measured 2026-10-05 with
+  `docker stats`; the `holder-web` profile, Mimoto with certify-ac, is about 1.46 GiB of it). Give Docker at
+  least 4 GB.
 
 ## One-time set-up
 
@@ -148,7 +149,7 @@ Ports (all in 28000-28999):
 | 28600-28699 | listeners started by tests and by `npm run smoke`             |
 | 28091       | certify-nginx, Certify's public HTTP entry                    |
 | 28090       | Certify directly, on 127.0.0.1 (debug, stack only)            |
-| 28093       | certify-ac (debug; added by WP-14)                            |
+| 28093       | certify-ac, on 127.0.0.1 (`holder-web` profile)               |
 | 28443       | TLS front: HTTPS for the `*.ps02.test` names                  |
 | 28080       | Inji Verify service                                           |
 | 28030       | Inji Verify UI (`verify-ui` profile)                          |
@@ -160,24 +161,24 @@ Ports (all in 28000-28999):
 Environment variables read by the server (`packages/server/src/config/index.ts`) and the stack scripts
 (`deploy/inji-stack/scripts/lib/env.mjs`, `scripts/bundle.mjs`):
 
-| Variable                                                                                                             | Default                                | Meaning                                                                               |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------- |
-| `PLAYGROUND_RUN_DIR`                                                                                                 | `run/` in the clone                    | folder for everything generated at run time; use an absolute path                     |
-| `PLAYGROUND_PORT`, `PLAYGROUND_HOST`                                                                                 | `28100`, `127.0.0.1`                   | where the server listens (`0.0.0.0` to reach it from a phone on the LAN)              |
-| `PLAYGROUND_STACK`                                                                                                   | `off`                                  | whether the Inji stack is expected and where: `off`, `host`, `bundle`                 |
-| `PLAYGROUND_PUBLIC_URL`                                                                                              | unset                                  | URL the stack and phones use to reach the server (a LAN address when a phone is used) |
-| `PLAYGROUND_DB`                                                                                                      | `<run dir>/playground.db`              | SQLite file; `:memory:` keeps nothing                                                 |
-| `PLAYGROUND_GAPS_FILE`                                                                                               | `docs/gaps/gaps.json`                  | gap register served by `GET /api/gaps`                                                |
-| `PLAYGROUND_FAKE_ROLES`                                                                                              | off                                    | `1` registers development-only fake roles ("Test role (fake)")                        |
-| `PLAYGROUND_TIMEOUT_REFERENCE_MS` / `_INJI_MS` / `_PERSON_MS`                                                        | 15000 / 90000 / 600000                 | step timeouts                                                                         |
-| `PLAYGROUND_LOG_LEVEL`                                                                                               | `info`                                 | server log level                                                                      |
-| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`                 | profiles the npm stack and bundle commands start; `none` for the core only            |
-| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`    | where the TLS front sends `ref.ps02.test` in host mode                                |
-| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `http://verify-service:8080/v1/verify` | `response_uri` base Inji Verify gives wallets                                         |
-| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                   | host URLs the stack scripts probe                                                     |
-| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                  | `1` keeps compose logs of a passing smoke run                                         |
-| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`               | image tag the bundle builds and runs                                                  |
-| `PLAYWRIGHT_BASE_URL`                                                                                                | `http://localhost:28174`               | where Playwright points; `http://localhost:28100` for the bundle                      |
+| Variable                                                                                                             | Default                              | Meaning                                                                               |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
+| `PLAYGROUND_RUN_DIR`                                                                                                 | `run/` in the clone                  | folder for everything generated at run time; use an absolute path                     |
+| `PLAYGROUND_PORT`, `PLAYGROUND_HOST`                                                                                 | `28100`, `127.0.0.1`                 | where the server listens (`0.0.0.0` to reach it from a phone on the LAN)              |
+| `PLAYGROUND_STACK`                                                                                                   | `off`                                | whether the Inji stack is expected and where: `off`, `host`, `bundle`                 |
+| `PLAYGROUND_PUBLIC_URL`                                                                                              | unset                                | URL the stack and phones use to reach the server (a LAN address when a phone is used) |
+| `PLAYGROUND_DB`                                                                                                      | `<run dir>/playground.db`            | SQLite file; `:memory:` keeps nothing                                                 |
+| `PLAYGROUND_GAPS_FILE`                                                                                               | `docs/gaps/gaps.json`                | gap register served by `GET /api/gaps`                                                |
+| `PLAYGROUND_FAKE_ROLES`                                                                                              | off                                  | `1` registers development-only fake roles ("Test role (fake)")                        |
+| `PLAYGROUND_TIMEOUT_REFERENCE_MS` / `_INJI_MS` / `_PERSON_MS`                                                        | 15000 / 90000 / 600000               | step timeouts                                                                         |
+| `PLAYGROUND_LOG_LEVEL`                                                                                               | `info`                               | server log level                                                                      |
+| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`               | profiles the npm stack and bundle commands start; `none` for the core only            |
+| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`  | where the TLS front sends `ref.ps02.test` in host mode                                |
+| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `https://verify.ps02.test/v1/verify` | `response_uri` base Inji Verify gives wallets                                         |
+| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                 | host URLs the stack scripts probe                                                     |
+| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                | `1` keeps compose logs of a passing smoke run                                         |
+| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`             | image tag the bundle builds and runs                                                  |
+| `PLAYWRIGHT_BASE_URL`                                                                                                | `http://localhost:28174`             | where Playwright points; `http://localhost:28100` for the bundle                      |
 
 Added by WP-08 (branch `wp-08-recording`, in review): `PLAYGROUND_PROXY_TIMEOUT_MS`,
 `PLAYGROUND_NETWORK_MAP` (host mode: `deploy/inji-stack/network-map.host.json`), `PLAYGROUND_EXTRA_CA` (for
@@ -351,6 +352,11 @@ editing `package.json`.
 | Mimoto rejects an issuer (`RESIDENT-APP-041`)                                                    | Gap G4: a credential configuration lacks `display` logo, `background_color` or `text_color`. Add them to every configuration.                                                                                                                                                        |
 | Mimoto gets 404 on `/.well-known/oauth-authorization-server`                                     | Gap G3: Mimoto asks at the host root. `nginx/certify-nginx.conf` routes it to Certify; do the same for any new issuer behind nginx.                                                                                                                                                  |
 | Mimoto `/actuator/health` answers 503                                                            | Expected: it reports Redis as down. The APIs work; the stack checks `/v1/mimoto/issuers` instead.                                                                                                                                                                                    |
+| Inji Web runs fail at the token or credential step                                               | Run the playground on 28100 with `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test`: certify-ac and Mimoto reach it there, and certify-ac accepts only tokens issued by `https://ref.ps02.test/ref/as`.                                                                                   |
+| `docker restart` of Mimoto exits at once                                                         | The image's CA entrypoint stops when the test CA is already in the trust store. Recreate it (`up -d --force-recreate mimoto-service`) or run `npm run stack:down` and `npm run stack:up`.                                                                                            |
+| Mimoto sign-in answers 500 for a returning user                                                  | Gap G21 (a first ID token without `picture` or `phone_number`). `npm run stack:down` and `stack:up` recreate Mimoto's database.                                                                                                                                                      |
+| Mimoto offers no credential for an SD-JWT VC request                                             | Gap G25: Mimoto 0.22.0 matches only `ldp_vc` for presentation.                                                                                                                                                                                                                       |
+| Mimoto refuses a presentation request: `filter->pattern param is required`                       | Gap G23: give every field filter a `pattern` (the playground's Inji Verify requests do).                                                                                                                                                                                             |
 | Certify answers 200 with `unknown_claims`                                                        | The wallet asked for claims the configuration does not advertise. Request only advertised claims.                                                                                                                                                                                    |
 | Certify rejects the holder proof                                                                 | Use ES256 with a `did:jwk` key id (the combination Certify accepted); an EdDSA proof may fail on the sample config (G9).                                                                                                                                                             |
 | Inji Verify SDK in the browser: `Failed to fetch` or `403 Invalid CORS request`                  | verify-service has no CORS support. Point the SDK at `/v1/verify` on the playground's own origin, never at port 28080.                                                                                                                                                               |

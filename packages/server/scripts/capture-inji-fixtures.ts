@@ -1,7 +1,7 @@
 /**
  * Writes the Inji contract fixtures (`packages/server/test/contract/inji/fixtures/*.recorded.json`) from
  * runs stored on a playground server that is connected to the Inji stack. Each fixture is the redacted
- * export's exchanges with Inji Certify or Inji Verify for one run, so the adapter tests replay what the
+ * export's exchanges with Inji Certify, Inji Verify or Mimoto for one run, so the adapter tests replay what the
  * real modules answered without containers.
  *
  *   node --conditions=source --import tsx packages/server/scripts/capture-inji-fixtures.ts \
@@ -21,7 +21,9 @@ const { values, positionals } = parseArgs({
 const out = new URL('../test/contract/inji/fixtures/', import.meta.url);
 mkdirSync(out, { recursive: true });
 
-const INJI = new Set(['inji-certify', 'inji-verify']);
+const INJI = new Set(['inji-certify', 'inji-certify-ac', 'inji-verify', 'mimoto']);
+/** Inji Web runs also keep Mimoto's exchanges with the test authorization server, which the role replays. */
+const INJI_WEB = new Set([...INJI, 'ref-as']);
 const shorten = (exchange: RecordedExchange): RecordedExchange => {
   const body = exchange.response?.body;
   if (!body || !body.includes('verifiableCredential')) return exchange;
@@ -40,7 +42,8 @@ for (const pair of positionals) {
   if (!name || !runId) throw new Error(`expected <name>=<runId>, got ${pair}`);
   const response = await fetch(`${values.server}/api/runs/${encodeURIComponent(runId)}/export`);
   const exported = RunExportSchema.parse(await response.json());
-  const exchanges = exported.exchanges.filter((exchange) => INJI.has(exchange.to)).map(shorten);
+  const keep = exported.run.config.wallet === 'inji-web' ? INJI_WEB : INJI;
+  const exchanges = exported.exchanges.filter((exchange) => keep.has(exchange.to)).map(shorten);
   const fixture = {
     description: `Exchanges with Inji modules recorded in run ${runId} (${exported.run.config.issuer} -> ${exported.run.config.wallet} -> ${exported.run.config.verifier}, ${exported.run.config.format}, ${exported.run.config.scenario}) on ${exported.run.createdAt.slice(0, 10)}, redacted.`,
     config: exported.run.config,

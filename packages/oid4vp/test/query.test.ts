@@ -61,6 +61,14 @@ describe('Presentation Exchange filters (JSON Schema subset)', () => {
     [7, { type: 'integer', maximum: 5 }, false],
     ['b', { enum: ['a', 'b'] }, true],
     [true, { type: 'string' }, false],
+    // Keywords for another type are ignored (the filters Inji wallets need carry `pattern` on arrays).
+    [
+      ['VerifiableCredential', 'FarmerCredential'],
+      { type: 'array', contains: { const: 'FarmerCredential' }, pattern: 'FarmerCredential' },
+      true,
+    ],
+    ['Asha', { minimum: 1, contains: { const: 'x' } }, true],
+    [4, { pattern: '^A' }, true],
   ];
   it.each(cases)('%j against %j -> %s', (value, filter, expected) => {
     expect(matchesFilter(value, filter)).toBe(expected);

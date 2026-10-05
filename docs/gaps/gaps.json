@@ -245,5 +245,70 @@
     "severity": "high",
     "cells": [],
     "disclosure": "private"
+  },
+  {
+    "id": "G21",
+    "title": "Mimoto fails every later sign-in of a user whose first ID token lacked picture or phone_number",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "POST /v1/mimoto/auth/google/token-login works the first time for an ID token without the optional claims picture and phone_number, then answers HTTP 500 for the same user ever after: UserMetadataService.updateIfChanged dereferences the stored null values (NullPointerException). The user can sign in again only after the user_metadata row is deleted. OpenID Connect makes both claims optional.",
+    "cells": ["*/inji-web/*"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G22",
+    "title": "Inji Web binds the credential to a P-256 key but signs the ldp_vp with an Ed25519 key",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "high",
+    "status": "new",
+    "summary": "Mimoto requests the credential with an ES256 proof (holder key P-256), then signs the presentation for OpenID4VP with an Ed25519Signature2020 proof under a different key. Inji Verify answers INVALID with holderProofCheck ERR_HOLDER_BINDING_CHECK_FAILED; any verifier that checks holder binding must reject it. Measured with Inji Certify (certify-ac) and with the reference issuer, so no Inji Web presentation of an ldp_vc verifies.",
+    "cells": ["*/inji-web/inji-verify/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G23",
+    "title": "Mimoto refuses Presentation Exchange field filters without a pattern",
+    "repository": "inji/mimoto",
+    "version": "0.22.0 (inji-openid4vp library)",
+    "severity": "medium",
+    "status": "new",
+    "summary": "POST /v1/mimoto/wallets/{id}/presentations answers HTTP 400 \"Missing Input: filter->pattern param is required\" for an input descriptor whose field filter is {\"type\": \"array\", \"contains\": {\"const\": \"FarmerCredential\"}} or {\"type\": \"string\", \"const\": ...}. DIF Presentation Exchange 2.0 makes filter any JSON Schema; pattern is optional. The playground's Inji Verify requests add a pattern to every filter to get past this; requests from the reference verifier, which follow the specification, are refused.",
+    "cells": ["*/inji-web/ref-verifier"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G24",
+    "title": "Inji Web refuses an http response_uri, while the Inji Verify sample configuration hands one out",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "low",
+    "status": "new",
+    "summary": "Mimoto rejects an authorization request whose response_uri is http (\"response_uri data is not valid\"). The verify-service sample setting INJI_VP_SUBMISSION_BASE_URL is http://verify-service:8080/v1/verify, so an Inji Web wallet cannot answer an Inji Verify deployed with the sample values; the playground stack serves Inji Verify at https://verify.ps02.test instead.",
+    "cells": ["*/inji-web/inji-verify"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G25",
+    "title": "Inji Web cannot present SD-JWT VCs",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "Mimoto downloads and stores vc+sd-jwt credentials, but its credential matching for OpenID4VP (CredentialMatchingServiceImpl) throws UNSUPPORTED_FORMAT for vc+sd-jwt and dc+sd-jwt, so GET /wallets/{id}/presentations/{pid}/credentials answers availableCredentials [] with missingClaims [\"vct\"] and nothing can be submitted. Inji Verify accepts the same Certify SD-JWT VC from the reference wallet.",
+    "cells": ["*/inji-web/*/vc+sd-jwt", "*/inji-web/*/dc+sd-jwt"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
   }
 ]

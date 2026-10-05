@@ -38,6 +38,7 @@ import {
   generateAsSigningKey,
   registerRootWellKnown,
   type IssuerDidMethod,
+  type RegisteredClient,
   type ReferenceIssuer,
   type TestAuthorizationServer,
 } from '@inji-playground/oid4vci';
@@ -46,6 +47,11 @@ import type { FastifyInstance } from 'fastify';
 
 /** DID methods with a variant issuer next to the main one. */
 const VARIANT_DID_METHODS: readonly IssuerDidMethod[] = ['did:key', 'did:jwk'];
+
+/** Scopes of certify-ac's FarmerCredential (csvdp-farmer sample) and FarmerSdJwt (seed-ac); their tokens are for certify-ac. */
+export const CERTIFY_AC_SCOPES = ['mock_identity_vc_ldp', 'farmer_sd_jwt'];
+/** Client id Mimoto uses at the test authorization server (config/mimoto-issuers-config.json). */
+export const MIMOTO_CLIENT_ID = 'ps02-mimoto';
 
 /** Client id of the reference wallet at the test authorization server (wallet-initiated issuance). */
 export const REFERENCE_WALLET_CLIENT_ID = 'playground-reference-wallet';
@@ -67,6 +73,13 @@ export interface ReferenceHostingOptions {
    * credential uses a context published on a personal GitHub Pages site.
    */
   remoteContexts?: { cacheDir: string };
+  /**
+   * Other resources the test authorization server issues access tokens for (Inji Certify in authorization
+   * code mode, certify-ac): tokens for these scopes carry this audience instead of the reference issuer's.
+   */
+  extraResources?: ReadonlyArray<{ scopes: string[]; audience: string }>;
+  /** Other clients of the test authorization server (Mimoto, with its private_key_jwt key). */
+  extraClients?: RegisteredClient[];
 }
 
 export interface ReferenceHosting {
@@ -125,9 +138,16 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
         redirectUris: [urls.walletCallback],
         authMethod: 'none',
       },
+      ...(options.extraClients ?? []),
     ],
-    scopesSupported: ['openid', ...DEFAULT_CONFIGURATIONS.map((configuration) => configuration.scope)],
-    audience: urls.issuer,
+    scopesSupported: [
+      'openid',
+      ...DEFAULT_CONFIGURATIONS.map((configuration) => configuration.scope),
+      ...(options.extraResources ?? []).flatMap((resource) => resource.scopes),
+    ],
+    audience: (scopes) =>
+      options.extraResources?.find((resource) => resource.scopes.some((scope) => scopes.includes(scope)))
+        ?.audience ?? urls.issuer,
   });
   const issuerAt = (baseUrl: string, didMethod: IssuerDidMethod): ReferenceIssuer =>
     createReferenceIssuer({

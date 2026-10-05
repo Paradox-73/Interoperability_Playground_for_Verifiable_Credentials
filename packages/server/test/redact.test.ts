@@ -84,6 +84,7 @@ describe('Redactor', () => {
           'content-type': 'application/x-www-form-urlencoded',
           authorization: 'Basic dXNlcjpwYXNz',
           dpop: 'eyJ.proof.jwt',
+          'x-xsrf-token': 'efdc009a-csrf',
         },
         body: 'grant_type=x&pre-authorized_code=P1',
       },
@@ -92,6 +93,7 @@ describe('Redactor', () => {
     expect(out.redacted).toBe(true);
     expect(out.request.headers.authorization).toMatch(/^Basic \[redacted sha256:/);
     expect(out.request.headers.dpop).toMatch(MASK);
+    expect(out.request.headers['x-xsrf-token']).toMatch(MASK);
     expect(out.request.headers['content-type']).toBe('application/x-www-form-urlencoded');
     expect(out.request.body).toMatch(/^grant_type=x&pre-authorized_code=%5Bredacted/);
     expect(out.response?.headers['set-cookie']).toMatch(MASK);
