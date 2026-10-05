@@ -1,0 +1,291 @@
+{
+  "unit": {
+    "measuredAt": "2026-10-05T18:39:04.481Z",
+    "wallSeconds": 44,
+    "packages": {
+      "cli": {
+        "files": 2,
+        "tests": 25,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 3910.53369140625
+      },
+      "deploy": {
+        "files": 3,
+        "tests": 47,
+        "passed": 47,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 6974.34033203125
+      },
+      "formats": {
+        "files": 7,
+        "tests": 148,
+        "passed": 148,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 3993.645751953125
+      },
+      "oid4vci": {
+        "files": 5,
+        "tests": 49,
+        "passed": 49,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 29343.970947265625
+      },
+      "oid4vp": {
+        "files": 5,
+        "tests": 83,
+        "passed": 83,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 2152.80810546875
+      },
+      "protocol": {
+        "files": 3,
+        "tests": 30,
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 62.38232421875
+      },
+      "scenarios": {
+        "files": 2,
+        "tests": 100,
+        "passed": 100,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 3835.85546875
+      },
+      "server": {
+        "files": 24,
+        "tests": 242,
+        "passed": 242,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 66379.22802734375
+      },
+      "web": {
+        "files": 17,
+        "tests": 240,
+        "passed": 240,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 37442.959228515625
+      }
+    },
+    "totals": {
+      "files": 68,
+      "tests": 964,
+      "passed": 964,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "e2e": {
+    "measuredAt": "2026-10-05T18:39:48.933Z",
+    "tests": 6,
+    "passed": 6,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "durationSeconds": 15
+  },
+  "stack": {
+    "measuredAt": "2026-10-05T18:40:20.410Z",
+    "startSeconds": 63,
+    "upStatus": 0,
+    "memory": {
+      "containers": {
+        "inji-web": 12,
+        "mimoto-service": 684,
+        "certify-nginx": 14,
+        "verify-ui": 13,
+        "tls-front": 19,
+        "certify-ac": 622,
+        "verify-service": 389,
+        "certify": 651,
+        "database": 85,
+        "database-ac": 51
+      },
+      "totalMiB": 2540
+    },
+    "memoryMeasuredAfter": "the live tests"
+  },
+  "live": {
+    "measuredAt": "2026-10-05T18:41:23.127Z",
+    "wallSeconds": 50,
+    "packages": {
+      "server": {
+        "files": 2,
+        "tests": 20,
+        "passed": 20,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 41296.244384765625
+      }
+    },
+    "totals": {
+      "files": 2,
+      "tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "licenses": {
+    "measuredAt": "2026-10-05T18:42:37.066Z",
+    "production": 442,
+    "byLicense": [
+      [
+        "MIT",
+        310
+      ],
+      [
+        "ISC",
+        53
+      ],
+      [
+        "BSD-3-Clause",
+        40
+      ],
+      [
+        "Apache-2.0",
+        16
+      ],
+      [
+        "BlueOak-1.0.0",
+        5
+      ],
+      [
+        "(MIT AND Zlib)",
+        3
+      ],
+      [
+        "(MIT OR CC0-1.0)",
+        2
+      ],
+      [
+        "0BSD",
+        2
+      ],
+      [
+        "Apache-2.0 OR MIT",
+        2
+      ],
+      [
+        "MPL-2.0",
+        2
+      ],
+      [
+        "Unlicense",
+        2
+      ],
+      [
+        "W3C-20150513 AND BSD-3-Clause",
+        2
+      ],
+      [
+        "(Apache-2.0 OR MIT)",
+        1
+      ],
+      [
+        "(MIT OR GPL-3.0-or-later)",
+        1
+      ],
+      [
+        "(MPL-2.0 OR Apache-2.0)",
+        1
+      ]
+    ],
+    "images": [
+      {
+        "image": "injistack/inji-certify-with-plugins:0.14.0",
+        "license": "MPL-2.0"
+      },
+      {
+        "image": "injistack/inji-verify-service:0.18.2",
+        "license": "MPL-2.0"
+      },
+      {
+        "image": "injistack/inji-verify-ui:0.18.2",
+        "license": "MPL-2.0"
+      },
+      {
+        "image": "injistack/mimoto:0.22.0",
+        "license": "MPL-2.0"
+      },
+      {
+        "image": "injistack/inji-web:0.17.0",
+        "license": "MPL-2.0"
+      },
+      {
+        "image": "postgres:15",
+        "license": "PostgreSQL"
+      },
+      {
+        "image": "nginx:stable",
+        "license": "BSD-2-Clause"
+      }
+    ],
+    "developmentOnly": 367,
+    "developmentOnlyNotOsi": [
+      "caniuse-lite (CC-BY-4.0)",
+      "language-subtag-registry (CC0-1.0)",
+      "mdn-data (CC0-1.0)"
+    ],
+    "failures": []
+  },
+  "matrices": [
+    {
+      "label": "reference (no Docker)",
+      "page": "../interop-report/reference/matrix.md",
+      "spec": "reference",
+      "date": "2026-10-05T00:30:19.771Z",
+      "totals": {
+        "cells": 82,
+        "matched": 82,
+        "mismatched": 0,
+        "pass": 78,
+        "fail": 0,
+        "error": 0,
+        "notSupported": 4
+      }
+    },
+    {
+      "label": "live (Inji stack)",
+      "page": "../interop-report/live/live-core/matrix.md",
+      "spec": "live-core",
+      "date": "2026-10-05T18:04:56.413Z",
+      "totals": {
+        "cells": 14,
+        "matched": 14,
+        "mismatched": 0,
+        "pass": 10,
+        "fail": 3,
+        "error": 0,
+        "notSupported": 1
+      }
+    },
+    {
+      "label": "live (Inji stack)",
+      "page": "../interop-report/live/live-holder-web/matrix.md",
+      "spec": "live-holder-web",
+      "date": "2026-10-05T18:06:54.228Z",
+      "totals": {
+        "cells": 6,
+        "matched": 6,
+        "mismatched": 0,
+        "pass": 1,
+        "fail": 5,
+        "error": 0,
+        "notSupported": 0
+      }
+    }
+  ],
+  "generatedAt": "2026-10-05T18:42:37.074Z",
+  "commit": "05a13ea",
+  "environment": "Windows_NT 10.0.26200, Node 24.11.1"
+}
