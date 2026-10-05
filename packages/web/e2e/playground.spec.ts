@@ -159,11 +159,18 @@ test('keyboard only: run the happy path and open its report without a pointer', 
   async function tabTo(name: string, role: 'button' | 'link', limit = 80): Promise<void> {
     for (let i = 0; i < limit; i += 1) {
       await page.keyboard.press('Tab');
-      const focused = page.locator(role === 'button' ? 'button:focus' : 'a:focus');
-      if ((await focused.count()) === 1) {
-        const label = ((await focused.getAttribute('aria-label')) ?? (await focused.innerText())).trim();
-        if (label === name) return;
-      }
+      // Read the focused element in one step: the page re-renders while a run streams in, so a locator
+      // such as `a:focus` can match on one call and no longer match on the next one.
+      // A string, because the browser tests type-check without DOM types.
+      const focused = await page.evaluate<{ tag: string; label: string } | null>(`(() => {
+        const element = document.activeElement;
+        if (!element) return null;
+        return {
+          tag: element.tagName.toLowerCase(),
+          label: (element.getAttribute('aria-label') ?? element.innerText ?? '').trim(),
+        };
+      })()`);
+      if (focused?.tag === (role === 'button' ? 'button' : 'a') && focused.label === name) return;
     }
     throw new Error(`could not reach the ${role} "${name}" with Tab`);
   }
