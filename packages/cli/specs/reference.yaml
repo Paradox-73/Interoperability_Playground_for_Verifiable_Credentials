@@ -1,0 +1,503 @@
+# Reference matrix: every cell of the scenario catalogue that the reference issuer, wallet and verifier
+# can run, in catalogue order (happy cells come before vp-replay, which replays an earlier presentation),
+# in every applicable format and both OpenID4VP profiles, plus cells that must be reported as not
+# supported. Run by `npm run matrix:reference` (CI and nightly). No Docker needed.
+name: reference
+description: Reference issuer, wallet and verifier against the scenario catalogue; no Inji module takes part.
+mode: reference
+cellSeconds: 1
+defaults:
+  issuer: ref-issuer
+  wallet: ref-wallet
+  verifier: ref-verifier
+cases:
+  - uniqueIdentifier: TC_PG_HAPPY_01
+    description: 'Happy path, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_HAPPY_02
+    description: 'Happy path, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_HAPPY_03
+    description: 'Happy path, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_HAPPY_04
+    description: 'Happy path, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_HAPPY_05
+    description: 'Happy path, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_HAPPY_06
+    description: 'Happy path, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_TAMPER_01
+    description: 'Expired credential ("Valid but expired"), ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_02
+    description: 'Expired credential ("Valid but expired"), ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_03
+    description: 'Expired credential ("Valid but expired"), vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_04
+    description: 'Expired credential ("Valid but expired"), vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_05
+    description: 'Expired credential ("Valid but expired"), dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_06
+    description: 'Expired credential ("Valid but expired"), dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_TAMPER_07
+    description: 'Credential not valid yet, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_08
+    description: 'Credential not valid yet, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_09
+    description: 'Credential not valid yet, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_10
+    description: 'Credential not valid yet, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_11
+    description: 'Credential not valid yet, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_12
+    description: 'Credential not valid yet, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_13
+    description: 'Credential of the wrong type, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_14
+    description: 'Credential of the wrong type, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_15
+    description: 'Credential of the wrong type, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_16
+    description: 'Credential of the wrong type, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_17
+    description: 'Credential of the wrong type, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_18
+    description: 'Credential of the wrong type, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_19
+    description: 'Bad issuer signature, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_20
+    description: 'Bad issuer signature, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_21
+    description: 'Bad issuer signature, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_22
+    description: 'Bad issuer signature, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_23
+    description: 'Bad issuer signature, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_24
+    description: 'Bad issuer signature, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_25
+    description: 'Altered selective disclosure, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_26
+    description: 'Altered selective disclosure, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_27
+    description: 'Altered selective disclosure, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_28
+    description: 'Altered selective disclosure, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_29
+    description: 'Extra disclosure the issuer never signed, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_30
+    description: 'Extra disclosure the issuer never signed, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_31
+    description: 'Extra disclosure the issuer never signed, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_32
+    description: 'Extra disclosure the issuer never signed, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_33
+    description: 'Key binding with the wrong nonce, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: kb-wrong-nonce
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_34
+    description: 'Key binding with the wrong nonce, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: kb-wrong-nonce
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_35
+    description: 'Key binding with the wrong nonce, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: kb-wrong-nonce
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_36
+    description: 'Key binding with the wrong nonce, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: kb-wrong-nonce
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_37
+    description: 'Key binding for another verifier, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: kb-wrong-aud
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_38
+    description: 'Key binding for another verifier, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: kb-wrong-aud
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_39
+    description: 'Key binding for another verifier, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: kb-wrong-aud
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_40
+    description: 'Key binding for another verifier, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: kb-wrong-aud
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_41
+    description: 'Replayed presentation, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_42
+    description: 'Replayed presentation, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_43
+    description: 'Replayed presentation, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_44
+    description: 'Replayed presentation, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_45
+    description: 'Replayed presentation, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_46
+    description: 'Replayed presentation, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_47
+    description: 'Presented by someone other than the holder, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_48
+    description: 'Presented by someone other than the holder, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_49
+    description: 'Presented by someone other than the holder, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_50
+    description: 'Presented by someone other than the holder, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_51
+    description: 'Presented by someone other than the holder, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_52
+    description: 'Presented by someone other than the holder, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_53
+    description: 'Issuer signature forged with a self-signed certificate, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_54
+    description: 'Issuer signature forged with a self-signed certificate, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_55
+    description: 'Issuer signature forged with a self-signed certificate, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_56
+    description: 'Issuer signature forged with a self-signed certificate, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_PROBE_01
+    description: 'Probe: issuer identified by did:key, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_02
+    description: 'Probe: issuer identified by did:key, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_03
+    description: 'Probe: issuer identified by did:key, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_04
+    description: 'Probe: issuer identified by did:key, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_05
+    description: 'Probe: issuer identified by did:key, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_06
+    description: 'Probe: issuer identified by did:key, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-did-key
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_07
+    description: 'Probe: issuer identified by did:jwk, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_08
+    description: 'Probe: issuer identified by did:jwk, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_09
+    description: 'Probe: issuer identified by did:jwk, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_10
+    description: 'Probe: issuer identified by did:jwk, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_11
+    description: 'Probe: issuer identified by did:jwk, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_12
+    description: 'Probe: issuer identified by did:jwk, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-did-jwk
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_13
+    description: 'Probe: W3C VC 2.0 with eddsa-rdfc-2022, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: vc2-eddsa-rdfc-2022
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_14
+    description: 'Probe: W3C VC 2.0 with eddsa-rdfc-2022, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: vc2-eddsa-rdfc-2022
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_15
+    description: 'Probe: SD-JWT VC under the format id dc+sd-jwt, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: dc-sd-jwt
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_16
+    description: 'Probe: SD-JWT VC under the format id dc+sd-jwt, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: dc-sd-jwt
+    expected: VALID
+  - uniqueIdentifier: TC_PG_NS_01
+    description: 'A credential tamper needs the reference wallet; a phone wallet cannot produce it'
+    wallet: mobile-wallet
+    format: ldp_vc
+    scenario: bad-signature
+    verdict: not-supported
+  - uniqueIdentifier: TC_PG_NS_02
+    description: 'A presentation tamper cannot be produced by a phone wallet'
+    wallet: mobile-wallet
+    format: vc+sd-jwt
+    scenario: kb-wrong-nonce
+    verdict: not-supported
+  - uniqueIdentifier: TC_PG_NS_03
+    description: 'holder-did-canonical needs Inji Certify, which pads the holder did:jwk'
+    format: ldp_vc
+    scenario: holder-did-canonical
+    verdict: not-supported
+  - uniqueIdentifier: TC_PG_NS_04
+    description: 'The reference roles do not issue or verify mso_mdoc'
+    format: mso_mdoc
+    scenario: happy
+    verdict: not-supported

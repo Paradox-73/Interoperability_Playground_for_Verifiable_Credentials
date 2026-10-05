@@ -1,0 +1,108 @@
+# Nightly interoperability run: the reference matrix (no Docker), then the live matrices against the local
+# Inji stack (Certify, Inji Verify, Mimoto and Inji Web). The matrices are published as job summaries and
+# docs/interop-report/ (with the redacted run of every cell) as an artifact.
+#
+# Whether a GitHub-hosted runner has enough memory for the stack with the holder-web profile (about 3 GiB
+# estimated) is not known yet; the first run measures it.
+name: interop-nightly
+
+on:
+  schedule:
+    - cron: '30 20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: interop-nightly
+  cancel-in-progress: false
+
+jobs:
+  reference:
+    name: reference matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: reference matrix
+        run: npm run matrix:reference -- --junit docs/interop-report/reference/junit.xml
+      - name: matrix as job summary
+        if: always()
+        run: cat docs/interop-report/reference/matrix.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: interop-report-reference
+          path: docs/interop-report/reference/
+          if-no-files-found: warn
+
+  live:
+    name: live matrices (Inji stack)
+    runs-on: ubuntu-latest
+    needs: reference
+    timeout-minutes: 60
+    env:
+      PLAYGROUND_RUN_DIR: ${{ github.workspace }}/run
+      PLAYGROUND_STACK_PROFILES: holder-web
+      # The TLS front reaches the playground on the host through the Docker bridge on Linux.
+      PLAYGROUND_REF_UPSTREAM: http://172.17.0.1:28100
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: start the Inji stack
+        run: npm run stack:up
+      - name: start the playground server against the stack
+        env:
+          PLAYGROUND_STACK: host
+          PLAYGROUND_HOST: 0.0.0.0
+          PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
+        run: |
+          nohup npm start > "$PLAYGROUND_RUN_DIR/server.log" 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
+          cat "$PLAYGROUND_RUN_DIR/server.log"; exit 1
+      - name: live-core matrix
+        id: core
+        continue-on-error: true
+        run: npm run matrix:live -- --spec live-core --junit docs/interop-report/live/junit-core.xml
+      - name: keep the live-core report
+        if: always()
+        run: |
+          mkdir -p docs/interop-report/live-core
+          cp -r docs/interop-report/live/. docs/interop-report/live-core/ || true
+      - name: live-holder-web matrix
+        id: holder
+        continue-on-error: true
+        run: npm run matrix:live -- --spec live-holder-web --junit docs/interop-report/live/junit-holder-web.xml
+      - name: matrices as job summary
+        if: always()
+        run: |
+          for file in docs/interop-report/live-core/matrix.md docs/interop-report/live/matrix.md; do
+            [ -f "$file" ] && cat "$file" >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo "memory at the end of the run:" >> "$GITHUB_STEP_SUMMARY"
+          docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: interop-report-live
+          path: |
+            docs/interop-report/
+            run/server.log
+          if-no-files-found: warn
+      - name: stop the Inji stack
+        if: always()
+        run: npm run stack:down
+      - name: fail when a live matrix differed from its spec
+        if: steps.core.outcome == 'failure' || steps.holder.outcome == 'failure'
+        run: exit 1

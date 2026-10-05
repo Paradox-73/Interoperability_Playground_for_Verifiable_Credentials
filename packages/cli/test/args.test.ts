@@ -11,12 +11,53 @@ describe('parseCli', () => {
   });
 
   it('reads the matrix options', () => {
-    expect(parseCli(['matrix', '--reference', '--spec', 'specs/reference.yaml', '--out', 'out'])).toEqual({
+    expect(
+      parseCli([
+        'matrix',
+        '--reference',
+        '--spec',
+        'specs/reference.yaml',
+        '--out',
+        'out',
+        '--junit',
+        'j.xml',
+      ]),
+    ).toMatchObject({
       command: 'matrix',
       server: 'http://localhost:28100',
       reference: true,
       spec: 'specs/reference.yaml',
       out: 'out',
+      junit: 'j.xml',
+      force: false,
+    });
+  });
+
+  it('reads the cell of run, with the reference roles, SD-JWT VC and the happy path by default', () => {
+    expect(parseCli(['run']).cell).toEqual({
+      issuer: 'ref-issuer',
+      wallet: 'ref-wallet',
+      verifier: 'ref-verifier',
+      format: 'vc+sd-jwt',
+      scenario: 'happy',
+    });
+    expect(
+      parseCli([
+        'run',
+        '--verifier',
+        'inji-verify',
+        '--format',
+        'ldp_vc',
+        '--vp-profile',
+        'final-1.0',
+        '--scenario',
+        'expired',
+      ]).cell,
+    ).toMatchObject({
+      verifier: 'inji-verify',
+      format: 'ldp_vc',
+      vpProfile: 'final-1.0',
+      scenario: 'expired',
     });
   });
 

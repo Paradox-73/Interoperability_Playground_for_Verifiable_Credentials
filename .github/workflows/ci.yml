@@ -33,6 +33,22 @@ jobs:
       - run: npm test
       - run: npm run build
 
+  reference-matrix:
+    name: reference matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run matrix:reference
+      - name: matrix as job summary
+        if: always()
+        run: cat docs/interop-report/reference/matrix.md >> "$GITHUB_STEP_SUMMARY"
+
   image:
     name: container image
     runs-on: ubuntu-latest

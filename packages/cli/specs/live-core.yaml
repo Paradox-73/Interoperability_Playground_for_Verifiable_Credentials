@@ -1,0 +1,81 @@
+# Live core matrix (WP-10): Inji Certify 0.14.0 and Inji Verify 0.18.2 from the local stack, with the
+# reference roles on the other side. Planned: the Inji adapters (inji-certify, inji-verify) are written by
+# WP-10, so until then every cell here stops with "unknown role". Run with the stack up:
+#   npm run stack:up && npm run matrix:live -- --spec live-core; rc=$?; npm run stack:down; exit $rc
+# Expected outcomes are what the specifications require; a DIFF cell is a finding about that module.
+name: live-core
+description: Inji Certify and Inji Verify against the reference roles, both mandatory formats (planned, needs WP-10).
+mode: live
+cellSeconds: 60
+defaults:
+  wallet: ref-wallet
+cases:
+  # All-Inji issuance and verification (PS02 core path).
+  - uniqueIdentifier: TC_PG_LIVE_01
+    description: Inji Certify -> reference wallet -> Inji Verify, ldp_vc
+    issuer: inji-certify
+    verifier: inji-verify
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_LIVE_02
+    description: Inji Certify -> reference wallet -> Inji Verify, SD-JWT VC
+    issuer: inji-certify
+    verifier: inji-verify
+    format: vc+sd-jwt
+  # Certify credentials checked by an independent verifier.
+  - uniqueIdentifier: TC_PG_LIVE_03
+    description: Inji Certify -> reference wallet -> reference verifier, ldp_vc
+    issuer: inji-certify
+    verifier: ref-verifier
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_LIVE_04
+    description: Inji Certify -> reference wallet -> reference verifier, SD-JWT VC
+    issuer: inji-certify
+    verifier: ref-verifier
+    format: vc+sd-jwt
+  # Inji Verify against credentials and presentations from an independent issuer and wallet.
+  - uniqueIdentifier: TC_PG_LIVE_05
+    description: Reference issuer -> reference wallet -> Inji Verify, ldp_vc
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_LIVE_06
+    description: Reference issuer -> reference wallet -> Inji Verify, SD-JWT VC
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: vc+sd-jwt
+  - uniqueIdentifier: TC_PG_LIVE_07
+    description: Inji Verify must report an expired credential as expired ("Valid but expired")
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: ldp_vc
+    scenario: expired
+  - uniqueIdentifier: TC_PG_LIVE_08
+    description: Inji Verify must reject a flipped issuer signature
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: vc+sd-jwt
+    scenario: bad-signature
+  - uniqueIdentifier: TC_PG_LIVE_09
+    description: Inji Verify must reject a key binding JWT bound to another nonce (inji/inji-verify#2059)
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: vc+sd-jwt
+    scenario: kb-wrong-nonce
+  - uniqueIdentifier: TC_PG_LIVE_10
+    description: Inji Verify must reject an SD-JWT signed by a self-signed x5c (gap G7)
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: vc+sd-jwt
+    scenario: forged-x5c
+  - uniqueIdentifier: TC_PG_LIVE_11
+    description: Inji Verify must accept an issuer identified by did:jwk
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: vc+sd-jwt
+    scenario: issuer-did-jwk
+  - uniqueIdentifier: TC_PG_LIVE_12
+    description: Inji Verify should accept the canonical did:jwk of a padded Certify holder binding (inji/inji-certify#1054)
+    issuer: inji-certify
+    verifier: inji-verify
+    format: ldp_vc
+    scenario: holder-did-canonical

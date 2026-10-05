@@ -1,0 +1,34 @@
+# Live holder-web matrix (WP-14): Inji Web through Mimoto as the wallet, fed by certify-ac (a second Inji
+# Certify whose authorization server is the playground test authorization server) and by the reference
+# issuer. Planned: the inji-certify-ac and inji-web roles are written by WP-14; until then every cell
+# stops with "unknown role". Run with the holder-web profile up:
+#   npm run stack:up && npm run matrix:live -- --spec live-holder-web; rc=$?; npm run stack:down; exit $rc
+name: live-holder-web
+description: Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer (planned, needs WP-14).
+mode: live
+cellSeconds: 90
+cases:
+  - uniqueIdentifier: TC_PG_WEB_01
+    description: certify-ac -> Inji Web (Mimoto guest download) -> Inji Verify, ldp_vc
+    issuer: inji-certify-ac
+    wallet: inji-web
+    verifier: inji-verify
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_WEB_02
+    description: certify-ac -> reference wallet -> Inji Verify, ldp_vc
+    issuer: inji-certify-ac
+    wallet: ref-wallet
+    verifier: inji-verify
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_WEB_03
+    description: Reference issuer -> Inji Web (Mimoto) -> reference verifier, ldp_vc
+    issuer: ref-issuer
+    wallet: inji-web
+    verifier: ref-verifier
+    format: ldp_vc
+  - uniqueIdentifier: TC_PG_WEB_04
+    description: Reference issuer -> Inji Web (Mimoto) -> Inji Verify, ldp_vc
+    issuer: ref-issuer
+    wallet: inji-web
+    verifier: inji-verify
+    format: ldp_vc
