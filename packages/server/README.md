@@ -290,7 +290,8 @@ Every HTTP exchange of a run is recorded exactly once, at the capture point that
   the `response_uri` Inji Verify hands the wallet) through the host ports.
 
 Exports (`GET /api/runs/{id}/export`, reports, fixtures) redact access tokens, pre-authorized and
-authorization codes, client assertions, cookies and private keys, and keep the payload's shape.
+authorization codes (in forms, URLs and JSON bodies next to an `authorization_code` grant type), PKCE
+code verifiers, client assertions, cookies and private keys, and keep the payload's shape.
 
 ## Recorded fixtures
 

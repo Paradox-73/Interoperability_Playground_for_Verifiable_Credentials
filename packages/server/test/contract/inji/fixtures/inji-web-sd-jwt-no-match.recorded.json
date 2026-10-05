@@ -159,7 +159,7 @@
           "accept-encoding": "gzip, x-gzip, deflate",
           "user-agent": "Apache-HttpClient/5.2.3 (Java/21.0.10)"
         },
-        "body": "code=%5Bredacted%20sha256%3A47e18120%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3Ac6a8586e%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=ebcc1-ZT89nZfDzZ-9tF3ySq4Gj3wG7Q0w2DuIn78ok",
+        "body": "code=%5Bredacted%20sha256%3A47e18120%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3Ac6a8586e%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3A831d4169%5D",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -236,7 +236,7 @@
           "accept": "application/pdf",
           "content-type": "application/x-www-form-urlencoded"
         },
-        "body": "issuer=FarmerAC&credential=FarmerSdJwt&credentialConfigurationId=FarmerSdJwt&code=%5Bredacted%20sha256%3A47e18120%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=ebcc1-ZT89nZfDzZ-9tF3ySq4Gj3wG7Q0w2DuIn78ok&vcStorageExpiryLimitInTimes=-1&locale=en",
+        "body": "issuer=FarmerAC&credential=FarmerSdJwt&credentialConfigurationId=FarmerSdJwt&code=%5Bredacted%20sha256%3A47e18120%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=%5Bredacted%20sha256%3A831d4169%5D&vcStorageExpiryLimitInTimes=-1&locale=en",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -607,7 +607,7 @@
           "accept-encoding": "gzip, x-gzip, deflate",
           "user-agent": "Apache-HttpClient/5.2.3 (Java/21.0.10)"
         },
-        "body": "code=%5Bredacted%20sha256%3A204fa7f4%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3A85b57523%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=KNg-Rh4cCK3L7fU4cUygzkfIPXibttT6AIkA3nzSu0M",
+        "body": "code=%5Bredacted%20sha256%3A204fa7f4%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3A85b57523%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3A99af81c1%5D",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -686,7 +686,7 @@
           "cookie": "[redacted sha256:6a49ba19]",
           "x-xsrf-token": "[redacted sha256:432688ae]"
         },
-        "body": "{\"issuer\":\"FarmerAC\",\"credentialConfigurationId\":\"FarmerSdJwt\",\"code\":\"Utz9UE2hLTgWqHy5xeZqmAqVJUjK2z8BQQnEXmo8jtI\",\"grantType\":\"authorization_code\",\"redirectUri\":\"http://localhost:28004/redirect\",\"codeVerifier\":\"KNg-Rh4cCK3L7fU4cUygzkfIPXibttT6AIkA3nzSu0M\"}",
+        "body": "{\"issuer\":\"FarmerAC\",\"credentialConfigurationId\":\"FarmerSdJwt\",\"code\":\"[redacted sha256:204fa7f4]\",\"grantType\":\"authorization_code\",\"redirectUri\":\"http://localhost:28004/redirect\",\"codeVerifier\":\"[redacted sha256:99af81c1]\"}",
         "bodyEncoding": "utf8"
       },
       "response": {

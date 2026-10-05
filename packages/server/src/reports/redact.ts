@@ -29,6 +29,9 @@ const SECRET_FIELDS = new Set([
   'id_token',
   'pre_authorized_code',
   'tx_code',
+  // PKCE verifier: with the authorization code it redeems the code (Mimoto's download body uses codeVerifier).
+  'code_verifier',
+  'codeverifier',
   'user_pin',
   'client_secret',
   'client_assertion',
@@ -62,7 +65,7 @@ const SECRET_HEADERS = new Set([
 
 /** Secret `name=value` pairs inside text that is neither JSON nor a URL. */
 const TEXT_PAIR =
-  /\b(access_token|refresh_token|id_token|pre-authorized_code|pre_authorized_code|tx_code|client_secret|code)=([^&\s"'<>]+)/gi;
+  /\b(access_token|refresh_token|id_token|pre-authorized_code|pre_authorized_code|tx_code|client_secret|code_verifier|code)=([^&\s"'<>]+)/gi;
 /** Bearer and DPoP tokens inside text, for example in an error message that echoes a header. */
 const TEXT_TOKEN = /\b(Bearer|DPoP)\s+([A-Za-z0-9\-._~+/]+=*)/g;
 
@@ -85,9 +88,15 @@ export class Redactor {
     if (value === null || typeof value !== 'object') return value;
     const record = value as Record<string, unknown>;
     const isJwk = typeof record.kty === 'string';
+    // In JSON `code` is usually an error code, but next to an authorization_code grant type it is the
+    // OAuth authorization code (Mimoto's credential download body: code, grantType, codeVerifier).
+    const isCodeGrant = [record.grantType, record.grant_type].includes('authorization_code');
     const out: Record<string, unknown> = {};
     for (const [key, member] of Object.entries(record)) {
-      const secret = isSecretField(key, false) || (isJwk && JWK_PRIVATE_MEMBERS.has(key));
+      const secret =
+        isSecretField(key, false) ||
+        (isJwk && JWK_PRIVATE_MEMBERS.has(key)) ||
+        (isCodeGrant && key === 'code');
       out[key] = secret && member !== null && member !== undefined ? this.maskAny(member) : this.json(member);
     }
     return out;

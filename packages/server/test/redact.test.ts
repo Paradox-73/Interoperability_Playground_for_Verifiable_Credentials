@@ -35,6 +35,22 @@ describe('Redactor', () => {
     expect(redactor.count).toBe(6);
   });
 
+  it('masks the authorization code and PKCE verifier of a JSON code exchange, as Mimoto sends them', () => {
+    const redactor = new Redactor();
+    const body = JSON.stringify({
+      issuer: 'FarmerAC',
+      code: 'AUTH-CODE',
+      grantType: 'authorization_code',
+      redirectUri: 'http://localhost:28004/redirect',
+      codeVerifier: 'PKCE-VERIFIER',
+    });
+    const out = redactor.text(body);
+    expect(out).not.toContain('AUTH-CODE');
+    expect(out).not.toContain('PKCE-VERIFIER');
+    expect(JSON.parse(out)).toMatchObject({ issuer: 'FarmerAC', grantType: 'authorization_code' });
+    expect(redactor.form('grant_type=authorization_code&code=C&code_verifier=V')).not.toMatch(/=V$/);
+  });
+
   it('gives equal secrets equal placeholders and does not mask a placeholder twice', () => {
     const redactor = new Redactor();
     const first = redactor.mask('same');

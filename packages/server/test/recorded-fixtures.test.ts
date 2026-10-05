@@ -44,3 +44,17 @@ describe('recorded reference runs', () => {
     expect(text).not.toMatch(/pre-authorized_code=(?!%5Bredacted)/);
   });
 });
+
+describe('recorded Inji runs of the contract tests', () => {
+  const injiDir = fileURLToPath(new URL('./contract/inji/fixtures/', import.meta.url));
+  const injiFiles = readdirSync(injiDir).filter((name) => name.endsWith('.recorded.json'));
+
+  it.each(injiFiles)('%s carries no authorization code, PKCE verifier or token in clear', (name) => {
+    const text = readFileSync(injiDir + name, 'utf8');
+    expect(text).not.toMatch(/Bearer (?!\[redacted)/);
+    // Form bodies and URLs: the OAuth code and the PKCE verifier that redeems it.
+    expect(text).not.toMatch(/[?&"](code|code_verifier|pre-authorized_code)=(?!%5Bredacted|\[redacted)/);
+    // JSON bodies, which the recorded file holds as escaped strings (Mimoto's download body).
+    expect(text).not.toMatch(/\\"(codeVerifier|code_verifier|access_token)\\":\\"(?!\[redacted)/);
+  });
+});
