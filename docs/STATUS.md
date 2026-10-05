@@ -49,11 +49,10 @@ started.
 | WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | REVIEW | `af7ff15`, `bde2071` (branch `wp-14-inji-web`)                                                                                                                                 |
 | WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | REVIEW | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
 | WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | REVIEW | `167e675`, `647e281` (branch `wp-16-browser-tests`)                                                                                                                            |
-| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | TODO   | -                                                                                                                                                                              |
+| WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | REVIEW | `1cedbd3`, `05a13ea`, `61f0917` (branch `wp-17-demo`)                                                                                                                          |
 | WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | TODO   | -                                                                                                                                                                              |
 
-Longest chain of remaining work: WP-17 -> WP-18. WP-10, WP-14, WP-15 and WP-16 are finished (in review), so
-WP-17 can start.
+Remaining work: WP-18. Every other task is finished (DONE, or in review on its branch).
 
 ### What the DONE tasks give you
 
@@ -77,15 +76,16 @@ WP-17 can start.
 Work of 2026-10-05. The branches are stacked, each on the one before, so merge them in this order (or
 open each pull request against the branch before it, and retarget after each merge):
 
-| Order | Branch                | Task  | Based on              | Commits                                       |
-| ----- | --------------------- | ----- | --------------------- | --------------------------------------------- |
-| 1     | `wp-11-scenarios`     | WP-11 | `main` (`cf0c535`)    | `48e2dfc`, `5f9e0f5`                          |
-| 2     | `wp-08-recording`     | WP-08 | `wp-11-scenarios`     | `d5eae9c`, `304854e`                          |
-| 3     | `wp-13-pages`         | WP-13 | `wp-08-recording`     | `0dec756`, `d1c8879`                          |
-| 4     | `wp-15-matrix-cli`    | WP-15 | `wp-13-pages`         | `36591c6`, `10d46aa` (status update)          |
-| 5     | `wp-16-browser-tests` | WP-16 | `wp-15-matrix-cli`    | `167e675`, `647e281`                          |
-| 6     | `wp-10-inji-adapters` | WP-10 | `wp-16-browser-tests` | `400f951`, `3a4fbdc`                          |
-| 7     | `wp-14-inji-web`      | WP-14 | `wp-10-inji-adapters` | `af7ff15`, `bde2071`, then this status update |
+| Order | Branch                | Task  | Based on              | Commits                                                  |
+| ----- | --------------------- | ----- | --------------------- | -------------------------------------------------------- |
+| 1     | `wp-11-scenarios`     | WP-11 | `main` (`cf0c535`)    | `48e2dfc`, `5f9e0f5`                                     |
+| 2     | `wp-08-recording`     | WP-08 | `wp-11-scenarios`     | `d5eae9c`, `304854e`                                     |
+| 3     | `wp-13-pages`         | WP-13 | `wp-08-recording`     | `0dec756`, `d1c8879`                                     |
+| 4     | `wp-15-matrix-cli`    | WP-15 | `wp-13-pages`         | `36591c6`, `10d46aa` (status update)                     |
+| 5     | `wp-16-browser-tests` | WP-16 | `wp-15-matrix-cli`    | `167e675`, `647e281`                                     |
+| 6     | `wp-10-inji-adapters` | WP-10 | `wp-16-browser-tests` | `400f951`, `3a4fbdc`                                     |
+| 7     | `wp-14-inji-web`      | WP-14 | `wp-10-inji-adapters` | `af7ff15`, `bde2071`, `1d4095b` (status update)          |
+| 8     | `wp-17-demo`          | WP-17 | `wp-14-inji-web`      | `1cedbd3`, `05a13ea`, `61f0917`, then this status update |
 
 The first commit of each PARTIAL task is the work from `wip/2026-10-04-stop` as it was, so reviewers can
 tell old work from new. Checks run on 2026-10-05 on the tip of `wp-15-matrix-cli` (Windows 11, Node
@@ -114,6 +114,14 @@ Changes outside a task's own folders, for the owning lane to review:
   (wallet-initiated issuance when the wallet cannot take an offer), `packages/server/src/reports/redact.ts`
   (CSRF token headers), `packages/web/src/features/inji-verify-sdk/definition.ts` (`pattern`, G23),
   `deploy/compose.yaml` (`PLAYGROUND_PUBLIC_URL` and Mimoto's certificate for the bundle).
+
+- WP-17: `packages/cli` (per-spec live folders and the `index` command), `.github/workflows/interop-nightly.yml`
+  (server restarted with `PLAYGROUND_PUBLIC_URL` for the holder-web cells), `scripts/e2e.mjs` (`e2e:live`
+  defaults to 28100), `packages/web/e2e/live/sdk-verify.spec.ts` (exact role name),
+  `packages/web/src/features/inji-verify-sdk/definition.ts` (any farmer vct: the WP-14 `pattern` had
+  excluded Certify's SD-JWT VC), `deploy/inji-stack/compose.yaml` (Inji Web and Inji Verify UI health
+  checks), `.gitignore` and `.prettierignore` (generated reports), `README.md` and `CONTRIBUTING.md`
+  (command rows).
 
 Checks run on 2026-10-05 on the tip of `wp-14-inji-web`: `npm run lint`, `npm run format:check`,
 `npm run typecheck` and `npm run build` exit 0; `npm test`: 68 files, 962 tests, 0 failures (one web page test, "live timeline", ran
@@ -536,7 +544,7 @@ check never leaves containers running.
   - Write `e2e/live/sdk-verify.spec.ts` (project `e2e-live`, not part of `npm run e2e`): the panel draws its
     QR, the reference wallet answers through the server, the page shows `VALID`. WP-17 runs it.
 
-### WP-17 End-to-end demo script, bundle check and test report (TODO)
+### WP-17 End-to-end demo script, bundle check and test report (REVIEW)
 
 - **Goal:** one command proves the demo path, and one command regenerates the test report from real
   results.
@@ -556,6 +564,21 @@ check never leaves containers running.
   - `npm run test:report` writes `docs/test-report/README.md` dated that day with per-package totals (0
     failures), Playwright and matrix results, stack start time and memory, and a licence audit listing only
     OSI-approved licences.
+- **Done on 2026-10-05 (branch `wp-17-demo`):**
+  - `npm run demo -- --ci --keep-up && npm run e2e:live; rc=$?; npm run down; exit $rc` exits 0:
+    `DEMO PASS` with 4 of 4 cells as specified (bundle up in 75-90 s), then the live SDK browser test passed.
+  - `npm run matrix:live -- --spec live-core` (14 of 14) and `-- --spec live-holder-web` (6 of 6), each in
+    its own stack session, write `docs/interop-report/live/<spec>/` and the combined
+    `docs/interop-report/live/matrix.md` with the image versions and every cell linked to its run file.
+  - The clean-clone check exits 0: from a fresh clone with Docker only, the bundle with `holder-web` was up
+    and healthy in 89 s.
+  - `npm run test:report -- --all` writes `docs/test-report/README.md`: 964 unit and integration tests, 6
+    browser tests and 20 live tests pass; stack start 63 s, 2.48 GiB; 442 shipped npm packages and the
+    stack images, all under OSI-approved licences (three development-only data packages are CC-BY-4.0 or
+    CC0 and are not distributed). `THIRD_PARTY_LICENSES.md` lists them.
+  - Found on the way and fixed: `up --wait` failed on the exited `certify-seed` container and on the Inji
+    Web health check (busybox wget tried `localhost` as ::1); `e2e:live` pointed at the Vite preview port;
+    the SDK panel's SD-JWT filter excluded Certify's credential.
 - **Notes:** `npm run demo` flags: `--ci`, `--keep-up`, `--preflight` (checks Docker, free ports in
   28000-28999 and memory before a recording). The report states measured numbers only, with dates. Use the
   Vitest JSON reporter (`--reporter=json --outputFile=<file>`) to collect totals.
