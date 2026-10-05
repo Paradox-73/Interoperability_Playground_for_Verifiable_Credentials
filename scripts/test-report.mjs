@@ -335,6 +335,8 @@ function render(results) {
 }
 
 function main() {
+  // Read before anything is written: the report's own files would otherwise mark the tree as changed.
+  const commit = commitOf();
   mkdirSync(work, { recursive: true });
   mkdirSync(reportDir, { recursive: true });
   const previous = existsSync(resultsFile) ? JSON.parse(readFileSync(resultsFile, 'utf8')) : {};
@@ -378,7 +380,7 @@ function main() {
 
   results.matrices = matrices();
   results.generatedAt = now();
-  results.commit = commitOf();
+  results.commit = commit;
   results.environment = `${osType()} ${release()}, Node ${process.versions.node}`;
   writeFileSync(resultsFile, `${JSON.stringify(results, null, 2)}\n`);
   writeFileSync(join(reportDir, 'README.md'), render(results));
