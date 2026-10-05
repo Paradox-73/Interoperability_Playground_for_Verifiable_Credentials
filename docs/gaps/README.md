@@ -61,6 +61,19 @@ Public gaps by repository: inji/inji-certify 10, inji/inji-verify 6, inji/mimoto
 - Inji Verify accepts SD-JWT VCs only with an `x5c` issuer key (G16) and changes the filters of the
   requests it stores (G17).
 
+## Other observations
+
+Seen while building the stack and the UI, worked around, and not tied to a matrix cell, so they are not in
+the register and have no draft yet. Each needs a playground case before it is filed.
+
+| Repository                 | Observation                                                                                                                                                | How the playground deals with it                                                      |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| inji/inji-verify (compose) | The compose sample's `init.sql` does not match the 0.18.x schema (`vp_submission` lacks the `response_code*` columns), so status and submission answer 500 | The database is created from `db_scripts/inji_verify/` instead (commit `d4b9a35`)     |
+| inji/inji-verify           | verify-service answers no CORS headers, so a web page on another origin cannot call it                                                                     | The UI calls `/v1/verify` on its own origin through the playground's proxy            |
+| inji/inji-verify (SDK)     | The npm `latest` tag of `@injistack/react-inji-verify-sdk` is a 1.0 pre-release that calls endpoints verify-service 0.18.2 lacks                           | The SDK is pinned at 0.18.1 ([ADR 0007](../adr/0007-react-18-for-inji-verify-sdk.md)) |
+| inji/inji-verify (SDK)     | The SDK's TypeScript type for the presentation definition allows only `ldp_vc`                                                                             | The SD-JWT definition is cast                                                         |
+| inji/inji-verify (SDK)     | The QR upload component rejects files under 10 KB                                                                                                          | Not used by the playground's flows                                                    |
+
 ## Reported privately
 
 Two findings may weaken credential verification. They are recorded in the register only as "Reported
