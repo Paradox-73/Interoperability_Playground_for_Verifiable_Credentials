@@ -72,12 +72,13 @@ const RULES: readonly Rule[] = [
     test: (r) =>
       /\/vp-request\/[^/]+\/status$/.test(r.path) ||
       r.path.includes('/vp-result') ||
+      r.path.includes('/vp-session-results') ||
       r.path.includes('/vc-verification'),
   },
   {
     step: 'verifier.request',
     why: 'Inji Verify creates an authorization request',
-    test: (r) => r.method === 'POST' && /\/vp-request\/?$/.test(r.path),
+    test: (r) => r.method === 'POST' && /\/vp-(session-)?request\/?$/.test(r.path),
   },
   // OpenID4VP wallet side.
   {

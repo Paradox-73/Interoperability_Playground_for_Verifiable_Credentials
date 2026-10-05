@@ -89,7 +89,7 @@ export async function registerProxyRoutes(app: FastifyInstance, options: ProxyOp
           .send({ error: 'verify-not-configured', message: 'no Inji Verify URL configured' });
       }
       const origin = new URL(upstream.url).origin;
-      return forward(request, reply, options, verifyTarget, upstream, `${origin}${request.url}`);
+      return forward(request, reply, options, verifyTarget, upstream, `${origin}${request.url}`, true);
     });
     done();
   });
@@ -108,6 +108,8 @@ async function forward(
   targetName: string,
   target: ProxyTarget,
   upstreamUrl: string,
+  /** `/v1/verify/*`: the Inji Verify web component in the page calls it, except for wallet submissions. */
+  viaVerifyPath = false,
 ): Promise<FastifyReply> {
   const startedAt = new Date();
   const started = performance.now();
@@ -127,11 +129,13 @@ async function forward(
     headers: recordableHeaders(Object.fromEntries(headers)),
     ...(body ? encodeBody(body) : {}),
   };
+  const runConfig = runId ? options.hub.configOf(runId) : undefined;
+  const fromComponent = viaVerifyPath && !upstreamUrl.includes('/vp-submission/');
   const draftBase = {
     capture: 'proxy' as const,
     from:
       headerValue(request, ATTRIBUTION_HEADERS.from) ??
-      (runId ? options.hub.configOf(runId)?.wallet : undefined) ??
+      (fromComponent ? runConfig?.verifier : runConfig?.wallet) ??
       'browser',
     to: target.label,
     request: requestRecord,
