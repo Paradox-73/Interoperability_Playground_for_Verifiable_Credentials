@@ -1,6 +1,6 @@
 # Third-party licences
 
-Generated on 2026-10-05 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
+Generated on 2026-10-06 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
 
 Every licence below is OSI-approved. Development-only packages (build, test and lint tools: 367 packages) are not distributed and not listed.
 
@@ -18,14 +18,14 @@ Every licence below is OSI-approved. Development-only packages (build, test and 
 
 Base images contain operating system packages under their own licences; see each image's documentation.
 
-## npm packages in the playground image (442)
+## npm packages in the playground image (445)
 
 | Licence | Packages |
 | ------- | -------- |
-| MIT | 310 |
+| MIT | 308 |
 | ISC | 53 |
 | BSD-3-Clause | 40 |
-| Apache-2.0 | 16 |
+| Apache-2.0 | 20 |
 | BlueOak-1.0.0 | 5 |
 | (MIT AND Zlib) | 3 |
 | (MIT OR CC0-1.0) | 2 |
@@ -37,6 +37,7 @@ Base images contain operating system packages under their own licences; see each
 | (Apache-2.0 OR MIT) | 1 |
 | (MIT OR GPL-3.0-or-later) | 1 |
 | (MPL-2.0 OR Apache-2.0) | 1 |
+| EPL-2.0 | 1 |
 
 | Package | Version | Licence | Source |
 | ------- | ------- | ------- | ------ |
@@ -58,7 +59,11 @@ Base images contain operating system packages under their own licences; see each
 | `@babel/types` | 7.29.8 | MIT | <https://github.com/babel/babel> |
 | `@braintree/sanitize-url` | 7.1.2 | MIT | <https://github.com/braintree/sanitize-url> |
 | `@cbor-extract/cbor-extract-win32-x64` | 2.2.2 | MIT | <http://github.com/kriszyp/cbor-extract> |
-| `@chevrotain/types` | 11.1.2 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
+| `@chevrotain/cst-dts-gen` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
+| `@chevrotain/gast` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
+| `@chevrotain/regexp-to-ast` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
+| `@chevrotain/types` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
+| `@chevrotain/utils` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
 | `@digitalbazaar/credentials-context` | 3.2.0 | W3C-20150513 AND BSD-3-Clause | <https://github.com/digitalbazaar/credentials-context> |
 | `@digitalbazaar/data-integrity` | 2.5.0 | BSD-3-Clause | <https://github.com/digitalbazaar/data-integrity> |
 | `@digitalbazaar/data-integrity-context` | 2.0.1 | BSD-3-Clause | <https://github.com/digitalbazaar/data-integrity-context> |
@@ -113,7 +118,7 @@ Base images contain operating system packages under their own licences; see each
 | `@jsep-plugin/assignment` | 1.3.0 | MIT | <EricSmekens/jsep> |
 | `@jsep-plugin/regex` | 1.0.4 | MIT | <EricSmekens/jsep> |
 | `@lukeed/ms` | 2.0.2 | MIT | <lukeed/ms> |
-| `@mermaid-js/parser` | 1.2.1 | MIT | <https://github.com/mermaid-js/mermaid> |
+| `@mermaid-js/parser` | 2.0.1 | MIT | <https://github.com/mermaid-js/mermaid> |
 | `@mui/core-downloads-tracker` | 7.3.11 | MIT | <https://github.com/mui/material-ui> |
 | `@mui/material` | 7.3.11 | MIT | <https://github.com/mui/material-ui> |
 | `@mui/private-theming` | 7.3.11 | MIT | <https://github.com/mui/material-ui> |
@@ -210,6 +215,7 @@ Base images contain operating system packages under their own licences; see each
 | `cbor-extract` | 2.2.2 | MIT | <http://github.com/kriszyp/cbor-extract> |
 | `cbor-web` | 9.0.2 | MIT | <http://github.com/hildjj/node-cbor> |
 | `cbor-x` | 1.6.6 | MIT | <http://github.com/kriszyp/cbor-x> |
+| `chevrotain` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
 | `cliui` | 6.0.0 | ISC | <http://github.com/yargs/cliui> |
 | `clsx` | 2.1.1 | MIT | <lukeed/clsx> |
 | `color-convert` | 2.0.1 | MIT | <Qix-/color-convert> |
@@ -273,13 +279,13 @@ Base images contain operating system packages under their own licences; see each
 | `dequal` | 2.0.3 | MIT | <lukeed/dequal> |
 | `detect-libc` | 2.1.2 | Apache-2.0 | <https://github.com/lovell/detect-libc> |
 | `did-context` | 3.1.1 | W3C-20150513 AND BSD-3-Clause | <https://github.com/digitalbazaar/did-context> |
-| `did-resolver` | 4.1.0 | Apache-2.0 | <git@github.com:decentralized-identity/did-resolver> |
 | `did-resolver` | 6.0.0 | Apache-2.0 | <https://github.com/decentralized-identity/did-resolver> |
 | `dijkstrajs` | 1.0.3 | MIT | <https://github.com/tcort/dijkstrajs> |
 | `dom-helpers` | 5.2.1 | MIT | <https://github.com/react-bootstrap/dom-helpers> |
 | `dompurify` | 3.4.16 | (MPL-2.0 OR Apache-2.0) | <https://github.com/cure53/DOMPurify> |
 | `duplexify` | 4.1.3 | MIT | <https://github.com/mafintosh/duplexify> |
 | `ed25519-signature-2020-context` | 1.1.0 | BSD-3-Clause | <https://github.com/digitalbazaar/ed25519-signature-2020-context> |
+| `elkjs` | 0.9.3 | EPL-2.0 | <https://github.com/kieler/elkjs> |
 | `emoji-regex` | 8.0.0 | MIT | <https://github.com/mathiasbynens/emoji-regex> |
 | `end-of-stream` | 1.4.5 | MIT | <https://github.com/mafintosh/end-of-stream> |
 | `error-ex` | 1.3.4 | MIT | <qix-/node-error-ex> |
@@ -293,7 +299,6 @@ Base images contain operating system packages under their own licences; see each
 | `fast-querystring` | 1.1.2 | MIT | <https://github.com/anonrig/fast-querystring> |
 | `fast-uri` | 3.1.8 | BSD-3-Clause | <https://github.com/fastify/fast-uri> |
 | `fast-uri` | 4.2.1 | BSD-3-Clause | <https://github.com/fastify/fast-uri> |
-| `fastdom` | 1.0.12 | MIT | <https://github.com/wilsonpage/fastdom> |
 | `fastify` | 5.12.5 | MIT | <https://github.com/fastify/fastify> |
 | `fastify-plugin` | 6.0.0 | MIT | <https://github.com/fastify/fastify-plugin> |
 | `fastify-type-provider-zod` | 7.0.0 | MIT | <https://github.com/turkerdev/fastify-type-provider-zod> |
@@ -351,7 +356,7 @@ Base images contain operating system packages under their own licences; see each
 | `lru-cache` | 11.5.3 | BlueOak-1.0.0 | <ssh://git@github.com/isaacs/node-lru-cache> |
 | `lru-cache` | 6.0.0 | ISC | <https://github.com/isaacs/node-lru-cache> |
 | `marked` | 16.4.2 | MIT | <https://github.com/markedjs/marked> |
-| `mermaid` | 11.17.2 | MIT | <https://github.com/mermaid-js/mermaid> |
+| `mermaid` | 12.1.0 | MIT | <https://github.com/mermaid-js/mermaid> |
 | `mime` | 3.0.0 | MIT | <https://github.com/broofa/mime> |
 | `minimatch` | 10.2.6 | BlueOak-1.0.0 | <git@github.com:isaacs/minimatch> |
 | `minipass` | 7.1.3 | BlueOak-1.0.0 | <https://github.com/isaacs/minipass> |
@@ -436,7 +441,6 @@ Base images contain operating system packages under their own licences; see each
 | `split2` | 4.2.0 | ISC | <https://github.com/mcollina/split2> |
 | `statuses` | 2.0.2 | MIT | <jshttp/statuses> |
 | `stream-shift` | 1.0.3 | MIT | <https://github.com/mafintosh/stream-shift> |
-| `strictdom` | 1.0.1 | MIT | <https://github.com/wilsonpage/strictdom> |
 | `string_decoder` | 1.1.1 | MIT | <https://github.com/nodejs/string_decoder> |
 | `string_decoder` | 1.3.0 | MIT | <https://github.com/nodejs/string_decoder> |
 | `string-width` | 4.2.3 | MIT | <sindresorhus/string-width> |

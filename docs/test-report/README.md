@@ -1,6 +1,6 @@
 # Test report
 
-Generated on 2026-10-06 by `npm run test:report` at commit `d350e56 (with uncommitted changes)` (Windows_NT 10.0.26200, Node 24.19.0, dates in Asia/Calcutta). Every number below was measured by the command named next to it, on the date given; nothing is estimated.
+Generated on 2026-10-06 by `npm run test:report` at commit `e36e384` (Windows_NT 10.0.26200, Node 24.19.0, dates in Asia/Calcutta). Every number below was measured by the command named next to it, on the date given; nothing is estimated.
 
 ## Summary
 
@@ -12,7 +12,7 @@ Generated on 2026-10-06 by `npm run test:report` at commit `d350e56 (with uncomm
 
 ## Unit and integration tests per package
 
-`npm test` on 2026-10-06: 68 files in 47 s.
+`npm test` on 2026-10-06: 68 files in 50 s.
 
 | Package | Files | Tests | Passed | Failed | Skipped |
 | ------- | ----- | ----- | ------ | ------ | ------- |
