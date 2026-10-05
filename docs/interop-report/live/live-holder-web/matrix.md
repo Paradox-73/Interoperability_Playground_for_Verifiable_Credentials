@@ -1,6 +1,6 @@
 # Compatibility matrix: live-holder-web
 
-Run on 2026-10-05, 18:06:54 to 18:07:28 UTC (34 s), from `live-holder-web.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
+Run on 2026-10-05, 21:15:18 to 21:15:58 UTC (40 s), from `live-holder-web.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
 
 Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certify-ac with the reference wallet.
 
@@ -21,14 +21,14 @@ Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certi
 
 | Case | Issuer → wallet → verifier | Format | Profiles | Scenario | Expected | Actual | Verdict | Matches spec | Run |
 | ---- | -------------------------- | ------ | -------- | -------- | -------- | ------ | ------- | ------------ | --- |
-| TC_PG_WEB_01 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261005T180654-871fd6`](runs/TC_PG_WEB_01.json) |
-| TC_PG_WEB_02 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T180656-f65624`](runs/TC_PG_WEB_02.json) |
-| TC_PG_WEB_03 | `inji-certify-ac` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T180703-092c4f`](runs/TC_PG_WEB_03.json) |
-| TC_PG_WEB_04 | `inji-certify-ac` → `inji-web` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261005T180719-157b06`](runs/TC_PG_WEB_04.json) |
-| TC_PG_WEB_05 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T180720-6e98ae`](runs/TC_PG_WEB_05.json) |
-| TC_PG_WEB_06 | `ref-issuer` → `inji-web` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261005T180725-94d5a8`](runs/TC_PG_WEB_06.json) |
+| TC_PG_WEB_01 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261005T211518-94de71`](runs/TC_PG_WEB_01.json) |
+| TC_PG_WEB_02 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T211521-6770bb`](runs/TC_PG_WEB_02.json) |
+| TC_PG_WEB_03 | `inji-certify-ac` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T211527-8d0a9e`](runs/TC_PG_WEB_03.json) |
+| TC_PG_WEB_04 | `inji-certify-ac` → `inji-web` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261005T211545-96b551`](runs/TC_PG_WEB_04.json) |
+| TC_PG_WEB_05 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261005T211547-01ef35`](runs/TC_PG_WEB_05.json) |
+| TC_PG_WEB_06 | `ref-issuer` → `inji-web` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261005T211554-c54de1`](runs/TC_PG_WEB_06.json) |
 
-The redacted record of each run (configuration, events, every HTTP exchange) is written to `runs/<case id>.json` next to this file. Those files are not kept in git; the nightly workflow publishes them as a build artifact.
+The redacted record of each run (configuration, events, every HTTP exchange) is written to `runs/<case id>.json` next to this file. Live runs are kept in git with this file, so every link above opens the recorded exchanges; the nightly workflow also publishes them as a build artifact.
 
 ## Errors and reasons
 

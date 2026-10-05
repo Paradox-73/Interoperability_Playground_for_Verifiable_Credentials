@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-05T21:13:46.899Z",
+  "redacted": true,
+  "redactions": 0,
+  "run": {
+    "runId": "20261005T211346-090a5d",
+    "status": "finished",
+    "mode": "live",
+    "config": {
+      "issuer": "ref-issuer",
+      "wallet": "ref-wallet",
+      "verifier": "inji-verify",
+      "format": "dc+sd-jwt",
+      "vciProfile": "draft13",
+      "vpProfile": "inji-draft",
+      "scenario": "happy"
+    },
+    "createdAt": "2026-10-05T21:13:46.890Z",
+    "startedAt": "2026-10-05T21:13:46.890Z",
+    "finishedAt": "2026-10-05T21:13:46.891Z",
+    "outcome": "NOT_RUN",
+    "verdict": "not-supported",
+    "error": {
+      "step": "playground.admin",
+      "code": "compatibility.verifier.format-unsupported",
+      "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+    },
+    "versions": {
+      "issuer": "0.1.0",
+      "wallet": "0.1.0",
+      "verifier": "0.18.2"
+    },
+    "report": {
+      "runId": "20261005T211346-090a5d",
+      "createdAt": "2026-10-05T21:13:46.891Z",
+      "mode": "live",
+      "issuer": {
+        "id": "ref-issuer",
+        "name": "Reference issuer",
+        "version": "0.1.0",
+        "ecosystem": "reference"
+      },
+      "wallet": {
+        "id": "ref-wallet",
+        "name": "Reference wallet (headless)",
+        "version": "0.1.0",
+        "ecosystem": "reference"
+      },
+      "verifier": {
+        "id": "inji-verify",
+        "name": "Inji Verify (API)",
+        "version": "0.18.2",
+        "ecosystem": "inji"
+      },
+      "format": "dc+sd-jwt",
+      "credentialProof": "EdDSA",
+      "vciProfile": "draft13",
+      "vpProfile": "inji-draft",
+      "scenario": {
+        "id": "happy",
+        "expected": "VALID"
+      },
+      "outcome": "NOT_RUN",
+      "verdict": "not-supported",
+      "error": {
+        "step": "playground.admin",
+        "code": "compatibility.verifier.format-unsupported",
+        "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+      },
+      "steps": [
+        {
+          "step": "issuer.offer",
+          "status": "not-run",
+          "durationMs": 0
+        },
+        {
+          "step": "issuer.metadata",
+          "status": "not-run",
+          "durationMs": 0
+        },
+        {
+          "step": "verifier.request",
+          "status": "not-run",
+          "durationMs": 0
+        },
+        {
+          "step": "wallet.fetch-request",
+          "status": "not-run",
+          "durationMs": 0
+        },
+        {
+          "step": "verifier.result",
+          "status": "not-run",
+          "durationMs": 0
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "type": "run.started",
+      "runId": "20261005T211346-090a5d",
+      "config": {
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "dc+sd-jwt",
+        "vciProfile": "draft13",
+        "vpProfile": "inji-draft",
+        "scenario": "happy"
+      },
+      "at": "2026-10-05T21:13:46.890Z"
+    },
+    {
+      "type": "run.finished",
+      "runId": "20261005T211346-090a5d",
+      "report": {
+        "runId": "20261005T211346-090a5d",
+        "createdAt": "2026-10-05T21:13:46.891Z",
+        "mode": "live",
+        "issuer": {
+          "id": "ref-issuer",
+          "name": "Reference issuer",
+          "version": "0.1.0",
+          "ecosystem": "reference"
+        },
+        "wallet": {
+          "id": "ref-wallet",
+          "name": "Reference wallet (headless)",
+          "version": "0.1.0",
+          "ecosystem": "reference"
+        },
+        "verifier": {
+          "id": "inji-verify",
+          "name": "Inji Verify (API)",
+          "version": "0.18.2",
+          "ecosystem": "inji"
+        },
+        "format": "dc+sd-jwt",
+        "credentialProof": "EdDSA",
+        "vciProfile": "draft13",
+        "vpProfile": "inji-draft",
+        "scenario": {
+          "id": "happy",
+          "expected": "VALID"
+        },
+        "outcome": "NOT_RUN",
+        "verdict": "not-supported",
+        "error": {
+          "step": "playground.admin",
+          "code": "compatibility.verifier.format-unsupported",
+          "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+        },
+        "steps": [
+          {
+            "step": "issuer.offer",
+            "status": "not-run",
+            "durationMs": 0
+          },
+          {
+            "step": "issuer.metadata",
+            "status": "not-run",
+            "durationMs": 0
+          },
+          {
+            "step": "verifier.request",
+            "status": "not-run",
+            "durationMs": 0
+          },
+          {
+            "step": "wallet.fetch-request",
+            "status": "not-run",
+            "durationMs": 0
+          },
+          {
+            "step": "verifier.result",
+            "status": "not-run",
+            "durationMs": 0
+          }
+        ]
+      }
+    }
+  ],
+  "exchanges": [],
+  "artifacts": []
+}

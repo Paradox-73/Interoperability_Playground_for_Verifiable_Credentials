@@ -40,8 +40,9 @@ server, or a live spec over budget.
 `npm run matrix:reference` writes to `docs/interop-report/reference/`. `npm run matrix:live` writes each
 spec to `docs/interop-report/live/<spec>/`, because the live specs run in separate stack sessions, then
 rewrites `docs/interop-report/live/matrix.md` with `index` from every spec folder there. `matrix.md` and
-`matrix.json` are kept in git; the `runs/` folders are not (about 5 MB per reference run), and the nightly workflow uploads them
-as an artifact.
+`matrix.json` are kept in git, and so are the live specs' `runs/` folders (about 1.4 MB per live spec, the
+evidence every live cell links to); the reference `runs/` folder is not (about 5 MB per run). The nightly
+workflow uploads all of them as an artifact.
 
 ## Specs
 

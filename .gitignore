@@ -46,5 +46,6 @@ run/
 playwright-report/
 test-results/
 
-# Per-cell run records of the matrix (large, regenerated on every run; the nightly workflow uploads them)
-docs/interop-report/**/runs/
+# Per-cell run records of the reference matrix (about 5 MB per run; the nightly workflow uploads them).
+# The live matrices' runs are kept: they are the evidence the live matrix links to.
+docs/interop-report/reference/runs/

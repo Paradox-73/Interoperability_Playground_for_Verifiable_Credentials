@@ -17,6 +17,8 @@ secret:
     - '**/*.synthetic.json'
     - 'packages/protocol/fixtures/*.recorded.json'
     - 'packages/server/test/contract/inji/fixtures/*.recorded.json'
+    # Redacted run records of the live matrices, written by the same export as the recorded fixtures.
+    - 'docs/interop-report/live/*/runs/*.json'
   ignored_matches:
     # Upstream sample values in files imported unchanged into deploy/inji-stack/ (see deploy/inji-stack/UPSTREAM.md).
     # They are the defaults published in the Inji sample configurations and only reach throw-away local containers.
