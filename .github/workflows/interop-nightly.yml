@@ -68,18 +68,28 @@ jobs:
           PLAYGROUND_HOST: 0.0.0.0
           PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
         run: |
-          nohup npm start > "$PLAYGROUND_RUN_DIR/server.log" 2>&1 &
+          nohup npm start > "$PLAYGROUND_RUN_DIR/server-core.log" 2>&1 &
+          echo $! > "$PLAYGROUND_RUN_DIR/server.pid"
           for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
-          cat "$PLAYGROUND_RUN_DIR/server.log"; exit 1
+          cat "$PLAYGROUND_RUN_DIR/server-core.log"; exit 1
       - name: live-core matrix
         id: core
         continue-on-error: true
         run: npm run matrix:live -- --spec live-core --junit docs/interop-report/live/junit-core.xml
-      - name: keep the live-core report
-        if: always()
+      # certify-ac and Mimoto reach the playground at https://ref.ps02.test, and certify-ac accepts only tokens
+      # issued there, so the holder-web cells need the server with that public URL.
+      - name: restart the playground server for Inji Web
+        env:
+          PLAYGROUND_STACK: host
+          PLAYGROUND_HOST: 0.0.0.0
+          PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
+          PLAYGROUND_PUBLIC_URL: https://ref.ps02.test
         run: |
-          mkdir -p docs/interop-report/live-core
-          cp -r docs/interop-report/live/. docs/interop-report/live-core/ || true
+          kill "$(cat "$PLAYGROUND_RUN_DIR/server.pid")" || true
+          for i in $(seq 1 30); do curl -sf http://localhost:28100/api/health > /dev/null || break; sleep 1; done
+          nohup npm start > "$PLAYGROUND_RUN_DIR/server-holder-web.log" 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
+          cat "$PLAYGROUND_RUN_DIR/server-holder-web.log"; exit 1
       - name: live-holder-web matrix
         id: holder
         continue-on-error: true
@@ -87,9 +97,7 @@ jobs:
       - name: matrices as job summary
         if: always()
         run: |
-          for file in docs/interop-report/live-core/matrix.md docs/interop-report/live/matrix.md; do
-            [ -f "$file" ] && cat "$file" >> "$GITHUB_STEP_SUMMARY"
-          done
+          [ -f docs/interop-report/live/matrix.md ] && cat docs/interop-report/live/matrix.md >> "$GITHUB_STEP_SUMMARY"
           echo "memory at the end of the run:" >> "$GITHUB_STEP_SUMMARY"
           docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' >> "$GITHUB_STEP_SUMMARY" || true
       - uses: actions/upload-artifact@v4
@@ -98,7 +106,7 @@ jobs:
           name: interop-report-live
           path: |
             docs/interop-report/
-            run/server.log
+            run/server-*.log
           if-no-files-found: warn
       - name: stop the Inji stack
         if: always()

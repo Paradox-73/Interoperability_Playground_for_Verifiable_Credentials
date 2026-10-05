@@ -33,7 +33,14 @@ function playwright(project, env) {
   return result.status ?? 1;
 }
 
-if (live) process.exit(playwright('e2e-live', {}));
+// The bundle or a host-mode server answers on 28100; the config's default is the Vite preview of `npm run e2e`.
+if (live) {
+  process.exit(
+    playwright('e2e-live', {
+      PLAYWRIGHT_BASE_URL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:28100',
+    }),
+  );
+}
 
 function freePort(from, to) {
   return new Promise((resolve, reject) => {

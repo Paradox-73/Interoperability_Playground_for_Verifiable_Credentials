@@ -5,6 +5,8 @@
  * - `matrix --spec <file>`: every cell of a spec (`specs/*.yaml`), compared with the verdict and outcome
  *   the spec expects; writes `matrix.json`, `matrix.md` and one redacted run file per cell to `--out`,
  *   and JUnit XML to `--junit`. Exit code 1 when any cell differs from its spec.
+ * - `index --out <dir>`: one `matrix.md` in `<dir>` for the matrices of every spec folder below it (the live
+ *   specs each write to their own folder under docs/interop-report/live/).
  *
  * Both talk to a playground server over REST (`--server`, default http://localhost:28100), or start one
  * in-process with the reference roles (`--reference`).
@@ -17,7 +19,7 @@ export * from './reference-server.js';
 export * from './render.js';
 export * from './spec.js';
 
-export const COMMANDS = ['run', 'matrix', 'help', 'version'] as const;
+export const COMMANDS = ['run', 'matrix', 'index', 'help', 'version'] as const;
 export type Command = (typeof COMMANDS)[number];
 
 export interface CliInvocation {
@@ -49,6 +51,7 @@ export const USAGE = `Usage: inji-playground <command> [options]
 Commands:
   run       Run one issuer -> wallet -> verifier cell and print its verdict
   matrix    Run every cell of a spec file and write matrix.json and matrix.md
+  index     Write one matrix.md in --out for the matrix.json of every folder below it
   help      Show this help
   version   Show the version
 
@@ -56,7 +59,7 @@ Options:
   --server <url>      Playground server to drive (default http://localhost:28100)
   --reference         Start an in-process server with the reference roles (port 28600-28699)
   --spec <file>       Matrix spec (YAML), or the name of one in specs/ (reference, live-core, ...)
-  --out <dir>         Output directory for matrix.json, matrix.md and runs/ (matrix)
+  --out <dir>         Output directory for matrix.json, matrix.md and runs/ (matrix, index)
   --junit <file>      Also write a JUnit XML report (matrix)
   --force             Run a live spec even when its estimate is over 20 minutes
   --issuer, --wallet, --verifier <role id>   Cell of "run" (default the reference roles)
@@ -94,6 +97,9 @@ export function parseCli(argv: readonly string[]): CliInvocation {
   }
   if (name === 'matrix' && values.spec === undefined) {
     throw new Error(`matrix needs --spec <file>\n\n${USAGE}`);
+  }
+  if (name === 'index' && values.out === undefined) {
+    throw new Error(`index needs --out <dir>\n\n${USAGE}`);
   }
   return {
     command: name as Command,

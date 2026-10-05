@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -17,6 +17,7 @@ import {
   formatSeconds,
   loadSpec,
   parseCli,
+  renderIndex,
   renderJunit,
   renderMarkdown,
   resolveSpecPath,
@@ -50,6 +51,9 @@ try {
       break;
     case 'matrix':
       process.exitCode = await matrix(invocation);
+      break;
+    case 'index':
+      process.exitCode = writeIndex(invocation.out!);
       break;
   }
 } catch (error) {
@@ -161,6 +165,28 @@ async function matrix(invocation: CliInvocation): Promise<number> {
   if (out)
     console.log(`wrote ${join(out, 'matrix.md')}, ${join(out, 'matrix.json')} and ${join(out, 'runs')}/`);
   return exitCodeFor(result);
+}
+
+/** Writes `<out>/matrix.md` from the `matrix.json` of every folder directly below `out`. */
+function writeIndex(out: string): number {
+  const entries = existsSync(out)
+    ? readdirSync(out, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .flatMap((entry) => {
+          const result = readPrevious(join(out, entry.name, 'matrix.json'));
+          return result ? [{ dir: entry.name, result }] : [];
+        })
+    : [];
+  if (entries.length === 0) {
+    console.error(`no <spec>/matrix.json below ${out}`);
+    return 2;
+  }
+  const title = out.replace(/\\/g, '/').endsWith('/live')
+    ? 'Live compatibility matrix'
+    : 'Compatibility matrix';
+  writeFileSync(join(out, 'matrix.md'), renderIndex(title, entries));
+  console.log(`wrote ${join(out, 'matrix.md')} from ${entries.map((entry) => entry.dir).join(', ')}`);
+  return 0;
 }
 
 function printCell(cell: CellResult, index: number, total: number): void {

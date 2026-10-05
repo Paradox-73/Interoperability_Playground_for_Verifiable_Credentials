@@ -47,4 +47,4 @@ playwright-report/
 test-results/
 
 # Per-cell run records of the matrix (large, regenerated on every run; the nightly workflow uploads them)
-docs/interop-report/*/runs/
+docs/interop-report/**/runs/

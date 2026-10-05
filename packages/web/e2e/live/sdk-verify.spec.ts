@@ -8,7 +8,8 @@ import { expect, test } from '@playwright/test';
 
 test('Inji Certify -> reference wallet -> Inji Verify web component: VALID', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('radio', { name: 'Inji Certify' }).check();
+  // Exact: "Inji Certify (authorization code)" (certify-ac) is listed too.
+  await page.getByRole('radio', { name: 'Inji Certify', exact: true }).check();
   await page.getByRole('radio', { name: 'Reference wallet (headless)' }).check();
   await page.getByRole('radio', { name: 'Inji Verify (web component)' }).check();
   await page.getByLabel('Credential format').selectOption('vc+sd-jwt');

@@ -1,18 +1,21 @@
 # @inji-playground/cli
 
 Headless runner for single runs and the compatibility matrix (`inji-playground run`,
-`inji-playground matrix --spec <file>`), used locally, in CI and by the nightly workflow.
+`inji-playground matrix --spec <file>`, `inji-playground index --out <dir>`), used locally, in CI, by
+`npm run demo` and by the nightly workflow.
 
 Status (2026-10-05): `run` and `matrix` work against a running server (`--server`) or an in-process
 reference server (`--reference`). `npm run matrix:reference` runs `specs/reference.yaml`: 82 cells, all as
-specified (78 pass, 4 not supported), in 21 s on a Windows 11 laptop with Node 24.11 (2026-10-05). The
-live specs are written but not run yet: they need the Inji adapters of WP-10 and WP-14.
+specified (78 pass, 4 not supported), in 21 s on a Windows 11 laptop with Node 24.11 (2026-10-05). Live, each
+in its own stack session on 2026-10-05: `live-core` 14 of 14 cells as specified in 16 s, `live-holder-web` 6
+of 6 in 34 s, and `demo` (against the bundle, `npm run demo`) 4 of 4.
 
 ## Commands
 
 ```bash
 npm run matrix:reference                          # specs/reference.yaml, in-process server, no Docker
 npm run matrix:live -- --spec live-core           # against http://localhost:28100 with the Inji stack
+npm run matrix:live -- --spec live-holder-web     # the same, server with PLAYGROUND_PUBLIC_URL=https://ref.ps02.test
 node --conditions=source --import tsx packages/cli/src/main.ts run --format ldp_vc --scenario expired --reference
 ```
 
@@ -20,6 +23,7 @@ node --conditions=source --import tsx packages/cli/src/main.ts run --format ldp_
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `run`                  | One cell from `--issuer`, `--wallet`, `--verifier`, `--format`, `--vci-profile`, `--vp-profile`, `--scenario`; prints `verdict=<verdict>`; exit 0 only for `pass` |
 | `matrix --spec <file>` | Every cell of a spec, in order; compares each verdict and outcome with the spec; exit 1 when any cell differs                                                     |
+| `index --out <dir>`    | One `matrix.md` in `<dir>` from the `matrix.json` of every folder directly below it: a summary per spec, the versions each met, every cell linked to its run file |
 
 | Option           | Meaning                                                                                                        |
 | ---------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -33,9 +37,10 @@ node --conditions=source --import tsx packages/cli/src/main.ts run --format ldp_
 Exit codes: 0 every cell as specified, 1 a cell differs (or `run` did not pass), 2 bad arguments, no
 server, or a live spec over budget.
 
-`npm run matrix:reference` writes to `docs/interop-report/reference/` and `npm run matrix:live` to
-`docs/interop-report/live/`, so they never overwrite each other. `matrix.md` and `matrix.json` are kept
-in git; the `runs/` folders are not (about 5 MB per reference run), and the nightly workflow uploads them
+`npm run matrix:reference` writes to `docs/interop-report/reference/`. `npm run matrix:live` writes each
+spec to `docs/interop-report/live/<spec>/`, because the live specs run in separate stack sessions, then
+rewrites `docs/interop-report/live/matrix.md` with `index` from every spec folder there. `matrix.md` and
+`matrix.json` are kept in git; the `runs/` folders are not (about 5 MB per reference run), and the nightly workflow uploads them
 as an artifact.
 
 ## Specs
@@ -54,7 +59,8 @@ spec over 20 minutes is refused unless `--force`.
 - `.github/workflows/ci.yml`, job `reference matrix`: `npm run matrix:reference` on every push and pull
   request, with the matrix as the job summary.
 - `.github/workflows/interop-nightly.yml` (20:30 UTC and on demand): the reference matrix, then the Inji
-  stack with the `holder-web` profile, the server against it, `live-core` and `live-holder-web`, the
+  stack with the `holder-web` profile, the server against it, `live-core`, the server again with
+  `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test`, `live-holder-web`, the
   matrices and the containers' memory as job summary, `docs/interop-report/` as an artifact, stack down.
   Not run yet; whether a GitHub-hosted runner has enough memory for the stack is measured by the first run.
 
@@ -65,7 +71,7 @@ spec over 20 minutes is refused unless `--force`.
 | `src/spec.ts`             | Spec schema, parsing with errors that name each problem, spec name resolution           |
 | `src/client.ts`           | REST client: health, roles, scenarios, start a run, wait for it, export it              |
 | `src/matrix.ts`           | Runs the cells, compares with the spec, totals, duration estimate and budget, exit code |
-| `src/render.ts`           | `matrix.md` and JUnit XML                                                               |
+| `src/render.ts`           | `matrix.md`, the combined index of several specs, and JUnit XML                         |
 | `src/reference-server.ts` | The in-process reference server for `--reference`                                       |
 | `src/main.ts`             | Command line                                                                            |
 | `scripts/matrix.mjs`      | `npm run matrix:reference` / `matrix:live`                                              |

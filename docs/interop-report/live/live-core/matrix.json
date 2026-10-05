@@ -1,0 +1,438 @@
+{
+  "spec": {
+    "name": "live-core",
+    "source": "live-core.yaml",
+    "mode": "live",
+    "description": "Inji Certify and Inji Verify against the reference roles, both mandatory formats, plus tamper cells against Inji Verify."
+  },
+  "server": {
+    "url": "http://localhost:28100",
+    "version": "0.1.0",
+    "reference": false
+  },
+  "startedAt": "2026-10-05T18:04:56.413Z",
+  "finishedAt": "2026-10-05T18:05:12.109Z",
+  "durationMs": 15696,
+  "roles": {
+    "inji-certify": {
+      "name": "Inji Certify",
+      "version": "0.14.0",
+      "ecosystem": "inji"
+    },
+    "inji-verify": {
+      "name": "Inji Verify (API)",
+      "version": "0.18.2",
+      "ecosystem": "inji"
+    },
+    "ref-issuer": {
+      "name": "Reference issuer",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    },
+    "ref-wallet": {
+      "name": "Reference wallet (headless)",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    },
+    "ref-verifier": {
+      "name": "Reference verifier",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    }
+  },
+  "totals": {
+    "cells": 14,
+    "matched": 14,
+    "mismatched": 0,
+    "pass": 10,
+    "fail": 3,
+    "error": 0,
+    "notSupported": 1
+  },
+  "cells": [
+    {
+      "case": {
+        "id": "TC_PG_LIVE_01",
+        "description": "Inji Certify -> reference wallet -> Inji Verify, SD-JWT VC",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "pass"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180456-bea81b",
+      "outcome": "VALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 1095,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_02",
+        "description": "Inji Certify -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9 (no ldp_vp suite Inji Verify accepts for the P-256 holder key Certify requires)",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180457-0afce0",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 4757,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_03",
+        "description": "Inji Certify -> reference wallet -> reference verifier, SD-JWT VC (x5c chain to Certify's certificates)",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "ref-verifier",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "pass"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180502-c7a634",
+      "outcome": "VALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 265,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.1.0"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_04",
+        "description": "Inji Certify -> reference wallet -> reference verifier, ldp_vc; blocked by G14 (Certify's DID document does not authorise its key for assertionMethod)",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "ref-verifier",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180502-9fa6fa",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 1852,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Reference verifier answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.1.0"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_05",
+        "description": "Reference issuer -> reference wallet -> Inji Verify, ldp_vc",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "pass"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180504-64181c",
+      "outcome": "VALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 2379,
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_06",
+        "description": "Reference issuer -> reference wallet -> Inji Verify, SD-JWT VC with a DID-named issuer key; blocked by G16 (x5c only)",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180507-295f8f",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 259,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_07",
+        "description": "Inji Verify must report an expired credential as expired (\"Valid but expired\")",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "expired",
+        "verdict": "pass"
+      },
+      "expected": "EXPIRED",
+      "runId": "20261005T180507-4fe549",
+      "outcome": "EXPIRED",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 1323,
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_08",
+        "description": "Inji Verify must reject a Certify SD-JWT VC with a flipped issuer signature",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "bad-signature",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180508-5e3609",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 257,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_09",
+        "description": "Inji Verify must reject a disclosure whose value the holder changed",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "altered-disclosure",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180508-32ef82",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 258,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_10",
+        "description": "Inji Verify must reject a disclosure the issuer never signed",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "unreferenced-disclosure",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180509-2e754d",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 265,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_11",
+        "description": "Inji Verify must reject a key binding JWT made for another verifier",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "kb-wrong-aud",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180509-6c3601",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 257,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_12",
+        "description": "Inji Verify must reject an SD-JWT VC presented with a key binding JWT of another key",
+        "issuer": "inji-certify",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "holder-mismatch",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180509-15cc07",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 262,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_14",
+        "description": "Inji Verify must reject an ldp_vp signed by someone other than the holder",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "holder-mismatch",
+        "verdict": "pass"
+      },
+      "expected": "INVALID",
+      "runId": "20261005T180509-8c1029",
+      "outcome": "INVALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 2115,
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_LIVE_13",
+        "description": "Inji Verify 0.18.2 does not advertise dc+sd-jwt, so the cell is reported as not supported",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "dc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "not-supported"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180512-9ef9f0",
+      "outcome": "NOT_RUN",
+      "verdict": "not-supported",
+      "matches": true,
+      "durationMs": 5,
+      "error": {
+        "step": "playground.admin",
+        "code": "compatibility.verifier.format-unsupported",
+        "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+      },
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    }
+  ]
+}

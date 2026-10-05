@@ -15,6 +15,7 @@ import {
   exitCodeFor,
   parseCli,
   parseSpec,
+  renderIndex,
   renderJunit,
   renderMarkdown,
   resolveSpecPath,
@@ -305,7 +306,26 @@ cases:
     );
     expect(rows[2]).toContain('| Not supported (spec: Not supported) | yes |');
     expect(markdown).toContain('- TC_PG_NS_01: `compatibility.scenario.wallet-unsupported`');
-    expect(markdown).toContain(`\`${result.cells[0]!.runId}\``);
+    // Each run is linked to its redacted run file next to the matrix.
+    expect(markdown).toContain(`[\`${result.cells[0]!.runId}\`](runs/${result.cells[0]!.case.id}.json)`);
+  });
+
+  it('combines several spec folders into one index with versions and every cell linked', () => {
+    const other: MatrixResult = { ...result, spec: { ...result.spec, name: 'other' } };
+    const index = renderIndex('Live compatibility matrix', [
+      { dir: 'other', result: other },
+      { dir: 'small', result },
+    ]);
+    expect(index).toMatch(
+      /^# Live compatibility matrix\n\nCombined from 2 specs, run on \d{4}-\d{2}-\d{2}\./,
+    );
+    expect(index).toContain('| [other](other/matrix.md) |');
+    expect(index).toContain('| [small](small/matrix.md) |');
+    expect(index).toContain('| `ref-issuer` | Reference issuer | reference | 0.1.0 | other, small |');
+    const rows = index.split('\n').filter((line) => / TC_PG_/.test(line));
+    expect(rows).toHaveLength(6);
+    const first = result.cells[0]!;
+    expect(index).toContain(`[\`${first.runId}\`](small/runs/${first.case.id}.json)`);
   });
 
   it('renders JUnit XML with one test case per cell', () => {
@@ -326,5 +346,13 @@ describe('the workflow files', () => {
 describe('parseCli', () => {
   it('requires a spec for matrix', () => {
     expect(() => parseCli(['matrix'])).toThrow(/matrix needs --spec/);
+  });
+
+  it('requires an output folder for index', () => {
+    expect(() => parseCli(['index'])).toThrow(/index needs --out/);
+    expect(parseCli(['index', '--out', 'docs/interop-report/live'])).toMatchObject({
+      command: 'index',
+      out: 'docs/interop-report/live',
+    });
   });
 });

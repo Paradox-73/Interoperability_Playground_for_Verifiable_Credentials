@@ -107,10 +107,11 @@ npm exec -w @inji-playground/web -- playwright install chromium
 | `npm start`                               | the built server, serving the built UI (28100)                                        |
 | `docker build -t ps02-playground:dev .`   | the playground container image                                                        |
 
-Commands that print `not implemented yet (WP-xx)` and exit 1 belong to unfinished tasks:
-`npm run e2e`, `e2e:live`, `demo`, `test:report`, `docs:check`. `npm run smoke` runs one reference cell
-end to end and `npm run matrix:reference` the reference matrix (both without Docker).
-The task id in the message points to the card in [docs/STATUS.md](docs/STATUS.md).
+Commands that print `not implemented yet (WP-xx)` and exit 1 belong to unfinished tasks: `docs:check`.
+The task id in the message points to the card in [docs/STATUS.md](docs/STATUS.md). `npm run smoke` runs
+one reference cell end to end and `npm run matrix:reference` the reference matrix (both without Docker);
+`npm run demo` starts the bundle and runs the demo cells; `npm run test:report` writes the dated test
+report.
 
 Before every pull request: `npm run lint && npm run format:check && npm run typecheck && npm test && npm run build`.
 CI (`.github/workflows/ci.yml`) runs the same on every push and pull request, plus an image build with a

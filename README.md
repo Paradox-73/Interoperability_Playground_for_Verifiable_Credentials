@@ -60,21 +60,22 @@ The design decisions are recorded in [docs/adr](docs/adr/README.md).
 
 ## Commands
 
-| Command                                                                           | What it does                                                                                    |
-| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `npm run dev`                                                                     | Server from source with reload (28100) and the UI dev server (28173)                            |
-| `npm start`                                                                       | Built server, serving the built UI (28100)                                                      |
-| `npm run build`                                                                   | Compile every package (`tsc -b`) and bundle the UI                                              |
-| `npm run lint` / `npm run format:check` / `npm run typecheck`                     | ESLint, Prettier, TypeScript                                                                    |
-| `npm test`                                                                        | All unit and integration tests (Vitest), without the live Inji stack                            |
-| `npm run test:live`                                                               | Tests against the running Inji stack                                                            |
-| `npm run smoke`                                                                   | One reference run end to end, printing the recorded exchanges and the verdict                   |
-| `npm run e2e` / `npm run e2e:live`                                                | Browser tests (not implemented yet)                                                             |
-| `npm run stack:init` / `stack:up` / `stack:down` / `stack:status` / `stack:smoke` | Local Inji stack ([docs/setup.md](docs/setup.md#local-inji-stack))                              |
-| `npm run up` / `npm run down`                                                     | One-command bundle: Inji stack + playground ([docs/setup.md](docs/setup.md#one-command-bundle)) |
-| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                          |
-| `npm run demo`                                                                    | Demo check before recording (not implemented yet)                                               |
-| `npm run test:report` / `npm run docs:check` / `npm run openapi`                  | Test report, documentation check, OpenAPI export (not implemented yet)                          |
+| Command                                                                           | What it does                                                                                                                       |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                                                                     | Server from source with reload (28100) and the UI dev server (28173)                                                               |
+| `npm start`                                                                       | Built server, serving the built UI (28100)                                                                                         |
+| `npm run build`                                                                   | Compile every package (`tsc -b`) and bundle the UI                                                                                 |
+| `npm run lint` / `npm run format:check` / `npm run typecheck`                     | ESLint, Prettier, TypeScript                                                                                                       |
+| `npm test`                                                                        | All unit and integration tests (Vitest), without the live Inji stack                                                               |
+| `npm run test:live`                                                               | Tests against the running Inji stack                                                                                               |
+| `npm run smoke`                                                                   | One reference run end to end, printing the recorded exchanges and the verdict                                                      |
+| `npm run e2e` / `npm run e2e:live`                                                | Browser tests: reference mode (no Docker) / against the bundle or a host-mode server on 28100                                      |
+| `npm run stack:init` / `stack:up` / `stack:down` / `stack:status` / `stack:smoke` | Local Inji stack ([docs/setup.md](docs/setup.md#local-inji-stack))                                                                 |
+| `npm run up` / `npm run down`                                                     | One-command bundle: Inji stack + playground ([docs/setup.md](docs/setup.md#one-command-bundle))                                    |
+| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                                                             |
+| `npm run demo`                                                                    | Checks Docker, ports and memory, starts the bundle, runs the demo cells, prints `DEMO PASS` ([scripts/demo.mjs](scripts/demo.mjs)) |
+| `npm run test:report` / `npm run openapi`                                         | Dated test report in [docs/test-report/](docs/test-report/README.md) and THIRD_PARTY_LICENSES.md / OpenAPI export                  |
+| `npm run docs:check`                                                              | Documentation check (not implemented yet)                                                                                          |
 
 ## Flows
 

@@ -9,7 +9,8 @@ import type { CredentialFormat } from '@inji-playground/protocol';
 export const SDK_CLIENT_ID = 'ps02-playground-sdk';
 
 const FARMER_TYPE = 'FarmerCredential';
-const FARMER_VCT = 'https://playground.ps02.test/vct/farmer/v1';
+/** Matches the farmer vct of every issuer: `https://playground.ps02.test/vct/farmer/v1`, Certify's urn. */
+const FARMER_VCT_PATTERN = '[Ff]armer';
 
 export interface SdkPresentationDefinition {
   id: string;
@@ -27,12 +28,12 @@ export function presentationDefinitionFor(format: CredentialFormat): SdkPresenta
   const formats = sdJwt
     ? { [format]: { 'sd-jwt_alg_values': ['ES256', 'EdDSA'], 'kb-jwt_alg_values': ['ES256', 'EdDSA'] } }
     : { ldp_vc: { proof_type: ['Ed25519Signature2020', 'Ed25519Signature2018', 'RsaSignature2018'] } };
-  // `pattern` as well: Inji wallets (Mimoto) refuse a field filter without one (gap G23).
+  // `pattern` as well: Inji wallets (Mimoto) refuse a field filter without one (gap G23). For SD-JWT VC any
+  // farmer credential: the reference issuer's vct is an https URL, Inji Certify's an urn, and both contain
+  // "farmer". Inji Verify keeps `pattern` but drops `const` and `contains` (G17), so the pattern must allow
+  // every issuer the panel can meet.
   const field = sdJwt
-    ? {
-        path: ['$.vct'],
-        filter: { type: 'string', const: FARMER_VCT, pattern: FARMER_VCT.replace(/\./g, '\\.') },
-      }
+    ? { path: ['$.vct'], filter: { type: 'string', pattern: FARMER_VCT_PATTERN } }
     : { path: ['$.type'], filter: { type: 'array', contains: { const: FARMER_TYPE }, pattern: FARMER_TYPE } };
   return {
     id: `ps02-farmer-${format.replace(/\W+/g, '-')}`,

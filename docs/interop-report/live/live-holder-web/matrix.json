@@ -1,0 +1,240 @@
+{
+  "spec": {
+    "name": "live-holder-web",
+    "source": "live-holder-web.yaml",
+    "mode": "live",
+    "description": "Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certify-ac with the reference wallet."
+  },
+  "server": {
+    "url": "http://localhost:28100",
+    "version": "0.1.0",
+    "reference": false
+  },
+  "startedAt": "2026-10-05T18:06:54.228Z",
+  "finishedAt": "2026-10-05T18:07:28.350Z",
+  "durationMs": 34122,
+  "roles": {
+    "inji-certify-ac": {
+      "name": "Inji Certify (authorization code)",
+      "version": "0.14.0",
+      "ecosystem": "inji"
+    },
+    "inji-verify": {
+      "name": "Inji Verify (API)",
+      "version": "0.18.2",
+      "ecosystem": "inji"
+    },
+    "inji-web": {
+      "name": "Inji Web (through Mimoto)",
+      "version": "0.17.0 + Mimoto 0.22.0",
+      "ecosystem": "inji"
+    },
+    "ref-issuer": {
+      "name": "Reference issuer",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    },
+    "ref-wallet": {
+      "name": "Reference wallet (headless)",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    },
+    "ref-verifier": {
+      "name": "Reference verifier",
+      "version": "0.1.0",
+      "ecosystem": "reference"
+    }
+  },
+  "totals": {
+    "cells": 6,
+    "matched": 6,
+    "mismatched": 0,
+    "pass": 1,
+    "fail": 5,
+    "error": 0,
+    "notSupported": 0
+  },
+  "cells": [
+    {
+      "case": {
+        "id": "TC_PG_WEB_01",
+        "description": "certify-ac -> reference wallet -> Inji Verify, SD-JWT VC",
+        "issuer": "inji-certify-ac",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "pass"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180654-871fd6",
+      "outcome": "VALID",
+      "verdict": "pass",
+      "matches": true,
+      "durationMs": 2463,
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_02",
+        "description": "certify-ac -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9, as for the core Certify",
+        "issuer": "inji-certify-ac",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180656-f65624",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 6611,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_03",
+        "description": "certify-ac -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (the ldp_vp is signed with another key than the one the credential is bound to)",
+        "issuer": "inji-certify-ac",
+        "wallet": "inji-web",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180703-092c4f",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 15806,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_04",
+        "description": "certify-ac -> Inji Web -> Inji Verify, SD-JWT VC; blocked by G25 (Mimoto matches only ldp_vc for presentation)",
+        "issuer": "inji-certify-ac",
+        "wallet": "inji-web",
+        "verifier": "inji-verify",
+        "format": "vc+sd-jwt",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180719-157b06",
+      "outcome": "ERROR",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 1319,
+      "error": {
+        "step": "wallet.fetch-request",
+        "code": "wallet.no-matching-credential",
+        "message": "Mimoto offers no credential for this request (the run's credential is vc+sd-jwt): its credential matching supports only ldp_vc (gap G25)"
+      },
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_05",
+        "description": "Reference issuer -> Inji Web -> Inji Verify, ldp_vc; blocked by G22",
+        "issuer": "ref-issuer",
+        "wallet": "inji-web",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180720-6e98ae",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 5279,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_06",
+        "description": "Reference issuer -> Inji Web -> reference verifier, ldp_vc; blocked by G23 (Mimoto requires a pattern in every field filter)",
+        "issuer": "ref-issuer",
+        "wallet": "inji-web",
+        "verifier": "ref-verifier",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261005T180725-94d5a8",
+      "outcome": "ERROR",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 2365,
+      "error": {
+        "step": "wallet.fetch-request",
+        "code": "wallet.presentation-request-failed",
+        "message": "Mimoto presentation-request: HTTP 400 {\"errorCode\":\"invalid_request\",\"errorMessage\":\"Missing Input: filter->pattern param is required\"}"
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
+        "verifier": "0.1.0"
+      }
+    }
+  ]
+}

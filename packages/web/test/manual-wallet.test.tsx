@@ -193,16 +193,14 @@ describe('Inji Verify SDK panel', () => {
     );
   });
 
-  it('asks for the farmer credential by vct for SD-JWT VC and by type for ldp_vc', () => {
-    expect(presentationDefinitionFor('vc+sd-jwt').input_descriptors[0]!.constraints.fields[0]).toEqual({
-      path: ['$.vct'],
-      // `pattern` too: Mimoto refuses a field filter without one (gap G23).
-      filter: {
-        type: 'string',
-        const: 'https://playground.ps02.test/vct/farmer/v1',
-        pattern: 'https://playground\\.ps02\\.test/vct/farmer/v1',
-      },
-    });
+  it('asks for any farmer credential by vct for SD-JWT VC and by type for ldp_vc', () => {
+    const field = presentationDefinitionFor('vc+sd-jwt').input_descriptors[0]!.constraints.fields[0]!;
+    // A pattern, not a const: Inji Verify keeps only `pattern` (G17), Mimoto needs one (G23).
+    expect(field).toEqual({ path: ['$.vct'], filter: { type: 'string', pattern: '[Ff]armer' } });
+    const pattern = new RegExp(field.filter.pattern as string);
+    expect(pattern.test('https://playground.ps02.test/vct/farmer/v1')).toBe(true);
+    // Inji Certify's vct (deploy/inji-stack/config/seed/).
+    expect(pattern.test('urn:ps02:playground:FarmerCredential')).toBe(true);
     expect(presentationDefinitionFor('ldp_vc').input_descriptors[0]!.constraints.fields[0]!.path).toEqual([
       '$.type',
     ]);
