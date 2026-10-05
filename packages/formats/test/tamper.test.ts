@@ -234,7 +234,7 @@ describe('SD-JWT VC primitives (RFC 9901)', () => {
     expect(decoded.kb).toBeUndefined();
     const presented = await present(forged.sdJwt);
     await expect(verifySdJwtVc(presented, options)).rejects.toMatchObject({ code: 'X5C_UNTRUSTED' });
-    // A verifier that skips chain validation (gap G7) accepts it: this is what the scenario probes.
+    // A verifier that skips chain validation accepts it: this is what the scenario probes.
     const lax = await verifySdJwtVc(presented, { ...options, x5c: {} });
     expect(lax.issuerKey).toMatchObject({ source: 'x5c', trusted: false });
   });

@@ -342,9 +342,8 @@ check never leaves containers running.
     says so, and the server must report other combinations as "not supported", not as failures.
   - `expired` is a validly signed credential whose validity is in the past: expected `EXPIRED`, shown as
     "Valid but expired".
-  - `forged-x5c` probes gap G7 (Inji Verify takes the SD-JWT key from the `x5c` leaf without checking the
-    chain, from code reading). If Inji Verify accepts it in WP-10, treat it as a security finding: see
-    WP-18.
+  - `forged-x5c` is a negative test for every SD-JWT verifier: an `x5c` chain must end at a configured
+    trust anchor. A verifier that accepts it is a security finding: see WP-18.
   - `holder-did-canonical` is expected `VALID`: the did:jwk specification forbids padding, and the padded
     and unpadded strings name the same key.
 
@@ -617,7 +616,7 @@ check never leaves containers running.
   - Gaps: `docs/gaps/README.md`, `docs/gaps/gaps.json` (id, title, repository, version, severity, linked
     matrix cells, status new or existing upstream issue), `docs/gaps/issues/NN-<repo>-<slug>.md`. Re-run each
     gap with a playground case before writing it. Link known upstream issues instead of duplicating them.
-  - Security-relevant findings (G7 confirmed, or a KB-JWT that is not bound) get `"disclosure": "private"`:
+  - Security-relevant findings get `"disclosure": "private"`:
     no draft in the repository; the README lists them only as "reported privately".
   - The Inji repositories moved from `github.com/mosip/*` to `github.com/inji/*`; link the new names.
 
@@ -674,7 +673,7 @@ Short ids for upstream problems found while building the stack. "Measured" means
 | G4      | Mimoto                     | needs `display` logo, `background_color`, `text_color` on every credential configuration (optional in OpenID4VCI)       | measured     | reference issuer and seed set them                     |
 | G5      | Mimoto / Inji Web          | no pre-authorized code or credential offer support                                                                      | code reading | WP-14 uses certify-ac instead                          |
 | G6      | Inji Certify               | authorization-server metadata has no `authorization_endpoint`                                                           | measured     | WP-14 uses the test authorization server               |
-| G7      | vc-verifier SD-JWT         | key taken from the `x5c` leaf with no chain check and no link to `iss`                                                  | code reading | `forged-x5c` scenario (WP-11) tests it                 |
+| G7      | Inji Verify                | reported privately                                                                                                      | -            | not in the repository                                  |
 | G8      | Inji Certify SD-JWT output | `typ` `vc+sd-jwt` (newer drafts use `dc+sd-jwt`), holder key as `cnf.kid`, no `iat`/`exp` unless the template adds them | measured     | open                                                   |
 | G9      | inji-certify sample config | proof algorithm list says `Ed25519` where the rest of the config uses `EdDSA`; an EdDSA holder proof may be rejected    | code reading | reference wallet uses ES256                            |
 | G10     | inji-verify compose        | `OVP_QR_HEADER` value missing `$`                                                                                       | code reading | fixed in our compose (`76f2b67`)                       |

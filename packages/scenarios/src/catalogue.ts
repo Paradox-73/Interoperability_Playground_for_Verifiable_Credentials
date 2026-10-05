@@ -246,7 +246,6 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     requires: { wallet: REF_WALLET },
     reference:
       'SD-JWT VC draft 19 section 2.5 (issuer key via x5c must be validated); RFC 7515 section 4.1.6 (x5c)',
-    gap: 'G7',
     credentialTamper: 'forge-x5c',
   },
   {

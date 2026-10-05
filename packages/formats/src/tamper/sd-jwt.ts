@@ -137,8 +137,8 @@ export interface ForgeX5cOptions {
  *
  * A verifier must reject it: an `x5c` chain has to end at a trust anchor the verifier configured
  * (SD-JWT VC draft 19 section 2.5; RFC 7515 section 4.1.6), and a key the forger made up cannot.
- * This is the probe of gap G7 (a verifier that checks the signature against the leaf certificate
- * without validating the chain).
+ * It catches a verifier that checks the signature against the leaf certificate without validating the
+ * chain.
  */
 export async function forgeWithSelfSignedX5c(
   sdJwt: string,
