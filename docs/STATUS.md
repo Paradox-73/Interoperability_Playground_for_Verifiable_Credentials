@@ -42,25 +42,25 @@ started.
 | WP-07 | D-stack     | OpenID4VP reference verifier and wallet presentation client                              | WP-02                      | DONE   | `dba2418`                                                                                                                                                                      |
 | WP-08 | B-server    | Recording proxy, reference and manual roles, first reference run end to end              | WP-03, WP-06, WP-07        | REVIEW | `d5eae9c`, `304854e` (branch `wp-08-recording`)                                                                                                                                |
 | WP-09 | C-web       | Protocol inspector, animated sequence diagram and run playback                           | WP-04                      | DONE   | `447f05d`                                                                                                                                                                      |
-| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | TODO   | -                                                                                                                                                                              |
+| WP-10 | D-stack     | Inji Certify and Inji Verify adapters with live runs in both formats                     | WP-05, WP-08               | REVIEW | `400f951`, `3a4fbdc` (branch `wp-10-inji-adapters`)                                                                                                                            |
 | WP-11 | A-reference | Tamper and negative-path scenario catalogue                                              | WP-06, WP-07               | REVIEW | `48e2dfc`, `5f9e0f5` (branch `wp-11-scenarios`)                                                                                                                                |
 | WP-12 | B-server    | Reports, history, compatibility matrix and metrics API                                   | WP-03                      | DONE   | `b010184`                                                                                                                                                                      |
 | WP-13 | C-web       | Matrix view, history dashboard, run report page and tamper controls                      | WP-09, WP-12               | REVIEW | `0dec756`, `d1c8879` (branch `wp-13-pages`)                                                                                                                                    |
-| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | TODO   | -                                                                                                                                                                              |
+| WP-14 | D-stack     | Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer               | WP-10                      | REVIEW | `af7ff15`, `bde2071` (branch `wp-14-inji-web`)                                                                                                                                 |
 | WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | REVIEW | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
-| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | TODO   | -                                                                                                                                                                              |
+| WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | REVIEW | `167e675`, `647e281` (branch `wp-16-browser-tests`)                                                                                                                            |
 | WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | TODO   | -                                                                                                                                                                              |
 | WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | TODO   | -                                                                                                                                                                              |
 
-Longest chain of remaining work: WP-10 -> WP-14 -> WP-17 -> WP-18. WP-08 is finished (in review), so WP-10
-can start; WP-16 can start too (WP-08, WP-09 and WP-13 are finished).
+Longest chain of remaining work: WP-17 -> WP-18. WP-10, WP-14, WP-15 and WP-16 are finished (in review), so
+WP-17 can start.
 
 ### What the DONE tasks give you
 
-- Every root `npm run` command exists. With the branches in review merged, four still call a placeholder that
-  prints `not implemented yet (WP-xx)` and exits 1: `e2e` / `e2e:live` (WP-16), `demo` and `test:report`
-  (WP-17), `docs:check` (WP-18). `smoke` (WP-08) and `matrix:reference` / `matrix:live` (WP-15) are
-  implemented. Implementing a command means replacing the file the script calls, never editing
+- Every root `npm run` command exists. With the branches in review merged, three still call a placeholder
+  that prints `not implemented yet (WP-xx)` and exits 1: `demo` and `test:report` (WP-17), `docs:check`
+  (WP-18). `smoke` (WP-08), `matrix:reference` / `matrix:live` (WP-15), `e2e` / `e2e:live` (WP-16) and
+  `test:live` (WP-10, WP-14) are implemented. Implementing a command means replacing the file the script calls, never editing
   `package.json`.
 - Measured on `main` on 2026-10-04 (before work stopped): `npm ci`, lint, typecheck, `npm test` and
   `npm run build` exit 0; `npm run stack:smoke` printed `SMOKE PASS` in 166 s, including Inji Verify
@@ -77,12 +77,15 @@ can start; WP-16 can start too (WP-08, WP-09 and WP-13 are finished).
 Work of 2026-10-05. The branches are stacked, each on the one before, so merge them in this order (or
 open each pull request against the branch before it, and retarget after each merge):
 
-| Order | Branch             | Task  | Based on           | Commits                            |
-| ----- | ------------------ | ----- | ------------------ | ---------------------------------- |
-| 1     | `wp-11-scenarios`  | WP-11 | `main` (`cf0c535`) | `48e2dfc`, `5f9e0f5`               |
-| 2     | `wp-08-recording`  | WP-08 | `wp-11-scenarios`  | `d5eae9c`, `304854e`               |
-| 3     | `wp-13-pages`      | WP-13 | `wp-08-recording`  | `0dec756`, `d1c8879`               |
-| 4     | `wp-15-matrix-cli` | WP-15 | `wp-13-pages`      | `36591c6`, then this status update |
+| Order | Branch                | Task  | Based on              | Commits                                       |
+| ----- | --------------------- | ----- | --------------------- | --------------------------------------------- |
+| 1     | `wp-11-scenarios`     | WP-11 | `main` (`cf0c535`)    | `48e2dfc`, `5f9e0f5`                          |
+| 2     | `wp-08-recording`     | WP-08 | `wp-11-scenarios`     | `d5eae9c`, `304854e`                          |
+| 3     | `wp-13-pages`         | WP-13 | `wp-08-recording`     | `0dec756`, `d1c8879`                          |
+| 4     | `wp-15-matrix-cli`    | WP-15 | `wp-13-pages`         | `36591c6`, `10d46aa` (status update)          |
+| 5     | `wp-16-browser-tests` | WP-16 | `wp-15-matrix-cli`    | `167e675`, `647e281`                          |
+| 6     | `wp-10-inji-adapters` | WP-10 | `wp-16-browser-tests` | `400f951`, `3a4fbdc`                          |
+| 7     | `wp-14-inji-web`      | WP-14 | `wp-10-inji-adapters` | `af7ff15`, `bde2071`, then this status update |
 
 The first commit of each PARTIAL task is the work from `wip/2026-10-04-stop` as it was, so reviewers can
 tell old work from new. Checks run on 2026-10-05 on the tip of `wp-15-matrix-cli` (Windows 11, Node
@@ -100,6 +103,22 @@ Changes outside a task's own folders, for the owning lane to review:
 - WP-13: `packages/web/src/api/compatibility.ts` (optional `scenario` in the compatibility query).
 - WP-15: `.github/workflows/ci.yml` (reference matrix job), `.gitignore` (`docs/interop-report/*/runs/`),
   `.prettierignore` (`docs/interop-report/`).
+- WP-16: `packages/web/package.json` (dev dependencies on `formats`, `oid4vci`, `oid4vp` for the scripted
+  wallet in browser tests; `typecheck` also checks `e2e/`), `.github/workflows/ci.yml` (browser test job).
+- WP-10: `packages/oid4vp` (pre-registered verifier client ids with response URIs; a key id as
+  `credentialSubject.id`), `packages/formats` (`ecdsa-rdfc-2019` presentations, data-integrity context),
+  `packages/server/src/recording/` (network map matches default ports; `/v1/verify/*` attribution).
+- WP-14: `packages/oid4vp/src/query/presentation-exchange.ts` (JSON Schema keywords apply only to values of
+  their type), `packages/oid4vci/src/as/identity.ts` (`picture`, `phone_number` in the test identity, G21),
+  `packages/protocol/src/flow.ts` (`mode` in the issuance request), `packages/server/src/orchestrator/`
+  (wallet-initiated issuance when the wallet cannot take an offer), `packages/server/src/reports/redact.ts`
+  (CSRF token headers), `packages/web/src/features/inji-verify-sdk/definition.ts` (`pattern`, G23),
+  `deploy/compose.yaml` (`PLAYGROUND_PUBLIC_URL` and Mimoto's certificate for the bundle).
+
+Checks run on 2026-10-05 on the tip of `wp-14-inji-web`: `npm run lint`, `npm run format:check`,
+`npm run typecheck` and `npm run build` exit 0; `npm test`: 68 files, 962 tests, 0 failures (one web page test, "live timeline", ran
+past its 30 s timeout once while Docker was busy and passed when run again); after `npm run stack:down` and
+`npm run stack:up` (ready in 76 s), `npm run test:live` passes 20 tests (Inji core 15, Inji Web 5).
 
 ## State of the unfinished branch
 
@@ -141,7 +160,7 @@ Every command below runs from the repository root in Git Bash (Windows) or a nor
 Workspace names are `@inji-playground/<folder>`. Commands that start Docker end by stopping it, so a failed
 check never leaves containers running.
 
-### WP-08 Recording proxy, reference and manual roles, first reference run end to end (PARTIAL)
+### WP-08 Recording proxy, reference and manual roles, first reference run end to end (REVIEW)
 
 - **Goal:** a run started from the UI or the API goes reference issuer -> reference wallet -> reference
   verifier; every HTTP exchange is recorded once, streamed over the WebSocket, and the report is stored.
@@ -217,7 +236,7 @@ check never leaves containers running.
   - Exports (reports, fixtures, matrix files) redact access tokens, pre-authorized codes, authorization
     codes, client assertions, cookies and private keys, and keep the payload shape.
 
-### WP-10 Inji Certify and Inji Verify adapters with live runs in both formats (TODO)
+### WP-10 Inji Certify and Inji Verify adapters with live runs in both formats (REVIEW)
 
 - **Goal:** real Inji modules in the loop: Inji Certify issues, Inji Verify verifies, in `ldp_vc` and
   `vc+sd-jwt`, with every exchange recorded.
@@ -237,6 +256,14 @@ check never leaves containers running.
   - Certify -> reference wallet -> reference verifier reports `VALID` in both formats.
   - Every other live cell (including reference issuer -> Inji Verify with the probe scenarios of WP-11)
     stores a report with its outcome, error detail and the image versions.
+- **Done on 2026-10-05 (branch `wp-10-inji-adapters`):** contract tests on recorded fixtures pass
+  (`npm test -w @inji-playground/server -- adapters/inji`); `npm run test:live` passes 15 tests. Inji
+  Certify -> reference wallet -> Inji Verify is `VALID` for `vc+sd-jwt`. `ldp_vc` is blocked: Inji Verify
+  rejects the `ecdsa-rdfc-2019` holder proof of a P-256 key (G15) and Certify accepts only ES256 and RS256
+  holder keys (G9); the run stores the failing step and exchange. Certify -> reference verifier is `VALID`
+  for `vc+sd-jwt` and `INVALID` for `ldp_vc` (G14: Certify's DID document does not authorise its key for
+  `assertionMethod`), so "both formats VALID" is not met because of upstream gaps. `live-core` matrix: 14 of
+  14 cells as specified. Gaps G12-G20 added to `docs/gaps/gaps.json`; G7 and G20 are reported privately.
 - **Notes:**
   - `adapters/inji/certify.ts`: issuer role `inji-certify`. Capabilities from live issuer metadata plus the
     image tag; `startIssuance` calls `POST /v1/certify/pre-authorized-data` and returns the offer URI (also
@@ -262,7 +289,7 @@ check never leaves containers running.
   - Live runs against one stack run one at a time; the Vitest `live` project already sets
     `fileParallelism: false` and a 180 s test timeout.
 
-### WP-11 Tamper and negative-path scenario catalogue (PARTIAL)
+### WP-11 Tamper and negative-path scenario catalogue (REVIEW)
 
 - **Goal:** reusable scenarios, each with an expected outcome and the specification text that makes it
   correct, plus valid "probe" variants that show interoperability gaps.
@@ -312,7 +339,7 @@ check never leaves containers running.
   - `holder-did-canonical` is expected `VALID`: the did:jwk specification forbids padding, and the padded
     and unpadded strings name the same key.
 
-### WP-13 Matrix view, history dashboard, run report page and tamper controls (PARTIAL)
+### WP-13 Matrix view, history dashboard, run report page and tamper controls (REVIEW)
 
 - **Goal:** pages that turn stored runs into evidence anyone can browse.
 - **Depends on:** WP-09, WP-12 (both DONE). Tamper controls show the WP-11 catalogue once it is merged.
@@ -352,7 +379,7 @@ check never leaves containers running.
 - **Notes:** the UI shows recorded exchanges only; test data imitating protocol payloads is named
   `*.synthetic.json`. Strings go in `src/locales/en.json`. Keep AA contrast in light and dark themes.
 
-### WP-14 Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer (TODO)
+### WP-14 Inji Web wallet through Mimoto, fed by certify-ac and the reference issuer (REVIEW)
 
 - **Goal:** Inji Web as a real wallet, and an all-Inji issuance path Inji Certify -> Inji Web through Mimoto
   with no eSignet and no phone. Then presentation from Inji Web if Mimoto's login can be satisfied locally.
@@ -376,6 +403,22 @@ check never leaves containers running.
     recorded;
   - Inji Web -> Inji Verify presentation reports `VALID`, or stores a run whose error names the blocking
     step, with a matching entry in `docs/gaps/gaps.json`.
+
+- **Done on 2026-10-05 (branch `wp-14-inji-web`):** the acceptance command exits 0 on a fresh stack
+  (`test/live/inji-web.test.ts`, 5 tests; the whole live suite 20). certify-ac accepted the test
+  authorization server's tokens, so eSignet is not needed. Measured: certify-ac -> Inji Web guest download
+  completes with Mimoto's token request to `/ref/as` and its credential request to certify-ac recorded and
+  the credential read from that response; certify-ac -> reference wallet -> Inji Verify is `VALID` for
+  `vc+sd-jwt`; reference issuer -> Inji Web completes with Mimoto's token and credential requests to `/ref/*`
+  recorded. The logged-in flow works: sign-in through Mimoto's Google provider pointed at the test
+  authorization server, wallet create and unlock, store, presentation. Inji Web -> Inji Verify is `INVALID`
+  for `ldp_vc` (G22: Mimoto signs the ldp_vp with an Ed25519 key while the credential is bound to a P-256
+  key) and stops at `wallet.fetch-request` for `vc+sd-jwt` (G25: Mimoto matches only `ldp_vc`). Further gaps
+  found on the way: G21 (Mimoto sign-in fails for a returning user whose first ID token lacked optional
+  claims), G23 (Mimoto requires `pattern` in every field filter), G24 (Mimoto refuses an `http`
+  `response_uri`, the Inji Verify sample's default). `live-holder-web` matrix: 6 of 6 cells as specified.
+  Memory of the `holder-web` profile: about 1.46 GiB (Mimoto 762 MiB, certify-ac 647 MiB); the whole stack
+  about 2.7 GiB. Contract tests replay recorded Mimoto answers (`test/contract/inji/adapters/inji-web.test.ts`).
 
 - **Notes:**
   - Why certify-ac: Mimoto 0.22.0 only runs the authorization-code flow, and Certify in pre-authorized mode
@@ -417,7 +460,7 @@ check never leaves containers running.
   - Measure the `holder-web` profile's memory with `docker stats` and replace the estimate in
     `docs/setup.md` (about 3 GiB total expected, not measured).
 
-### WP-15 Headless matrix CLI and nightly interoperability workflow (TODO)
+### WP-15 Headless matrix CLI and nightly interoperability workflow (REVIEW)
 
 - **Goal:** the compatibility matrix runs with no UI, locally and nightly, and publishes `matrix.md`.
 - **Depends on:** WP-08, WP-11, WP-12.
@@ -454,7 +497,7 @@ check never leaves containers running.
     yet; the first run measures it.
   - Add the reference matrix job to `.github/workflows/ci.yml` (minimal change to a shared file).
 
-### WP-16 Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests (TODO)
+### WP-16 Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests (REVIEW)
 
 - **Goal:** the phone path and the official Inji Verify component in the UI, plus browser tests proving the
   whole UI works and is accessible.
@@ -469,6 +512,11 @@ check never leaves containers running.
   lazy chunk. `npm exec -w @inji-playground/web -- playwright test --list --project e2e-live` lists
   `sdk-verify.spec.ts`. `docs/ux/README.md` has the user flow and at least 5 screenshots captured by
   Playwright.
+- **Done on 2026-10-05 (branch `wp-16-browser-tests`):** `npm run e2e` passes 6 browser tests (the five above
+  plus axe on the playground, matrix, history, report and about pages, no serious or critical violations);
+  the SDK is in its own lazy chunk and the evidence pages load on demand (main chunk 260 kB, was 554 kB);
+  `e2e-live` lists `sdk-verify.spec.ts`, and `npm run e2e:live` passed with the stack up (Certify ->
+  reference wallet -> Inji Verify web component); `docs/ux/README.md` has the user flow with 7 screenshots.
 - **Notes:**
   - Install the browser once: `npm exec -w @inji-playground/web -- playwright install chromium`
     (`PLAYWRIGHT_BROWSERS_PATH` chooses where it goes).
@@ -584,19 +632,26 @@ A task moves to DONE only when, in one pull request:
 Short ids for upstream problems found while building the stack. "Measured" means it was run and seen;
 "code reading" means found in the source but not run yet.
 
-| Id  | Component                  | Gap                                                                                                                     | Evidence     | Local state                                            |
-| --- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------ |
-| G1  | inji-certify sample config | `credentialOfferCache` missing from `mosip.certify.cache.names`; pre-authorized issuance fails                          | measured     | fixed in `ba25dc6`                                     |
-| G2  | vc-verifier (Inji Verify)  | did:web resolved only over `https://`                                                                                   | measured     | worked around by the TLS front and test CA (`e19cb30`) |
-| G3  | inji-certify sample nginx  | `/.well-known/oauth-authorization-server` at the host root is not routed                                                | measured     | fixed in `af9e36d`                                     |
-| G4  | Mimoto                     | needs `display` logo, `background_color`, `text_color` on every credential configuration (optional in OpenID4VCI)       | measured     | reference issuer and seed set them                     |
-| G5  | Mimoto / Inji Web          | no pre-authorized code or credential offer support                                                                      | code reading | WP-14 uses certify-ac instead                          |
-| G6  | Inji Certify               | authorization-server metadata has no `authorization_endpoint`                                                           | measured     | WP-14 uses the test authorization server               |
-| G7  | vc-verifier SD-JWT         | key taken from the `x5c` leaf with no chain check and no link to `iss`                                                  | code reading | `forged-x5c` scenario (WP-11) tests it                 |
-| G8  | Inji Certify SD-JWT output | `typ` `vc+sd-jwt` (newer drafts use `dc+sd-jwt`), holder key as `cnf.kid`, no `iat`/`exp` unless the template adds them | measured     | open                                                   |
-| G9  | inji-certify sample config | proof algorithm list says `Ed25519` where the rest of the config uses `EdDSA`; an EdDSA holder proof may be rejected    | code reading | reference wallet uses ES256                            |
-| G10 | inji-verify compose        | `OVP_QR_HEADER` value missing `$`                                                                                       | code reading | fixed in our compose (`76f2b67`)                       |
-| G11 | Inji Certify sample config | credential-configuration and pre-authorized-data APIs are unauthenticated                                               | measured     | local only; never expose these ports                   |
+| Id      | Component                  | Gap                                                                                                                     | Evidence     | Local state                                            |
+| ------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------ |
+| G1      | inji-certify sample config | `credentialOfferCache` missing from `mosip.certify.cache.names`; pre-authorized issuance fails                          | measured     | fixed in `ba25dc6`                                     |
+| G2      | vc-verifier (Inji Verify)  | did:web resolved only over `https://`                                                                                   | measured     | worked around by the TLS front and test CA (`e19cb30`) |
+| G3      | inji-certify sample nginx  | `/.well-known/oauth-authorization-server` at the host root is not routed                                                | measured     | fixed in `af9e36d`                                     |
+| G4      | Mimoto                     | needs `display` logo, `background_color`, `text_color` on every credential configuration (optional in OpenID4VCI)       | measured     | reference issuer and seed set them                     |
+| G5      | Mimoto / Inji Web          | no pre-authorized code or credential offer support                                                                      | code reading | WP-14 uses certify-ac instead                          |
+| G6      | Inji Certify               | authorization-server metadata has no `authorization_endpoint`                                                           | measured     | WP-14 uses the test authorization server               |
+| G7      | vc-verifier SD-JWT         | key taken from the `x5c` leaf with no chain check and no link to `iss`                                                  | code reading | `forged-x5c` scenario (WP-11) tests it                 |
+| G8      | Inji Certify SD-JWT output | `typ` `vc+sd-jwt` (newer drafts use `dc+sd-jwt`), holder key as `cnf.kid`, no `iat`/`exp` unless the template adds them | measured     | open                                                   |
+| G9      | inji-certify sample config | proof algorithm list says `Ed25519` where the rest of the config uses `EdDSA`; an EdDSA holder proof may be rejected    | code reading | reference wallet uses ES256                            |
+| G10     | inji-verify compose        | `OVP_QR_HEADER` value missing `$`                                                                                       | code reading | fixed in our compose (`76f2b67`)                       |
+| G11     | Inji Certify sample config | credential-configuration and pre-authorized-data APIs are unauthenticated                                               | measured     | local only; never expose these ports                   |
+| G12-G19 | Inji Certify, Inji Verify  | see `docs/gaps/gaps.json` (WP-10)                                                                                       | measured     | open                                                   |
+| G20     | Inji Verify                | reported privately                                                                                                      | measured     | not in the repository                                  |
+| G21     | Mimoto                     | sign-in fails for a returning user whose first ID token lacked `picture` or `phone_number`                              | measured     | test identity has both claims                          |
+| G22     | Mimoto / Inji Web          | ldp_vp signed with an Ed25519 key while the credential is bound to a P-256 key                                          | measured     | open; Inji Web -> Inji Verify is `INVALID`             |
+| G23     | Mimoto (inji-openid4vp)    | field filters without `pattern` refused                                                                                 | measured     | playground's Inji Verify requests add `pattern`        |
+| G24     | Mimoto                     | `http` `response_uri` refused; the Inji Verify sample hands one out                                                     | measured     | stack uses `https://verify.ps02.test`                  |
+| G25     | Mimoto / Inji Web          | no presentation of SD-JWT VCs (matching supports only `ldp_vc`)                                                         | measured     | open                                                   |
 
 Also seen and to be written up in WP-18: the inji-verify compose `init.sql` does not match the 0.18.x schema
 (500 errors on status and submission; fixed locally in `d4b9a35`); verify-service has no CORS support; the
