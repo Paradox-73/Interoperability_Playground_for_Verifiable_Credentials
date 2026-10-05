@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json && tsc -p e2e/tsconfig.json",
     "test": "vitest run --root ../.. --project web"
   },
   "dependencies": {
@@ -26,6 +26,9 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@inji-playground/formats": "0.1.0",
+    "@inji-playground/oid4vci": "0.1.0",
+    "@inji-playground/oid4vp": "0.1.0",
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",

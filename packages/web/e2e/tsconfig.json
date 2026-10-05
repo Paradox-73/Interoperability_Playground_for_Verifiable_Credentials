@@ -1,0 +1,11 @@
+{
+  "//": "Browser tests run in Node (Playwright); no DOM types, so the workspace packages they import type-check as on the server.",
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
+  },
+  "include": ["."]
+}

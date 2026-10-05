@@ -85,7 +85,8 @@ src/playback/              /runs/:id/playback: stored run replayed step by step
 
 How the inspector, the diagram and playback work: [`src/inspector/README.md`](src/inspector/README.md).
 
-Later features add `src/features/{manual-wallet,inji-verify-sdk}/`.
+`src/features/manual-wallet/` (phone step modal) and `src/features/inji-verify-sdk/` (the official Inji
+Verify component, lazy-loaded in its own chunk) complete the run page.
 
 ## How the parts fit
 
@@ -137,4 +138,26 @@ Page tests get 30 s each and `findBy*` / `waitFor` 5 s (`vite.config.ts`,
 | `src/state/*.test.ts`                                                               | Timeline reducer (synthetic example run, failures, repeated steps, person actions), duplicate events                                                                                                                                                                                                           |
 | `test/inspector*.test.ts(x)`, `test/sequence*.test.ts(x)`, `test/playback.test.tsx` | Protocol inspector, sequence diagram and playback; see [`src/inspector/README.md`](src/inspector/README.md#tests)                                                                                                                                                                                              |
 
-Browser tests: Playwright projects `e2e` (`e2e/`) and `e2e-live` (`e2e/live/`, needs the bundle).
+## Browser tests
+
+`npm run e2e` (`scripts/e2e.mjs`) builds everything, starts the server on a free port of 28600-28699
+(reference mode, in-memory database) and `vite preview` on 28174, runs Playwright project `e2e` in
+Chromium, and stops both. `npm run e2e -- --screenshots` also writes the screenshots of
+[docs/ux](../../docs/ux/README.md); `--no-build` reuses the last build. Install the browser once with
+`npm exec -w @inji-playground/web -- playwright install chromium`.
+
+| Test (`e2e/playground.spec.ts`) | What it does                                                                                                          |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| reference happy path            | chooses the reference trio, runs, follows the timeline, opens the report and finds every mandatory field              |
+| tamper path                     | picks `kb-wrong-nonce`, checks the expected outcome before the run and expected vs actual after                       |
+| matrix and history              | a stored run appears as a Pass cell linked to its report and as a history row; a filter changes the address           |
+| manual-wallet modal             | the test acts as the phone: reads the offer and the request from the modal and answers with the reference clients     |
+| keyboard only                   | Tab and Enter only: Run, the run page, the report                                                                     |
+| accessibility                   | axe-core (WCAG 2.1 A/AA) on the playground, matrix, history, report and about pages: no serious or critical violation |
+
+Measured 2026-10-05 on Windows 11 with Chromium from Playwright 1.63: 6 tests pass in 15 s.
+
+`npm run e2e:live` runs project `e2e-live` (`e2e/live/sdk-verify.spec.ts`: Inji Certify -> reference wallet
+-> the Inji Verify web component, VALID) against a bundle or a host-mode server on 28100
+(`PLAYWRIGHT_BASE_URL`). `e2e/` has its own `tsconfig.json` without DOM types, because the tests run in
+Node and import the workspace's protocol clients.

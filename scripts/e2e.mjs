@@ -1,8 +1,113 @@
 #!/usr/bin/env node
 /**
- * `npm run e2e / e2e:live`: runs the Playwright browser tests: project e2e (reference mode) or, with --live, project e2e-live against the running bundle.
+ * `npm run e2e`: the Playwright browser tests of project `e2e`, in reference mode (no Docker). Builds
+ * every package, starts the playground server on a free port of 28600-28699 (in-memory database, no
+ * Inji stack) and the UI with `vite preview` on 28174, which forwards /api, /ws, /ref, /v1/verify and
+ * /proxy to that server; runs the tests; stops both, whatever the result.
  *
- * Placeholder: the command exists so the root command surface is complete; WP-16 replaces this file.
+ * `npm run e2e:live`: project `e2e-live` against a running bundle or host-mode server
+ * (PLAYWRIGHT_BASE_URL, default http://localhost:28100); nothing is started.
+ *
+ * Options: `--no-build` (reuse the last build), `--screenshots` (write the UX screenshots to
+ * docs/ux/screenshots/); anything else goes to `playwright test`.
  */
-console.error('npm run e2e / e2e:live: not implemented yet (WP-16)');
-process.exit(1);
+import { spawn, spawnSync } from 'node:child_process';
+import { createServer } from 'node:net';
+import { fileURLToPath } from 'node:url';
+
+const root = fileURLToPath(new URL('..', import.meta.url));
+const web = `${root}packages/web`;
+const args = process.argv.slice(2);
+const live = args.includes('--live');
+const build = !args.includes('--no-build');
+const screenshots = args.includes('--screenshots');
+const passThrough = args.filter((arg) => !['--live', '--no-build', '--screenshots'].includes(arg));
+const playwrightCli = `${root}node_modules/@playwright/test/cli.js`;
+
+function playwright(project, env) {
+  const result = spawnSync(process.execPath, [playwrightCli, 'test', '--project', project, ...passThrough], {
+    cwd: web,
+    stdio: 'inherit',
+    env: { ...process.env, ...env },
+  });
+  return result.status ?? 1;
+}
+
+if (live) process.exit(playwright('e2e-live', {}));
+
+function freePort(from, to) {
+  return new Promise((resolve, reject) => {
+    const attempt = (port) => {
+      if (port > to) return reject(new Error(`no free port in ${from}-${to}`));
+      const probe = createServer();
+      probe.once('error', () => attempt(port + 1));
+      probe.listen(port, '127.0.0.1', () => probe.close(() => resolve(port)));
+    };
+    attempt(from);
+  });
+}
+
+async function waitFor(url, label, timeoutMs = 60_000) {
+  const deadline = Date.now() + timeoutMs;
+  for (;;) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return;
+    } catch {
+      // not listening yet
+    }
+    if (Date.now() > deadline)
+      throw new Error(`${label} did not answer at ${url} within ${timeoutMs / 1000} s`);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  }
+}
+
+if (build) {
+  const built = spawnSync('npm run build', { cwd: root, stdio: 'inherit', shell: true });
+  if (built.status !== 0) process.exit(built.status ?? 1);
+}
+
+const port = await freePort(28_600, 28_699);
+const serverUrl = `http://localhost:${port}`;
+const children = [];
+const stop = () => {
+  for (const child of children) if (child.exitCode === null) child.kill();
+};
+process.on('exit', stop);
+
+children.push(
+  spawn(process.execPath, [`${root}packages/server/dist/main.js`], {
+    cwd: root,
+    stdio: ['ignore', 'ignore', 'inherit'],
+    env: {
+      ...process.env,
+      PLAYGROUND_PORT: String(port),
+      PLAYGROUND_DB: ':memory:',
+      PLAYGROUND_STACK: 'off',
+      PLAYGROUND_LOG_LEVEL: 'warn',
+      NODE_NO_WARNINGS: '1',
+    },
+  }),
+);
+children.push(
+  spawn(process.execPath, [`${root}node_modules/vite/bin/vite.js`, 'preview'], {
+    cwd: web,
+    stdio: ['ignore', 'ignore', 'inherit'],
+    env: { ...process.env, PLAYGROUND_SERVER_URL: serverUrl },
+  }),
+);
+
+let status = 1;
+try {
+  await waitFor(`${serverUrl}/api/health`, 'playground server');
+  await waitFor('http://localhost:28174/', 'vite preview');
+  status = playwright('e2e', {
+    E2E_SERVER_URL: serverUrl,
+    ...(screenshots ? { E2E_SCREENSHOTS: `${root}docs/ux/screenshots` } : {}),
+  });
+} catch (error) {
+  console.error(error instanceof Error ? error.message : error);
+} finally {
+  stop();
+}
+process.exit(status);
