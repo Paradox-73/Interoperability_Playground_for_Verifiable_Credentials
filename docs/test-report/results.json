@@ -1,7 +1,7 @@
 {
   "unit": {
-    "measuredAt": "2026-10-05T18:39:04.481Z",
-    "wallSeconds": 44,
+    "measuredAt": "2026-10-05T21:22:09.339Z",
+    "wallSeconds": 47,
     "packages": {
       "cli": {
         "files": 2,
@@ -9,7 +9,7 @@
         "passed": 25,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3910.53369140625
+        "durationMs": 3254.798095703125
       },
       "deploy": {
         "files": 3,
@@ -17,7 +17,7 @@
         "passed": 47,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 6974.34033203125
+        "durationMs": 4289.55859375
       },
       "formats": {
         "files": 7,
@@ -25,7 +25,7 @@
         "passed": 148,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3993.645751953125
+        "durationMs": 3068.739501953125
       },
       "oid4vci": {
         "files": 5,
@@ -33,7 +33,7 @@
         "passed": 49,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 29343.970947265625
+        "durationMs": 28666.21630859375
       },
       "oid4vp": {
         "files": 5,
@@ -41,7 +41,7 @@
         "passed": 83,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 2152.80810546875
+        "durationMs": 2051.9326171875
       },
       "protocol": {
         "files": 3,
@@ -49,7 +49,7 @@
         "passed": 30,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 62.38232421875
+        "durationMs": 47.675537109375
       },
       "scenarios": {
         "files": 2,
@@ -57,15 +57,15 @@
         "passed": 100,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3835.85546875
+        "durationMs": 8059.526611328125
       },
       "server": {
         "files": 24,
-        "tests": 242,
-        "passed": 242,
+        "tests": 250,
+        "passed": 250,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 66379.22802734375
+        "durationMs": 62213.9833984375
       },
       "web": {
         "files": 17,
@@ -73,50 +73,50 @@
         "passed": 240,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 37442.959228515625
+        "durationMs": 74284.44140625
       }
     },
     "totals": {
       "files": 68,
-      "tests": 964,
-      "passed": 964,
+      "tests": 972,
+      "passed": 972,
       "failed": 0,
       "skipped": 0
     }
   },
   "e2e": {
-    "measuredAt": "2026-10-05T18:39:48.933Z",
-    "tests": 6,
-    "passed": 6,
+    "measuredAt": "2026-10-05T21:22:55.984Z",
+    "tests": 7,
+    "passed": 7,
     "failed": 0,
     "flaky": 0,
     "skipped": 0,
-    "durationSeconds": 15
+    "durationSeconds": 24
   },
   "stack": {
-    "measuredAt": "2026-10-05T18:40:20.410Z",
-    "startSeconds": 63,
+    "measuredAt": "2026-10-05T21:23:27.672Z",
+    "startSeconds": 71,
     "upStatus": 0,
     "memory": {
       "containers": {
-        "inji-web": 12,
-        "mimoto-service": 684,
-        "certify-nginx": 14,
-        "verify-ui": 13,
+        "inji-web": 10,
+        "mimoto-service": 735,
+        "certify-nginx": 12,
+        "verify-ui": 11,
         "tls-front": 19,
-        "certify-ac": 622,
-        "verify-service": 389,
-        "certify": 651,
-        "database": 85,
-        "database-ac": 51
+        "certify": 618,
+        "certify-ac": 656,
+        "verify-service": 382,
+        "database": 87,
+        "database-ac": 50
       },
-      "totalMiB": 2540
+      "totalMiB": 2580
     },
     "memoryMeasuredAfter": "the live tests"
   },
   "live": {
-    "measuredAt": "2026-10-05T18:41:23.127Z",
-    "wallSeconds": 50,
+    "measuredAt": "2026-10-05T21:24:39.112Z",
+    "wallSeconds": 56,
     "packages": {
       "server": {
         "files": 2,
@@ -124,7 +124,7 @@
         "passed": 20,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 41296.244384765625
+        "durationMs": 49266.09326171875
       }
     },
     "totals": {
@@ -136,12 +136,12 @@
     }
   },
   "licenses": {
-    "measuredAt": "2026-10-05T18:42:37.066Z",
-    "production": 442,
+    "measuredAt": "2026-10-05T21:25:47.320Z",
+    "production": 445,
     "byLicense": [
       [
         "MIT",
-        310
+        308
       ],
       [
         "ISC",
@@ -153,7 +153,7 @@
       ],
       [
         "Apache-2.0",
-        16
+        20
       ],
       [
         "BlueOak-1.0.0",
@@ -197,6 +197,10 @@
       ],
       [
         "(MPL-2.0 OR Apache-2.0)",
+        1
+      ],
+      [
+        "EPL-2.0",
         1
       ]
     ],
@@ -243,7 +247,7 @@
       "label": "reference (no Docker)",
       "page": "../interop-report/reference/matrix.md",
       "spec": "reference",
-      "date": "2026-10-05T00:30:19.771Z",
+      "date": "2026-10-05T20:49:10.757Z",
       "totals": {
         "cells": 82,
         "matched": 82,
@@ -258,7 +262,7 @@
       "label": "live (Inji stack)",
       "page": "../interop-report/live/live-core/matrix.md",
       "spec": "live-core",
-      "date": "2026-10-05T18:04:56.413Z",
+      "date": "2026-10-05T21:13:13.483Z",
       "totals": {
         "cells": 14,
         "matched": 14,
@@ -273,7 +277,7 @@
       "label": "live (Inji stack)",
       "page": "../interop-report/live/live-holder-web/matrix.md",
       "spec": "live-holder-web",
-      "date": "2026-10-05T18:06:54.228Z",
+      "date": "2026-10-05T21:15:18.603Z",
       "totals": {
         "cells": 6,
         "matched": 6,
@@ -285,7 +289,7 @@
       }
     }
   ],
-  "generatedAt": "2026-10-05T18:42:37.074Z",
-  "commit": "05a13ea",
-  "environment": "Windows_NT 10.0.26200, Node 24.11.1"
+  "generatedAt": "2026-10-05T21:25:47.326Z",
+  "commit": "d350e56 (with uncommitted changes)",
+  "environment": "Windows_NT 10.0.26200, Node 24.19.0"
 }
