@@ -115,6 +115,16 @@ an `error` response instead.
 - **`beforeSubmit`** receives the `vp_token` form field as it would be posted (JSON-encoded) and
   returns what is posted instead. Tamper scenarios plug in here.
 
+### Pre-registered verifiers and Inji Certify's holder binding
+
+- `preRegisteredClients: [{ clientId, responseUris }]` lets the wallet answer a verifier whose client id
+  has no scheme prefix (OpenID4VP 1.0 section 5.9.1), as Inji Verify 0.18 sends it, unsigned and by
+  value; only to the registered response URIs. Unknown pre-registered clients are refused.
+- A holder key of P-256 (ES256) signs the `ldp_vp` with `DataIntegrityProof` / `ecdsa-rdfc-2019`: Inji
+  Certify accepts only ES256 and RS256 holder proofs, so its credentials are bound to such a key.
+- When `credentialSubject.id` is a key id (`did:jwk:...#0`, as Inji Certify writes it, gap G13), the
+  wallet presents the DID as `holder` and that key id as the proof's `verificationMethod`.
+
 ## Errors
 
 Protocol failures throw `Oid4vpError` with a stable `code` (`OID4VP_ERROR_CODES`), an OAuth `error`

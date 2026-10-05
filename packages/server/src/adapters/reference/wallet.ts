@@ -31,7 +31,11 @@ import {
   type HolderKey,
   type IssuanceResult,
 } from '@inji-playground/oid4vci';
-import { PresentationClient, type ResolvedRequest } from '@inji-playground/oid4vp';
+import {
+  PresentationClient,
+  type PresentationClientOptions,
+  type ResolvedRequest,
+} from '@inji-playground/oid4vp';
 import {
   findScenarioDefinition,
   respondWithScenario,
@@ -47,13 +51,20 @@ const MAX_HELD_RUNS = 100;
 /** Earlier presentations kept for `vp-replay`, one per verifier, profile and format. */
 const MAX_EARLIER_PRESENTATIONS = 100;
 
+export interface ReferenceWalletOptions {
+  /** Verifiers with unprefixed client ids the wallet trusts (Inji Verify), with their response URIs. */
+  preRegisteredClients?: PresentationClientOptions['preRegisteredClients'];
+}
+
 export class ReferenceWalletRole implements WalletRole {
   readonly #hosting: ReferenceHosting;
+  readonly #options: ReferenceWalletOptions;
   readonly #holderKeys = new Map<string, HolderKey>();
   readonly #earlier = new Map<string, string>();
 
-  constructor(hosting: ReferenceHosting) {
+  constructor(hosting: ReferenceHosting, options: ReferenceWalletOptions = {}) {
     this.#hosting = hosting;
+    this.#options = options;
   }
 
   describe(): RoleDescriptor {
@@ -158,6 +169,9 @@ export class ReferenceWalletRole implements WalletRole {
       documentLoader: this.#hosting.documentLoader,
       didResolver: this.#hosting.didResolver,
       ...walletClientOptions(scenario),
+      ...(this.#options.preRegisteredClients
+        ? { preRegisteredClients: this.#options.preRegisteredClients }
+        : {}),
     });
     const hookTamper = ctx.hooks.tamperPresentation?.bind(ctx.hooks);
     const earlierKey = (resolved: ResolvedRequest): string =>

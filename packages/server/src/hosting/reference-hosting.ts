@@ -20,6 +20,8 @@ import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import formbody from '@fastify/formbody';
 import {
+  PLAYGROUND_CONTEXT_V1,
+  PLAYGROUND_CONTEXT_V1_URL,
   createDidResolver,
   createDocumentLoader,
   generateKeyPair,
@@ -59,6 +61,12 @@ export interface ReferenceHostingOptions {
    * can pass a transport that only exists once the Fastify instance does.
    */
   fetch?: () => typeof globalThis.fetch;
+  /**
+   * Lets the JSON-LD document loader fetch contexts that are not pinned, caching them in `cacheDir`.
+   * Off by default (reference runs need none); live runs need it because Inji Certify's sample farmer
+   * credential uses a context published on a personal GitHub Pages site.
+   */
+  remoteContexts?: { cacheDir: string };
 }
 
 export interface ReferenceHosting {
@@ -103,7 +111,10 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
     ...(overridable ? { hostOverrides: { [didWebHost]: publicUrl } } : {}),
     ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
   });
-  const documentLoader = createDocumentLoader({ didResolver });
+  const documentLoader = createDocumentLoader({
+    didResolver,
+    ...(options.remoteContexts ? { network: { cacheDir: options.remoteContexts.cacheDir } } : {}),
+  });
 
   const authorizationServer = await createTestAuthorizationServer({
     issuer: urls.as,
@@ -160,6 +171,11 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
         await scope.register(formbody);
         registerVerifierRoutes(scope, verifier, new URL(urls.verifier).pathname);
       });
+      // The reference credentials' JSON-LD context, at the path of its URL, for verifiers outside the
+      // playground (Inji Verify reaches it as https://playground.ps02.test through the TLS front).
+      app.get(new URL(PLAYGROUND_CONTEXT_V1_URL).pathname, async (_request, reply) =>
+        reply.type('application/ld+json').header('cache-control', 'max-age=3600').send(PLAYGROUND_CONTEXT_V1),
+      );
       registerRootWellKnown(app, [
         ...[...issuers.values()].flatMap((hosted) => hosted.wellKnownDocuments),
         ...authorizationServer.wellKnownDocuments,

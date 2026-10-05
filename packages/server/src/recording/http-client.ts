@@ -49,6 +49,8 @@ export interface RecordingFetchOptions {
   selfCapture?: (url: URL) => boolean;
   /** Run id sent in the attribution header on self-captured calls. */
   runId?: string;
+  /** Diagram name of a request's receiver (for example `inji-certify` for Certify's host); else its host. */
+  labelFor?: (url: URL) => string | undefined;
 }
 
 /** Status codes whose responses never have a body; `new Response(body)` rejects one for them. */
@@ -91,7 +93,7 @@ export class RecordingFetch implements RecordingHttpClient {
     const base = {
       capture: 'outbound' as const,
       from: sender,
-      to: to ?? url.host,
+      to: to ?? this.#options.labelFor?.(url) ?? url.host,
       request: {
         method: request.method,
         url: request.url,

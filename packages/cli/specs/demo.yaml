@@ -1,5 +1,5 @@
 # Demo matrix (WP-17): the cells the recorded demo shows, run by `npm run demo` against the bundle.
-# The reference cell runs today; the Inji cells need the adapters of WP-10.
+# Run on the bundle, or on a host-mode server on 28100 with the stack up.
 name: demo
 description: The demo path - an independent run, an all-Inji run in both formats, and a tamper run against Inji Verify.
 mode: live
@@ -18,13 +18,14 @@ cases:
     verifier: inji-verify
     format: vc+sd-jwt
   - uniqueIdentifier: TC_PG_DEMO_03
-    description: Inji Certify -> reference wallet -> Inji Verify, ldp_vc
+    description: Inji Certify -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9 (shown as the documented gap)
     issuer: inji-certify
     verifier: inji-verify
     format: ldp_vc
+    verdict: fail
   - uniqueIdentifier: TC_PG_DEMO_04
-    description: Inji Verify must reject a flipped issuer signature
-    issuer: ref-issuer
+    description: Inji Verify must reject a Certify SD-JWT VC whose issuer signature was flipped
+    issuer: inji-certify
     verifier: inji-verify
     format: vc+sd-jwt
     scenario: bad-signature

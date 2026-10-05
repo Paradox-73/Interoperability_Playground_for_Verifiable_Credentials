@@ -16,6 +16,7 @@ secret:
   ignored_paths:
     - '**/*.synthetic.json'
     - 'packages/protocol/fixtures/*.recorded.json'
+    - 'packages/server/test/contract/inji/fixtures/*.recorded.json'
   ignored_matches:
     # Upstream sample values in files imported unchanged into deploy/inji-stack/ (see deploy/inji-stack/UPSTREAM.md).
     # They are the defaults published in the Inji sample configurations and only reach throw-away local containers.

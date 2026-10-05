@@ -344,6 +344,72 @@ describe.each(cases)('ldp_vp: $name', ({ version, suite }) => {
   });
 });
 
+describe('ldp_vp with an ecdsa-rdfc-2019 holder proof (P-256 holder key)', () => {
+  // Inji Certify accepts only ES256 and RS256 holder proofs (gap G9), so its ldp_vc is bound to a P-256
+  // key; the holder proves possession with DataIntegrityProof ecdsa-rdfc-2019 (W3C vc-di-ecdsa 1.0).
+  async function present(challenge = 'nonce-ecdsa', tamper?: (vp: JsonObject) => JsonObject) {
+    const issuer = didKeySigner();
+    const holderKey = generateKeyPair('ES256');
+    const holderDid = createDidJwk(holderKey.publicJwk);
+    const credential = await issueLdpVc({
+      credential: unsignedCredential('1.1', issuer.did, holderDid),
+      suite: 'Ed25519Signature2020',
+      key: issuer,
+      documentLoader,
+    });
+    const vp = await createLdpVp({
+      credentials: [credential],
+      suite: 'ecdsa-rdfc-2019',
+      key: { keyPair: holderKey, verificationMethod: `${holderDid}#0` },
+      challenge,
+      domain: 'verifier.example',
+      documentLoader,
+    });
+    return { vp: tamper ? tamper(vp) : vp, holderDid };
+  }
+
+  it('signs a VC 1.1 presentation with a P-256 did:jwk key, and verifies offline', async () => {
+    const { vp, holderDid } = await present();
+    expect(vp.proof).toMatchObject({
+      type: 'DataIntegrityProof',
+      cryptosuite: 'ecdsa-rdfc-2019',
+      challenge: 'nonce-ecdsa',
+    });
+    expect(vp['@context']).toContain('https://w3id.org/security/data-integrity/v2');
+    const result = await verifyLdpVp(vp, {
+      documentLoader,
+      expectedChallenge: 'nonce-ecdsa',
+      expectedDomain: 'verifier.example',
+    });
+    expect(result).toMatchObject({ holder: holderDid, proofType: 'DataIntegrityProof/ecdsa-rdfc-2019' });
+  });
+
+  it('rejects a changed presentation and refuses an Ed25519 key for the suite', async () => {
+    const { vp } = await present('nonce-ecdsa', (signed) => ({
+      ...signed,
+      holder: 'did:example:someone-else',
+    }));
+    await expect(
+      verifyLdpVp(vp, {
+        documentLoader,
+        expectedChallenge: 'nonce-ecdsa',
+        expectedDomain: 'verifier.example',
+      }),
+    ).rejects.toMatchObject({ code: expect.stringMatching(/^LDP_/) as string });
+    const ed25519 = didKeySigner();
+    await expect(
+      createLdpVp({
+        credentials: [],
+        suite: 'ecdsa-rdfc-2019',
+        key: ed25519,
+        challenge: 'n',
+        documentLoader,
+        checkCredentials: false,
+      }),
+    ).rejects.toMatchObject({ code: 'KEY_UNSUPPORTED' });
+  });
+});
+
 describe('JSON-LD document loader', () => {
   it('a context that is not pinned fails with CONTEXT_NOT_PINNED while the network is off', async () => {
     await expect(documentLoader('https://example.org/unknown-context/v1')).rejects.toMatchObject({

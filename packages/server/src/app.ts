@@ -21,7 +21,12 @@ import {
 } from '@inji-playground/scenarios';
 import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastify';
 import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fastify-type-provider-zod';
-import { injiRoles } from './adapters/inji/index.js';
+import {
+  INJI_VERIFY_CLIENT_ID,
+  INJI_VERIFY_SDK_CLIENT_ID,
+  injiRoles,
+  injiVerifyResponseUris,
+} from './adapters/inji/index.js';
 import { MobileWalletRole } from './adapters/manual/index.js';
 import { referenceRoles } from './adapters/reference/index.js';
 import { catalogueRoutes } from './api/catalogue.js';
@@ -33,7 +38,7 @@ import { reportRoutes } from './api/reports.js';
 import { runRoutes } from './api/runs.js';
 import type { PlaygroundServices } from './api/services.js';
 import { websocketRoutes } from './api/ws.js';
-import { databasePath, hasWebDist, type Config } from './config/index.js';
+import { databasePath, extraCaPath, hasWebDist, networkMapPath, type Config } from './config/index.js';
 import { EventBus } from './events/bus.js';
 import { GapRegister } from './gaps/register.js';
 import { createReferenceHosting } from './hosting/reference-hosting.js';
@@ -45,7 +50,7 @@ import { inboundTargetOf, installInboundRecorder } from './recording/inbound.js'
 import { NetworkMap, networkFetch } from './recording/network-map.js';
 import { registerProxyRoutes } from './recording/proxy.js';
 import { isSelfUrl, selfOriginsFor, selfTransport } from './recording/self-transport.js';
-import { proxyTargets } from './recording/targets.js';
+import { proxyTargets, serviceLabels } from './recording/targets.js';
 import { RunStore } from './store/run-store.js';
 
 declare module 'fastify' {
@@ -108,8 +113,9 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   // other call goes out through the network map. Calls to the proxy or the hosted reference roles are
   // recorded there, so the roles' outbound client skips them (no duplicate records).
   const selfOrigins = selfOriginsFor(config.port, config.publicUrl);
-  const network = networkFetch(NetworkMap.fromFile(config.networkMap), {
-    ...(config.extraCaFile ? { ca: readFileSync(config.extraCaFile, 'utf8') } : {}),
+  const caFile = extraCaPath(config);
+  const network = networkFetch(NetworkMap.fromFile(networkMapPath(config)), {
+    ...(caFile ? { ca: readFileSync(caFile, 'utf8') } : {}),
   });
   const transport = selfTransport(app, { selfOrigins, network });
   const selfCapture = (url: URL): boolean =>
@@ -130,12 +136,29 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     ...(config.dbPath === ':memory:' ? {} : { keysDir: join(config.runDir, 'keys') }),
     issuerDidMethod: config.refIssuerDid,
     fetch: () => transport,
+    ...(config.stack === 'off' ? {} : { remoteContexts: { cacheDir: join(config.runDir, 'contexts') } }),
   });
 
   const registry = new RoleRegistry();
   if (options.builtInRoles ?? true) {
-    for (const role of injiRoles()) registry.register({ role });
-    for (const role of referenceRoles(reference, capture)) registry.register({ role });
+    for (const role of injiRoles({
+      config,
+      hub: capture,
+      onCertifyTrustAnchors: (pems) => reference.verifier.addX5cTrustAnchors(pems),
+    })) {
+      // The web component's run waits for a person to have the page open, so it gets the person timeout.
+      const browser = role.describe().interaction === 'browser';
+      registry.register({ role, ...(browser ? { stepTimeoutMs: config.personTimeoutMs } : {}) });
+    }
+    const responseUris = injiVerifyResponseUris(config);
+    for (const role of referenceRoles(reference, capture, {
+      preRegisteredClients: [
+        { clientId: INJI_VERIFY_CLIENT_ID, responseUris },
+        { clientId: INJI_VERIFY_SDK_CLIENT_ID, responseUris },
+      ],
+    })) {
+      registry.register({ role });
+    }
     registry.register({
       role: new MobileWalletRole({
         hub: capture,
@@ -177,7 +200,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     },
     ...(hooksFor ? { hooksFor } : {}),
     logger: app.log,
-    http: { fetch: transport, selfCapture },
+    http: { fetch: transport, selfCapture, labelFor: serviceLabels(config) },
   });
   orchestratorRef.current = orchestrator;
 

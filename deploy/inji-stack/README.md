@@ -35,7 +35,7 @@ the rest is opt-in.
 | `certify`        | core         | 28090 (host mode, 127.0.0.1) | Inji Certify, its own authorization server                                                              |
 | `certify-nginx`  | core         | 28091                        | upstream sample nginx: issuer `.well-known`, Certify API, Mimoto config files                           |
 | `certify-seed`   | core         | -                            | one-shot: adds the SD-JWT credential configuration ([scripts/certify-seed.sh](scripts/certify-seed.sh)) |
-| `tls-front`      | core         | 28443                        | HTTPS for `certify.ps02.test`, `verify.ps02.test`, `ref.ps02.test`                                      |
+| `tls-front`      | core         | 28443                        | HTTPS for `certify.ps02.test`, `verify.ps02.test`, `ref.ps02.test`, `playground.ps02.test`              |
 | `verify-service` | core         | 28080                        | Inji Verify backend                                                                                     |
 | `mimoto-service` | `holder-web` | 28099                        | Mimoto; the name is fixed because the inji-web image proxies to it                                      |
 | `inji-web`       | `holder-web` | 28004                        | Inji Web                                                                                                |

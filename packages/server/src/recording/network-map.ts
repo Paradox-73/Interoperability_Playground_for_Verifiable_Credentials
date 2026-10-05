@@ -67,7 +67,9 @@ export class NetworkMap {
 
   /** Where a connection to this origin really goes, or `undefined` when it is not mapped. */
   lookup(protocol: string, hostname: string, port: string): Target | undefined {
-    return this.#targets.get(key(protocol, hostname, port));
+    // undici passes an empty port for a URL on its scheme's default port (http://certify-nginx).
+    const effectivePort = port === '' || port === undefined ? (protocol === 'https:' ? '443' : '80') : port;
+    return this.#targets.get(key(protocol, hostname, effectivePort));
   }
 
   /**

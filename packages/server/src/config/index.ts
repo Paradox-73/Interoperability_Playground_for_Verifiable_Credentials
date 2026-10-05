@@ -55,14 +55,35 @@ export const ConfigSchema = z.object({
   injiCertifyAcUrl: z.url().optional(),
   injiVerifyUrl: z.url().optional(),
   injiMimotoUrl: z.url().optional(),
-  /** Network map file for host mode (`deploy/inji-stack/network-map.host.json`); none by default. */
+  /**
+   * Network map file: how the server reaches URLs the stack advertises inside its compose network. In
+   * host mode `deploy/inji-stack/network-map.host.json` is used when this is not set (see `networkMapPath`).
+   */
   networkMap: z.string().min(1).optional(),
+  /** `response_uri` base Inji Verify gives wallets (the stack's INJI_VERIFY_SUBMISSION_BASE_URL). */
+  injiVerifySubmissionBaseUrl: z.string().min(1).default('http://verify-service:8080/v1/verify'),
   /** Extra CA certificate (PEM file) trusted for outbound HTTPS, for example the stack's test CA. */
   extraCaFile: z.string().min(1).optional(),
   /** DID method of the reference issuer's keys. did:key resolves offline; did:web needs the TLS front for Inji Verify. */
   refIssuerDid: z.enum(['did:key', 'did:jwk', 'did:web']).default('did:key'),
 });
 export type Config = z.infer<typeof ConfigSchema>;
+
+/** Network map for this configuration: the configured file, else the host map in host mode, else none. */
+export function networkMapPath(config: Pick<Config, 'networkMap' | 'stack'>): string | undefined {
+  if (config.networkMap) return config.networkMap;
+  return config.stack === 'host' ? `${repoRoot}deploy/inji-stack/network-map.host.json` : undefined;
+}
+
+/**
+ * Extra CA for outbound HTTPS: the configured file, else in host mode the stack's test CA when
+ * `npm run stack:init` created it (the TLS front serves did:web documents with it, gap G2).
+ */
+export function extraCaPath(config: Pick<Config, 'extraCaFile' | 'stack' | 'runDir'>): string | undefined {
+  if (config.extraCaFile) return config.extraCaFile;
+  const stackCa = join(config.runDir, 'stack', 'ca', 'ps02-test-ca.crt');
+  return config.stack !== 'off' && existsSync(stackCa) ? stackCa : undefined;
+}
 
 /** Path of the SQLite database for this configuration. */
 export function databasePath(config: Pick<Config, 'dbPath' | 'runDir'>): string {
@@ -92,6 +113,7 @@ const ENV_KEYS = {
   INJI_CERTIFY_AC_URL: 'injiCertifyAcUrl',
   INJI_VERIFY_URL: 'injiVerifyUrl',
   INJI_MIMOTO_URL: 'injiMimotoUrl',
+  INJI_VERIFY_SUBMISSION_BASE_URL: 'injiVerifySubmissionBaseUrl',
 } as const satisfies Record<string, keyof Config>;
 
 /**

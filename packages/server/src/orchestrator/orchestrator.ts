@@ -101,7 +101,7 @@ export interface OrchestratorOptions {
    * map, in-process dispatch to this server); `selfCapture` names URLs that this server's proxy or
    * inbound recorder records, so the outbound client does not record them a second time.
    */
-  http?: Pick<RecordingFetchOptions, 'fetch' | 'selfCapture'>;
+  http?: Pick<RecordingFetchOptions, 'fetch' | 'selfCapture' | 'labelFor'>;
 }
 
 /** Why a run stopped before the verifier answered, in the form the report needs. */

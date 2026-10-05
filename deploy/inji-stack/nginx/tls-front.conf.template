@@ -60,7 +60,8 @@ server {
 # container in the bundle, or the host (host.docker.internal) when the playground runs outside Docker.
 server {
     listen 443 ssl;
-    server_name ref.ps02.test;
+    # playground.ps02.test serves the JSON-LD context of the reference credentials (formats package).
+    server_name ref.ps02.test playground.ps02.test;
 
     location / {
         set $playground ${REF_UPSTREAM};

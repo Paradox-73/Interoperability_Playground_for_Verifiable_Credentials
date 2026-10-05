@@ -45,7 +45,7 @@ export const catalogueRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { s
       },
     },
     async () => {
-      const [stack, roles] = await Promise.all([stackStatus(config.stack), registry.status()]);
+      const [stack, roles] = await Promise.all([stackStatus(config.stack, config), registry.status()]);
       return { ...stack, roles };
     },
   );

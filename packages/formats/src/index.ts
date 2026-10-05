@@ -25,7 +25,13 @@ export * from './jsonld/contexts.js';
 export * from './jsonld/document-loader.js';
 
 // The suite objects and library result types stay internal: they come from untyped libraries.
-export { LDP_PROOF_SUITES, describeProof, type LdpProofSuite, type LdpSigningKey } from './ldp/suites.js';
+export {
+  LDP_PROOF_SUITES,
+  describeProof,
+  suiteForKey,
+  type LdpProofSuite,
+  type LdpSigningKey,
+} from './ldp/suites.js';
 export {
   checkValidityPeriod,
   dataModelVersion,

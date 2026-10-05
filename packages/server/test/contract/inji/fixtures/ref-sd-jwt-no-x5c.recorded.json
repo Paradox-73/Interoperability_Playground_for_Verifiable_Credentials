@@ -1,0 +1,143 @@
+{
+  "description": "Exchanges with Inji modules recorded in run 20261005T122034-dbe5d4 (ref-issuer -> ref-wallet -> inji-verify, vc+sd-jwt, happy) on 2026-10-05, redacted.",
+  "config": {
+    "issuer": "ref-issuer",
+    "wallet": "ref-wallet",
+    "verifier": "inji-verify",
+    "format": "vc+sd-jwt",
+    "vciProfile": "draft13",
+    "vpProfile": "inji-draft",
+    "scenario": "happy"
+  },
+  "outcome": "INVALID",
+  "exchanges": [
+    {
+      "id": "20261005T122034-dbe5d4-x6",
+      "runId": "20261005T122034-dbe5d4",
+      "seq": 6,
+      "capture": "outbound",
+      "step": "verifier.request",
+      "from": "inji-verify",
+      "to": "inji-verify",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:28080/v1/verify/vp-request",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": "{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-vc-sd-jwt\",\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"]}},\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.vct\"],\"filter\":{\"type\":\"string\"}}]}}]}}",
+        "bodyEncoding": "utf8"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "connection": "keep-alive",
+          "content-type": "application/json",
+          "date": "Mon, 05 Oct 2026 12:20:34 GMT",
+          "keep-alive": "timeout=60",
+          "transfer-encoding": "chunked"
+        },
+        "body": "{\"transactionId\":\"txn_8e206520-eb9a-48ee-9d77-18fc454ea495\",\"requestId\":\"req_dcad30f1-f72c-4925-88d7-802512a8f57b\",\"authorizationDetails\":{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-vc-sd-jwt\",\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\",\"RS256\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.vct\"],\"filter\":{\"type\":\"string\"}}]}}],\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{}},\"nonce\":\"a8f1feaad1d369f59389711b678f4a01\",\"responseUri\":\"http://verify-service:8080/v1/verify/vp-submission/direct-post\",\"acceptVPWithoutHolderProof\":false,\"responseCodeValidationRequired\":false,\"responseType\":\"vp_token\",\"responseMode\":\"direct_post\",\"issuedAt\":1791202834072},\"expiresAt\":1791203134072}",
+        "bodyEncoding": "utf8"
+      },
+      "startedAt": "2026-10-05T12:20:34.052Z",
+      "durationMs": 33.02740000000631,
+      "redacted": true
+    },
+    {
+      "id": "20261005T122034-dbe5d4-x7",
+      "runId": "20261005T122034-dbe5d4",
+      "seq": 7,
+      "capture": "outbound",
+      "step": "wallet.submit",
+      "from": "ref-wallet",
+      "to": "inji-verify",
+      "request": {
+        "method": "POST",
+        "url": "http://verify-service:8080/v1/verify/vp-submission/direct-post",
+        "headers": {
+          "content-type": "application/x-www-form-urlencoded"
+        },
+        "body": "vp_token=%22eyJ0eXAiOiJ2YytzZC1qd3QiLCJraWQiOiJkaWQ6a2V5Ono2TWt3YVRBQkFTdjE4TVZjR2NTS0tYN3BDMVAyZGNQSGN5UlFpejdQS2lURDVjRSN6Nk1rd2FUQUJBU3YxOE1WY0djU0tLWDdwQzFQMmRjUEhjeVJRaXo3UEtpVEQ1Y0UiLCJhbGciOiJFZERTQSJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWt3YVRBQkFTdjE4TVZjR2NTS0tYN3BDMVAyZGNQSGN5UlFpejdQS2lURDVjRSIsImlhdCI6MTc5MTIwMjgzNCwibmJmIjoxNzkxMjAyODM0LCJleHAiOjE4MjI3Mzg4MzQsInZjdCI6Imh0dHBzOi8vcGxheWdyb3VuZC5wczAyLnRlc3QvdmN0L2Zhcm1lci92MSIsImNuZiI6eyJqd2siOnsia3R5IjoiRUMiLCJjcnYiOiJQLTI1NiIsIngiOiJaRjlRcU54clllajN6eFBNSzFEUHZ1d3JzbWREeFFTcXluMEFwWk5Xd2dBIiwieSI6ImxnVjYza0xHT0k2TzJZcVVxU01fa2E0V1drZjF5SzFrcVEyOTVBSmNZSVkifX0sIl9zZCI6WyIyU2ZVNmtxMUpvNGcwR3dIcWxKekZIRGxwUldIZ0hwRVAwVXdhUVNwX0wwIiwiNVllZkE0WXdHX29adk9icUxEUm5pV2J3SkgtM2g3RkVIblR2T0I3Y1dZWSIsIk93UlN2Mm9WNnNKN28xZEZNRlhNRkM3MXBkVXdLN3dMMUhUY1lDcEdzUWsiLCJVdFJpN1lhbTBjWkFLczdlUkxKa0p0TVJnemtqaDNXWGo0RjJjbmVFdkNjIiwiV1R3X1NydXFFVjhmOHE3Um0yd0YtV2xHQXM4Qjl2VDhGdjlkOE1MSFJ6NCIsInBMVC1vM3R2NGxRS0lFU0RVTDRnbWQxWW9kNlY4QTNiNnh6LWxmRl9JSUkiLCJ3OXJyWmRkSHZsbXZGTGp3SGZub0huOXFkQXV1SEhUNFBUSUNVNjEtQ09JIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.gbO-P0Z80JlvfnUZ4rh7JW4xLF0Qp7_QlFA-LILZ6BkyXHrf3F-PtaDhUltOr4CEH-UtNgqxOfcfFgz20WwQAQ%7EWyI4ZUdNLS1lX3czbUNjQ3pMN1lxd1ZBIiwiYmlydGhEYXRlIiwiMTk5MC0wNS0yNSJd%7EWyI5TERpblZLN3d2VmNPZHFXRHFJUXJBIiwiZmFtaWx5TmFtZSIsIkNvb3BlciJd%7EWyJkZTR6QURQRjdZYmxBbHlmd0F0RlV3IiwiZmFybWVySWQiLCIyMTU0MTg5NTMyIl0%7EWyJNa0FfbHc1S1piSkhvRWhUVjNlVjN3IiwiZ2l2ZW5OYW1lIiwiR29yZ2UiXQ%7EWyJ5dnRCSDVVNmtRenFEdUNzNE5LODB3IiwibGFuZEFyZWEiLCIzIGhlY3RhcmVzIl0%7EWyJDZk0xZVRibkFDTmlYM2dJclRYOTJBIiwicHJpbWFyeUNyb3BUeXBlIiwiTWFpemUiXQ%7EWyJteFNfemNoalFKenZsai1nZUx3ZEpBIiwic3RhdGUiLCJLYXJuYXRha2EiXQ%7EeyJ0eXAiOiJrYitqd3QiLCJhbGciOiJFUzI1NiJ9.eyJpYXQiOjE3OTEyMDI4MzQsImF1ZCI6InBzMDItcGxheWdyb3VuZCIsIm5vbmNlIjoiYThmMWZlYWFkMWQzNjlmNTkzODk3MTFiNjc4ZjRhMDEiLCJzZF9oYXNoIjoiX1NHbUhtQ1U1dGwxWV9IdXFsZ3Y3YzYyMzdNejAwbDEycl9tNTRLMjMwQSJ9.tADfUJYvvXoLq9NQghMvscZtoqBD_tUb7zXdJGP8rYF6t46SELBDKMf_0vyEaTNuqJML_eDq1Shx-fvzCKQ63Q%22&presentation_submission=%7B%22id%22%3A%22submission-a8f1feaa%22%2C%22definition_id%22%3A%22ps02-farmer-vc-sd-jwt%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22vc%2Bsd-jwt%22%2C%22path%22%3A%22%24%22%7D%5D%7D&state=req_dcad30f1-f72c-4925-88d7-802512a8f57b",
+        "bodyEncoding": "utf8"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "connection": "keep-alive",
+          "content-type": "application/json",
+          "date": "Mon, 05 Oct 2026 12:20:34 GMT",
+          "keep-alive": "timeout=60",
+          "transfer-encoding": "chunked"
+        },
+        "body": "{}",
+        "bodyEncoding": "utf8"
+      },
+      "startedAt": "2026-10-05T12:20:34.089Z",
+      "durationMs": 40.11559999999008,
+      "redacted": true
+    },
+    {
+      "id": "20261005T122034-dbe5d4-x8",
+      "runId": "20261005T122034-dbe5d4",
+      "seq": 8,
+      "capture": "outbound",
+      "step": "verifier.result",
+      "from": "inji-verify",
+      "to": "inji-verify",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:28080/v1/verify/vp-request/req_dcad30f1-f72c-4925-88d7-802512a8f57b/status",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "connection": "keep-alive",
+          "content-type": "application/json",
+          "date": "Mon, 05 Oct 2026 12:20:34 GMT",
+          "keep-alive": "timeout=60",
+          "transfer-encoding": "chunked"
+        },
+        "body": "{\"status\":\"VP_SUBMITTED\"}",
+        "bodyEncoding": "utf8"
+      },
+      "startedAt": "2026-10-05T12:20:34.130Z",
+      "durationMs": 14.155799999993178,
+      "redacted": true
+    },
+    {
+      "id": "20261005T122034-dbe5d4-x9",
+      "runId": "20261005T122034-dbe5d4",
+      "seq": 9,
+      "capture": "outbound",
+      "step": "verifier.result",
+      "from": "inji-verify",
+      "to": "inji-verify",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:28080/v1/verify/v2/vp-results/txn_8e206520-eb9a-48ee-9d77-18fc454ea495",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": "{}",
+        "bodyEncoding": "utf8"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "connection": "keep-alive",
+          "content-type": "application/json",
+          "date": "Mon, 05 Oct 2026 12:20:34 GMT",
+          "keep-alive": "timeout=60",
+          "transfer-encoding": "chunked"
+        },
+        "body": "{\"transactionId\":\"txn_8e206520-eb9a-48ee-9d77-18fc454ea495\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Exception during Verification: getX509CertChain(...) must not be null\"}},\"expiryCheck\":null,\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"[credential omitted from fixture]\",\"holderProofCheck\":null}]}",
+        "bodyEncoding": "utf8"
+      },
+      "startedAt": "2026-10-05T12:20:34.145Z",
+      "durationMs": 26.800600000002305,
+      "redacted": true
+    }
+  ]
+}

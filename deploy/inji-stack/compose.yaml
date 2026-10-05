@@ -138,7 +138,7 @@ services:
       - host.docker.internal:host-gateway
     networks:
       default:
-        aliases: [certify.ps02.test, verify.ps02.test, ref.ps02.test]
+        aliases: [certify.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test]
     volumes:
       - ./nginx/tls-front.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ${PLAYGROUND_RUN_DIR:-../../run}/stack/tls:/etc/nginx/tls:ro

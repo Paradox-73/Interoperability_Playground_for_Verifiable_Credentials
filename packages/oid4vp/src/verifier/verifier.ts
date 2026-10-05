@@ -184,6 +184,7 @@ export class ReferenceVerifier {
   private readonly resolver: DidResolver;
   private readonly byHandle = new Map<string, PendingRequest>();
   private readonly byState = new Map<string, PendingRequest>();
+  private readonly trustAnchors: string[];
 
   constructor(options: ReferenceVerifierOptions) {
     this.options = options;
@@ -193,6 +194,15 @@ export class ReferenceVerifier {
     this.kid = options.kid ?? didKeyVerificationMethodId(this.did);
     this.responseUri = `${this.baseUrl}/response`;
     this.resolver = options.didResolver ?? createDidResolver();
+    this.trustAnchors = [...(options.x5cTrustAnchors ?? [])];
+  }
+
+  /**
+   * Adds x5c trust anchors (PEM certificates) after start, for issuers whose certificates are known only
+   * once they run (Inji Certify publishes its signing certificates through its system-info API).
+   */
+  addX5cTrustAnchors(pems: readonly string[]): void {
+    for (const pem of pems) if (!this.trustAnchors.includes(pem)) this.trustAnchors.push(pem);
   }
 
   private now(): Date {
@@ -459,7 +469,7 @@ export class ReferenceVerifier {
       documentLoader: this.options.documentLoader,
       didResolver: this.resolver,
       ...(this.options.sdJwtIssuerKeys ? { sdJwtIssuerKeys: this.options.sdJwtIssuerKeys } : {}),
-      ...(this.options.x5cTrustAnchors ? { x5cTrustAnchors: this.options.x5cTrustAnchors } : {}),
+      ...(this.trustAnchors.length > 0 ? { x5cTrustAnchors: [...this.trustAnchors] } : {}),
       now: this.now(),
       ...(this.options.clockSkewSeconds === undefined
         ? {}

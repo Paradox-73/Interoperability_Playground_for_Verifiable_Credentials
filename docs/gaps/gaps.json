@@ -1,0 +1,249 @@
+[
+  {
+    "id": "G1",
+    "title": "Pre-authorized issuance fails: credentialOfferCache missing from the sample cache names",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (sample docker-compose config)",
+    "severity": "medium",
+    "status": "fixed-locally",
+    "summary": "mosip.certify.cache.names in the sample certify-default.properties does not list credentialOfferCache, so POST /v1/certify/pre-authorized-data fails with credentialOfferCache not available. Fixed in the imported config (ba25dc6).",
+    "cells": ["inji-certify"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G2",
+    "title": "Inji Verify resolves did:web only over https://",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2 (vc-verifier)",
+    "severity": "low",
+    "status": "existing-upstream",
+    "summary": "did:web resolution in vc-verifier always uses https, so a local issuer DID needs a TLS front with a CA the verifier trusts. Worked around by the stack's TLS front and test CA (e19cb30).",
+    "cells": ["inji-certify/*/inji-verify/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G3",
+    "title": "Authorization server metadata at the host root is not routed by the sample nginx",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (sample nginx.conf)",
+    "severity": "low",
+    "status": "fixed-locally",
+    "summary": "/.well-known/oauth-authorization-server at the host root returns 404 behind the sample nginx; wallets that look there (Mimoto) cannot find the token endpoint. Fixed in certify-nginx.conf (af9e36d).",
+    "cells": ["inji-certify"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G4",
+    "title": "Mimoto requires display logo, background_color and text_color on every credential configuration",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "low",
+    "status": "new",
+    "summary": "Mimoto rejects issuer metadata (RESIDENT-APP-041) when a credential configuration lacks display fields that OpenID4VCI marks optional.",
+    "cells": ["*/inji-web"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G5",
+    "title": "Mimoto and Inji Web cannot take a credential offer (no pre-authorized code flow)",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "medium",
+    "status": "existing-upstream",
+    "summary": "Inji Web through Mimoto starts issuance only from its issuer list with the authorization code flow; an OpenID4VCI credential offer (pre-authorized code) has no entry point. From code reading.",
+    "cells": ["*/inji-web"]
+  },
+  {
+    "id": "G6",
+    "title": "Inji Certify authorization-server metadata has no authorization_endpoint in the pre-authorized profile",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "In the pre-authorized code profile Certify acts as its own authorization server without an authorization endpoint, so wallets that only run the authorization code flow (Inji Web through Mimoto) cannot obtain credentials from it.",
+    "cells": ["inji-certify/inji-web"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G7",
+    "title": "Reported privately",
+    "repository": "inji/inji-verify",
+    "severity": "high",
+    "cells": [],
+    "disclosure": "private"
+  },
+  {
+    "id": "G8",
+    "title": "Inji Certify SD-JWT output: vc+sd-jwt typ, holder key as cnf.kid, no iat/exp unless templated",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "low",
+    "status": "new",
+    "summary": "The SD-JWT VC uses the older typ vc+sd-jwt (SD-JWT VC draft 19 and OpenID4VCI 1.0 use dc+sd-jwt), binds the holder by cnf.kid rather than cnf.jwk, and carries no iat or exp unless the template adds them.",
+    "cells": ["inji-certify/*/*/vc+sd-jwt"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G9",
+    "title": "Inji Certify refuses an EdDSA holder proof",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (sample config)",
+    "severity": "medium",
+    "status": "new",
+    "summary": "A credential request whose jwt proof is signed with EdDSA (did:jwk Ed25519 key) is answered 400 invalid_proof \"Error encountered during proof jwt parsing\" for both FarmerCredential and FarmerSdJwt; ES256 works. Wallets with Ed25519 keys cannot receive credentials, and the ldp_vc is bound to a P-256 key, which limits the ldp_vp proof suites a holder can use (see G15).",
+    "cells": ["inji-certify"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G10",
+    "title": "Inji Verify compose: OVP_QR_HEADER value missing its $",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2 (docker-compose)",
+    "severity": "low",
+    "status": "fixed-locally",
+    "summary": "The sample compose sets the Inji Verify UI's OVP_QR_HEADER without the leading $ of the variable reference, so the QR header is a literal string. Fixed in the playground compose (76f2b67).",
+    "cells": [],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G11",
+    "title": "Inji Certify sample: credential-configuration and pre-authorized-data APIs are unauthenticated",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (sample config)",
+    "severity": "medium",
+    "status": "new",
+    "summary": "In the sample configuration anyone who can reach Certify can create credential configurations and pre-authorized offers with arbitrary claims. Acceptable for a local sample; dangerous if the sample is exposed. The playground never publishes these ports.",
+    "cells": ["inji-certify"],
+    "evidence": {
+      "date": "2026-10-04"
+    }
+  },
+  {
+    "id": "G12",
+    "title": "Inji Certify ldp_vc keeps unfilled template placeholders such as ${primaryCropType}",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (FarmerCredential sample template)",
+    "severity": "low",
+    "status": "new",
+    "summary": "Claims that the pre-authorized data did not provide are issued as the literal template text (\"primaryCropType\": \"${primaryCropType}\") instead of being left out, so the signed credential asserts placeholder values.",
+    "cells": ["inji-certify/*/*/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G13",
+    "title": "Inji Certify writes the holder's key id (did:jwk:...#0) as credentialSubject.id",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "The ldp_vc credentialSubject.id is the kid of the holder's proof JWT, a DID URL with the fragment #0, instead of the holder DID. A presentation's holder is a DID, so verifiers that compare credentialSubject.id with the holder literally (VC Data Model holder binding) see a mismatch. Related to inji/inji-certify#1054 (padded did:jwk).",
+    "cells": ["inji-certify/*/*/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G14",
+    "title": "Inji Certify did:web document lists the DID, not its key, under assertionMethod",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "high",
+    "status": "new",
+    "summary": "did:web:certify.ps02.test has \"assertionMethod\": [\"did:web:certify.ps02.test\"] and the same under authentication, while the Ed25519 key is did:web:certify.ps02.test#<key id>. DID Core requires verification relationships to name verification methods, so a conformant Data Integrity verifier (the playground's reference verifier, built on @digitalbazaar/vc) rejects every Certify ldp_vc: verification method not authorized for proof purpose assertionMethod. Inji Verify does not check proof purpose and accepts it.",
+    "cells": ["inji-certify/*/ref-verifier/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G15",
+    "title": "Inji Verify rejects an ldp_vp with an ecdsa-rdfc-2019 holder proof",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2",
+    "severity": "medium",
+    "status": "new",
+    "summary": "A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key the credential is bound to gets holderProofCheck ERR_SIGNATURE_VERIFICATION_FAILED, while the credential's own signature and expiry pass. Inji Verify advertises Ed25519Signature2018/2020 and RsaSignature2018 for ldp_vp. With G9 (Certify accepts only ES256 and RS256 holder proofs), a wallet with a P-256 key cannot present a Certify ldp_vc to Inji Verify; only RSA keys work across both.",
+    "cells": ["inji-certify/*/inji-verify/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G16",
+    "title": "Inji Verify verifies SD-JWT VCs only when the issuer key comes in an x5c header",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2",
+    "severity": "medium",
+    "status": "new",
+    "summary": "An SD-JWT VC whose issuer key is named by a DID kid (did:key, did:jwk) fails with ERR_SIGNATURE_VERIFICATION_FAILED \"getX509CertChain(...) must not be null\". SD-JWT VC also allows issuer keys from JWT VC Issuer Metadata or a DID; only x5c works.",
+    "cells": ["ref-issuer/*/inji-verify/vc+sd-jwt", "ref-issuer/*/inji-verify/dc+sd-jwt"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G17",
+    "title": "Inji Verify drops Presentation Exchange filter keywords it does not model",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2",
+    "severity": "medium",
+    "status": "new",
+    "summary": "POST /v1/verify/vp-request with a field filter {\"type\": \"array\", \"contains\": {\"const\": \"FarmerCredential\"}} is stored and sent to the wallet as {\"type\": \"array\"}: the constraint that selects the credential type is lost, so the request asks for any credential.",
+    "cells": ["*/*/inji-verify"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G18",
+    "title": "Inji Certify farmer sample depends on a JSON-LD context on a personal GitHub Pages site",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0 (FarmerCredential sample)",
+    "severity": "low",
+    "status": "new",
+    "summary": "FarmerCredential uses the context https://piyush7034.github.io/my-files/farmer.json. Every verifier must fetch it to verify the credential; if the page changes or disappears, every issued credential stops verifying or changes meaning.",
+    "cells": ["inji-certify/*/*/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G19",
+    "title": "Inji Verify answers HTTP 500 instead of a result for a presentation it cannot parse",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2",
+    "severity": "low",
+    "status": "new",
+    "summary": "A presentation whose proof verificationMethod is not a valid URI makes POST /v1/verify/v2/vp-results answer 500 VP_VERIFICATION_FAILED (runtime exception) and GET /vp-result answer FAILED with no credential results, instead of an INVALID result that names the check.",
+    "cells": ["*/*/inji-verify/ldp_vc"],
+    "evidence": {
+      "date": "2026-10-05"
+    }
+  },
+  {
+    "id": "G20",
+    "title": "Reported privately",
+    "repository": "inji/inji-verify",
+    "severity": "high",
+    "cells": [],
+    "disclosure": "private"
+  }
+]

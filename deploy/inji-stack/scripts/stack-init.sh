@@ -3,7 +3,7 @@
 #
 # One-shot "init" service of the ps02-inji compose project. Creates the run-time material the stack needs, so
 # that nothing has to be installed on the host: a test certificate authority and one TLS server certificate for
-# the TLS front (certify.ps02.test, certify-ac.ps02.test, verify.ps02.test, ref.ps02.test).
+# the TLS front (certify.ps02.test, certify-ac.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test).
 #
 # Runs in the nginx:stable image (already used by the stack) because it ships openssl. Writes to /out, which
 # compose binds to $PLAYGROUND_RUN_DIR/stack on the host:
@@ -18,7 +18,7 @@
 set -eu
 
 OUT=${OUT_DIR:-/out}
-TLS_NAMES=${TLS_NAMES:-certify.ps02.test certify-ac.ps02.test verify.ps02.test ref.ps02.test localhost}
+TLS_NAMES=${TLS_NAMES:-certify.ps02.test certify-ac.ps02.test verify.ps02.test ref.ps02.test playground.ps02.test localhost}
 CA_CRT="$OUT/ca/ps02-test-ca.crt"
 CA_KEY="$OUT/ca-private/ca.key"
 SRV_CRT="$OUT/tls/server.crt"

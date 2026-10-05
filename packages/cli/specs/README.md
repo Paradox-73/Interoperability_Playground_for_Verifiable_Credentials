@@ -6,12 +6,12 @@ the verifier must report and the verdict the cell must get. Case ids follow the 
 api-test YAML, `TC_PG_<AREA>_<NN>`, in a `uniqueIdentifier` field. The schema is `MatrixSpecSchema` in
 [`../src/spec.ts`](../src/spec.ts).
 
-| File                   | Mode      | Cells | Run by                                          | State                                    |
-| ---------------------- | --------- | ----- | ----------------------------------------------- | ---------------------------------------- |
-| `reference.yaml`       | reference | 82    | `npm run matrix:reference` (CI, nightly)        | runs today                               |
-| `live-core.yaml`       | live      | 12    | `npm run matrix:live -- --spec live-core`       | planned: needs the Inji adapters (WP-10) |
-| `live-holder-web.yaml` | live      | 4     | `npm run matrix:live -- --spec live-holder-web` | planned: needs Inji Web (WP-14)          |
-| `demo.yaml`            | live      | 4     | `npm run demo` (WP-17)                          | planned: needs WP-10 and WP-17           |
+| File                   | Mode      | Cells | Run by                                          | State                                                   |
+| ---------------------- | --------- | ----- | ----------------------------------------------- | ------------------------------------------------------- |
+| `reference.yaml`       | reference | 82    | `npm run matrix:reference` (CI, nightly)        | runs today                                              |
+| `live-core.yaml`       | live      | 14    | `npm run matrix:live -- --spec live-core`       | runs with the stack (14 of 14 as specified, 2026-10-05) |
+| `live-holder-web.yaml` | live      | 4     | `npm run matrix:live -- --spec live-holder-web` | planned: needs Inji Web (WP-14)                         |
+| `demo.yaml`            | live      | 4     | `npm run demo` (WP-17)                          | runs with the stack                                     |
 
 `reference.yaml` holds every cell of the scenario catalogue the reference roles can run, in catalogue
 order (happy cells before `vp-replay`, which replays an earlier presentation), in every applicable

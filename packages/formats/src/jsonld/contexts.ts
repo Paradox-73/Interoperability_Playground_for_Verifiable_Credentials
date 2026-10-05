@@ -6,8 +6,11 @@
  * - The W3C and security contexts come from the npm packages that `@digitalbazaar/security-document-loader`
  *   bundles (credentials v1 and v2, DID v1, ed25519-2020, x25519-2020, veres-one). Their versions are
  *   fixed by package-lock.json, so the bytes canonicalised in a test never change between runs.
+ * - The Data Integrity contexts (v1, v2) come from `@digitalbazaar/data-integrity-context`; a VC 1.1
+ *   presentation with a `DataIntegrityProof` (ecdsa-rdfc-2019 holder proofs) needs v2.
  * - The playground vocabulary below is written for this project.
  */
+import dataIntegrityContext from '@digitalbazaar/data-integrity-context';
 import { securityLoader } from '@digitalbazaar/security-document-loader';
 
 export const CREDENTIALS_V1_URL = 'https://www.w3.org/2018/credentials/v1';
@@ -43,6 +46,9 @@ export const PLAYGROUND_CONTEXT_V1 = {
 export function pinnedContexts(): Map<string, unknown> {
   const contexts = new Map<string, unknown>();
   for (const [url, document] of securityLoader().documents) contexts.set(url, structuredClone(document));
+  for (const [url, document] of dataIntegrityContext.contexts) {
+    if (!contexts.has(url)) contexts.set(url, structuredClone(document));
+  }
   contexts.set(PLAYGROUND_CONTEXT_V1_URL, structuredClone(PLAYGROUND_CONTEXT_V1));
   return contexts;
 }

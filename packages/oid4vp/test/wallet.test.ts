@@ -148,6 +148,58 @@ describe('wallet: request object verification', () => {
   });
 });
 
+describe('wallet: pre-registered verifiers (OpenID4VP 1.0 section 5.9.1), as Inji Verify 0.18 sends them', () => {
+  /** A by-value request with an unprefixed client id, the shape Inji Verify's front ends build. */
+  function preRegisteredRequest(responseUri?: string) {
+    const { verifier } = harness();
+    const created = verifier.createRequest({
+      profile: 'inji-draft',
+      format: 'ldp_vc',
+      clientIdScheme: 'redirect_uri',
+    });
+    const parameters: Record<string, unknown> = { ...created.parameters, client_id: 'inji-verify-client' };
+    delete parameters.client_id_scheme;
+    if (responseUri) parameters.response_uri = responseUri;
+    return { uri: buildRequestUri(parameters), responseUri: String(parameters.response_uri) };
+  }
+
+  it('refuses an unknown pre-registered client', async () => {
+    const { wallet } = harness();
+    await expect(wallet.resolveRequest(preRegisteredRequest().uri)).rejects.toMatchObject({
+      code: 'CLIENT_ID_UNSUPPORTED',
+    });
+  });
+
+  it('accepts a configured client only with one of its registered response URIs', async () => {
+    const request = preRegisteredRequest();
+    const { wallet } = harness({
+      preRegisteredClients: [{ clientId: 'inji-verify-client', responseUris: [request.responseUri] }],
+    });
+    await expect(wallet.resolveRequest(request.uri)).resolves.toMatchObject({
+      clientId: 'inji-verify-client',
+      client: { scheme: 'pre-registered' },
+    });
+    const elsewhere = preRegisteredRequest('https://attacker.ps02.test/collect');
+    await expect(wallet.resolveRequest(elsewhere.uri)).rejects.toMatchObject({ code: 'CLIENT_ID_MISMATCH' });
+  });
+});
+
+describe('wallet: credentialSubject.id written as a key id (did:...#0), as Inji Certify 0.14.0 does', () => {
+  it('presents the DID as holder and the key id as the verification method; a literal verifier reports the mismatch', async () => {
+    const { verifier, wallet } = harness();
+    const created = verifier.createRequest({ profile: 'inji-draft', format: 'ldp_vc' });
+    const keyId = holder.verificationMethod;
+    const result = await wallet.respond(created.uri, [await farmerLdpVc({ subjectId: keyId })]);
+    const vp = JSON.parse(result.form.vp_token!) as { holder: string; proof: { verificationMethod: string } };
+    expect(vp.holder).toBe(holder.did);
+    expect(vp.proof.verificationMethod).toBe(keyId);
+    // The subject id names a key, not the holder: gap G13 in docs/gaps/gaps.json.
+    const report = await verifier.awaitResult(created.handle);
+    expect(report.outcome).toBe('INVALID');
+    expect(report.checks.find((check) => check.id === 'holder-binding')?.status).toBe('fail');
+  });
+});
+
 describe('wallet: holder DID as the credential binds it (inji/inji-certify#1054)', () => {
   const padded = createDidJwk(holder.keyPair.publicJwk, { padded: true });
   const canonical = createDidJwk(holder.keyPair.publicJwk);

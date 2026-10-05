@@ -8,8 +8,9 @@ registered as roles, with the phone wallet (`mobile-wallet`); every HTTP exchang
 once, at one of three capture points. Reference runs pass end to end for `ldp_vc`, `vc+sd-jwt` and
 `dc+sd-jwt` in both OpenID4VP profiles, and every tamper and probe scenario of
 `@inji-playground/scenarios` that the reference roles can produce gives its expected outcome through
-the server (`test/reference-scenarios.test.ts`). The Inji adapters (`src/adapters/inji/`) are not
-written yet.
+the server (`test/reference-scenarios.test.ts`). Since 2026-10-05 the Inji adapters
+(`src/adapters/inji/`) put Inji Certify and Inji Verify into runs when the stack is up: see
+[Inji roles](#inji-roles).
 
 ## Run it
 
@@ -61,6 +62,7 @@ server with a message naming the variable.
 | `PLAYGROUND_FAKE_ROLES`                                                         | `0`                                        | `1` registers the development-only "Test role (fake)" roles                                           |
 | `PLAYGROUND_REF_ISSUER_DID`                                                     | `did:key`                                  | DID method of the reference issuer at `/ref/issuer`: `did:key`, `did:jwk`, `did:web`                  |
 | `PLAYGROUND_PROXY_TIMEOUT_MS`                                                   | `110000`                                   | How long the reverse proxy waits for an Inji service                                                  |
+| `INJI_VERIFY_SUBMISSION_BASE_URL`                                               | `http://verify-service:8080/v1/verify`     | `response_uri` base Inji Verify gives wallets; the reference wallet accepts responses there           |
 | `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL` | host ports, or service names in the bundle | Upstreams of `/proxy/:target/*` and `/v1/verify/*` (`src/recording/targets.ts`)                       |
 | `PLAYGROUND_NETWORK_MAP`                                                        | (none)                                     | Host mode: maps the stack's container names to host ports (`deploy/inji-stack/network-map.host.json`) |
 | `PLAYGROUND_EXTRA_CA`                                                           | (none)                                     | PEM file trusted for outbound HTTPS, for example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`      |
@@ -178,6 +180,44 @@ credential response after the offer, a posted presentation), or when the person 
 (`POST /api/runs/{id}/person-done`) for traffic that does not pass through the playground. A phone must
 reach the server: set `PLAYGROUND_PUBLIC_URL` to a LAN or tunnel address and `PLAYGROUND_HOST=0.0.0.0`.
 
+## Inji roles
+
+Registered only when `PLAYGROUND_STACK` is `host` or `bundle` (`src/adapters/inji/`):
+
+| Id                | Kind     | What it does                                                                                                                                                            |
+| ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inji-certify`    | issuer   | Inji Certify 0.14.0: `POST /v1/certify/pre-authorized-data` with the farmer claims the configuration advertises, returns the offer (`FarmerCredential`, `FarmerSdJwt`)  |
+| `inji-verify`     | verifier | Inji Verify 0.18.2 API: `POST /vp-request`, the wallet request built as Inji's front ends build it, status long poll, `POST /v2/vp-results/{transactionId}`             |
+| `inji-verify-sdk` | verifier | The official web component in the page creates the request through `/v1/verify`; the role rebuilds it from the recorded answer and fetches the result on `onVPReceived` |
+
+- Results: every check valid -> `VALID`; a genuine signature with a failed expiry check -> `EXPIRED`;
+  anything else, including an HTTP 5xx from verify-service, -> `INVALID` with the failing checks named.
+- Inji Verify sends an unprefixed client id, which makes it a pre-registered client (OpenID4VP 1.0
+  section 5.9.1). The reference wallet knows the playground's client ids (`ps02-playground`,
+  `ps02-playground-sdk`) with the response URIs of `INJI_VERIFY_SUBMISSION_BASE_URL`.
+- Certify's SD-JWT VC names its key by an `x5c` leaf; the Certify role fetches Certify's certificates
+  once (set-up traffic, not recorded) and adds them to the reference verifier's trust anchors.
+- Host mode: the server reaches `certify-nginx` and `verify-service:8080` through
+  `deploy/inji-stack/network-map.host.json` (the default when `PLAYGROUND_STACK=host`) and trusts the
+  stack's test CA (`$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`) when it exists. The server must run on
+  28100, where the stack's TLS front sends `ref.ps02.test` and `playground.ps02.test` (the JSON-LD context
+  of the reference credentials, served at `/contexts/v1.jsonld`).
+- Live mode lets the JSON-LD loader fetch contexts that are not pinned (cached in
+  `$PLAYGROUND_RUN_DIR/contexts`): Certify's farmer credential uses a context on a personal GitHub Pages
+  site (gap G18).
+- Outbound calls to the stack are drawn as `inji-certify` and `inji-verify` on the sequence diagram
+  (`serviceLabels` in `src/recording/targets.ts`).
+
+Measured on 2026-10-05 (`npm run stack:up && npm run test:live`, 15 tests pass): Inji Certify -> reference
+wallet -> Inji Verify is `VALID` for `vc+sd-jwt`; for `ldp_vc` it is `INVALID` because Inji Verify rejects
+the `ecdsa-rdfc-2019` holder proof a P-256 holder makes (G15) and Certify accepts only ES256 and RS256
+holder keys (G9). Certify -> reference verifier is `VALID` for `vc+sd-jwt` and `INVALID` for `ldp_vc`
+(G14: Certify's DID document does not authorise its key for `assertionMethod`). Reference issuer ->
+Inji Verify: `ldp_vc` `VALID`, expired `EXPIRED`; an SD-JWT VC with a DID-named key `INVALID` (G16).
+The gaps are in [docs/gaps/gaps.json](../../docs/gaps/gaps.json). Contract tests replay the recorded
+Inji answers without containers (`test/contract/inji/`, fixtures from
+`scripts/capture-inji-fixtures.ts`).
+
 ## Hosted reference roles
 
 `src/hosting/reference-hosting.ts` serves, on the playground's own port:
@@ -276,7 +316,7 @@ Runs left `queued` or `running` by a previous process are closed with verdict `e
 | `src/matrix/`             | Compatibility matrix and its Markdown rendering                                              |
 | `src/metrics/`            | Success rates, percentiles, Prometheus text format                                           |
 | `src/gaps/`               | Gap register reader and matrix cell patterns                                                 |
-| `src/adapters/inji/`      | Inji Certify, Verify and Mimoto adapters (filled by the Inji adapter work)                   |
+| `src/adapters/inji/`      | Inji Certify and Inji Verify (API and web component) roles, stack status                     |
 
 The fake roles (`src/orchestrator/fake-roles.ts`) speak no protocol: the issuer hands the wallet an
 in-memory credential and the verifier checks a digest. They exist for tests and for exercising the UI

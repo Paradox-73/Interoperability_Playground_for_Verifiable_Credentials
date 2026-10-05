@@ -69,6 +69,14 @@ export interface PresentationClientOptions {
    * inji/inji-certify#1054.
    */
   holderDidForm?: 'as-bound' | 'canonical';
+  /**
+   * Pre-registered verifiers this wallet trusts, by `client_id`, with the response URIs each may use
+   * (OpenID4VP 1.0 section 5.9.1: a client id without a scheme prefix is known to the wallet in advance).
+   * Inji Verify 0.18 sends such a client id with an unsigned request by value, and Inji Wallet and
+   * Mimoto keep a list of trusted verifiers for it. Empty by default: unknown pre-registered clients
+   * are refused.
+   */
+  preRegisteredClients?: ReadonlyArray<{ clientId: string; responseUris: readonly string[] }>;
 }
 
 export interface ResolvedRequest {
@@ -200,10 +208,16 @@ export class PresentationClient {
         spec: 'OpenID4VP 1.0 section 5.9.3 (decentralized_identifier)',
       });
     }
-    if (client.scheme !== 'did' && client.scheme !== 'redirect_uri') {
+    const preRegistered =
+      client.scheme === 'pre-registered'
+        ? this.options.preRegisteredClients?.find((entry) => entry.clientId === clientId)
+        : undefined;
+    if (client.scheme !== 'did' && client.scheme !== 'redirect_uri' && !preRegistered) {
       throw new Oid4vpError(
         'CLIENT_ID_UNSUPPORTED',
-        `client id scheme ${client.scheme} is not supported by the reference wallet`,
+        client.scheme === 'pre-registered'
+          ? `client id ${clientId} is not a verifier this wallet knows (pre-registered clients must be configured)`
+          : `client id scheme ${client.scheme} is not supported by the reference wallet`,
         {
           details: { clientId },
         },
@@ -231,6 +245,17 @@ export class PresentationClient {
         spec: 'OpenID4VP 1.0 section 5.9.3 (redirect_uri)',
         details: { clientId, responseUri },
       });
+    }
+    // A pre-registered verifier may only send the response where its registration says.
+    if (preRegistered && !preRegistered.responseUris.includes(responseUri)) {
+      throw new Oid4vpError(
+        'CLIENT_ID_MISMATCH',
+        'response_uri is not registered for this pre-registered client',
+        {
+          spec: 'OpenID4VP 1.0 section 5.9.1 (pre-registered clients)',
+          details: { clientId, responseUri },
+        },
+      );
     }
     const nonce = stringParameter(parameters, 'nonce');
 
@@ -425,7 +450,7 @@ export class PresentationClient {
     return createLdpVp({
       credentials: [match.view.json],
       holder: holder.did,
-      suite: ldpSuiteFor(match.view.json),
+      suite: ldpSuiteFor(match.view.json, this.options.holder.keyPair.alg),
       key: { keyPair: this.options.holder.keyPair, verificationMethod: holder.verificationMethod },
       challenge: request.nonce,
       domain: request.clientId,
@@ -477,8 +502,13 @@ export class PresentationClient {
         },
       );
     }
-    let did = bound;
-    if (bound.startsWith('did:jwk:') && this.options.holderDidForm === 'canonical') did = createDidJwk(own);
+    // Inji Certify 0.14.0 writes the proof's key id (`did:jwk:...#0`) as credentialSubject.id. The holder
+    // is the DID; the key id, already a DID URL, is the verification method as it stands.
+    const fragment = bound.indexOf('#');
+    let did = fragment === -1 ? bound : bound.slice(0, fragment);
+    if (did.startsWith('did:jwk:') && this.options.holderDidForm === 'canonical') did = createDidJwk(own);
+    if (fragment !== -1 && this.options.holderDidForm !== 'canonical')
+      return { did, verificationMethod: bound };
     if (did.startsWith('did:jwk:')) return { did, verificationMethod: `${did}#0` };
     if (did.startsWith('did:key:')) return { did, verificationMethod: didKeyVerificationMethodId(did) };
     if (holder.verificationMethod?.startsWith(`${did}#`))
@@ -547,7 +577,12 @@ function encodeVpToken(vpToken: unknown): string {
   return JSON.stringify(vpToken);
 }
 
-function ldpSuiteFor(credential: JsonObject): LdpProofSuite {
+/**
+ * The holder proof suite: ecdsa-rdfc-2019 for a P-256 holder key (Inji Certify binds credentials to one,
+ * gap G9); otherwise the Ed25519 suite that matches the credential's own proof.
+ */
+function ldpSuiteFor(credential: JsonObject, holderAlg: string): LdpProofSuite {
+  if (holderAlg === 'ES256') return 'ecdsa-rdfc-2019';
   const proof = Array.isArray(credential.proof) ? (credential.proof[0] as unknown) : credential.proof;
   return isRecord(proof) && proof.type === 'DataIntegrityProof' ? 'eddsa-rdfc-2022' : 'Ed25519Signature2020';
 }

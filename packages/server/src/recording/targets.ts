@@ -22,6 +22,29 @@ const BUNDLE_DEFAULTS = {
   mimoto: 'http://mimoto-service:8099',
 };
 
+/** Hosts the stack's services answer on inside its compose network and on the TLS front. */
+const INTERNAL_HOSTS: Record<string, string> = {
+  'certify-nginx': 'inji-certify',
+  'certify-nginx:80': 'inji-certify',
+  'certify:8090': 'inji-certify',
+  'certify.ps02.test': 'inji-certify',
+  'certify-ac:8090': 'inji-certify-ac',
+  'verify-service:8080': 'inji-verify',
+  'verify.ps02.test': 'inji-verify',
+  'mimoto-service:8099': 'mimoto',
+};
+
+/**
+ * Diagram names by host (`host:port` as `URL.host` writes it): every proxy target's upstream plus the
+ * names the stack advertises, so an outbound call to Certify is drawn as `inji-certify`, not as a port.
+ */
+export function serviceLabels(config: Config): (url: URL) => string | undefined {
+  const labels = new Map(Object.entries(INTERNAL_HOSTS));
+  for (const target of Object.values(proxyTargets(config)))
+    labels.set(new URL(target.url).host, target.label);
+  return (url) => labels.get(url.host);
+}
+
 /** Proxy targets by name; the label is the role id drawn on the sequence diagram. */
 export function proxyTargets(config: Config): Record<string, ProxyTarget> {
   const defaults = config.stack === 'bundle' ? BUNDLE_DEFAULTS : HOST_DEFAULTS;

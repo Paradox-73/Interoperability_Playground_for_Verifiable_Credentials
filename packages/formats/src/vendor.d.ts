@@ -105,6 +105,31 @@ declare module '@digitalbazaar/eddsa-rdfc-2022-cryptosuite' {
   export const cryptosuite: { name: string };
 }
 
+declare module '@digitalbazaar/data-integrity-context' {
+  const context: { contexts: Map<string, unknown>; constants: Record<string, string> };
+  export default context;
+}
+
+declare module '@digitalbazaar/ecdsa-rdfc-2019-cryptosuite' {
+  export const cryptosuite: { name: string };
+}
+
+declare module '@digitalbazaar/ecdsa-multikey' {
+  import type { Ed25519MultikeySigner } from '@digitalbazaar/ed25519-multikey';
+  export interface EcdsaMultikeyKeyPair {
+    id?: string;
+    controller?: string;
+    publicKeyMultibase: string;
+    signer(): Ed25519MultikeySigner;
+  }
+  export function fromJwk(options: {
+    jwk: Record<string, unknown>;
+    secretKey?: boolean;
+    id?: string;
+    controller?: string;
+  }): Promise<EcdsaMultikeyKeyPair>;
+}
+
 declare module '@digitalbazaar/security-document-loader' {
   export interface SecurityLoader {
     documents: Map<string, unknown>;
