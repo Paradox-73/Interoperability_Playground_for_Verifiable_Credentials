@@ -10,12 +10,14 @@ MOSIP Decode 2026, problem statement 02, team Badmosip.
 
 ## Status
 
-| Date       | State                                                                                                                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-10-04 | Repository scaffold: eight npm workspaces, the shared contracts (`packages/protocol`), a server answering `GET /api/health`, a skeleton UI, the test and build tooling, CI and image. |
+| Date       | State                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-04 | Repository scaffold: eight npm workspaces, the shared contracts (`packages/protocol`), a server answering `GET /api/health`, a skeleton UI, the test and build tooling, CI and image.                                                                                                                                                                                                  |
+| 2026-10-05 | Every work package built and measured (branches awaiting review, [docs/STATUS.md](docs/STATUS.md)): reference roles in both protocol profiles, recording, Inji Certify, certify-ac, Inji Web through Mimoto and Inji Verify (API and web component) as roles, the UI with matrix, history, reports and gaps, the headless matrix, browser tests, the demo command and the test report. |
 
-Commands that print `not implemented yet (WP-xx)` exist so the command list below is complete; the
-named work package replaces them. Nothing below claims more than has been run.
+Measured on 2026-10-05 ([test report](docs/test-report/README.md)): 964 unit and integration tests, 6
+browser tests and 20 live tests against the Inji stack pass; the reference matrix has 82 of 82 cells as
+specified, the live matrices 20 of 20. Nothing in this README claims more than has been run.
 
 ## Status and contributing
 
@@ -75,18 +77,36 @@ The design decisions are recorded in [docs/adr](docs/adr/README.md).
 | `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                                                             |
 | `npm run demo`                                                                    | Checks Docker, ports and memory, starts the bundle, runs the demo cells, prints `DEMO PASS` ([scripts/demo.mjs](scripts/demo.mjs)) |
 | `npm run test:report` / `npm run openapi`                                         | Dated test report in [docs/test-report/](docs/test-report/README.md) and THIRD_PARTY_LICENSES.md / OpenAPI export                  |
-| `npm run docs:check`                                                              | Documentation check (not implemented yet)                                                                                          |
+| `npm run docs:check`                                                              | Documentation check: links, required sections, gap issue drafts, commands                                                          |
 
 ## Flows
 
-To be written with the flows themselves.
+Each run is issue → hold → present → verify between the three chosen roles, with every HTTP message
+recorded:
+
+- **Issuance:** a credential offer with a pre-authorized code (Inji Certify, the reference issuer), or a
+  wallet-initiated authorization code flow for wallets that cannot take an offer (Inji Web through Mimoto,
+  with certify-ac or the reference issuer). OpenID4VCI draft 13 or 1.0.
+- **Presentation:** OpenID4VP drafts 21-23 with Presentation Exchange (as Inji Verify and Inji Wallet speak
+  it) or OpenID4VP 1.0 with DCQL; `ldp_vc` / `ldp_vp` and SD-JWT VC with a key binding JWT.
+- **Scenarios:** the happy path, tampered credentials and presentations (expired, bad signature, altered
+  disclosure, wrong key binding, replay, wrong holder) and probes, each with the outcome the specifications
+  require.
+
+Step by step, with the messages and the Inji Web specifics: [docs/flows.md](docs/flows.md). The parts and
+where traffic is recorded: [docs/architecture.md](docs/architecture.md).
 
 ## Interoperability matrix and gaps
 
-Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
-run on 2026-10-05, 82 of 82 cells as specified. The live matrix against Inji Certify, Inji Verify and Inji
-Web follows with the Inji adapters (WP-10, WP-14); the gaps found so far are listed in
-[docs/STATUS.md](docs/STATUS.md#gap-ids-used-in-commits-and-docs).
+- Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
+  82 of 82 cells as specified (2026-10-05).
+- Live matrix against Inji Certify 0.14.0, certify-ac, Inji Web 0.17.0 with Mimoto 0.22.0 and Inji Verify
+  0.18.2: [docs/interop-report/live/matrix.md](docs/interop-report/live/matrix.md), 20 of 20 cells as
+  specified (2026-10-05). All-Inji SD-JWT VC issuance and verification is `VALID`; the cells that fail are
+  blocked by recorded gaps.
+- Gaps: [docs/gaps/README.md](docs/gaps/README.md) lists 23 public gaps in Inji Certify, Inji Verify and
+  Mimoto, each with an issue draft (repository, version, steps, expected and actual result, playground case
+  and date). Two further findings are reported privately.
 
 ## Contributing and security
 

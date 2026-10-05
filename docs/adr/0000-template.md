@@ -1,6 +1,6 @@
 # NNNN. Title in the imperative ("Use X for Y")
 
-- Status: Proposed | Accepted | Superseded by [NNNN](NNNN-title.md)
+- Status: Proposed | Accepted | Superseded by `[NNNN](NNNN-title.md)` (a link to the newer record)
 - Date: YYYY-MM-DD
 
 ## Context

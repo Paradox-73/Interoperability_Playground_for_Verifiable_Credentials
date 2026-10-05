@@ -2,22 +2,34 @@
 
 Start with the [README](../README.md) for what the playground is and how to run it.
 
-## Available now
+## Documents
 
-| Document                                            | Contents                                                              |
-| --------------------------------------------------- | --------------------------------------------------------------------- |
-| [Architecture decisions](adr/README.md)             | Why the code is built the way it is, one record per decision          |
-| [Contracts](../packages/protocol/README.md)         | The shared types: roles, run events, recorded exchanges, reports      |
-| [Credential formats](../packages/formats/README.md) | Keys, DIDs, ldp_vc / ldp_vp and SD-JWT VC used by the reference roles |
-| [Contributing](../CONTRIBUTING.md)                  | Layout, commands, tests, dependency and commit rules                  |
-| [Security](../SECURITY.md)                          | Test keys, recorded data, reporting                                   |
+| Document                                               | Contents                                                                                     |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| [Set-up](setup.md)                                     | Reference mode, the local Inji stack, the one-command bundle, ports, memory, troubleshooting |
+| [Architecture](architecture.md)                        | Components, one run end to end, where traffic is recorded                                    |
+| [Flows](flows.md)                                      | Issuance, presentation, Inji Web through Mimoto, phone wallets, message by message           |
+| [API](api.md)                                          | REST endpoints, WebSocket events, hosted reference endpoints, recording proxy                |
+| [Reports and matrix API](api/README.md)                | Run reports, history, matrix, metrics, gaps, redaction rules; [OpenAPI](api/openapi.json)    |
+| [Test data](test-data.md)                              | Identities, keys and DIDs, credentials, recorded fixtures                                    |
+| [Extending](extending.md)                              | Add an implementation as a role, and test it                                                 |
+| [Demo](demo/README.md)                                 | Preparing and running the demo                                                               |
+| [Interoperability gaps](gaps/README.md)                | The gap register and one issue draft per public gap                                          |
+| [Reference matrix](interop-report/reference/matrix.md) | Every reference cell, without Docker                                                         |
+| [Live matrix](interop-report/live/matrix.md)           | Inji Certify, certify-ac, Inji Web and Inji Verify against the reference roles               |
+| [Test report](test-report/README.md)                   | Test totals per package, browser and live tests, stack start time and memory, licences       |
+| [UX](ux/README.md)                                     | The user flow with screenshots captured by the browser tests                                 |
+| [Architecture decisions](adr/README.md)                | Why the code is built the way it is, one record per decision                                 |
+| [Status](STATUS.md)                                    | Every task with its status and acceptance check, branches to merge                           |
 
-## Planned (added with the features they describe)
+Package guides: [protocol](../packages/protocol/README.md), [formats](../packages/formats/README.md),
+[oid4vci](../packages/oid4vci/README.md), [oid4vp](../packages/oid4vp/README.md),
+[scenarios](../packages/scenarios/README.md), [server](../packages/server/README.md),
+[web](../packages/web/README.md), [cli](../packages/cli/README.md), [Inji stack](../deploy/inji-stack/README.md).
 
-- Architecture: components, one run end to end, where traffic is recorded.
-- Set-up: reference mode, local Inji stack, one-command bundle, phone wallets.
-- Flows: each issue → hold → present → verify flow step by step.
-- API: REST endpoints, WebSocket events, hosted reference endpoints, OpenAPI document.
-- Test data, extending the playground with a new role, test report.
-- Interoperability report (reference and live matrices) and the interoperability gaps write-up.
-- UX notes and the demo script.
+Also: [Contributing](../CONTRIBUTING.md) (layout, commands, tests, commit rules),
+[Security](../SECURITY.md) (test keys, recorded data, reporting) and
+[third-party licences](../THIRD_PARTY_LICENSES.md).
+
+`npm run docs:check` checks these documents: relative links and headings resolve, required sections exist,
+every public gap has a complete issue draft, and every `npm run` command in them exists.
