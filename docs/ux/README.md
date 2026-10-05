@@ -1,7 +1,7 @@
 # User flow
 
 How a person uses the playground, shown with screenshots that the browser tests capture
-(`npm run e2e -- --screenshots`, Chromium, reference mode, 2026-10-05). Every screenshot comes from a real
+(`npm run e2e -- --screenshots`, Chromium, reference mode, 2026-10-06). Every screenshot comes from a real
 run against the playground server with its reference roles; nothing is mocked.
 
 ## 1. Choose the roles and the run
@@ -58,10 +58,29 @@ presses Done for traffic it cannot see.
 
 ![Phone wallet modal with the credential offer QR code](screenshots/7-phone-wallet-modal.png)
 
+## 7. Open a run, play it back, read the gaps
+
+Every run has its own page with the timeline, the sequence diagram and the inspector; the playback page
+replays a stored run event by event from its recording, without sending anything again. The gaps page
+shows the gap register (`docs/gaps/gaps.json`) with the matrix cells each gap blocks. Addresses that match
+no page get a page that says so.
+
+![Page of one run](screenshots/8-run-page.png)
+
+![Playback of a stored run at its last event](screenshots/9-playback.png)
+
+![Gap register](screenshots/10-gaps.png)
+
+![About page](screenshots/11-about.png)
+
+![Page not found](screenshots/12-not-found.png)
+
 ## Accessibility checks
 
-- `npm run e2e` runs axe-core (WCAG 2.1 A and AA rules) in Chromium on the playground, matrix, history,
-  report and about pages and fails on any serious or critical violation; on 2026-10-05 there were none.
+- `npm run e2e` runs axe-core (WCAG 2.1 A and AA rules) in Chromium on the playground, run, playback,
+  report, matrix, history, gaps, about and not-found pages and fails on any serious or critical violation;
+  on 2026-10-06 there were none. The run page had one until then: scrollable message bodies in the
+  inspector could not be reached with the keyboard; they now take focus.
 - One test drives the happy path with the keyboard only: Tab to Run, Enter, Tab to the run, Enter, Tab to
   the report, Enter.
 - Statuses are always an icon plus a word; colour contrast of both themes is checked from the design tokens
