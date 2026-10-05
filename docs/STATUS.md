@@ -50,16 +50,16 @@ started.
 | WP-15 | A-reference | Headless matrix CLI and nightly interoperability workflow                                | WP-08, WP-11, WP-12        | REVIEW | `36591c6` (branch `wp-15-matrix-cli`)                                                                                                                                          |
 | WP-16 | C-web       | Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests | WP-08, WP-09, WP-13        | REVIEW | `167e675`, `647e281` (branch `wp-16-browser-tests`)                                                                                                                            |
 | WP-17 | D-stack     | End-to-end demo script, bundle check and test report                                     | WP-10, WP-14, WP-15, WP-16 | REVIEW | `1cedbd3`, `05a13ea`, `61f0917` (branch `wp-17-demo`)                                                                                                                          |
-| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | TODO   | -                                                                                                                                                                              |
+| WP-18 | D-stack     | Documentation set and interoperability gap write-up with issue drafts                    | WP-13, WP-17               | REVIEW | `99971bd`, `10443c6` (branch `wp-18-docs`)                                                                                                                                     |
 
-Remaining work: WP-18. Every other task is finished (DONE, or in review on its branch).
+Every task is finished: DONE on `main`, or in review on its branch (merge them in the order below). What is
+left is review and merge, and the optional extras at the end of this file.
 
 ### What the DONE tasks give you
 
-- Every root `npm run` command exists. With the branches in review merged, three still call a placeholder
-  that prints `not implemented yet (WP-xx)` and exits 1: `demo` and `test:report` (WP-17), `docs:check`
-  (WP-18). `smoke` (WP-08), `matrix:reference` / `matrix:live` (WP-15), `e2e` / `e2e:live` (WP-16) and
-  `test:live` (WP-10, WP-14) are implemented. Implementing a command means replacing the file the script calls, never editing
+- Every root `npm run` command exists, and with the branches in review merged every one is implemented:
+  `smoke` (WP-08), `matrix:reference` / `matrix:live` (WP-15), `e2e` / `e2e:live` (WP-16), `test:live`
+  (WP-10, WP-14), `demo` and `test:report` (WP-17), `docs:check` (WP-18). Implementing a command means replacing the file the script calls, never editing
   `package.json`.
 - Measured on `main` on 2026-10-04 (before work stopped): `npm ci`, lint, typecheck, `npm test` and
   `npm run build` exit 0; `npm run stack:smoke` printed `SMOKE PASS` in 166 s, including Inji Verify
@@ -76,16 +76,17 @@ Remaining work: WP-18. Every other task is finished (DONE, or in review on its b
 Work of 2026-10-05. The branches are stacked, each on the one before, so merge them in this order (or
 open each pull request against the branch before it, and retarget after each merge):
 
-| Order | Branch                | Task  | Based on              | Commits                                                  |
-| ----- | --------------------- | ----- | --------------------- | -------------------------------------------------------- |
-| 1     | `wp-11-scenarios`     | WP-11 | `main` (`cf0c535`)    | `48e2dfc`, `5f9e0f5`                                     |
-| 2     | `wp-08-recording`     | WP-08 | `wp-11-scenarios`     | `d5eae9c`, `304854e`                                     |
-| 3     | `wp-13-pages`         | WP-13 | `wp-08-recording`     | `0dec756`, `d1c8879`                                     |
-| 4     | `wp-15-matrix-cli`    | WP-15 | `wp-13-pages`         | `36591c6`, `10d46aa` (status update)                     |
-| 5     | `wp-16-browser-tests` | WP-16 | `wp-15-matrix-cli`    | `167e675`, `647e281`                                     |
-| 6     | `wp-10-inji-adapters` | WP-10 | `wp-16-browser-tests` | `400f951`, `3a4fbdc`                                     |
-| 7     | `wp-14-inji-web`      | WP-14 | `wp-10-inji-adapters` | `af7ff15`, `bde2071`, `1d4095b` (status update)          |
-| 8     | `wp-17-demo`          | WP-17 | `wp-14-inji-web`      | `1cedbd3`, `05a13ea`, `61f0917`, then this status update |
+| Order | Branch                | Task  | Based on              | Commits                                                    |
+| ----- | --------------------- | ----- | --------------------- | ---------------------------------------------------------- |
+| 1     | `wp-11-scenarios`     | WP-11 | `main` (`cf0c535`)    | `48e2dfc`, `5f9e0f5`                                       |
+| 2     | `wp-08-recording`     | WP-08 | `wp-11-scenarios`     | `d5eae9c`, `304854e`                                       |
+| 3     | `wp-13-pages`         | WP-13 | `wp-08-recording`     | `0dec756`, `d1c8879`                                       |
+| 4     | `wp-15-matrix-cli`    | WP-15 | `wp-13-pages`         | `36591c6`, `10d46aa` (status update)                       |
+| 5     | `wp-16-browser-tests` | WP-16 | `wp-15-matrix-cli`    | `167e675`, `647e281`                                       |
+| 6     | `wp-10-inji-adapters` | WP-10 | `wp-16-browser-tests` | `400f951`, `3a4fbdc`                                       |
+| 7     | `wp-14-inji-web`      | WP-14 | `wp-10-inji-adapters` | `af7ff15`, `bde2071`, `1d4095b` (status update)            |
+| 8     | `wp-17-demo`          | WP-17 | `wp-14-inji-web`      | `1cedbd3`, `05a13ea`, `61f0917`, `1e4790b` (status update) |
+| 9     | `wp-18-docs`          | WP-18 | `wp-17-demo`          | `99971bd`, `10443c6`, then this status update              |
 
 The first commit of each PARTIAL task is the work from `wip/2026-10-04-stop` as it was, so reviewers can
 tell old work from new. Checks run on 2026-10-05 on the tip of `wp-15-matrix-cli` (Windows 11, Node
@@ -583,7 +584,7 @@ check never leaves containers running.
   28000-28999 and memory before a recording). The report states measured numbers only, with dates. Use the
   Vitest JSON reporter (`--reporter=json --outputFile=<file>`) to collect totals.
 
-### WP-18 Documentation set and interoperability gap write-up with issue drafts (TODO)
+### WP-18 Documentation set and interoperability gap write-up with issue drafts (REVIEW)
 
 - **Goal:** anyone can install, understand and evaluate the playground from the docs, and the Inji team
   gets gap reports it can act on.
@@ -595,6 +596,16 @@ check never leaves containers running.
   actual, a case id and a date; no entry marked `"disclosure": "private"` has a draft or exploit detail in
   the repository; every command in the README exists in `package.json`. Then from a separate clone
   (`git clone . ../ps02-docs-clone && cd ../ps02-docs-clone && npm ci && npm run matrix:reference`) exits 0.
+- **Done on 2026-10-05 (branch `wp-18-docs`):** `npm run docs:check` exits 0 on 70 Markdown files (links and
+  heading anchors, required sections, 23 complete issue drafts for the public gaps, none for G7 and G20,
+  every `npm run` command). From a separate clone, `npm ci` (with npm 11.21.0, see below),
+  `npm run matrix:reference` (82 of 82 cells as specified) and `npm run docs:check` exit 0. Written:
+  `docs/architecture.md`, `flows.md`, `api.md`, `test-data.md`, `extending.md`, `demo/README.md`,
+  `gaps/README.md` with `gaps/issues/`, decision records 0002-0008, the docs index and the README status,
+  flows and matrix sections. The five observations below are written up in `docs/gaps/README.md` under
+  "Other observations"; they need a playground case before they become register entries. Found on the way:
+  the npm of Node 24.11.1 (11.6.2) refuses the lock file that npm 11.19.0 and 11.21.0 accept; the set-up
+  docs name the versions and the workaround.
 - **Notes:**
   - Docs to write: `docs/architecture.md`, `docs/flows.md`, `docs/api.md`, `docs/test-data.md`,
     `docs/extending.md` (add an implementation as a role), `docs/demo/`; update `docs/setup.md`,
@@ -676,7 +687,7 @@ Short ids for upstream problems found while building the stack. "Measured" means
 | G24     | Mimoto                     | `http` `response_uri` refused; the Inji Verify sample hands one out                                                     | measured     | stack uses `https://verify.ps02.test`                  |
 | G25     | Mimoto / Inji Web          | no presentation of SD-JWT VCs (matching supports only `ldp_vc`)                                                         | measured     | open                                                   |
 
-Also seen and to be written up in WP-18: the inji-verify compose `init.sql` does not match the 0.18.x schema
+Also seen, written up in `docs/gaps/README.md` ("Other observations") by WP-18: the inji-verify compose `init.sql` does not match the 0.18.x schema
 (500 errors on status and submission; fixed locally in `d4b9a35`); verify-service has no CORS support; the
 SDK's npm `latest` tag is a pre-release that needs the 1.0 service; the SDK's presentation definition type
 allows only `ldp_vc`; the SDK rejects QR uploads under 10 KB.
