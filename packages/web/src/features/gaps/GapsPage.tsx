@@ -101,7 +101,15 @@ function EmptyRegister({ source }: { source: string | null }) {
     <div className="space-y-2 rounded-lg border border-dashed border-line-strong bg-surface p-4 text-sm">
       <p className="font-semibold">{source ? t('gaps.emptyFile', { source }) : t('gaps.noFile')}</p>
       <p>{t('gaps.howToAdd')}</p>
-      <pre className="overflow-x-auto rounded bg-surface-muted p-2 font-mono text-xs">{GAP_EXAMPLE}</pre>
+      <pre
+        // A scrollable region must be reachable by keyboard (axe scrollable-region-focusable).
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+        tabIndex={0}
+        aria-label={t('gaps.howToAdd')}
+        className="overflow-x-auto rounded bg-surface-muted p-2 font-mono text-xs"
+      >
+        {GAP_EXAMPLE}
+      </pre>
       <p>{t('gaps.howToLink')}</p>
     </div>
   );

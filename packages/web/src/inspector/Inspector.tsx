@@ -286,7 +286,13 @@ function HttpPane({
         ) : json !== undefined ? (
           <JsonTree value={json} />
         ) : (
-          <pre className="max-h-72 overflow-auto rounded bg-surface-muted p-2 font-mono text-xs break-all whitespace-pre-wrap">
+          <pre
+            // A scrollable region must be reachable by keyboard (axe scrollable-region-focusable).
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            tabIndex={0}
+            aria-label={t('inspector.bodyOf', { title })}
+            className="max-h-72 overflow-auto rounded bg-surface-muted p-2 font-mono text-xs break-all whitespace-pre-wrap"
+          >
             {body}
           </pre>
         )}

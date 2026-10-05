@@ -195,3 +195,49 @@ test('the playground and about pages have no serious accessibility violations', 
   await expect(page.getByRole('heading', { level: 1, name: 'About the playground' })).toBeVisible();
   await expectAccessible(page);
 });
+
+test('run page, playback, gaps and not-found pages render a stored run and the gap register', async ({
+  page,
+  request,
+}) => {
+  const created = await request.post(`${SERVER}/api/runs`, {
+    data: { issuer: 'ref-issuer', wallet: 'ref-wallet', verifier: 'ref-verifier', format: 'vc+sd-jwt' },
+  });
+  const { runId } = (await created.json()) as { runId: string };
+  await expect
+    .poll(
+      async () =>
+        ((await (await request.get(`${SERVER}/api/runs/${runId}`)).json()) as { status: string }).status,
+    )
+    .toBe('finished');
+
+  await page.goto(`/runs/${encodeURIComponent(runId)}`);
+  await expect(page.getByRole('heading', { level: 1, name: new RegExp(`Run ${runId}`) })).toBeVisible();
+  await expect(page.getByTestId('run-result')).toContainText('Pass');
+  await shot(page, '8-run-page');
+  await expectAccessible(page);
+
+  await page.goto(`/runs/${encodeURIComponent(runId)}/playback`);
+  await expect(
+    page.getByRole('heading', { level: 1, name: new RegExp(`Playback of run ${runId}`) }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Go to end' }).click();
+  await expect(page.getByRole('button', { name: 'Step forward' })).toBeDisabled();
+  await shot(page, '9-playback');
+  await expectAccessible(page);
+
+  await page.goto('/gaps');
+  await expect(page.getByRole('heading', { level: 1, name: 'Interoperability gaps' })).toBeVisible();
+  await expect(page.getByText('G15', { exact: false }).first()).toBeVisible();
+  await shot(page, '10-gaps');
+  await expectAccessible(page);
+
+  await page.goto('/about');
+  await expect(page.getByRole('heading', { level: 1, name: 'About the playground' })).toBeVisible();
+  await shot(page, '11-about');
+
+  await page.goto('/no-such-page');
+  await expect(page.getByRole('heading', { level: 1, name: 'Page not found' })).toBeVisible();
+  await shot(page, '12-not-found');
+  await expectAccessible(page);
+});

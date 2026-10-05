@@ -54,6 +54,10 @@ export function SectionView({ section, filePrefix }: SectionViewProps) {
             {t('inspector.raw')}
           </h5>
           <pre
+            // A scrollable region must be reachable by keyboard (axe scrollable-region-focusable).
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            tabIndex={0}
+            aria-label={`${t('inspector.raw')}: ${title}`}
             className="max-h-72 overflow-auto rounded bg-surface-muted p-2 font-mono text-xs break-all whitespace-pre-wrap"
             data-testid="section-raw"
           >
