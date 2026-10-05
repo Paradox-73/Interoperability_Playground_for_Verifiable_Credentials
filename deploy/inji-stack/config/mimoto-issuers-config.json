@@ -26,6 +26,60 @@
       "credential_issuer_host": "http://certify-nginx",
       "enabled": "true",
       "wellknown_endpoint": "http://certify-nginx/.well-known/openid-credential-issuer"
+    },
+    {
+      "credential_issuer": "FarmerAC",
+      "issuer_id": "FarmerAC",
+      "protocol": "OpenId4VCI",
+      "display": [
+        {
+          "name": "Inji Certify AC (playground)",
+          "logo": {
+            "url": "https://mosip.github.io/inji-config/logos/agro-vertias-logo.png",
+            "alt_text": "issuer-logo"
+          },
+          "title": "Inji Certify AC (playground)",
+          "description": "Farmer credential from the playground's certify-ac (authorization code)",
+          "language": "en"
+        }
+      ],
+      "client_id": "ps02-mimoto",
+      "redirect_uri": "http://localhost:28004/redirect",
+      "token_endpoint": "http://localhost:28099/v1/mimoto/get-token/FarmerAC",
+      "authorization_audience": "https://ref.ps02.test/ref/as/token",
+      "proxy_token_endpoint": "https://ref.ps02.test/ref/as/token",
+      "client_alias": "wallet-demo-client",
+      "qr_code_type": "EmbeddedVC",
+      "credential_issuer_host": "https://ref.ps02.test/proxy/certify-ac",
+      "enabled": "true",
+      "wellknown_endpoint": "https://ref.ps02.test/proxy/certify-ac/.well-known/openid-credential-issuer"
+    },
+    {
+      "credential_issuer": "PlaygroundReference",
+      "issuer_id": "PlaygroundReference",
+      "protocol": "OpenId4VCI",
+      "display": [
+        {
+          "name": "Playground reference issuer",
+          "logo": {
+            "url": "https://mosip.github.io/inji-config/logos/agro-vertias-logo.png",
+            "alt_text": "issuer-logo"
+          },
+          "title": "Playground reference issuer",
+          "description": "Farmer credential from the playground's reference issuer (non-Inji)",
+          "language": "en"
+        }
+      ],
+      "client_id": "ps02-mimoto",
+      "redirect_uri": "http://localhost:28004/redirect",
+      "token_endpoint": "http://localhost:28099/v1/mimoto/get-token/PlaygroundReference",
+      "authorization_audience": "https://ref.ps02.test/ref/as/token",
+      "proxy_token_endpoint": "https://ref.ps02.test/ref/as/token",
+      "client_alias": "wallet-demo-client",
+      "qr_code_type": "EmbeddedVC",
+      "credential_issuer_host": "https://ref.ps02.test/ref/issuer/draft13",
+      "enabled": "true",
+      "wellknown_endpoint": "https://ref.ps02.test/.well-known/openid-credential-issuer/ref/issuer/draft13"
     }
   ]
 }
