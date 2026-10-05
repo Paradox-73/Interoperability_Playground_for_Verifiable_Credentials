@@ -24,11 +24,11 @@ Only Docker is needed to run the bundle from a clone (see [without Node](#withou
 
 ## Run modes
 
-| Mode         | What runs                                           | Docker | Command                                |
-| ------------ | --------------------------------------------------- | ------ | -------------------------------------- |
-| Reference    | playground server with the reference roles only     | no     | `npm ci && npm run build && npm start` |
-| Host + stack | playground server on the host, Inji stack in Docker | yes    | `npm run stack:up`, then `npm run dev` |
-| Bundle       | Inji stack and the playground container             | yes    | `npm run up`                           |
+| Mode         | What runs                                           | Docker | Command                                                      |
+| ------------ | --------------------------------------------------- | ------ | ------------------------------------------------------------ |
+| Reference    | playground server with the reference roles only     | no     | `npm ci && npm run build && npm start`                       |
+| Host + stack | playground server on the host, Inji stack in Docker | yes    | `npm run stack:up`, then `PLAYGROUND_STACK=host npm run dev` |
+| Bundle       | Inji stack and the playground container             | yes    | `npm run up`                                                 |
 
 The playground answers on <http://localhost:28100> in every mode.
 

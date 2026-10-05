@@ -180,53 +180,36 @@ Environment variables read by the server (`packages/server/src/config/index.ts`)
 | `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`             | image tag the bundle builds and runs                                                  |
 | `PLAYWRIGHT_BASE_URL`                                                                                                | `http://localhost:28174`             | where Playwright points; `http://localhost:28100` for the bundle                      |
 
-Added by WP-08 (branch `wp-08-recording`, in review): `PLAYGROUND_PROXY_TIMEOUT_MS`,
+Recording and hosting settings: `PLAYGROUND_PROXY_TIMEOUT_MS`,
 `PLAYGROUND_NETWORK_MAP` (host mode: `deploy/inji-stack/network-map.host.json`), `PLAYGROUND_EXTRA_CA` (for
 example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`), `PLAYGROUND_REF_ISSUER_DID` (`did:key`, `did:jwk` or
 `did:web`), and the server's own `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`
 for the reverse proxy.
 
-## Running the end-to-end path today
+## Running the end-to-end path
 
-What works, as of 2026-10-04:
+Checked on 2026-10-06 on `main` (Windows 11, Node 24.19.0, Docker Desktop with 8 GB):
 
-1. **Playground in reference mode (`main`).** Server and UI start; no real roles are registered on `main`.
+1. **Reference roles only, no Docker.** `npm ci && npm run build && npm start`, then
+   <http://localhost:28100>; `curl -s http://localhost:28100/api/health` answers `{"status":"ok",...}`.
+   `npm run smoke` runs one cell and prints `verdict=pass` with 7 recorded exchanges; `npm run
+matrix:reference` runs the 82 cells of `packages/cli/specs/reference.yaml` (82 as specified).
+2. **One-command bundle.** `npm run demo` (or `npm run up`) builds the playground image, starts the Inji stack
+   and the playground in Docker and runs the four demo cells (`DEMO PASS`); `npm run down` stops it.
+3. **Server on the host, Inji stack in Docker.** `npm run stack:up`, then start the server with the Inji
+   roles: `PLAYGROUND_STACK=host npm start` (add `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test` for the Inji
+   Web cells). `npm run matrix:live -- --spec live-core` and `-- --spec live-holder-web` run the live
+   matrices against it; `npm run test:live` needs only the stack. Stop with `npm run stack:down`.
 
-   ```bash
-   npm run build && npm start
-   curl -s http://localhost:28100/api/health     # {"status":"ok",...}
-   ```
+The same run through the API, against a server on port 28100:
 
-   To click through the UI before real roles exist, start with the development-only fake roles:
-   `PLAYGROUND_FAKE_ROLES=1 npm run dev`, then open <http://localhost:28173>.
-
-2. **Inji Certify -> Inji Verify (`main`, Docker).** `npm run stack:smoke` issues an `ldp_vc` and a
-   `vc+sd-jwt` from Certify through the OpenID4VCI pre-authorized code flow with a scripted wallet, verifies
-   both with Inji Verify, checks Mimoto, Inji Web and the Inji Verify UI, and stops the stack. It printed
-   `SMOKE PASS` in 166 s on 2026-10-04. The report with every request and response is in
-   `$PLAYGROUND_RUN_DIR/stack/smoke/`.
-
-3. **Reference issuer -> reference wallet -> reference verifier (no Docker).** `npm run smoke` runs one
-   cell end to end and printed `verdict=pass` with 7 recorded exchanges on 2026-10-05; `npm run
-matrix:reference` runs the 82 cells of `packages/cli/specs/reference.yaml` (82 as specified on
-   2026-10-05). The same run through the API, measured on 2026-10-04 (server on port 28655):
-
-   ```bash
-   PLAYGROUND_PORT=28655 node --conditions=source --import tsx packages/server/src/main.ts &
-   curl -s -X POST http://localhost:28655/api/runs -H 'content-type: application/json' \
-     -d '{"issuer":"ref-issuer","wallet":"ref-wallet","verifier":"ref-verifier","format":"vc+sd-jwt"}'
-   # {"runId":"..."}
-   curl -s http://localhost:28655/api/runs/<runId>/report.json   # outcome VALID, verdict pass
-   curl -s http://localhost:28655/api/runs/<runId>/exchanges     # 7 recorded exchanges
-   ```
-
-   The 7 exchanges were tagged `issuer.offer`, `issuer.metadata`, `as.metadata`, `token`, `credential`,
-   `wallet.fetch-request`, `wallet.submit`.
-
-Not working yet: Inji roles inside a playground run (WP-10, WP-14), the live matrices (they need those
-roles), the manual-wallet modal and Inji Verify SDK panel in the UI (WP-16), the demo and report commands
-(WP-17). Tamper scenarios through the server, the matrix, history and report pages, `npm run smoke` and
-`npm run matrix:reference` work on the branches in review (see [docs/STATUS.md](docs/STATUS.md)).
+```bash
+curl -s -X POST http://localhost:28100/api/runs -H 'content-type: application/json' \
+  -d '{"issuer":"ref-issuer","wallet":"ref-wallet","verifier":"ref-verifier","format":"vc+sd-jwt"}'
+# {"runId":"..."}
+curl -s http://localhost:28100/api/runs/<runId>/report.json   # outcome VALID, verdict pass
+curl -s http://localhost:28100/api/runs/<runId>/exchanges     # 7 recorded exchanges
+```
 
 ## Repository layout
 
@@ -244,9 +227,8 @@ roles), the manual-wallet modal and Inji Verify SDK panel in the UI (WP-16), the
 | `scripts/`           | Root command implementations                                                   |
 | `docs/`              | Documentation; decisions in `docs/adr/`; status in `docs/STATUS.md`            |
 
-Every root `npm run` command calls a file. A command that is not built yet calls a placeholder that
-prints `not implemented yet (WP-xx)` and exits 1; implementing it means replacing that file, not
-editing `package.json`.
+Every root `npm run` command calls a file in `scripts/` or a package's `scripts/`; change that file, not
+`package.json`.
 
 ## How packages fit together
 
