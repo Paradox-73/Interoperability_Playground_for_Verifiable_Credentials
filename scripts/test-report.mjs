@@ -209,14 +209,17 @@ function commitOf() {
   return `${stdout.trim()}${dirty ? ' (with uncommitted changes)' : ''}`;
 }
 
-const day = (iso) => (iso ? iso.slice(0, 10) : '-');
+// Calendar dates in the time zone of the machine that ran the commands (the header names it), so a run late
+// in the evening in India is dated the day the team ran it, not the UTC day.
+const day = (iso) => (iso ? new Date(iso).toLocaleDateString('sv-SE') : '-');
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const md = (text) => String(text).replace(/\|/g, '\\|');
 
 function render(results) {
   const lines = [
     '# Test report',
     '',
-    `Generated on ${day(results.generatedAt)} by \`npm run test:report\` at commit \`${results.commit}\` (${results.environment}). Every number below was measured by the command named next to it, on the date given; nothing is estimated.`,
+    `Generated on ${day(results.generatedAt)} by \`npm run test:report\` at commit \`${results.commit}\` (${results.environment}, dates in ${timeZone}). Every number below was measured by the command named next to it, on the date given; nothing is estimated.`,
     '',
     '## Summary',
     '',
@@ -275,7 +278,7 @@ function render(results) {
       '',
       '## Browser tests',
       '',
-      `\`npm run e2e\` on ${day(e2e.measuredAt)} (Chromium, server in reference mode): ${e2e.passed} of ${e2e.tests} passed${e2e.flaky ? `, ${e2e.flaky} flaky` : ''} in ${e2e.durationSeconds} s. They include axe accessibility checks on five pages.`,
+      `\`npm run e2e\` on ${day(e2e.measuredAt)} (Chromium, server in reference mode): ${e2e.passed} of ${e2e.tests} passed${e2e.flaky ? `, ${e2e.flaky} flaky` : ''} in ${e2e.durationSeconds} s. They include axe accessibility checks (WCAG 2.1 A and AA) on every page they open.`,
     );
   }
   const found = results.matrices ?? [];

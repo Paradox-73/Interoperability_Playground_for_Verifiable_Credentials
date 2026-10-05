@@ -65,7 +65,11 @@ export function renderMarkdown(result: MatrixResult): string {
   }
   lines.push(
     '',
-    `The redacted record of each run (configuration, events, every HTTP exchange) is written to \`runs/<case id>.json\` next to this file. Those files are not kept in git; the nightly workflow publishes them as a build artifact.`,
+    `The redacted record of each run (configuration, events, every HTTP exchange) is written to \`runs/<case id>.json\` next to this file. ${
+      result.spec.mode === 'live'
+        ? 'Live runs are kept in git with this file, so every link above opens the recorded exchanges; the nightly workflow also publishes them as a build artifact.'
+        : 'Those files are not kept in git (about 5 MB per run of the reference matrix); the nightly workflow publishes them as a build artifact.'
+    }`,
   );
   const notes = result.cells.filter((cell) => cell.error && (!cell.matches || cell.verdict !== 'pass'));
   if (notes.length > 0) {
@@ -150,7 +154,7 @@ export function renderIndex(title: string, entries: readonly IndexEntry[]): stri
   }
   lines.push(
     '',
-    'Run files (`<spec>/runs/<case id>.json`) hold the redacted record of each run: configuration, events and every HTTP exchange. They are not kept in git; the nightly workflow publishes them as a build artifact. Why a cell fails is under "Errors and reasons" on its spec page; the gaps are in [docs/gaps/gaps.json](../../gaps/gaps.json).',
+    'Run files (`<spec>/runs/<case id>.json`) hold the redacted record of each run: configuration, events and every HTTP exchange. They are kept in git with the matrices; the nightly workflow also publishes them as a build artifact. Why a cell fails is under "Errors and reasons" on its spec page; the gaps are in [docs/gaps/gaps.json](../../gaps/gaps.json).',
     '',
   );
   return lines.join('\n');
