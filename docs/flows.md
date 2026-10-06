@@ -64,8 +64,11 @@ in the report.
 A scenario changes one thing on the way and states what a conformant verifier must answer: the happy path
 (`VALID`), an expired or not-yet-valid credential, a flipped issuer signature, an altered or unreferenced
 disclosure, a key binding JWT with the wrong nonce or audience, a replayed presentation, a presentation by
-someone other than the holder, a credential of the wrong type, plus probes for DID methods, W3C VC 2.0 and
-the `dc+sd-jwt` format name. The full catalogue with the specification clause behind each expected outcome:
+someone other than the holder, a credential of the wrong type, a forged `x5c` / `x5chain`, plus probes for
+DID methods, W3C VC 2.0 and the `dc+sd-jwt` format name. With `mso_mdoc` the wallet posts a DeviceResponse
+signed over a SessionTranscript built from the request (ISO/IEC TS 18013-7 Annex B in `inji-draft`, with the
+wallet's `mdoc_generated_nonce` sent next to `vp_token`; OpenID4VP 1.0 Appendix B.2.6.1 in `final-1.0`); see
+[oid4vp](../packages/oid4vp/README.md#mso_mdoc). The full catalogue with the specification clause behind each expected outcome:
 [scenarios](../packages/scenarios/README.md).
 
 ## Inji Web through Mimoto

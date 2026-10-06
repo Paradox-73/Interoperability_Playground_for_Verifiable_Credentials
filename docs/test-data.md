@@ -49,6 +49,7 @@ The farmer credential, in every format:
 | Reference issuer         | `FarmerCredential_ldp_vc_v2` | `ldp_vc`    | DataIntegrityProof eddsa-rdfc-2022 (W3C VC 2.0) | `FarmerCredential`                           |
 | Reference issuer         | `FarmerCredential_vc_sd_jwt` | `vc+sd-jwt` | EdDSA                                           | `https://playground.ps02.test/vct/farmer/v1` |
 | Reference issuer         | `FarmerCredential_dc_sd_jwt` | `dc+sd-jwt` | ES256                                           | `https://playground.ps02.test/vct/farmer/v1` |
+| Reference issuer         | `FarmerCredential_mso_mdoc`  | `mso_mdoc`  | ES256 (MSO in COSE_Sign1, `x5chain`)            | docType `test.ps02.playground.farmer.1`      |
 | Inji Certify, certify-ac | `FarmerCredential`           | `ldp_vc`    | Ed25519Signature2020                            | `FarmerCredential`                           |
 | Inji Certify, certify-ac | `FarmerSdJwt`                | `vc+sd-jwt` | EdDSA                                           | `urn:ps02:playground:FarmerCredential`       |
 
@@ -64,6 +65,13 @@ sample row so a reference credential and a Certify credential for one farmer can
 | `state`           | `Karnataka`  |
 | `landArea`        | `3 hectares` |
 | `primaryCropType` | `Maize`      |
+
+In the `mso_mdoc` credential the claims are elements of the namespace `test.ps02.playground.farmer.1`, all as
+text. Its MSO is signed by the reference issuer's P-256 key as a document signer, with a test certificate
+(`CN=Reference Issuer mdoc Document Signer`) issued by a test IACA root (`CN=Playground Test IACA`). Both
+certificates are made in memory when the server starts, and the reference verifier trusts that root; neither is
+saved. The reference verifier asks an mdoc for `farmerId`, `givenName`, `familyName` and `state` only, so
+`birthDate`, `landArea` and `primaryCropType` stay undisclosed.
 
 Inji Certify takes the claims of a pre-authorized offer from the `inji-certify` role (only the claims the
 configuration advertises; Certify refuses others) and certify-ac takes them from the farmer CSV row of the

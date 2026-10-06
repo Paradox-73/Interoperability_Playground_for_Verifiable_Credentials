@@ -13,6 +13,7 @@ export interface ScenarioIssuanceOptions {
   validUntil?: Date;
   types?: string[];
   vct?: string;
+  doctype?: string;
   useX5c?: boolean;
 }
 
@@ -33,6 +34,7 @@ export function issuanceOptionsFor(
       : { validUntil: at(variant.validUntilOffsetSeconds) }),
     ...(variant.types ? { types: [...variant.types] } : {}),
     ...(variant.vct === undefined ? {} : { vct: variant.vct }),
+    ...(variant.doctype === undefined ? {} : { doctype: variant.doctype }),
     ...(variant.useX5c === undefined ? {} : { useX5c: variant.useX5c }),
   };
   return Object.keys(options).length > 0 ? options : undefined;

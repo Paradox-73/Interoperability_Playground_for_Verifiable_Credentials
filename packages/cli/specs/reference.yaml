@@ -508,8 +508,130 @@ cases:
     format: ldp_vc
     scenario: holder-did-canonical
     verdict: not-supported
-  - uniqueIdentifier: TC_PG_NS_04
-    description: 'The reference roles do not issue or verify mso_mdoc'
+  # mso_mdoc (ISO/IEC 18013-5): every catalogue scenario that applies to an mdoc, in both profiles. The
+  # happy cells come first: vp-replay replays the happy presentation of the same profile.
+  - uniqueIdentifier: TC_PG_MDOC_01
+    description: 'Happy path, mso_mdoc, inji-draft'
     format: mso_mdoc
+    vpProfile: inji-draft
     scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_MDOC_02
+    description: 'Happy path, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_MDOC_03
+    description: 'Expired credential ("Valid but expired"), mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_MDOC_04
+    description: 'Expired credential ("Valid but expired"), mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_MDOC_05
+    description: 'Credential not valid yet, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_06
+    description: 'Credential not valid yet, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: not-yet-valid
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_07
+    description: 'Credential of the wrong type, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_08
+    description: 'Credential of the wrong type, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: wrong-type
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_09
+    description: 'Bad issuer signature, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_10
+    description: 'Bad issuer signature, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: bad-signature
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_11
+    description: 'Altered selective disclosure, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_12
+    description: 'Altered selective disclosure, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: altered-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_13
+    description: 'Extra disclosure the issuer never signed, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_14
+    description: 'Extra disclosure the issuer never signed, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: unreferenced-disclosure
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_15
+    description: 'Replayed presentation, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_16
+    description: 'Replayed presentation, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: vp-replay
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_17
+    description: 'Presented by someone other than the holder, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_18
+    description: 'Presented by someone other than the holder, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: holder-mismatch
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_19
+    description: 'Issuer signature forged with a self-signed certificate, mso_mdoc, inji-draft'
+    format: mso_mdoc
+    vpProfile: inji-draft
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_20
+    description: 'Issuer signature forged with a self-signed certificate, mso_mdoc, final-1.0'
+    format: mso_mdoc
+    vpProfile: final-1.0
+    scenario: forged-x5c
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_MDOC_21
+    description: 'An mdoc has no KB-JWT: kb-wrong-nonce does not apply to mso_mdoc'
+    format: mso_mdoc
+    scenario: kb-wrong-nonce
     verdict: not-supported

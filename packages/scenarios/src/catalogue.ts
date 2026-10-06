@@ -16,9 +16,26 @@
  */
 import type { CredentialFormat, ScenarioSpec } from '@inji-playground/protocol';
 
-/** Formats the playground's reference roles issue, present and verify (mso_mdoc is not one yet). */
-export const REFERENCE_FORMATS: readonly CredentialFormat[] = ['ldp_vc', 'vc+sd-jwt', 'dc+sd-jwt'];
+/** Formats the playground's reference roles issue, present and verify. */
+export const REFERENCE_FORMATS: readonly CredentialFormat[] = [
+  'ldp_vc',
+  'vc+sd-jwt',
+  'dc+sd-jwt',
+  'mso_mdoc',
+];
 const SD_JWT_FORMATS: CredentialFormat[] = ['vc+sd-jwt', 'dc+sd-jwt'];
+/**
+ * Formats whose elements are disclosed one by one under an issuer digest: SD-JWT VC disclosures and
+ * mdoc IssuerSignedItems (ISO/IEC 18013-5 section 9.1.2.5).
+ */
+const SELECTIVE_DISCLOSURE_FORMATS: CredentialFormat[] = [...SD_JWT_FORMATS, 'mso_mdoc'];
+/** Formats whose issuer key can be named by an X.509 chain: SD-JWT VC `x5c` and the mdoc `x5chain`. */
+const X5C_FORMATS: CredentialFormat[] = [...SD_JWT_FORMATS, 'mso_mdoc'];
+/**
+ * Formats whose issuer is a DID. An mdoc names its issuer by the document signer certificate only
+ * (ISO/IEC 18013-5 section 9.1.2.4), so DID-method probes leave it out.
+ */
+const DID_ISSUER_FORMATS: CredentialFormat[] = ['ldp_vc', ...SD_JWT_FORMATS];
 
 /** Changes the reference issuer applies when it signs (times relative to the moment of issuance). */
 export interface IssuerVariant {
@@ -30,6 +47,8 @@ export interface IssuerVariant {
   types?: string[];
   /** SD-JWT VC: replaces `vct`. */
   vct?: string;
+  /** mso_mdoc: replaces the docType. */
+  doctype?: string;
   /** SD-JWT VC: names the issuer key by a test certificate in `x5c` instead of a DID `kid`. */
   useX5c?: boolean;
   /** DID method of the issuer's keys; needs an issuer instance created with that method. */
@@ -40,16 +59,16 @@ export interface IssuerVariant {
 
 /** Changes made to the issued credential while the wallet holds it. */
 export type CredentialTamper =
-  /** One byte of the issuer signature (JWS) or `proofValue` (Data Integrity) inverted. */
+  /** One byte of the issuer signature (JWS, mdoc issuerAuth) or `proofValue` (Data Integrity) inverted. */
   | 'flip-issuer-signature'
-  /** SD-JWT re-signed by a forger's key named by a self-signed `x5c` certificate. */
+  /** SD-JWT or mdoc MSO re-signed by a forger's key named by a self-signed `x5c` / `x5chain` certificate. */
   | 'forge-x5c';
 
 /** Changes made to the encoded `vp_token` just before the wallet posts it. */
 export type PresentationTamper =
-  /** One disclosure's value changed, KB-JWT signed again over the result. */
+  /** One disclosure's (mdoc: element's) value changed, KB-JWT signed again over the result. */
   | 'alter-disclosure'
-  /** A disclosure the issuer never signed appended, KB-JWT signed again. */
+  /** A disclosure (mdoc: element) the issuer never signed appended, KB-JWT signed again. */
   | 'add-unreferenced-disclosure'
   /** KB-JWT signed again by the holder with a nonce from another request. */
   | 'kb-wrong-nonce'
@@ -81,9 +100,10 @@ const DAY = 24 * 3600;
 const REF_ISSUER = ['ref-issuer'];
 const REF_WALLET = ['ref-wallet'];
 
-/** A type and a `vct` the reference issuer never issues by default and verifiers never ask for. */
+/** A type, a `vct` and a docType the reference issuer never issues by default and verifiers never ask for. */
 export const WRONG_TYPE = 'LandRecordCredential';
 export const WRONG_VCT = 'https://playground.ps02.test/vct/land-record/v1';
+export const WRONG_DOCTYPE = 'test.ps02.playground.landrecord.1';
 
 /** Every scenario, in the order the UI lists them. */
 export const scenarioCatalog: readonly ScenarioDefinition[] = [
@@ -107,7 +127,7 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { issuer: REF_ISSUER },
     reference:
-      'VC Data Model 1.1 section 4.8 (expirationDate); VC Data Model 2.0 section 4.9 (validUntil); RFC 9901 section 7.1 step 6 with RFC 7519 section 4.1.4 (exp)',
+      'VC Data Model 1.1 section 4.8 (expirationDate); VC Data Model 2.0 section 4.9 (validUntil); RFC 9901 section 7.1 step 6 with RFC 7519 section 4.1.4 (exp); ISO/IEC 18013-5 section 9.3.1 step 6 (validityInfo.validUntil)',
     issuer: { validFromOffsetSeconds: -365 * DAY, validUntilOffsetSeconds: -DAY },
   },
   {
@@ -121,7 +141,7 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { issuer: REF_ISSUER },
     reference:
-      'VC Data Model 1.1 section 4.6 (issuanceDate); VC Data Model 2.0 section 4.9 (validFrom); RFC 9901 section 7.1 step 6 with RFC 7519 section 4.1.5 (nbf)',
+      'VC Data Model 1.1 section 4.6 (issuanceDate); VC Data Model 2.0 section 4.9 (validFrom); RFC 9901 section 7.1 step 6 with RFC 7519 section 4.1.5 (nbf); ISO/IEC 18013-5 section 9.3.1 step 6 (validityInfo.validFrom)',
     issuer: { validFromOffsetSeconds: DAY, validUntilOffsetSeconds: 365 * DAY },
   },
   {
@@ -134,8 +154,8 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { issuer: REF_ISSUER, wallet: REF_WALLET },
     reference:
-      'DIF Presentation Exchange 2.0 section 8 (input evaluation) for the draft profile; OpenID4VP 1.0 section 6 (DCQL credential query meta: type_values, vct_values)',
-    issuer: { types: ['VerifiableCredential', WRONG_TYPE], vct: WRONG_VCT },
+      'DIF Presentation Exchange 2.0 section 8 (input evaluation) for the draft profile, with ISO/IEC TS 18013-7 Annex B.3.1.1 (the input descriptor id is the docType); OpenID4VP 1.0 section 6 (DCQL credential query meta: type_values, vct_values, doctype_value)',
+    issuer: { types: ['VerifiableCredential', WRONG_TYPE], vct: WRONG_VCT, doctype: WRONG_DOCTYPE },
     wallet: { presentUnmatched: true },
   },
   {
@@ -149,33 +169,35 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { wallet: REF_WALLET },
     reference:
-      'VC Data Integrity 1.0 section 4.4 (verify proof); RFC 9901 section 7.1 step 2b (issuer signature)',
+      'VC Data Integrity 1.0 section 4.4 (verify proof); RFC 9901 section 7.1 step 2b (issuer signature); ISO/IEC 18013-5 section 9.3.1 step 2 (issuerAuth signature)',
     credentialTamper: 'flip-issuer-signature',
   },
   {
     id: 'altered-disclosure',
     title: 'Altered selective disclosure',
     description:
-      'The wallet changes the value of one disclosed claim (the given name) and signs its key binding JWT again. The issuer never signed that value, so the verifier must reject the presentation.',
+      'The wallet changes the value of one disclosed claim and, for SD-JWT VC, signs its key binding JWT again (an mdoc device signature does not cover issuer-signed elements). The issuer never signed that value, so the verifier must reject the presentation.',
     expected: 'INVALID',
     target: 'presentation',
     category: 'tamper',
-    formats: SD_JWT_FORMATS,
+    formats: SELECTIVE_DISCLOSURE_FORMATS,
     requires: { wallet: REF_WALLET },
-    reference: 'RFC 9901 section 7.1 step 3 (every disclosure must match a digest in the issuer-signed JWT)',
+    reference:
+      'RFC 9901 section 7.1 step 3 (every disclosure must match a digest in the issuer-signed JWT); ISO/IEC 18013-5 section 9.3.1 step 4 (IssuerSignedItem digest must match the MSO)',
     presentationTamper: 'alter-disclosure',
   },
   {
     id: 'unreferenced-disclosure',
     title: 'Extra disclosure the issuer never signed',
     description:
-      'The wallet adds a disclosure of its own (a new claim) and signs its key binding JWT again. No digest in the credential refers to it, so the verifier must reject the presentation.',
+      'The wallet adds a disclosure of its own (a new claim; for an mdoc, an element under a digest id the MSO does not list) and, for SD-JWT VC, signs its key binding JWT again. No digest in the credential refers to it, so the verifier must reject the presentation.',
     expected: 'INVALID',
     target: 'presentation',
     category: 'tamper',
-    formats: SD_JWT_FORMATS,
+    formats: SELECTIVE_DISCLOSURE_FORMATS,
     requires: { wallet: REF_WALLET },
-    reference: 'RFC 9901 section 7.1 step 3 (unreferenced disclosures are rejected)',
+    reference:
+      'RFC 9901 section 7.1 step 3 (unreferenced disclosures are rejected); ISO/IEC 18013-5 section 9.3.1 step 4 (every element needs its MSO digest)',
     presentationTamper: 'add-unreferenced-disclosure',
   },
   {
@@ -217,7 +239,7 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { wallet: REF_WALLET },
     reference:
-      'OpenID4VP 1.0 section 14.1 (preventing replay of the VP Token); Appendix B.1.3.2.5 (ldp_vp challenge) and B.3.6 (KB-JWT nonce)',
+      'OpenID4VP 1.0 section 14.1 (preventing replay of the VP Token); Appendix B.1.3.2.5 (ldp_vp challenge), B.3.6 (KB-JWT nonce) and B.2.6 (mdoc SessionTranscript)',
     presentationTamper: 'replay-earlier',
   },
   {
@@ -231,21 +253,21 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     formats: [...REFERENCE_FORMATS],
     requires: { wallet: REF_WALLET },
     reference:
-      'RFC 9901 section 7.3 step 5c (KB-JWT signed by the key in cnf); VC Data Model 1.1 section 5.8 and OpenID4VP 1.0 Appendix B.1.3.2.5 (ldp_vp holder binding)',
+      'RFC 9901 section 7.3 step 5c (KB-JWT signed by the key in cnf); VC Data Model 1.1 section 5.8 and OpenID4VP 1.0 Appendix B.1.3.2.5 (ldp_vp holder binding); ISO/IEC 18013-5 section 9.1.3.6 (DeviceSignature by the MSO deviceKey)',
     presentationTamper: 'present-as-other-holder',
   },
   {
     id: 'forged-x5c',
     title: 'Issuer signature forged with a self-signed certificate',
     description:
-      "The credential keeps the issuer's name and claims but is signed again by a forger's key, named by a self-signed X.509 certificate. A verifier must accept an x5c chain only when it ends at a trust anchor it knows.",
+      "The credential keeps the issuer's name and claims but is signed again by a forger's key, named by a self-signed X.509 certificate (SD-JWT x5c, mdoc x5chain). A verifier must accept a chain only when it ends at a trust anchor it knows.",
     expected: 'INVALID',
     target: 'credential',
     category: 'tamper',
-    formats: SD_JWT_FORMATS,
+    formats: X5C_FORMATS,
     requires: { wallet: REF_WALLET },
     reference:
-      'SD-JWT VC draft 19 section 2.5 (issuer key via x5c must be validated); RFC 7515 section 4.1.6 (x5c)',
+      'SD-JWT VC draft 19 section 2.5 (issuer key via x5c must be validated); RFC 7515 section 4.1.6 (x5c); ISO/IEC 18013-5 section 9.3.1 step 1 (document signer chain to a trusted IACA)',
     credentialTamper: 'forge-x5c',
   },
   {
@@ -256,7 +278,7 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     expected: 'VALID',
     target: 'none',
     category: 'probe',
-    formats: [...REFERENCE_FORMATS],
+    formats: DID_ISSUER_FORMATS,
     requires: { issuer: REF_ISSUER },
     reference: 'did:key Method v0.7 (W3C CCG); DID Core 1.0 section 7.1 (DID resolution)',
     issuer: { didMethod: 'did:key' },
@@ -269,7 +291,7 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     expected: 'VALID',
     target: 'none',
     category: 'probe',
-    formats: [...REFERENCE_FORMATS],
+    formats: DID_ISSUER_FORMATS,
     requires: { issuer: REF_ISSUER },
     reference: 'did:jwk method specification (DIF); DID Core 1.0 section 7.1 (DID resolution)',
     issuer: { didMethod: 'did:jwk' },

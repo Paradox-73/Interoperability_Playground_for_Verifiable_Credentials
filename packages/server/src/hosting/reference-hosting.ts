@@ -171,6 +171,11 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
     documentLoader,
     clientName: 'Playground reference verifier',
   });
+  // The reference issuers' mdoc IACA roots are trust anchors of the reference verifier, through the same
+  // list that holds Inji Certify's certificates (ISO/IEC 18013-5 section 9.3.1 step 1).
+  verifier.addX5cTrustAnchors(
+    (await Promise.all([...issuers.values()].map((hosted) => hosted.mdocTrustAnchors()))).flat(),
+  );
 
   return {
     publicUrl,

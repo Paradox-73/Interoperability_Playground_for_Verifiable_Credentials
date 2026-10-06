@@ -4,8 +4,10 @@
  * `@inji-playground/oid4vp`; every HTTP call goes through the run's recording fetch.
  *
  * Holder keys are made per run: Ed25519 for ldp_vc (an ldp_vp is signed with Ed25519Signature2020 or
- * eddsa-rdfc-2022), ES256 for SD-JWT VC (the combination Inji Certify accepted in the local trial). Both
- * are bound by did:jwk. The key is kept until the run presents, in a small per-run store.
+ * eddsa-rdfc-2022), ES256 for SD-JWT VC (the combination Inji Certify accepted in the local trial), both
+ * bound by did:jwk; and for mso_mdoc a P-256 key sent as `jwk` in the key proof, which the issuer turns
+ * into the mdoc's COSE_Key device key (`cose_key` binding, OpenID4VCI 1.0 Appendix A.2.2). The key is
+ * kept until the run presents, in a small per-run store.
  *
  * The run's scenario (`@inji-playground/scenarios`) decides how the wallet presents: the holder DID
  * form, presenting a credential the request did not ask for, and the presentation tamper applied just
@@ -78,7 +80,7 @@ export class ReferenceWalletRole implements WalletRole {
       description:
         'Headless wallet in the playground server: OpenID4VCI and OpenID4VP clients written from the specifications, independent of Inji.',
       capabilities: {
-        formats: ['ldp_vc', 'vc+sd-jwt', 'dc+sd-jwt'],
+        formats: ['ldp_vc', 'vc+sd-jwt', 'dc+sd-jwt', 'mso_mdoc'],
         proofTypes: ['ES256', 'EdDSA', 'Ed25519Signature2020', 'eddsa-rdfc-2022'],
         didMethods: ['did:jwk', 'did:key', 'did:web'],
         vciProfiles: ['draft13', 'v1'],
@@ -132,7 +134,7 @@ export class ReferenceWalletRole implements WalletRole {
     const received = result.credentials[0];
     if (!received) throw new RoleError('wallet.no-credential', 'the issuer answered without a credential');
     const format = received.format as CredentialFormat;
-    if (format !== 'ldp_vc' && format !== 'vc+sd-jwt' && format !== 'dc+sd-jwt') {
+    if (format !== 'ldp_vc' && format !== 'vc+sd-jwt' && format !== 'dc+sd-jwt' && format !== 'mso_mdoc') {
       throw new RoleError('wallet.format-unsupported', `the reference wallet cannot hold ${received.format}`);
     }
     this.#remember(ctx.runId, result.holderKey);
@@ -265,6 +267,7 @@ function guessFormat(configurationId: string | undefined): CredentialFormat | un
   const id = (configurationId ?? '').toLowerCase();
   if (id.includes('ldp')) return 'ldp_vc';
   if (id.includes('sd_jwt') || id.includes('sd-jwt') || id.includes('sdjwt')) return 'vc+sd-jwt';
+  if (id.includes('mdoc') || id.includes('mdl')) return 'mso_mdoc';
   return undefined;
 }
 
@@ -285,7 +288,11 @@ function keyForMetadata(configuration: Record<string, unknown>): HolderKey {
   return holderKeyFor(format);
 }
 
-/** Ed25519 for ldp_vc (ldp_vp proofs need it), ES256 otherwise; did:jwk binding in both cases. */
+/**
+ * Ed25519 for ldp_vc (ldp_vp proofs need it), ES256 otherwise, with did:jwk binding; for mso_mdoc a
+ * P-256 key named by `jwk` (the device key is a COSE_Key, not a DID).
+ */
 function holderKeyFor(format: CredentialFormat | undefined): HolderKey {
+  if (format === 'mso_mdoc') return createHolderKey('ES256', 'jwk');
   return format === 'ldp_vc' ? createHolderKey('EdDSA', 'did:jwk') : createHolderKey('ES256', 'did:jwk');
 }
