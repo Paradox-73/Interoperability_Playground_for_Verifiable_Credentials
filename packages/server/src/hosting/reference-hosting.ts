@@ -48,8 +48,8 @@ import type { FastifyInstance } from 'fastify';
 /** DID methods with a variant issuer next to the main one. */
 const VARIANT_DID_METHODS: readonly IssuerDidMethod[] = ['did:key', 'did:jwk'];
 
-/** Scopes of certify-ac's FarmerCredential (csvdp-farmer sample) and FarmerSdJwt (seed-ac); their tokens are for certify-ac. */
-export const CERTIFY_AC_SCOPES = ['mock_identity_vc_ldp', 'farmer_sd_jwt'];
+/** Scopes of certify-ac's FarmerCredential (csvdp-farmer sample), FarmerSdJwt and FarmerMdoc (seed-ac); their tokens are for certify-ac. */
+export const CERTIFY_AC_SCOPES = ['mock_identity_vc_ldp', 'farmer_sd_jwt', 'farmer_mdoc'];
 /** Client id Mimoto uses at the test authorization server (config/mimoto-issuers-config.json). */
 export const MIMOTO_CLIENT_ID = 'ps02-mimoto';
 

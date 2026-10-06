@@ -249,6 +249,16 @@ async function verifyDocument(
     );
   }
 
+  // Last, so that a run shows every check above passing: the structure ISO/IEC 18013-5 requires. A reader
+  // that decodes MobileSecurityObjectBytes and tdate strictly rejects such an mdoc outright.
+  if (issuerSigned.deviations.length > 0) {
+    throw new FormatError(
+      'MDOC_MALFORMED',
+      `the mdoc departs from ISO/IEC 18013-5 (issuer signature, value digests, validity and device signature verified): ${issuerSigned.deviations.join('; ')}`,
+      { spec: spec('9.1.2.4'), details: { deviations: issuerSigned.deviations } },
+    );
+  }
+
   return {
     docType,
     claims: mdocClaims(issuerSigned.nameSpaces),

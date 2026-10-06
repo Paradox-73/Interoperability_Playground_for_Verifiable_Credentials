@@ -1,0 +1,14 @@
+{
+  "nameSpaces": {
+    "test.ps02.playground.farmer.1": [
+      { "digestID": 0, "elementIdentifier": "farmerId", "elementValue": "${farmerID}" },
+      { "digestID": 1, "elementIdentifier": "fullName", "elementValue": "${fullName}" },
+      { "digestID": 2, "elementIdentifier": "birthDate", "elementValue": "${dateOfBirth}" },
+      { "digestID": 3, "elementIdentifier": "state", "elementValue": "${state}" },
+      { "digestID": 4, "elementIdentifier": "landArea", "elementValue": "${landArea}" },
+      { "digestID": 5, "elementIdentifier": "primaryCropType", "elementValue": "${primaryCropType}" }
+    ]
+  },
+  "docType": "${_doctype}",
+  "validityInfo": { "validFrom": "${_validFrom}", "validUntil": "${_validUntil}" }
+}

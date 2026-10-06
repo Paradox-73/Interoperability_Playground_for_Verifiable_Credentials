@@ -77,10 +77,34 @@ export async function probe(url: string, timeoutMs = 8_000): Promise<Health> {
 }
 
 /** The farmer credential the playground asks Inji Verify for, as a Presentation Exchange definition. */
+/** docType and namespace of the farmer mdoc (Inji Certify FarmerMdoc and the reference issuer). */
+export const FARMER_MDOC_DOCTYPE = 'test.ps02.playground.farmer.1';
+
 export function farmerPresentationDefinition(
   format: CredentialFormat,
   credentialType?: string,
 ): Record<string, unknown> {
+  if (format === 'mso_mdoc') {
+    // ISO/IEC 18013-7 Annex B: input descriptor id = docType, fields $['namespace']['element'].
+    const doctype = credentialType ?? FARMER_MDOC_DOCTYPE;
+    const mdocFormat = { mso_mdoc: { alg: ['ES256'] } };
+    const element = (name: string) => ({ path: [`$['${doctype}']['${name}']`], intent_to_retain: false });
+    return {
+      id: 'ps02-farmer-mso-mdoc',
+      purpose: 'Inji Interoperability Playground: present the farmer credential issued in this run',
+      format: mdocFormat,
+      input_descriptors: [
+        {
+          id: doctype,
+          format: mdocFormat,
+          constraints: {
+            limit_disclosure: 'required',
+            fields: ['farmerId', 'birthDate', 'state'].map(element),
+          },
+        },
+      ],
+    };
+  }
   const sdJwt = format === 'vc+sd-jwt' || format === 'dc+sd-jwt';
   const formats = sdJwt
     ? {

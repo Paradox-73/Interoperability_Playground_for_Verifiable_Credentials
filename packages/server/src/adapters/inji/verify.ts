@@ -135,8 +135,35 @@ async function waitForSubmission(ctx: RunContext, base: string, requestId: strin
         'the Inji Verify request expired before a presentation arrived',
       );
     }
-    // ACTIVE: the long poll ended without a submission; ask again.
+    // ACTIVE: the long poll ended without a submission. A submission verify-service refused (HTTP 4xx, for
+    // example INVALID_VP_TOKEN for an mso_mdoc, gap G28) leaves the request ACTIVE, so end the wait on it.
+    const refused = refusedSubmission(ctx);
+    if (refused) throw refused;
   }
+}
+
+/** A `direct_post` this run made that verify-service answered with an error, as a `RoleError`. */
+function refusedSubmission(ctx: RunContext): RoleError | undefined {
+  const exchange = ctx.http
+    .exchanges()
+    .find(
+      (candidate) =>
+        candidate.request.method === 'POST' &&
+        /\/vp-submission\/direct-post\/?$/.test(new URL(candidate.request.url).pathname) &&
+        (candidate.response?.status ?? 0) >= 400,
+    );
+  if (!exchange?.response) return undefined;
+  let detail = '';
+  try {
+    const body = JSON.parse(exchange.response.body ?? '') as { errorCode?: string; errorMessage?: string };
+    detail = [body.errorCode, body.errorMessage].filter(Boolean).join(': ');
+  } catch {
+    detail = (exchange.response.body ?? '').slice(0, 200);
+  }
+  return new RoleError(
+    'verifier.submission-refused',
+    `Inji Verify refused the presentation with HTTP ${exchange.response.status}${detail ? ` (${detail})` : ''}`,
+  );
 }
 
 /** Fetches the v2 result and turns it into the playground's verification result. */
@@ -189,8 +216,8 @@ function stateOf(ref: PresentationRequestRef): { requestId: string; transactionI
   return { requestId: state.requestId, transactionId: state.transactionId };
 }
 
-function assertFormat(spec: PresentationSpec): void {
-  if (!(FORMATS as readonly string[]).includes(spec.format)) {
+function assertFormat(spec: PresentationSpec, extra: readonly string[] = []): void {
+  if (![...FORMATS, ...extra].includes(spec.format)) {
     throw new RoleError('verifier.format-unsupported', `Inji Verify 0.18.2 does not request ${spec.format}`);
   }
 }
@@ -212,8 +239,13 @@ export class InjiVerifyRole implements VerifierRole {
       interaction: 'automatic',
       description:
         'Inji Verify verify-service from the local stack, driven through its OpenID4VP API: Presentation Exchange request by value, direct_post response, v2 result.',
-      capabilities,
-      notes: ['OpenID4VP drafts only (no DCQL, no direct_post.jwt); advertises vc+sd-jwt, not dc+sd-jwt.'],
+      // mso_mdoc is listed so the matrix measures it: verify-service 0.18.2 stores an mso_mdoc request, but
+      // its presentation verification has no mso_mdoc path (gap G28).
+      capabilities: { ...capabilities, formats: [...FORMATS, 'mso_mdoc'] },
+      notes: [
+        'OpenID4VP drafts only (no DCQL, no direct_post.jwt); advertises vc+sd-jwt, not dc+sd-jwt.',
+        'mso_mdoc requests are accepted, but presentations are not verified as mdoc (gap G28).',
+      ],
     };
   }
 
@@ -222,7 +254,7 @@ export class InjiVerifyRole implements VerifierRole {
   }
 
   async createRequest(ctx: RunContext, spec: PresentationSpec): Promise<PresentationRequestRef> {
-    assertFormat(spec);
+    assertFormat(spec, ['mso_mdoc']);
     const response = await ctx.http.fetch(`${this.#baseUrl}/v1/verify/vp-request`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

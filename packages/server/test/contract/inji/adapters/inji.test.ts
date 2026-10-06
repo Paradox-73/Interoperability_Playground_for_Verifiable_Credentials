@@ -112,7 +112,7 @@ describe('inji-certify against recorded Inji Certify 0.14.0 answers', () => {
         ],
       ]);
       await expect(
-        role.startIssuance(ctx, { format: 'mso_mdoc', vciProfile: 'draft13' }),
+        role.startIssuance(ctx, { format: 'dc+sd-jwt', vciProfile: 'draft13' }),
       ).rejects.toMatchObject({
         code: 'issuer.format-unsupported',
       });

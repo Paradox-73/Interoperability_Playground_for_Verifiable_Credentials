@@ -71,6 +71,12 @@ export interface ParsedIssuerSigned {
   /** The COSE_Sign1 array as received, so a presentation can copy it unchanged. */
   issuerAuthValue: unknown;
   mso: MobileSecurityObject;
+  /**
+   * Where the IssuerSigned departs from ISO/IEC 18013-5 in a way this reader can still read (an MSO without
+   * its tag 24, validity dates as plain text, no `signed` date), for example Inji Certify 0.14.0's. A wallet
+   * holds and presents such an mdoc; the verifier fails it on these.
+   */
+  deviations: string[];
 }
 
 /** An issued mdoc as a wallet holds it. */
@@ -127,7 +133,20 @@ export function parseIssuerSigned(value: unknown): ParsedIssuerSigned {
     });
   }
   // The payload is MobileSecurityObjectBytes = #6.24(bstr .cbor MobileSecurityObject).
-  const mso = parseMso(decodeTagged(decodeCbor(issuerAuth.payload, 'MSO'), 'MobileSecurityObjectBytes'));
+  const deviations: string[] = [];
+  const payload = decodeCbor(issuerAuth.payload, 'MSO');
+  let msoValue: unknown;
+  if (payload instanceof CborTag) {
+    msoValue = decodeTagged(payload, 'MobileSecurityObjectBytes');
+  } else if (payload instanceof Map) {
+    deviations.push(
+      'the issuerAuth payload is the MobileSecurityObject itself, not MobileSecurityObjectBytes #6.24(bstr .cbor MobileSecurityObject) (ISO/IEC 18013-5 section 9.1.2.4)',
+    );
+    msoValue = payload;
+  } else {
+    msoValue = decodeTagged(payload, 'MobileSecurityObjectBytes');
+  }
+  const mso = parseMso(msoValue, deviations);
   const nameSpaces = new Map<string, IssuerSignedItem[]>();
   const rawNameSpaces = map.get('nameSpaces');
   if (rawNameSpaces !== undefined) {
@@ -138,7 +157,7 @@ export function parseIssuerSigned(value: unknown): ParsedIssuerSigned {
       );
     }
   }
-  return { nameSpaces, issuerAuth, issuerAuthValue, mso };
+  return { nameSpaces, issuerAuth, issuerAuthValue, mso, deviations };
 }
 
 function parseIssuerSignedItem(value: unknown): IssuerSignedItem {
@@ -159,7 +178,19 @@ function parseIssuerSignedItem(value: unknown): IssuerSignedItem {
   };
 }
 
-function parseMso(value: unknown): MobileSecurityObject {
+/** A tdate, or a plain RFC 3339 text (recorded as a deviation). */
+function readValidityDate(value: unknown, what: string, deviations: string[]): Date {
+  if (typeof value === 'string') {
+    const date = new Date(value);
+    if (!Number.isNaN(date.getTime())) {
+      deviations.push(`${what} is a text string, not a tdate #6.0(tstr) (ISO/IEC 18013-5 section 9.1.2.4)`);
+      return date;
+    }
+  }
+  return readDate(value, what);
+}
+
+function parseMso(value: unknown, deviations: string[] = []): MobileSecurityObject {
   const map = asMap(value, 'MobileSecurityObject');
   const valueDigests = new Map<string, Map<number, Uint8Array>>();
   for (const [namespace, digests] of asMap(map.get('valueDigests'), 'valueDigests')) {
@@ -178,9 +209,12 @@ function parseMso(value: unknown): MobileSecurityObject {
     deviceKey: coseKeyToJwk(deviceKeyInfo.get('deviceKey')),
     docType: asText(map.get('docType'), 'MSO docType'),
     validityInfo: {
-      signed: readDate(validity.get('signed'), 'validityInfo.signed'),
-      validFrom: readDate(validity.get('validFrom'), 'validityInfo.validFrom'),
-      validUntil: readDate(validity.get('validUntil'), 'validityInfo.validUntil'),
+      signed: validity.has('signed')
+        ? readValidityDate(validity.get('signed'), 'validityInfo.signed', deviations)
+        : (deviations.push('validityInfo has no signed date (ISO/IEC 18013-5 section 9.1.2.4)'),
+          readValidityDate(validity.get('validFrom'), 'validityInfo.validFrom', [])),
+      validFrom: readValidityDate(validity.get('validFrom'), 'validityInfo.validFrom', deviations),
+      validUntil: readValidityDate(validity.get('validUntil'), 'validityInfo.validUntil', deviations),
       ...(validity.has('expectedUpdate')
         ? { expectedUpdate: readDate(validity.get('expectedUpdate'), 'validityInfo.expectedUpdate') }
         : {}),

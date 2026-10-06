@@ -50,10 +50,11 @@ Health checks: Certify issuer metadata (its `/actuator/health` needs a token), M
 
 ## Credentials Certify issues
 
-| Configuration      | Format      | Proof / algorithm                                           | Source                                                |
-| ------------------ | ----------- | ----------------------------------------------------------- | ----------------------------------------------------- |
-| `FarmerCredential` | `ldp_vc`    | Ed25519Signature2020                                        | upstream `sql/certify_init.sql`                       |
-| `FarmerSdJwt`      | `vc+sd-jwt` | EdDSA, `fullName` and `dateOfBirth` selectively disclosable | [config/seed/](config/seed/), added by `certify-seed` |
+| Configuration      | Format      | Proof / algorithm                                                                                                | Source                                                                                                                                         |
+| ------------------ | ----------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FarmerCredential` | `ldp_vc`    | Ed25519Signature2020                                                                                             | upstream `sql/certify_init.sql`                                                                                                                |
+| `FarmerSdJwt`      | `vc+sd-jwt` | EdDSA, `fullName` and `dateOfBirth` selectively disclosable                                                      | [config/seed/](config/seed/), added by `certify-seed`                                                                                          |
+| `FarmerMdoc`       | `mso_mdoc`  | ES256 (`CERTIFY_VC_SIGN_EC_R1`, certificate in `x5chain`), docType and namespace `test.ps02.playground.farmer.1` | [config/seed/](config/seed/) and [config/seed-ac/](config/seed-ac/), added by `certify-seed` and `certify-ac-seed` (2026-10-06); gaps G26, G27 |
 
 Both are signed by the issuer `did:web:certify.ps02.test`. Holder binding: `did:jwk` or `did:key`; the proof
 JWT may use RS256 or ES256 for `FarmerCredential` (upstream seed row).

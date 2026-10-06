@@ -10,7 +10,8 @@
  * byte strings it received (`#6.24` wrapped items, COSE protected headers and payloads).
  *
  * `cbor-x` extensions are global to the module. `@owf/cose` (loaded with `@sd-jwt/sd-jwt-vc`) registers
- * decoders that turn tag 24 into its own `DataItem` and tag 1004 into `DateOnly`, so what `decode`
+ * decoders that turn tag 24 into its own `DataItem`, tag 1004 into `DateOnly` and tag 18 (a tagged COSE_Sign1,
+ * as Inji Certify 0.14.0 writes `issuerAuth`) into its `Sign1`, so what `decode`
  * returns depends on which other packages were imported. `decodeCbor` therefore turns both back into
  * plain `Tag` values, and every reader here sees the same shapes in every process.
  */
@@ -28,6 +29,8 @@ const encoder = new Encoder({
 export const ENCODED_CBOR_TAG = 24;
 /** Tag 0: date/time string (RFC 8949 section 3.4.1), the `tdate` of ISO 18013-5. */
 export const TDATE_TAG = 0;
+/** Tag 18: COSE_Sign1 (RFC 9052 section 2). */
+const COSE_SIGN1_CBOR_TAG = 18;
 /** Tag 1004: full-date string (RFC 8943), the `full-date` of ISO 18013-5. */
 export const FULL_DATE_TAG = 1004;
 
@@ -71,6 +74,10 @@ function normalise(value: unknown): unknown {
   const buffer = (value as { buffer?: unknown }).buffer;
   if (constructorName === 'DataItem' && buffer instanceof Uint8Array)
     return new Tag(buffer, ENCODED_CBOR_TAG);
+  if (constructorName === 'Sign1') {
+    const encoded = (value as { encodedStructure?: unknown }).encodedStructure;
+    if (Array.isArray(encoded)) return new Tag(normalise(encoded), COSE_SIGN1_CBOR_TAG);
+  }
   const toIso = (value as { toISOString?: unknown }).toISOString;
   if (constructorName === 'DateOnly' && typeof toIso === 'function') {
     return new Tag(String((toIso as () => string).call(value)), FULL_DATE_TAG);

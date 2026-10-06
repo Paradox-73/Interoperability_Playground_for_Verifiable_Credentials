@@ -71,3 +71,18 @@ cases:
     format: ldp_vc
     scenario: holder-proof-es256
     verdict: fail
+  # mso_mdoc (2026-10-06): certify-ac issues FarmerMdoc from the farmer CSV (config/seed-ac/).
+  - uniqueIdentifier: TC_PG_WEB_09
+    description: certify-ac -> reference wallet -> reference verifier, mso_mdoc; filled from the farmer CSV and correctly signed, but departs from ISO/IEC 18013-5 (G27)
+    issuer: inji-certify-ac
+    wallet: ref-wallet
+    verifier: ref-verifier
+    format: mso_mdoc
+    verdict: fail
+  - uniqueIdentifier: TC_PG_WEB_10
+    description: certify-ac -> Inji Web -> Inji Verify, mso_mdoc; Mimoto refuses the download, "Unsupported credential format mso_mdoc" (G29)
+    issuer: inji-certify-ac
+    wallet: inji-web
+    verifier: inji-verify
+    format: mso_mdoc
+    verdict: fail

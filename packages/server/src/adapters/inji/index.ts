@@ -51,7 +51,11 @@ export function injiRoles(options?: InjiRoleOptions): AnyRole[] {
       baseUrl: urls.certify,
       ...(options.onCertifyTrustAnchors ? { onTrustAnchors: options.onCertifyTrustAnchors } : {}),
     }),
-    new InjiCertifyAcRole({ baseUrl: urls.certifyAc, credentialIssuer: options.config.injiCertifyAcIssuer }),
+    new InjiCertifyAcRole({
+      baseUrl: urls.certifyAc,
+      credentialIssuer: options.config.injiCertifyAcIssuer,
+      ...(options.onCertifyTrustAnchors ? { onTrustAnchors: options.onCertifyTrustAnchors } : {}),
+    }),
     new InjiVerifyRole(urls.verify),
     new InjiVerifySdkRole({ baseUrl: urls.verify, hub: options.hub }),
     ...(options.reference

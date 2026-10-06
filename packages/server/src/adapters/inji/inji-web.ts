@@ -100,7 +100,7 @@ export class InjiWebRole implements WalletRole {
       description:
         'Inji Web and its backend Mimoto from the holder-web profile, driven headless with the requests Inji Web makes: guest download to receive, a signed-in wallet to present.',
       capabilities: {
-        formats: ['ldp_vc', 'vc+sd-jwt'],
+        formats: ['ldp_vc', 'vc+sd-jwt', 'mso_mdoc'],
         proofTypes: ['RsaSignature2018', 'Ed25519Signature2020', 'RS256', 'ES256'],
         didMethods: ['did:jwk'],
         vciProfiles: ['draft13'],

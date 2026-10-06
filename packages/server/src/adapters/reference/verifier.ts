@@ -24,8 +24,11 @@ import type { ReferenceHosting } from '../../hosting/reference-hosting.js';
 import { SERVER_VERSION } from '../../version.js';
 import { processHealth, toRoleError } from './common.js';
 
-/** Farmer elements an mso_mdoc request asks for by default (birthDate, landArea and primaryCropType stay undisclosed). */
-const DEFAULT_MDOC_ELEMENTS = ['farmerId', 'givenName', 'familyName', 'state'];
+/**
+ * Farmer elements an mso_mdoc request asks for by default: ones both the reference issuer and Inji Certify's
+ * FarmerMdoc (config/seed/farmer-mdoc.template.json) issue; the others stay undisclosed.
+ */
+const DEFAULT_MDOC_ELEMENTS = ['farmerId', 'birthDate', 'state', 'landArea'];
 
 export class ReferenceVerifierRole implements VerifierRole {
   readonly #hosting: ReferenceHosting;

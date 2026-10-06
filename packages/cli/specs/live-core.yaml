@@ -100,3 +100,17 @@ cases:
     verifier: inji-verify
     format: dc+sd-jwt
     verdict: not-supported
+  # mso_mdoc (2026-10-06): Certify issues FarmerMdoc (config/seed/farmer-mdoc.*); the reference roles and
+  # Inji Verify are measured against it.
+  - uniqueIdentifier: TC_PG_LIVE_15
+    description: Inji Certify -> reference wallet -> reference verifier, mso_mdoc; issuer signature, digests and device signature verify, but the mdoc departs from ISO/IEC 18013-5 (G27) and the pre-authorized profile leaves its elements unfilled (G26)
+    issuer: inji-certify
+    verifier: ref-verifier
+    format: mso_mdoc
+    verdict: fail
+  - uniqueIdentifier: TC_PG_LIVE_16
+    description: Reference issuer -> reference wallet -> Inji Verify, mso_mdoc; Inji Verify takes the mso_mdoc request but refuses every DeviceResponse with INVALID_VP_TOKEN (G28)
+    issuer: ref-issuer
+    verifier: inji-verify
+    format: mso_mdoc
+    verdict: fail
