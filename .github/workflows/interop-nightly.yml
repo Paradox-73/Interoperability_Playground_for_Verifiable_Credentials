@@ -2,8 +2,9 @@
 # Inji stack (Certify, Inji Verify, Mimoto and Inji Web). The matrices are published as job summaries and
 # docs/interop-report/ (with the redacted run of every cell) as an artifact.
 #
-# Whether a GitHub-hosted runner has enough memory for the stack with the holder-web profile (about 3 GiB
-# estimated) is not known yet; the first run measures it.
+# Replayed locally with `node scripts/nightly-replay.mjs` (it runs the run steps of each job in
+# order with their env); the reference job also ran under nektos/act. Whether a GitHub-hosted runner has enough
+# memory for the stack with the holder-web profile (2.5 GiB measured locally) is not known yet.
 name: interop-nightly
 
 on:
@@ -62,34 +63,23 @@ jobs:
       - run: npm run build
       - name: start the Inji stack
         run: npm run stack:up
+      # One server for both live specs: certify-ac and Mimoto reach the playground at https://ref.ps02.test, and
+      # certify-ac accepts only tokens issued there; Inji Verify resolves the reference issuer's did:web there.
       - name: start the playground server against the stack
-        env:
-          PLAYGROUND_STACK: host
-          PLAYGROUND_HOST: 0.0.0.0
-          PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
-        run: |
-          nohup npm start > "$PLAYGROUND_RUN_DIR/server-core.log" 2>&1 &
-          echo $! > "$PLAYGROUND_RUN_DIR/server.pid"
-          for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
-          cat "$PLAYGROUND_RUN_DIR/server-core.log"; exit 1
-      - name: live-core matrix
-        id: core
-        continue-on-error: true
-        run: npm run matrix:live -- --spec live-core --junit docs/interop-report/live/junit-core.xml
-      # certify-ac and Mimoto reach the playground at https://ref.ps02.test, and certify-ac accepts only tokens
-      # issued there, so the holder-web cells need the server with that public URL.
-      - name: restart the playground server for Inji Web
         env:
           PLAYGROUND_STACK: host
           PLAYGROUND_HOST: 0.0.0.0
           PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
           PLAYGROUND_PUBLIC_URL: https://ref.ps02.test
         run: |
-          kill "$(cat "$PLAYGROUND_RUN_DIR/server.pid")" || true
-          for i in $(seq 1 30); do curl -sf http://localhost:28100/api/health > /dev/null || break; sleep 1; done
-          nohup npm start > "$PLAYGROUND_RUN_DIR/server-holder-web.log" 2>&1 &
+          nohup npm start > "$PLAYGROUND_RUN_DIR/server.log" 2>&1 &
+          echo $! > "$PLAYGROUND_RUN_DIR/server.pid"
           for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
-          cat "$PLAYGROUND_RUN_DIR/server-holder-web.log"; exit 1
+          cat "$PLAYGROUND_RUN_DIR/server.log"; exit 1
+      - name: live-core matrix
+        id: core
+        continue-on-error: true
+        run: npm run matrix:live -- --spec live-core --junit docs/interop-report/live/junit-core.xml
       - name: live-holder-web matrix
         id: holder
         continue-on-error: true
@@ -106,11 +96,13 @@ jobs:
           name: interop-report-live
           path: |
             docs/interop-report/
-            run/server-*.log
+            run/server.log
           if-no-files-found: warn
-      - name: stop the Inji stack
+      - name: stop the playground server and the Inji stack
         if: always()
-        run: npm run stack:down
+        run: |
+          kill "$(cat "$PLAYGROUND_RUN_DIR/server.pid")" || true
+          npm run stack:down
       - name: fail when a live matrix differed from its spec
         if: steps.core.outcome == 'failure' || steps.holder.outcome == 'failure'
         run: exit 1
