@@ -9,6 +9,7 @@ import {
   type Health,
   type RunContext,
 } from '@inji-playground/protocol';
+import { mdocIssuerFacts } from '@inji-playground/formats';
 import { Oid4vciClientError } from '@inji-playground/oid4vci';
 import { Oid4vpError } from '@inji-playground/oid4vp';
 
@@ -57,6 +58,7 @@ export function toRoleError(error: unknown, prefix: 'vci' | 'vp'): unknown {
 
 export interface CredentialFacts {
   proofType?: string;
+  /** The issuer DID; for mso_mdoc, the subject of the document signer certificate in x5chain. */
   issuerDid?: string;
 }
 
@@ -85,6 +87,10 @@ export function credentialFacts(raw: string, format: CredentialFormat): Credenti
         ...(typeof alg === 'string' ? { proofType: alg } : {}),
         ...(issuer ? { issuerDid: issuer } : {}),
       };
+    }
+    if (format === 'mso_mdoc') {
+      const facts = mdocIssuerFacts(raw);
+      return { proofType: facts.alg, ...(facts.issuer ? { issuerDid: facts.issuer } : {}) };
     }
   } catch {
     // The verifier reports a malformed credential; the report just lacks the two facts.

@@ -166,6 +166,8 @@ export interface ReferenceIssuer {
   createOffer(input: CreateOfferInput): CreatedOffer;
   /** DIDs of the issuer keys (one DID for did:web). */
   dids(): { ed25519: string; p256: string };
+  /** PEM certificates a verifier must trust for this issuer's mso_mdoc (the test IACA root). */
+  mdocTrustAnchors(): Promise<string[]>;
   didDocument(): Record<string, unknown> | undefined;
 }
 
@@ -427,6 +429,14 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
         );
       }
       return chosen;
+    }
+    if (format === 'mso_mdoc') {
+      // Draft 13 Appendix A.2.4: an mso_mdoc request names the doctype.
+      const match = candidates.find((config) => config.mdoc?.doctype === body.doctype);
+      if (!match) {
+        throw new OAuthError('unsupported_credential_type', `doctype ${String(body.doctype)} is not offered`);
+      }
+      return match;
     }
     const match = candidates.find((config) => config.vct === body.vct);
     if (!match) throw new OAuthError('unsupported_credential_type', `vct ${String(body.vct)} is not offered`);
@@ -691,6 +701,7 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
     authorizationServerMetadata,
     createOffer,
     dids: () => ({ ed25519: signer.ed25519.did, p256: signer.p256.did }),
+    mdocTrustAnchors: async () => [(await signer.mdocCertificates()).iaca.pem],
     didDocument: () => signer.didDocument() as Record<string, unknown> | undefined,
   };
 }

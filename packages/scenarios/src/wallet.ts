@@ -79,6 +79,10 @@ export async function respondWithScenario(
           profile: request.profile,
           nonce: request.nonce,
           clientId: request.clientId,
+          responseUri: request.responseUri,
+          ...(response.mdocGeneratedNonce === undefined
+            ? {}
+            : { mdocGeneratedNonce: response.mdocGeneratedNonce }),
           holderKey: binding.holderKey,
           ...(binding.documentLoader ? { documentLoader: binding.documentLoader } : {}),
           ...(earlierVpToken === undefined ? {} : { earlierVpToken }),

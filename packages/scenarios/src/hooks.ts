@@ -21,9 +21,14 @@ import { tamperCredential } from './tamper.js';
 /** Credential types the reference verifier asks for by default, per format. */
 export const FARMER_TYPE = 'FarmerCredential';
 export const FARMER_VCT = 'https://playground.ps02.test/vct/farmer/v1';
+export const FARMER_DOCTYPE = 'test.ps02.playground.farmer.1';
 
-/** The type (ldp_vc) or `vct` (SD-JWT VC) a verifier asks for to get the playground's farmer credential. */
+/**
+ * The type (ldp_vc), `vct` (SD-JWT VC) or docType (mso_mdoc) a verifier asks for to get the playground's
+ * farmer credential.
+ */
 export function requestedCredentialType(format: CredentialFormat): string {
+  if (format === 'mso_mdoc') return FARMER_DOCTYPE;
   return format === 'ldp_vc' ? FARMER_TYPE : FARMER_VCT;
 }
 

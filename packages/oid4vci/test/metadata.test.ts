@@ -34,6 +34,7 @@ describe('credential issuer metadata (draft 13 section 11.2, 1.0 section 12.2)',
         'FarmerCredential_ldp_vc',
         'FarmerCredential_ldp_vc_es256_proof',
         'FarmerCredential_ldp_vc_v2',
+        'FarmerCredential_mso_mdoc',
         'FarmerCredential_vc_sd_jwt',
       ]);
       for (const [id, configuration] of Object.entries(configurations)) {

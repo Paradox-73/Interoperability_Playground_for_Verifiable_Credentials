@@ -253,6 +253,7 @@
       "result": "verification result"
     },
     "opaque": "The inspector does not decode this format; the raw text is shown as sent.",
+    "cbor": "mdoc {{structure}}, base64url CBOR shown as JSON (byte strings as base64url, tag 24 items decoded). Signatures and digests are not checked here.",
     "json": {
       "keys_one": "{{count}} key",
       "keys_other": "{{count}} keys",

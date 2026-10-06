@@ -284,13 +284,24 @@ describe('draft 13 credential endpoint errors (section 7.3.1.2)', () => {
     const { accessToken, cNonce } = await token('FarmerCredential_ldp_vc');
     const holderKey = createHolderKey();
     const jwt = createProofJwt({ holderKey, audience: AUDIENCE, nonce: cNonce, nowMs: pg.clock() });
+    const jwtVc = await postJson(
+      pg.app,
+      '/ref/issuer/draft13/credential',
+      {
+        format: 'jwt_vc_json',
+        credential_definition: { type: ['VerifiableCredential'] },
+        proof: { proof_type: 'jwt', jwt },
+      },
+      accessToken,
+    );
+    expect(jwtVc.json.error).toBe('unsupported_credential_format');
     const mdoc = await postJson(
       pg.app,
       '/ref/issuer/draft13/credential',
       { format: 'mso_mdoc', doctype: 'x', proof: { proof_type: 'jwt', jwt } },
       accessToken,
     );
-    expect(mdoc.json.error).toBe('unsupported_credential_format');
+    expect(mdoc.json.error).toBe('unsupported_credential_type');
     const wrongType = await postJson(
       pg.app,
       '/ref/issuer/draft13/credential',

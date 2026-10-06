@@ -42,18 +42,39 @@ export function isSdJwtVcFormat(format: string): format is 'vc+sd-jwt' | 'dc+sd-
   return format === 'vc+sd-jwt' || format === 'dc+sd-jwt';
 }
 
-/** Formats the reference roles present and verify (mso_mdoc is a stretch goal). */
-export type PresentableFormat = Extract<CredentialFormat, 'ldp_vc' | 'vc+sd-jwt' | 'dc+sd-jwt'>;
+/** Formats the reference roles present and verify. */
+export type PresentableFormat = Extract<CredentialFormat, 'ldp_vc' | 'vc+sd-jwt' | 'dc+sd-jwt' | 'mso_mdoc'>;
 
 export function isPresentableFormat(format: string): format is PresentableFormat {
-  return format === 'ldp_vc' || isSdJwtVcFormat(format);
+  return format === 'ldp_vc' || format === 'mso_mdoc' || isSdJwtVcFormat(format);
+}
+
+/** COSE algorithm identifier of ES256 (RFC 9053 section 2.1), the only one mdoc signatures use here. */
+export const COSE_ES256 = -7;
+
+/**
+ * Form parameter that carries the wallet's mdoc generated nonce with an unencrypted `direct_post`
+ * response in the `inji-draft` profile. ISO/IEC TS 18013-7 Annex B.4.3 puts it in the JWE `apu`
+ * header of an encrypted response; the reference roles post unencrypted, so the wallet sends it next
+ * to `vp_token` and the verifier reads it from there to rebuild the SessionTranscript (Annex B.4.4).
+ */
+export const MDOC_GENERATED_NONCE_PARAMETER = 'mdoc_generated_nonce';
+
+/**
+ * `mso_mdoc` format metadata: the drafts and ISO/IEC TS 18013-7 Annex B.2.2 list JOSE names in
+ * `alg`; OpenID4VP 1.0 Appendix B.2.3 lists COSE algorithm identifiers.
+ */
+export function mdocFormatMetadata(profile: VpProfile): Record<string, unknown> {
+  return profile === 'final-1.0'
+    ? { issuerauth_alg_values: [COSE_ES256], deviceauth_alg_values: [COSE_ES256] }
+    : { alg: ['ES256'] };
 }
 
 /**
  * Client metadata listing the formats the reference verifier accepts: `vp_formats` in the drafts,
  * `vp_formats_supported` in 1.0 (section 11.1). Inji Verify sends the draft form.
  */
-export function vpFormatsMetadata(): Record<string, unknown> {
+export function vpFormatsMetadata(profile: VpProfile = 'inji-draft'): Record<string, unknown> {
   const sdJwt = {
     'sd-jwt_alg_values': [...SUPPORTED_JWS_ALGORITHMS],
     'kb-jwt_alg_values': [...SUPPORTED_JWS_ALGORITHMS],
@@ -63,5 +84,6 @@ export function vpFormatsMetadata(): Record<string, unknown> {
     ldp_vc: { proof_type: [...LDP_PROOF_TYPES] },
     'vc+sd-jwt': sdJwt,
     'dc+sd-jwt': sdJwt,
+    mso_mdoc: mdocFormatMetadata(profile),
   };
 }

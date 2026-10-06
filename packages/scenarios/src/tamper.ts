@@ -9,12 +9,18 @@
 import { randomBytes } from 'node:crypto';
 import {
   addUnreferencedDisclosure,
+  addUnreferencedMdocElement,
   alterDisclosure,
+  alterMdocElement,
+  firstMdocElement,
+  flipMdocIssuerSignature,
   flipProofValue,
   flipSdJwtIssuerSignature,
+  forgeMdocWithSelfSignedX5chain,
   forgeWithSelfSignedX5c,
   representLdpVp,
   resignKeyBinding,
+  resignMdocDeviceSignature,
 } from '@inji-playground/formats/tamper';
 import {
   createDidKey,
@@ -22,6 +28,7 @@ import {
   didKeyVerificationMethodId,
   generateKeyPair,
   isRecord,
+  mdocSessionTranscript,
   type DocumentLoader,
   type JsonObject,
   type KeyPair,
@@ -43,12 +50,16 @@ export async function tamperCredential(tamper: CredentialTamper, credential: Raw
   switch (tamper) {
     case 'flip-issuer-signature':
       if (isSdJwt(credential.format)) return flipSdJwtIssuerSignature(credential.raw);
+      if (credential.format === 'mso_mdoc') return flipMdocIssuerSignature(credential.raw);
       if (credential.format === 'ldp_vc') {
         return JSON.stringify(flipProofValue(JSON.parse(credential.raw) as JsonObject));
       }
       break;
     case 'forge-x5c':
       if (isSdJwt(credential.format)) return (await forgeWithSelfSignedX5c(credential.raw)).sdJwt;
+      if (credential.format === 'mso_mdoc') {
+        return (await forgeMdocWithSelfSignedX5chain(credential.raw)).credential;
+      }
       break;
   }
   throw new TypeError(`credential tamper "${tamper}" does not apply to format ${credential.format}`);
@@ -68,6 +79,9 @@ export interface PresentationTamperContext {
   documentLoader?: DocumentLoader;
   /** A `vp_token` form field the wallet posted to an earlier request (`replay-earlier`). */
   earlierVpToken?: string;
+  /** mso_mdoc: `response_uri` of the request and the mdoc generated nonce, for the SessionTranscript. */
+  responseUri?: string;
+  mdocGeneratedNonce?: string;
 }
 
 /** Audience of a verifier that is not the one asking (for `kb-wrong-aud`). */
@@ -97,6 +111,25 @@ async function tamperOne(
   presentation: unknown,
   context: PresentationTamperContext,
 ): Promise<unknown> {
+  if (typeof presentation === 'string' && context.format === 'mso_mdoc') {
+    switch (tamper) {
+      case 'alter-disclosure': {
+        const target = firstMdocElement(presentation);
+        if (!target) throw new TypeError('the presentation discloses no mdoc element to alter');
+        const altered = typeof target.value === 'string' ? `${target.value} (altered)` : 'altered';
+        return alterMdocElement(presentation, target.elementIdentifier, altered, target.namespace);
+      }
+      case 'add-unreferenced-disclosure':
+        return addUnreferencedMdocElement(presentation, INJECTED_CLAIM, true);
+      case 'present-as-other-holder':
+        // A valid DeviceSignature over this very request, by a key that is not the MSO's deviceKey.
+        return resignMdocDeviceSignature(presentation, mdocTranscript(context), generateKeyPair('ES256'));
+      case 'kb-wrong-nonce':
+      case 'kb-wrong-aud':
+        // KB-JWT tampers: an mdoc has no KB-JWT (its nonce and client_id are in the SessionTranscript).
+        break;
+    }
+  }
   if (typeof presentation === 'string' && isSdJwt(context.format)) {
     const holder = context.holderKey;
     switch (tamper) {
@@ -129,6 +162,30 @@ async function tamperOne(
     });
   }
   throw new TypeError(`presentation tamper "${tamper}" does not apply to format ${context.format}`);
+}
+
+/** The SessionTranscript the wallet signed for this request (see `mdocSessionTranscript`). */
+function mdocTranscript(context: PresentationTamperContext): unknown[] {
+  if (context.responseUri === undefined) throw new TypeError('an mdoc tamper needs the request response_uri');
+  if (context.profile === 'final-1.0') {
+    return mdocSessionTranscript({
+      kind: 'openid4vp-1.0',
+      clientId: context.clientId,
+      responseUri: context.responseUri,
+      nonce: context.nonce,
+      jwkThumbprint: null,
+    });
+  }
+  if (context.mdocGeneratedNonce === undefined) {
+    throw new TypeError('an inji-draft mdoc tamper needs the mdoc generated nonce of the response');
+  }
+  return mdocSessionTranscript({
+    kind: 'iso-18013-7-annex-b',
+    clientId: context.clientId,
+    responseUri: context.responseUri,
+    nonce: context.nonce,
+    mdocGeneratedNonce: context.mdocGeneratedNonce,
+  });
 }
 
 /**

@@ -113,6 +113,28 @@ describe('scenarioApplies', () => {
     expect(result.reasons[0]).toMatch(/vc\+sd-jwt, dc\+sd-jwt, not ldp_vc/);
   });
 
+  it('mso_mdoc: applies where the mdoc has the feature, and is left out of KB-JWT and DID-method scenarios', () => {
+    const mdocScenarios = scenarioCatalog
+      .filter((scenario) => scenarioApplies(scenario, { ...reference, format: 'mso_mdoc' }).applies)
+      .map((scenario) => scenario.id);
+    expect(mdocScenarios).toEqual([
+      'happy',
+      'expired',
+      'not-yet-valid',
+      'wrong-type',
+      'bad-signature',
+      'altered-disclosure',
+      'unreferenced-disclosure',
+      'vp-replay',
+      'holder-mismatch',
+      'forged-x5c',
+    ]);
+    // An mdoc has no KB-JWT and names its issuer by a certificate, not a DID (ISO/IEC 18013-5 section 9.1.2.4).
+    for (const id of ['kb-wrong-nonce', 'kb-wrong-aud', 'issuer-did-key', 'issuer-did-jwk']) {
+      expect(definition(id).formats, id).not.toContain('mso_mdoc');
+    }
+  });
+
   it('refuses a role the scenario cannot drive', () => {
     const result = scenarioApplies(definition('bad-signature'), { ...reference, wallet: 'inji-web' });
     expect(result).toEqual({

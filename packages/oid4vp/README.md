@@ -20,7 +20,8 @@ Inji's stable releases and OpenID4VP 1.0 differ on the wire, so both sides speak
 | KB-JWT `aud` / ldp `domain` | the client_id                                                                                                         | the full client_id, prefix included (Appendix B.3.6)                   |
 
 Formats: `ldp_vc` (presented as `ldp_vp`, Ed25519Signature2020 or `eddsa-rdfc-2022`), `vc+sd-jwt`
-and `dc+sd-jwt` (with a KB-JWT). `mso_mdoc` is not supported (stretch goal).
+and `dc+sd-jwt` (with a KB-JWT), and `mso_mdoc` (a DeviceResponse with DeviceSignature, see
+[mso_mdoc](#mso_mdoc)).
 
 Requests are emitted as `openid4vp://authorize?...`, the form Inji Wallet mobile recognises
 (`inji-wallet/machines/bleShare/scan/scanGuards.ts:28`). The wallet also accepts `haip-vp://` and
@@ -72,6 +73,14 @@ const result = toVerificationResult(report); // protocol package shape
 | `validity`                               | `expirationDate` / `validUntil` -> outcome `EXPIRED`                                                                              | `exp` -> `EXPIRED`, `nbf`                               |
 | `signature`                              | every credential proof and the presentation proof                                                                                 | issuer signature, disclosures                           |
 | `query`                                  | the credential satisfies the input descriptor (`inji-draft`) or the DCQL query (`final-1.0`)                                      | same                                                    |
+
+For `mso_mdoc` the same check ids carry: `signature` (the `x5chain` ends at a trust anchor, the
+issuerAuth signature, every element's MSO digest), `validity` (`validityInfo`, `EXPIRED` after
+`validUntil`), `holder-binding` (DeviceSignature by the MSO deviceKey over the SessionTranscript the
+verifier rebuilds), and `query` (the docType is the requested one: the input descriptor id in
+`inji-draft`, `meta.doctype_value` in `final-1.0`). Nonce and client_id are inputs of the
+SessionTranscript, so a presentation made for another request fails `holder-binding`: the device
+signature cannot tell which input differed. `nonce` and `audience` pass only together with it.
 
 The format library stops at the first failure. The report marks that check `fail` and the checks it
 never reached `skipped`, so a report never claims a check passed that did not run.
@@ -125,6 +134,29 @@ an `error` response instead.
 - When `credentialSubject.id` is a key id (`did:jwk:...#0`, as Inji Certify writes it, gap G13), the
   wallet presents the DID as `holder` and that key id as the proof's `verificationMethod`.
 
+## mso_mdoc
+
+|                   | `inji-draft` (ISO/IEC TS 18013-7 Annex B)                                                                                                                                                        | `final-1.0` (OpenID4VP 1.0 Appendix B.2)                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Query             | input descriptor `id` = docType, `format: {mso_mdoc: {alg: [ES256]}}`, `limit_disclosure: required`, one field per element: `path: ["$['<namespace>']['<element>']"]`, `intent_to_retain: false` | `format: mso_mdoc`, `meta.doctype_value`, `claims: [{path: [namespace, element], intent_to_retain: false}]`                                                   |
+| Client metadata   | `vp_formats.mso_mdoc.alg: [ES256]`                                                                                                                                                               | `vp_formats_supported.mso_mdoc: {issuerauth_alg_values: [-7], deviceauth_alg_values: [-7]}`                                                                   |
+| SessionTranscript | `[null, null, [SHA-256(cbor([client_id, mdocGeneratedNonce])), SHA-256(cbor([response_uri, mdocGeneratedNonce])), nonce]]` (Annex B.4.4)                                                         | `[null, null, ["OpenID4VPHandover", SHA-256(cbor([client_id, nonce, null, response_uri]))]]` (Appendix B.2.6.1; `null` because the response is not encrypted) |
+| Response          | `vp_token` = base64url DeviceResponse (JSON string), descriptor map `{format: mso_mdoc, path: $}`, plus `mdoc_generated_nonce`                                                                   | `vp_token` = `{<query id>: [base64url DeviceResponse]}`                                                                                                       |
+
+- **`mdoc_generated_nonce`.** Annex B.4.3 carries the wallet's mdoc generated nonce in the JWE `apu`
+  header of an encrypted `direct_post.jwt` response. The reference roles post unencrypted
+  `direct_post`, so the wallet sends a fresh random nonce (16 bytes, base64url) in the form parameter
+  `mdoc_generated_nonce` (`MDOC_GENERATED_NONCE_PARAMETER`) next to `vp_token`, and the verifier reads
+  it from there. A response without it fails the `format` check. This parameter is the playground's
+  choice, not a standard one; a verifier that expects Annex B over `direct_post.jwt` will not find it.
+- `client_id` in both transcripts is the value the request carried, prefix included in `final-1.0`.
+- **Claims** in `QuerySpec.claims` are written `<namespace>/<element>` for `mso_mdoc` (namespaces contain
+  dots); the verifier needs `query.type` (the docType) to build a Presentation Exchange request.
+- **Selective disclosure.** The wallet presents only the requested elements; without any requested, all.
+- **Trust.** The verifier verifies the document signer chain against `x5cTrustAnchors` (and those added
+  with `addX5cTrustAnchors()`), the same list it uses for SD-JWT `x5c`; an untrusted chain is
+  `X5C_UNTRUSTED`. The holder key must be P-256 (ES256): the wallet refuses another key.
+
 ## Errors
 
 Protocol failures throw `Oid4vpError` with a stable `code` (`OID4VP_ERROR_CODES`), an OAuth `error`
@@ -134,8 +166,8 @@ as `KB_JWT_NONCE_MISMATCH` or `LDP_EXPIRED`).
 
 ## Tests
 
-`npm test -w @inji-playground/oid4vp` runs 77 tests in 5 files (measured 2026-10-04: all pass, about
-24 s wall time including Vitest start-up, Node 24.19.0). Global `fetch` is replaced by a function that
+`npm test -w @inji-playground/oid4vp` runs 105 tests in 6 files (measured 2026-10-06: all pass, Node
+24.19.0). Global `fetch` is replaced by a function that
 fails the test if called: every exchange goes through the verifier's Fetch API handler in-process.
 
 | File                       | What it shows                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -144,6 +176,7 @@ fails the test if called: every exchange goes through the verifier's Fetch API h
 | `test/final-1.0.test.ts`   | For `ldp_vc` and `vc+sd-jwt` with `decentralized_identifier:` and `redirect_uri:` client ids: DCQL -> VALID with `vp_token` keyed by query id and the prefixed client id as KB `aud` / ldp `domain`; expired, flipped signature, replay. KB `aud` without the prefix, wrong nonce, unknown query id, unsatisfiable query, selective disclosure, same-device `redirect_uri`                                                                      |
 | `test/wallet.test.ts`      | The wallet refuses a request object with a bad signature, a changed payload, a key of another DID, a wrong `typ`; a DID client id sent unsigned; a `redirect_uri` client id with another `response_uri`. Signed request by value, the `haip-vp` and `eudi-openid4vp` schemes, expired requests. Padded did:jwk presented as bound -> VALID, canonical -> INVALID, a credential bound to someone else is refused                                 |
 | `test/query.test.ts`       | Client id formatting and parsing for both profiles, PE filter keywords, `presentation_submission` rules, SD-JWT claim reconstruction, the routes on a Fastify-shaped host                                                                                                                                                                                                                                                                       |
+| `test/mdoc.test.ts`        | `mso_mdoc` in both profiles and both client id schemes -> VALID with only the requested elements; the PE and DCQL request shapes; `mdoc_generated_nonce` missing or changed; expired -> EXPIRED; flipped issuer signature, untrusted issuer, altered and added elements, another docType -> INVALID with the failing check; Inji Certify's credential encoding                                                                                  |
 | `test/request-uri.test.ts` | `openid4vp://` parsing; `dcql` and `jsonpath-plus` load as ESM                                                                                                                                                                                                                                                                                                                                                                                  |
 
 Not covered yet: `direct_post.jwt` (encrypted responses), `x509_san_dns` / `x509_hash` client ids,
@@ -154,4 +187,5 @@ Inji Verify and Inji Wallet (the Inji adapters exercise this package against the
 
 OpenID4VP 1.0 (Final, 2025-07-09) and drafts 21 and 23; RFC 9101 (JAR); DIF Presentation Exchange 2.0;
 RFC 9901 (SD-JWT) and SD-JWT VC draft 19; W3C VC Data Model 1.1 and 2.0, VC Data Integrity 1.0;
-did:key, did:jwk and did:web method specifications.
+did:key, did:jwk and did:web method specifications; ISO/IEC 18013-5:2021 and ISO/IEC TS 18013-7 Annex B
+(mdoc).

@@ -16,6 +16,7 @@ export {
   type IssuedCredential,
   type IssuerDidMethod,
   type IssuerKeys,
+  type MdocCertificates,
 } from './issuer/signing.js';
 export * from './issuer/server.js';
 

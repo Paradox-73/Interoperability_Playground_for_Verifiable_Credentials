@@ -14,27 +14,34 @@ differs from the expected one is a finding about the role under test.
 
 ## Catalogue
 
-| Id                        | Category | Expected  | Formats                            | Roles needed                                                    | Specification                                                                                          |
-| ------------------------- | -------- | --------- | ---------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `happy`                   | happy    | `VALID`   | any                                | any                                                             | -                                                                                                      |
-| `expired`                 | tamper   | `EXPIRED` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | issuer `ref-issuer`                                             | VC Data Model 1.1 section 4.8; VC Data Model 2.0 section 4.9; RFC 9901 section 7.1 with RFC 7519 4.1.4 |
-| `not-yet-valid`           | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | issuer `ref-issuer`                                             | VC Data Model 1.1 section 4.6; VC Data Model 2.0 section 4.9; RFC 9901 section 7.1 with RFC 7519 4.1.5 |
-| `wrong-type`              | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | issuer `ref-issuer`, wallet `ref-wallet`                        | DIF Presentation Exchange 2.0 section 8; OpenID4VP 1.0 section 6 (DCQL `type_values`, `vct_values`)    |
-| `bad-signature`           | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | wallet `ref-wallet`                                             | VC Data Integrity 1.0 section 4.4; RFC 9901 section 7.1 step 2b                                        |
-| `altered-disclosure`      | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`           | wallet `ref-wallet`                                             | RFC 9901 section 7.1 step 3                                                                            |
-| `unreferenced-disclosure` | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`           | wallet `ref-wallet`                                             | RFC 9901 section 7.1 step 3                                                                            |
-| `kb-wrong-nonce`          | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`           | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5f; OpenID4VP 1.0 Appendix B.3.6                                             |
-| `kb-wrong-aud`            | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`           | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5f; OpenID4VP 1.0 Appendix B.3.6                                             |
-| `vp-replay`               | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | wallet `ref-wallet`                                             | OpenID4VP 1.0 section 14.1; Appendix B.1.3.2.5 and B.3.6                                               |
-| `holder-mismatch`         | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5c; VC Data Model 1.1 section 5.8; OpenID4VP 1.0 Appendix B.1.3.2.5          |
-| `forged-x5c`              | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`           | wallet `ref-wallet`                                             | SD-JWT VC draft 19 section 2.5; RFC 7515 section 4.1.6                                                 |
-| `issuer-did-key`          | probe    | `VALID`   | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | issuer `ref-issuer`                                             | did:key Method v0.7; DID Core 1.0 section 7.1                                                          |
-| `issuer-did-jwk`          | probe    | `VALID`   | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` | issuer `ref-issuer`                                             | did:jwk method specification; DID Core 1.0 section 7.1                                                 |
-| `vc2-eddsa-rdfc-2022`     | probe    | `VALID`   | `ldp_vc`                           | issuer `ref-issuer`                                             | VC Data Model 2.0; VC Data Integrity EdDSA Cryptosuites 1.0 section 3.3                                |
-| `dc-sd-jwt`               | probe    | `VALID`   | `dc+sd-jwt`                        | any                                                             | SD-JWT VC draft 19 section 2.2.1; OpenID4VP 1.0 Appendix B.3                                           |
-| `holder-did-canonical`    | probe    | `VALID`   | `ldp_vc`                           | issuer `inji-certify` or `inji-certify-ac`, wallet `ref-wallet` | did:jwk method specification (no padding; inji/inji-certify#1054)                                      |
+| Id                        | Category | Expected  | Formats                                        | Roles needed                                                    | Specification                                                                                                                                          |
+| ------------------------- | -------- | --------- | ---------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `happy`                   | happy    | `VALID`   | any                                            | any                                                             | -                                                                                                                                                      |
+| `expired`                 | tamper   | `EXPIRED` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | issuer `ref-issuer`                                             | VC Data Model 1.1 section 4.8; VC Data Model 2.0 section 4.9; RFC 9901 section 7.1 with RFC 7519 4.1.4; ISO/IEC 18013-5 section 9.3.1                  |
+| `not-yet-valid`           | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | issuer `ref-issuer`                                             | VC Data Model 1.1 section 4.6; VC Data Model 2.0 section 4.9; RFC 9901 section 7.1 with RFC 7519 4.1.5; ISO/IEC 18013-5 section 9.3.1                  |
+| `wrong-type`              | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | issuer `ref-issuer`, wallet `ref-wallet`                        | DIF Presentation Exchange 2.0 section 8, ISO/IEC TS 18013-7 Annex B.3.1.1; OpenID4VP 1.0 section 6 (DCQL `type_values`, `vct_values`, `doctype_value`) |
+| `bad-signature`           | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | wallet `ref-wallet`                                             | VC Data Integrity 1.0 section 4.4; RFC 9901 section 7.1 step 2b; ISO/IEC 18013-5 section 9.3.1 step 2                                                  |
+| `altered-disclosure`      | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc`           | wallet `ref-wallet`                                             | RFC 9901 section 7.1 step 3                                                                                                                            |
+| `unreferenced-disclosure` | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc`           | wallet `ref-wallet`                                             | RFC 9901 section 7.1 step 3                                                                                                                            |
+| `kb-wrong-nonce`          | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`                       | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5f; OpenID4VP 1.0 Appendix B.3.6                                                                                             |
+| `kb-wrong-aud`            | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`                       | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5f; OpenID4VP 1.0 Appendix B.3.6                                                                                             |
+| `vp-replay`               | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | wallet `ref-wallet`                                             | OpenID4VP 1.0 section 14.1; Appendix B.1.3.2.5, B.3.6 and B.2.6                                                                                        |
+| `holder-mismatch`         | tamper   | `INVALID` | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc` | wallet `ref-wallet`                                             | RFC 9901 section 7.3 step 5c; VC Data Model 1.1 section 5.8; OpenID4VP 1.0 Appendix B.1.3.2.5; ISO/IEC 18013-5 section 9.1.3.6                         |
+| `forged-x5c`              | tamper   | `INVALID` | `vc+sd-jwt`, `dc+sd-jwt`, `mso_mdoc`           | wallet `ref-wallet`                                             | SD-JWT VC draft 19 section 2.5; RFC 7515 section 4.1.6; ISO/IEC 18013-5 section 9.3.1 step 1                                                           |
+| `issuer-did-key`          | probe    | `VALID`   | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`             | issuer `ref-issuer`                                             | did:key Method v0.7; DID Core 1.0 section 7.1                                                                                                          |
+| `issuer-did-jwk`          | probe    | `VALID`   | `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt`             | issuer `ref-issuer`                                             | did:jwk method specification; DID Core 1.0 section 7.1                                                                                                 |
+| `vc2-eddsa-rdfc-2022`     | probe    | `VALID`   | `ldp_vc`                                       | issuer `ref-issuer`                                             | VC Data Model 2.0; VC Data Integrity EdDSA Cryptosuites 1.0 section 3.3                                                                                |
+| `dc-sd-jwt`               | probe    | `VALID`   | `dc+sd-jwt`                                    | any                                                             | SD-JWT VC draft 19 section 2.2.1; OpenID4VP 1.0 Appendix B.3                                                                                           |
+| `holder-did-canonical`    | probe    | `VALID`   | `ldp_vc`                                       | issuer `inji-certify` or `inji-certify-ac`, wallet `ref-wallet` | did:jwk method specification (no padding; inji/inji-certify#1054)                                                                                      |
 
-`kb-wrong-nonce` and `kb-wrong-aud` are linked to inji/inji-verify#2059. The full text of each entry (title,
+`kb-wrong-nonce` and `kb-wrong-aud` are linked to inji/inji-verify#2059. They and the DID-method probes leave
+`mso_mdoc` out: an mdoc has no KB-JWT (nonce and client_id are inside the SessionTranscript its device
+signature covers) and names its issuer by a document signer certificate, not a DID. For an mdoc,
+`altered-disclosure` and `unreferenced-disclosure` change or add an IssuerSignedItem in the DeviceResponse
+(no re-signing is needed: the device signature does not cover issuer-signed elements),
+`holder-mismatch` signs the DeviceAuth again with another P-256 key, `forged-x5c` signs the MSO again with a
+self-signed `x5chain`, and `vp-replay` fails the device signature, so the reference verifier reports it under
+`holder-binding` rather than `nonce`. The full text of each entry (title,
 description, specification reference) is in [src/catalogue.ts](src/catalogue.ts) and is what
 `GET /api/scenarios` serves.
 
@@ -43,12 +50,12 @@ description, specification reference) is in [src/catalogue.ts](src/catalogue.ts)
 Each catalogue entry is a `ScenarioSpec` (the protocol shape, validated against `ScenarioSpecSchema` when the
 module loads) plus instructions for the reference roles:
 
-| Field                | Who acts on it   | What it does                                                                                  |
-| -------------------- | ---------------- | --------------------------------------------------------------------------------------------- |
-| `issuer`             | reference issuer | validity window, type or `vct`, DID method, credential configuration, `x5c` (validly signed)  |
-| `credentialTamper`   | reference wallet | changes the issued credential before it is presented (flip a signature byte, forge an `x5c`)  |
-| `presentationTamper` | reference wallet | changes the encoded `vp_token` just before it is posted (disclosures, KB-JWT, replay, holder) |
-| `wallet`             | reference wallet | holder DID form; present a credential the request did not ask for                             |
+| Field                | Who acts on it   | What it does                                                                                              |
+| -------------------- | ---------------- | --------------------------------------------------------------------------------------------------------- |
+| `issuer`             | reference issuer | validity window, type, `vct` or docType, DID method, credential configuration, `x5c` (validly signed)     |
+| `credentialTamper`   | reference wallet | changes the issued credential before it is presented (flip a signature byte, forge an `x5c` or `x5chain`) |
+| `presentationTamper` | reference wallet | changes the encoded `vp_token` just before it is posted (disclosures, KB-JWT, replay, holder)             |
+| `wallet`             | reference wallet | holder DID form; present a credential the request did not ask for                                         |
 
 The tamper functions themselves are in `@inji-playground/formats/tamper`.
 

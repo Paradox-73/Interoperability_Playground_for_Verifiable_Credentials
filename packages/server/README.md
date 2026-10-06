@@ -5,8 +5,8 @@ SQLite store (Node's built-in `node:sqlite`) and the registry of roles (issuers,
 
 Status (2026-10-04): the reference issuer, wallet and verifier are hosted on the server's own port and
 registered as roles, with the phone wallet (`mobile-wallet`); every HTTP exchange of a run is recorded
-once, at one of three capture points. Reference runs pass end to end for `ldp_vc`, `vc+sd-jwt` and
-`dc+sd-jwt` in both OpenID4VP profiles, and every tamper and probe scenario of
+once, at one of three capture points. Reference runs pass end to end for `ldp_vc`, `vc+sd-jwt`,
+`dc+sd-jwt` and (since 2026-10-06) `mso_mdoc` in both OpenID4VP profiles, and every tamper and probe scenario of
 `@inji-playground/scenarios` that the reference roles can produce gives its expected outcome through
 the server (`test/reference-scenarios.test.ts`). Since 2026-10-05 the Inji adapters
 (`src/adapters/inji/`) put Inji Certify and Inji Verify into runs when the stack is up: see

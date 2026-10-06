@@ -170,3 +170,12 @@ export async function validateX5c(
   const leafJwk = toPublicJwk({ kty: exported.kty, crv: exported.crv, x: exported.x, y: exported.y });
   return { leafJwk, leafSubject: leaf.subject, trusted };
 }
+
+/** Subject distinguished name of a certificate (base64 DER or PEM), read without validating it. */
+export function certificateSubject(certificate: string): string {
+  try {
+    return new x509.X509Certificate(certificate).subject;
+  } catch (cause) {
+    throw new FormatError('X5C_INVALID', 'not a DER certificate in base64 or PEM', { cause });
+  }
+}

@@ -28,6 +28,7 @@ export const DEFAULT_CONFIGURATION_FOR_FORMAT: Partial<Record<CredentialFormat, 
   ldp_vc: 'FarmerCredential_ldp_vc',
   'vc+sd-jwt': 'FarmerCredential_vc_sd_jwt',
   'dc+sd-jwt': 'FarmerCredential_dc_sd_jwt',
+  mso_mdoc: 'FarmerCredential_mso_mdoc',
 };
 
 export class ReferenceIssuerRole implements IssuerRole {
@@ -50,13 +51,16 @@ export class ReferenceIssuerRole implements IssuerRole {
       description:
         'OpenID4VCI issuer written from the specifications (draft 13 and 1.0), independent of Inji; pre-authorized code offers.',
       capabilities: {
-        formats: ['ldp_vc', 'vc+sd-jwt', 'dc+sd-jwt'],
+        formats: ['ldp_vc', 'vc+sd-jwt', 'dc+sd-jwt', 'mso_mdoc'],
         proofTypes: ['Ed25519Signature2020', 'eddsa-rdfc-2022', 'EdDSA', 'ES256'],
         didMethods: ['did:key', 'did:jwk', 'did:web'],
         vciProfiles: ['draft13', 'v1'],
         issuance: ['credential-offer', 'wallet-initiated'],
       },
-      notes: ['ldp_vc as VC 1.1 with Ed25519Signature2020 unless a VC 2.0 configuration is requested.'],
+      notes: [
+        'ldp_vc as VC 1.1 with Ed25519Signature2020 unless a VC 2.0 configuration is requested.',
+        'mso_mdoc: doctype test.ps02.playground.farmer.1, MSO signed with ES256 by a test document signer certificate (x5chain) under a test IACA root.',
+      ],
     };
   }
 

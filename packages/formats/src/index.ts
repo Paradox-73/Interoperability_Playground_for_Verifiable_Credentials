@@ -53,6 +53,8 @@ export * from './sd-jwt/issue.js';
 export * from './sd-jwt/present.js';
 export * from './sd-jwt/verify.js';
 
+export * from './mdoc/index.js';
+
 export * from './size/qr.js';
 
 /** True for both names of the SD-JWT VC format (`vc+sd-jwt` is the old one, `dc+sd-jwt` the new one). */

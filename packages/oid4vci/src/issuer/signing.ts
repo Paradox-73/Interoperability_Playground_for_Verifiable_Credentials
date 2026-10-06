@@ -5,9 +5,14 @@
  * - `did:web` (hosted runs): one DID for both keys, document served at `<base>/did.json`.
  * - `did:key` / `did:jwk` (offline runs, the default in tests): each key is its own DID, so an ES256
  *   SD-JWT names a different `iss` DID than an ldp_vc of the same issuer.
+ *
+ * An mso_mdoc names no DID: its MSO is signed by the P-256 key as a document signer, whose test
+ * certificate is issued by a test IACA root (ISO/IEC 18013-5 Annex B) made when the first mdoc is
+ * signed. The IACA certificate is what a verifier trusts (`mdocTrustAnchors()`).
  */
 import { randomUUID } from 'node:crypto';
 import {
+  FormatError,
   buildDidDocument,
   createDidJwk,
   createDidKey,
@@ -18,6 +23,7 @@ import {
   didWebFromUrl,
   generateKeyPair,
   issueLdpVc,
+  issueMdoc,
   issueSdJwtVc,
   toPublicJwk,
   type DidDocument,
@@ -56,13 +62,16 @@ export interface IssuanceOptions {
   vct?: string;
   /** SD-JWT VC: names the issuer key by a test certificate in `x5c` instead of a DID `kid`. */
   useX5c?: boolean;
+  /** mso_mdoc: replaces the docType. */
+  doctype?: string;
   /** Merged over the subject claims. */
   claims?: Record<string, unknown>;
 }
 
 export interface IssuedCredential {
-  /** ldp_vc: the JSON object; SD-JWT VC: the compact string. */
+  /** ldp_vc: the JSON object; SD-JWT VC: the compact string; mso_mdoc: base64url CBOR IssuerSigned. */
   credential: Record<string, unknown> | string;
+  /** The issuer DID; for mso_mdoc, the subject of the document signer certificate. */
   issuerDid: string;
   /** Proof type for the run report: the Data Integrity suite or the JOSE algorithm. */
   proofType: string;
@@ -74,6 +83,7 @@ export class IssuerSigner {
   readonly p256: SigningIdentity;
   readonly documentLoader: DocumentLoader;
   private readonly certificates = new Map<string, Promise<TestCertificate>>();
+  private mdocChain: Promise<MdocCertificates> | undefined;
 
   constructor(
     keys: IssuerKeys,
@@ -157,6 +167,27 @@ export class IssuerSigner {
       return { credential, issuerDid: this.ed25519.did, proofType: ldp.suite };
     }
 
+    if (configuration.format === 'mso_mdoc') {
+      const { doctype, namespace } = configuration.mdoc!;
+      if (holder.publicJwk.kty !== 'EC' || holder.publicJwk.crv !== 'P-256') {
+        throw new FormatError('KEY_UNSUPPORTED', 'an mdoc device key must be P-256 (ES256 key proof)', {
+          spec: 'ISO/IEC 18013-5 section 9.1.5.2',
+        });
+      }
+      const chain = await this.mdocCertificates();
+      const credential = issueMdoc({
+        docType: options.doctype ?? doctype,
+        nameSpaces: { [namespace]: claims },
+        issuerKey: this.p256.keyPair,
+        x5chain: [chain.documentSigner.x5c],
+        deviceKey: holder.publicJwk,
+        signed: now,
+        validFrom,
+        validUntil,
+      });
+      return { credential, issuerDid: chain.documentSigner.subject, proofType: 'ES256' };
+    }
+
     const signer = configuration.sdJwtAlg === 'ES256' ? this.p256 : this.ed25519;
     const issuerKey = options.useX5c
       ? { keyPair: signer.keyPair, x5c: [(await this.testCertificate(signer.keyPair)).x5c] }
@@ -176,6 +207,30 @@ export class IssuerSigner {
     return { credential, issuerDid: signer.did, proofType: signer.keyPair.alg };
   }
 
+  /**
+   * The mdoc certificates: a test IACA root (its own P-256 key, kept in memory) and a document signer
+   * certificate for the issuer's P-256 key, created on first use (test-only, never saved).
+   */
+  mdocCertificates(): Promise<MdocCertificates> {
+    this.mdocChain ??= (async () => {
+      const iacaKey = generateKeyPair('ES256');
+      const iaca = await createTestCertificate({
+        subject: 'CN=Playground Test IACA, O=Inji Interop Playground (test only), C=IN',
+        keyPair: iacaKey,
+        ca: true,
+        validDays: 3650,
+      });
+      const documentSigner = await createTestCertificate({
+        subject: 'CN=Reference Issuer mdoc Document Signer, O=Inji Interop Playground (test only), C=IN',
+        keyPair: this.p256.keyPair,
+        issuer: { keyPair: iacaKey, certificate: iaca },
+        dnsNames: [new URL(this.baseUrl).hostname],
+      });
+      return { iaca, documentSigner };
+    })();
+    return this.mdocChain;
+  }
+
   /** Self-signed test certificate for `x5c`, created on first use (test-only, never saved). */
   private testCertificate(keyPair: KeyPair): Promise<TestCertificate> {
     let certificate = this.certificates.get(keyPair.alg);
@@ -189,6 +244,13 @@ export class IssuerSigner {
     }
     return certificate;
   }
+}
+
+export interface MdocCertificates {
+  /** Root a verifier trusts (ISO/IEC 18013-5 Annex B, IACA). */
+  iaca: TestCertificate;
+  /** Certificate of the issuer's P-256 key, signed by the IACA; sent in the MSO's `x5chain`. */
+  documentSigner: TestCertificate;
 }
 
 export function generateIssuerKeys(): IssuerKeys {

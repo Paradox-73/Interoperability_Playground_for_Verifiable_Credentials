@@ -1,6 +1,6 @@
 /**
  * Finds the protocol objects inside a recorded exchange or artefact and decodes each one: credential
- * offers, proof JWTs, credentials (SD-JWT, JWT, Data Integrity / ldp), authorization requests and request
+ * offers, proof JWTs, credentials (SD-JWT, JWT, Data Integrity / ldp, mdoc CBOR), authorization requests and request
  * objects, Presentation Exchange definitions, DCQL queries, vp_tokens, presentation submissions and
  * verification results.
  *
@@ -20,6 +20,7 @@ import {
   type JsonObject,
   type JsonValue,
 } from './decode';
+import { decodeMdoc, type DecodedMdoc } from './cbor';
 
 export type SectionKind =
   | 'credential-offer'
@@ -34,10 +35,11 @@ export type SectionKind =
   | 'verification-result'
   | 'jwt';
 
-/** How a section is decoded. `opaque` keeps text no decoder recognised (for example a CBOR mdoc). */
+/** How a section is decoded. `opaque` keeps text no decoder recognised. */
 export type DecodedView =
   | { type: 'jwt'; jwt: DecodedJwt }
   | { type: 'sd-jwt'; sdJwt: DecodedSdJwt }
+  | { type: 'cbor'; structure: DecodedMdoc['structure']; value: JsonValue }
   | { type: 'json'; value: JsonValue; proofs: JsonObject[] }
   | { type: 'params'; params: Array<[string, string]> }
   | { type: 'opaque' };
@@ -91,7 +93,10 @@ function rawOf(value: JsonValue): string {
   return typeof value === 'string' ? value : formatJson(value);
 }
 
-/** Decodes one credential: SD-JWT, JWT (jwt_vc_json) or a JSON-LD credential with an embedded proof. */
+/**
+ * Decodes one credential: SD-JWT, JWT (jwt_vc_json), a JSON-LD credential with an embedded proof, or an
+ * mdoc (base64url CBOR IssuerSigned or DeviceResponse).
+ */
 function addCredential(ctx: Context, kind: SectionKind, path: string, value: JsonValue): void {
   if (typeof value === 'string') {
     const sdJwt = decodeSdJwt(value);
@@ -100,6 +105,9 @@ function addCredential(ctx: Context, kind: SectionKind, path: string, value: Jso
     if (jwt) return add(ctx, kind, path, value, { type: 'jwt', jwt });
     const json = tryParseJson(value);
     if (json !== undefined) return addCredential(ctx, kind, path, json);
+    const mdoc = decodeMdoc(value);
+    if (mdoc)
+      return add(ctx, kind, path, value, { type: 'cbor', structure: mdoc.structure, value: mdoc.value });
     return add(ctx, kind, path, value, { type: 'opaque' });
   }
   add(ctx, kind, path, rawOf(value), jsonView(value));

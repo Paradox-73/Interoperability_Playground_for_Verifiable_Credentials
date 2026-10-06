@@ -60,6 +60,7 @@ const DEFAULT_CONFIGURATION: Record<string, string> = {
   ldp_vc: 'FarmerCredential_ldp_vc',
   'vc+sd-jwt': 'FarmerCredential_vc_sd_jwt',
   'dc+sd-jwt': 'FarmerCredential_dc_sd_jwt',
+  mso_mdoc: 'FarmerCredential_mso_mdoc',
 };
 
 const resolver = createDidResolver({ methods: ['key', 'jwk'] });
@@ -85,6 +86,8 @@ beforeAll(async () => {
   await app.register(issuers['did:jwk'].plugin, { prefix: '/ref/issuer-jwk' });
   await app.ready();
   verifier = new ReferenceVerifier({ baseUrl: VERIFIER_BASE, didResolver: resolver, documentLoader });
+  // The verifier trusts the issuers' mdoc IACA roots, as the playground server sets it up.
+  for (const issuer of Object.values(issuers)) verifier.addX5cTrustAnchors(await issuer.mdocTrustAnchors());
   const toIssuers = injectFetch(app, ORIGIN);
   const toVerifier = verifierFetchHandler(verifier);
   fetch = (url, init) =>
@@ -103,8 +106,10 @@ afterAll(async () => {
 /** The orchestrator's part of a run, with the scenario's hooks between the phases. */
 async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, vpProfile: VpProfile) {
   const hooks = scenarioHooks(scenario);
-  const keyPair = scenario.id === 'holder-proof-es256' ? p256KeyPair : holderKeyPair;
-  const holderKey = holderKeyFrom(keyPair, 'did:key');
+  // An mdoc device key is P-256 and named by `jwk` in the key proof (cose_key binding).
+  const mdoc = format === 'mso_mdoc';
+  const keyPair = scenario.id === 'holder-proof-es256' || mdoc ? p256KeyPair : holderKeyPair;
+  const holderKey = holderKeyFrom(keyPair, mdoc ? 'jwk' : 'did:key');
   const vciProfile = vpProfile === 'inji-draft' ? 'draft13' : 'v1';
 
   // Issue.
@@ -133,7 +138,11 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
   // Present and verify.
   const wallet = new PresentationClient({
     fetch,
-    holder: { keyPair, did: holderKey.did, verificationMethod: holderKey.kid! },
+    holder: {
+      keyPair,
+      did: holderKey.did,
+      ...(holderKey.kid === undefined ? {} : { verificationMethod: holderKey.kid }),
+    },
     documentLoader,
     didResolver: resolver,
     ...walletClientOptions(scenario),
@@ -142,8 +151,11 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
     format,
     vpProfile,
   };
-  const ask = (type?: string) =>
-    verifier.createRequest({ profile: vpProfile, format, ...(type ? { query: { type } } : {}) });
+  // An mso_mdoc request always names the docType, as the reference verifier role does.
+  const ask = (requested?: string) => {
+    const type = requested ?? (mdoc ? requestedCredentialType(format) : undefined);
+    return verifier.createRequest({ profile: vpProfile, format, ...(type ? { query: { type } } : {}) });
+  };
 
   let earlierVpToken: string | undefined;
   if (scenario.presentationTamper === 'replay-earlier') {
@@ -178,6 +190,11 @@ const FAILING_CHECK: Record<string, string> = {
   'kb-wrong-aud': 'audience',
   'holder-mismatch': 'holder-binding',
 };
+/**
+ * Where an mso_mdoc fails another check: nonce and client_id are inside the SessionTranscript that the
+ * device signature covers (ISO/IEC 18013-5 section 9.1.3.4), so a replay fails holder binding.
+ */
+const FAILING_CHECK_MDOC: Record<string, string> = { 'vp-replay': 'holder-binding' };
 
 describe('reference roles x scenario catalogue', () => {
   it('covers every scenario that applies to the reference roles, in every applicable format and both profiles', () => {
@@ -198,15 +215,17 @@ describe('reference roles x scenario catalogue', () => {
       const failed = report.checks.filter((check) => check.status === 'fail').map((check) => check.id);
       expect(report.outcome).toBe(scenario.expected);
       // A tamper scenario must fail for its own reason, not because something else broke first.
-      expect(failed).toEqual(FAILING_CHECK[id] ? [FAILING_CHECK[id]] : []);
+      const expectedCheck = (format === 'mso_mdoc' ? FAILING_CHECK_MDOC[id] : undefined) ?? FAILING_CHECK[id];
+      expect(failed).toEqual(expectedCheck ? [expectedCheck] : []);
     },
     20_000,
   );
 });
 
 describe('requestedCredentialType', () => {
-  it('asks for the farmer credential by type (ldp_vc) or vct (SD-JWT VC)', () => {
+  it('asks for the farmer credential by type (ldp_vc), vct (SD-JWT VC) or docType (mso_mdoc)', () => {
     expect(requestedCredentialType('ldp_vc')).toBe('FarmerCredential');
     expect(requestedCredentialType('dc+sd-jwt')).toBe('https://playground.ps02.test/vct/farmer/v1');
+    expect(requestedCredentialType('mso_mdoc')).toBe('test.ps02.playground.farmer.1');
   });
 });

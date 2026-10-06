@@ -11,18 +11,19 @@ in (did:web documents, JSON-LD contexts that are not pinned).
 
 ## What it covers
 
-| Area                | Formats and methods                                                                                                                                                                  | Main functions                                                                             |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Keys                | Ed25519 (`EdDSA`) and P-256 (`ES256`) as JWK; RFC 7638 thumbprints; key files in a caller-chosen folder                                                                              | `generateKeyPair`, `toPublicJwk`, `jwkThumbprint`, `loadOrCreateKeyPair`, `signCompactJws` |
-| X.509               | Test CA and leaf certificates for `x5c`; chain validation against trust anchors                                                                                                      | `createTestCertificate`, `validateX5c`                                                     |
-| DIDs                | `did:key` (Ed25519, P-256), `did:jwk` (padded form accepted and flagged), `did:web` (injectable fetch, `*.ps02.test` host override map)                                              | `createDidKey`, `createDidJwk`, `didWebFromUrl`, `buildDidDocument`, `createDidResolver`   |
-| `ldp_vc` / `ldp_vp` | VC 1.1 + `Ed25519Signature2020`; VC 2.0 + `DataIntegrityProof` / `eddsa-rdfc-2022`; presentations with `challenge` and `domain`, signed with `ecdsa-rdfc-2019` by a P-256 holder key | `issueLdpVc`, `verifyLdpVc`, `createLdpVp`, `verifyLdpVp`, `createDocumentLoader`          |
-| SD-JWT VC           | `typ` `dc+sd-jwt` or `vc+sd-jwt`; `ES256` or `EdDSA`; holder key as `cnf.jwk` or `cnf.kid`; issuer key by DID `kid`, `x5c`, or configured keys; KB-JWT                               | `issueSdJwtVc`, `presentSdJwtVc`, `verifySdJwtVc`, `decodeSdJwt`                           |
-| Size                | Credential bytes and PixelPass QR text length (Inji's QR encoding: CBOR, zlib, base45) against version 40 QR capacity                                                                | `credentialSize`, `pixelPassText`, `qrLevelsThatFit`                                       |
+| Area                | Formats and methods                                                                                                                                                                            | Main functions                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Keys                | Ed25519 (`EdDSA`) and P-256 (`ES256`) as JWK; RFC 7638 thumbprints; key files in a caller-chosen folder                                                                                        | `generateKeyPair`, `toPublicJwk`, `jwkThumbprint`, `loadOrCreateKeyPair`, `signCompactJws`              |
+| X.509               | Test CA and leaf certificates for `x5c`; chain validation against trust anchors                                                                                                                | `createTestCertificate`, `validateX5c`                                                                  |
+| DIDs                | `did:key` (Ed25519, P-256), `did:jwk` (padded form accepted and flagged), `did:web` (injectable fetch, `*.ps02.test` host override map)                                                        | `createDidKey`, `createDidJwk`, `didWebFromUrl`, `buildDidDocument`, `createDidResolver`                |
+| `ldp_vc` / `ldp_vp` | VC 1.1 + `Ed25519Signature2020`; VC 2.0 + `DataIntegrityProof` / `eddsa-rdfc-2022`; presentations with `challenge` and `domain`, signed with `ecdsa-rdfc-2019` by a P-256 holder key           | `issueLdpVc`, `verifyLdpVc`, `createLdpVp`, `verifyLdpVp`, `createDocumentLoader`                       |
+| SD-JWT VC           | `typ` `dc+sd-jwt` or `vc+sd-jwt`; `ES256` or `EdDSA`; holder key as `cnf.jwk` or `cnf.kid`; issuer key by DID `kid`, `x5c`, or configured keys; KB-JWT                                         | `issueSdJwtVc`, `presentSdJwtVc`, `verifySdJwtVc`, `decodeSdJwt`                                        |
+| `mso_mdoc`          | ISO/IEC 18013-5 IssuerSigned (MSO in COSE_Sign1, ES256, `x5chain`), DeviceResponse with DeviceSignature, SessionTranscript of ISO/IEC TS 18013-7 Annex B and of OpenID4VP 1.0 Appendix B.2.6.1 | `issueMdoc`, `presentMdoc`, `verifyMdocDeviceResponse`, `mdocSessionTranscript`, `decodeMdocCredential` |
+| Size                | Credential bytes and PixelPass QR text length (Inji's QR encoding: CBOR, zlib, base45) against version 40 QR capacity                                                                          | `credentialSize`, `pixelPassText`, `qrLevelsThatFit`                                                    |
 
-Not covered here: `mso_mdoc` (a stretch goal), status lists (a credential with `credentialStatus`
-verifies with a warning that status was not checked), and the tamper scenarios (`src/tamper/`, added
-by the scenario work package).
+Not covered here: status lists (a credential with `credentialStatus` verifies with a warning that
+status was not checked). Tamper primitives for every format are exported separately from
+`@inji-playground/formats/tamper` (`src/tamper/`).
 
 ## Examples
 
@@ -127,6 +128,66 @@ Only `*.ps02.test` and `localhost` hosts can be overridden, so a configuration m
 the DID of a real domain. Without an override the document is fetched over HTTPS, as the did:web
 specification requires.
 
+`mso_mdoc` (ISO/IEC 18013-5), from issuance to verification over OpenID4VP 1.0:
+
+```ts
+import {
+  createTestCertificate,
+  generateKeyPair,
+  issueMdoc,
+  mdocSessionTranscript,
+  presentMdoc,
+  verifyMdocDeviceResponse,
+} from '@inji-playground/formats';
+
+// Test IACA root and a document signer certificate it issues (ISO 18013-5 Annex B, test only).
+const iacaKey = generateKeyPair('ES256');
+const iaca = await createTestCertificate({ subject: 'CN=Test IACA', keyPair: iacaKey, ca: true });
+const signerKey = generateKeyPair('ES256');
+const signer = await createTestCertificate({
+  subject: 'CN=Test Document Signer',
+  keyPair: signerKey,
+  issuer: { keyPair: iacaKey, certificate: iaca },
+});
+const device = generateKeyPair('ES256'); // the holder key from the key proof JWT
+
+// base64url CBOR IssuerSigned, the `credential` of OpenID4VCI 1.0 Appendix A.2.4.
+const credential = issueMdoc({
+  docType: 'test.ps02.playground.farmer.1',
+  nameSpaces: { 'test.ps02.playground.farmer.1': { givenName: 'Asha', familyName: 'Rao' } },
+  issuerKey: signerKey,
+  x5chain: [signer.x5c],
+  deviceKey: device.publicJwk,
+  validFrom: new Date(),
+  validUntil: new Date(Date.now() + 3_600_000),
+});
+
+// Both sides build the same SessionTranscript from the request (OpenID4VP 1.0 Appendix B.2.6.1).
+const sessionTranscript = mdocSessionTranscript({
+  kind: 'openid4vp-1.0',
+  clientId: 'redirect_uri:https://verifier.ps02.test/response',
+  responseUri: 'https://verifier.ps02.test/response',
+  nonce: requestNonce,
+});
+const vpToken = presentMdoc({
+  credential,
+  disclose: [['test.ps02.playground.farmer.1', 'givenName']],
+  deviceKey: device,
+  sessionTranscript,
+});
+const { documents } = await verifyMdocDeviceResponse(vpToken, {
+  sessionTranscript,
+  trustAnchors: [iaca.pem],
+});
+// documents[0].claims = { 'test.ps02.playground.farmer.1': { givenName: 'Asha' } }
+```
+
+For the drafts (`inji-draft` profile) use `kind: 'iso-18013-7-annex-b'` with the wallet's
+`mdocGeneratedNonce`. `decodeMdocCredential` also reads Inji Certify 0.14.0's encoding, base64url
+CBOR of `{"docType": ..., "issuerSigned": ...}`; `mdocIssuerFacts` gives docType, algorithm and
+document signer subject for a report; `mdocToJson` gives a readable JSON view of any of these
+structures.
+
 ## Errors
 
 Every failure is a `FormatError` with a stable `code` (the full list is `FORMAT_ERROR_CODES` in
@@ -142,6 +203,12 @@ received values. `error.toJSON()` gives a plain object for run reports. Examples
 | `LDP_CHALLENGE_MISMATCH`, `LDP_DOMAIN_MISMATCH`     | The presentation was made for another nonce or client_id (OpenID4VP 1.0 Appendix B.1.3.2.5)          |
 | `LDP_EXPIRED`, `SDJWT_EXPIRED`                      | Outside the validity period; checked before the proof so reports show EXPIRED, not a generic failure |
 | `CONTEXT_NOT_PINNED`                                | A JSON-LD context is neither pinned nor fetchable because network access is off                      |
+| `MDOC_ISSUER_SIGNATURE_INVALID`                     | The MSO's COSE_Sign1 does not verify with the `x5chain` leaf key (ISO 18013-5 section 9.3.1 step 2)  |
+| `MDOC_DIGEST_MISMATCH`                              | A presented element is not the one the issuer hashed into the MSO (section 9.3.1 step 4)             |
+| `MDOC_DEVICE_SIGNATURE_INVALID`                     | DeviceSignature does not verify with the MSO deviceKey over this request's SessionTranscript         |
+| `MDOC_EXPIRED`, `MDOC_NOT_YET_VALID`                | Outside `validityInfo`; checked after the issuer signature, so reports show EXPIRED                  |
+| `MDOC_DOCTYPE_MISMATCH`                             | The document's docType differs from the MSO's or from the expected one (section 9.3.1 step 5)        |
+| `X5C_UNTRUSTED`                                     | An `x5c` / `x5chain` that does not end at a configured trust anchor                                  |
 
 ## Design notes
 
@@ -181,22 +248,42 @@ received values. `error.toJSON()` gives a plain object for run reports. Examples
   with `/// <reference path>` so other packages that compile these sources (through the `source`
   export condition) see the declarations too. Their types are not re-exported from `src/index.ts`.
 
+- **mdoc CBOR with `cbor-x`, and nothing re-encoded that is signed.** COSE and the MSO are written
+  here (about 600 lines) rather than taken from an mdoc library, so tamper primitives can change one
+  byte or one element and the inspector can show the exact structure. Signatures and digests are
+  checked over the bytes as received: COSE protected headers and payloads, and `#6.24` items (their
+  encoding is the tag plus the received byte string). `cbor-x` extensions are global to the module,
+  and `@owf/cose` (loaded with `@sd-jwt/sd-jwt-vc`) registers decoders that turn tag 24 into its own
+  `DataItem` and tag 1004 into `DateOnly`; `decodeCbor` turns those back into plain tags, so the
+  result does not depend on which packages a process loaded.
+- **mdoc trust.** `verifyMdocDeviceResponse` requires the `x5chain` to end at a trust anchor unless
+  `requireTrusted: false`. Trust anchors are the same base64 DER or PEM certificates `validateX5c`
+  takes for SD-JWT `x5c`, so an issuer certificate learnt at run time (Inji Certify's) is added the same
+  way. The ISO certificate profiles (IACA and document signer extensions, extended key usage
+  `1.0.18013.5.1.2`) are not checked; the reference issuer's test certificates do not carry them.
+- **mdoc device authentication** is DeviceSignature only. `deviceMac` needs a session key from
+  proximity engagement, which OpenID4VP does not have; a DeviceResponse with it is rejected.
+
 ## Tests
 
-`npm test -w @inji-playground/formats` runs 122 tests in 6 files (measured 2026-10-04: all pass in about
-3 s on the team laptop, Node 24.19.0). Test names start with the specification rule they check.
+`npm test -w @inji-playground/formats` runs 176 tests in 8 files (measured 2026-10-06: all pass in about
+2 s on the team laptop, Node 24.19.0; `test/tamper.test.ts` covers the tamper primitives of the other
+formats). Test names start with the specification rule they check.
 
-| File                        | What it shows                                                                                                                                                                                                                                                                                                                                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `test/sd-jwt.test.ts`       | Issue, present and verify for ES256 and EdDSA; wrong nonce, wrong aud, altered disclosure, removed disclosure (sd_hash), foreign KB key, changed payload, missing KB-JWT, stale KB-JWT, expired, not yet valid, `vc+sd-jwt` accepted, wrong `vct`, kid/iss mismatch, `alg: none`, wrong KB `typ`, nested disclosures, `cnf.kid`, configured issuer keys, `x5c` with and without a trust anchor               |
-| `test/ldp.test.ts`          | VC 1.1 + Ed25519Signature2020 and VC 2.0 + eddsa-rdfc-2022 round trips with global `fetch` replaced by a function that fails the test if called; tampered credential, wrong key, expired and not-yet-valid; did:jwk and did:web issuers; presentations with challenge and domain enforced, rewritten challenge, holder mismatch, tampered embedded credential; document loader offline and with a file cache |
-| `test/did.test.ts`          | did:key specification test vectors (Ed25519, P-256) and agreement with `key-did-resolver`; did:jwk specification example, padded and unpadded forms, private key refused; did:web URL rules from the specification, host override map, refused overrides, id mismatch, HTTP errors; verification relationships                                                                                               |
-| `test/keys.test.ts`         | Sign/verify, RFC 7638 thumbprints checked against `jose`, JWS round trip, alg/key mismatch, key files, x5c chains                                                                                                                                                                                                                                                                                            |
-| `test/size.test.ts`         | PixelPass round trip, a small credential fits QR version 40, a credential with an 8 KB photo does not                                                                                                                                                                                                                                                                                                        |
-| `test/dependencies.test.ts` | Every library loads as ESM inside Vitest on Node 24                                                                                                                                                                                                                                                                                                                                                          |
+| File                        | What it shows                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `test/sd-jwt.test.ts`       | Issue, present and verify for ES256 and EdDSA; wrong nonce, wrong aud, altered disclosure, removed disclosure (sd_hash), foreign KB key, changed payload, missing KB-JWT, stale KB-JWT, expired, not yet valid, `vc+sd-jwt` accepted, wrong `vct`, kid/iss mismatch, `alg: none`, wrong KB `typ`, nested disclosures, `cnf.kid`, configured issuer keys, `x5c` with and without a trust anchor                 |
+| `test/ldp.test.ts`          | VC 1.1 + Ed25519Signature2020 and VC 2.0 + eddsa-rdfc-2022 round trips with global `fetch` replaced by a function that fails the test if called; tampered credential, wrong key, expired and not-yet-valid; did:jwk and did:web issuers; presentations with challenge and domain enforced, rewritten challenge, holder mismatch, tampered embedded credential; document loader offline and with a file cache   |
+| `test/did.test.ts`          | did:key specification test vectors (Ed25519, P-256) and agreement with `key-did-resolver`; did:jwk specification example, padded and unpadded forms, private key refused; did:web URL rules from the specification, host override map, refused overrides, id mismatch, HTTP errors; verification relationships                                                                                                 |
+| `test/keys.test.ts`         | Sign/verify, RFC 7638 thumbprints checked against `jose`, JWS round trip, alg/key mismatch, key files, x5c chains                                                                                                                                                                                                                                                                                              |
+| `test/size.test.ts`         | PixelPass round trip, a small credential fits QR version 40, a credential with an 8 KB photo does not                                                                                                                                                                                                                                                                                                          |
+| `test/mdoc.test.ts`         | SessionTranscript of Annex B and of OpenID4VP 1.0 (byte level), IssuerSigned in both encodings, inspector JSON; issue, present with selective disclosure and verify in both transcripts; another nonce or client_id, another device key, flipped issuer signature, altered and unreferenced element, expired, not yet valid, untrusted and forged `x5chain`, docType mismatches, error status, missing element |
+| `test/dependencies.test.ts` | Every library loads as ESM inside Vitest on Node 24                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Specifications
 
 RFC 9901 (SD-JWT), draft-ietf-oauth-sd-jwt-vc-19, RFC 7515/7517/7518/7519/7638/7800/8037/8725,
 W3C VC Data Model 1.1 and 2.0, VC Data Integrity 1.0, vc-di-eddsa 1.0, the Ed25519Signature2020 CCG
-report, DID Core 1.0, did:key, did:jwk and did:web method specifications, OpenID4VP 1.0 Appendix B.
+report, DID Core 1.0, did:key, did:jwk and did:web method specifications, OpenID4VP 1.0 Appendix B,
+ISO/IEC 18013-5:2021 (mdoc), ISO/IEC TS 18013-7 Annex B, RFC 8949 (CBOR), RFC 9052/9053 (COSE), RFC 9360
+(`x5chain`).
