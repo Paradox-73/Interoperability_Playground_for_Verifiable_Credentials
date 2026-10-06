@@ -146,3 +146,34 @@ describe('network-map.host.json', () => {
     expect(toHostUrl('https://example.org/', map)).toEqual({ url: 'https://example.org/' });
   });
 });
+
+describe('JSON-LD context cache on the TLS front', () => {
+  const contextHosts = ['www.w3.org', 'w3id.org', 'piyush7034.github.io'];
+
+  it('the TLS front answers for the context hosts, and its certificate names them', () => {
+    const aliases = compose.services['tls-front'].networks.default.aliases;
+    for (const host of contextHosts) expect(aliases).toContain(host);
+    const init = readFileSync(`${STACK_DIR}/scripts/stack-init.sh`, 'utf8');
+    const names = /TLS_NAMES=\$\{TLS_NAMES:-([^}]*)\}/.exec(init)?.[1].split(' ') ?? [];
+    for (const host of contextHosts) expect(names).toContain(host);
+  });
+
+  it('every service that fetches contexts trusts the stack CA', () => {
+    for (const name of ['certify', 'certify-ac', 'verify-service', 'mimoto-service']) {
+      const service = compose.services[name];
+      expect(service.environment.USE_SYSTEM_CA_CERTS, name).toBe('1');
+      expect(
+        service.volumes.some((volume) => String(volume).endsWith('/certificates:ro')),
+        name,
+      ).toBe(true);
+    }
+  });
+
+  it('the cache resolves the real hosts through public DNS and serves stale copies on 429', () => {
+    const template = readFileSync(`${STACK_DIR}/nginx/tls-front.conf.template`, 'utf8');
+    expect(template).toMatch(/server_name www\.w3\.org w3id\.org piyush7034\.github\.io;/);
+    expect(template).toMatch(/resolver 1\.1\.1\.1 8\.8\.8\.8/);
+    expect(template).toMatch(/proxy_cache_use_stale [^;]*http_429/);
+    expect(template).toMatch(/proxy_set_header Accept-Encoding "";/);
+  });
+});

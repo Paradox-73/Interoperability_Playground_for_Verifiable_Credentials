@@ -85,3 +85,47 @@ server {
         proxy_set_header Host $host;
     }
 }
+
+# JSON-LD context hosts (network aliases www.w3.org, w3id.org, piyush7034.github.io): the Inji services load the
+# contexts of every ldp_vc and ldp_vp from them. w3id.org redirects to GitHub Pages, which also hosts the
+# Certify farmer sample's context, and GitHub Pages answers HTTP 429 after a few dozen runs (measured
+# 2026-10-06: 5 of 20 live tests failed with LOADING_REMOTE_CONTEXT_FAILED). This front fetches each document
+# once from the real host through public DNS, follows a redirect itself, answers from its cache afterwards, and
+# keeps answering with the stale copy when the host fails or rate-limits. The documents are not changed.
+proxy_cache_path /var/cache/nginx/contexts levels=1:2 keys_zone=contexts:10m max_size=64m inactive=365d use_temp_path=off;
+
+server {
+    listen 443 ssl;
+    server_name www.w3.org w3id.org piyush7034.github.io;
+    # Not the Docker resolver: inside the network these names are this front itself.
+    resolver 1.1.1.1 8.8.8.8 valid=300s ipv6=off;
+
+    proxy_ssl_server_name on;
+    proxy_cache contexts;
+    proxy_cache_valid 200 365d;
+    proxy_cache_use_stale error timeout updating http_429 http_500 http_502 http_503 http_504;
+    proxy_cache_lock on;
+    proxy_ignore_headers Cache-Control Expires Set-Cookie Vary;
+    proxy_intercept_errors on;
+    # Uncompressed from the host: the cache ignores Vary, and Java clients ask for no encoding.
+    proxy_set_header Accept-Encoding "";
+
+    location / {
+        proxy_pass https://$host$request_uri;
+        proxy_set_header Host $host;
+        proxy_set_header Accept-Encoding "";
+        proxy_cache_key $host$request_uri;
+        # Redirects are not cached: on a cache hit nginx has no upstream Location header to follow.
+        error_page 301 302 303 307 308 = @redirected;
+        add_header X-Ps02-Context-Cache $upstream_cache_status always;
+    }
+
+    # One redirect followed here (w3id.org -> *.github.io), so the service gets the document itself.
+    location @redirected {
+        set $target $upstream_http_location;
+        proxy_pass $target;
+        proxy_set_header Accept-Encoding "";
+        proxy_cache_key $target;
+        add_header X-Ps02-Context-Cache $upstream_cache_status always;
+    }
+}

@@ -18,7 +18,8 @@
 set -eu
 
 OUT=${OUT_DIR:-/out}
-TLS_NAMES=${TLS_NAMES:-certify.ps02.test certify-ac.ps02.test verify.ps02.test ref.ps02.test playground.ps02.test localhost}
+# The last three are the JSON-LD context hosts the TLS front caches for the stack (nginx/tls-front.conf.template).
+TLS_NAMES=${TLS_NAMES:-certify.ps02.test certify-ac.ps02.test verify.ps02.test ref.ps02.test playground.ps02.test localhost www.w3.org w3id.org piyush7034.github.io}
 CA_CRT="$OUT/ca/ps02-test-ca.crt"
 CA_KEY="$OUT/ca-private/ca.key"
 SRV_CRT="$OUT/tls/server.crt"

@@ -68,6 +68,47 @@ async function up(profiles) {
   await dockerOrThrow([...composeArgs({ profiles }), 'up', '--detach', '--remove-orphans']);
   log(`up: compose finished after ${seconds(Date.now() - started)}`);
   await wait(profiles, started);
+  await warmContexts();
+}
+
+/**
+ * JSON-LD contexts the Inji services load for ldp_vc and ldp_vp, fetched once through the TLS front so its cache
+ * holds them before the first run (nginx/tls-front.conf.template). A failure is only reported: the services then
+ * fetch the document themselves on first use.
+ */
+const CONTEXT_URLS = [
+  'https://www.w3.org/2018/credentials/v1',
+  'https://www.w3.org/ns/credentials/v2',
+  'https://www.w3.org/ns/did/v1',
+  'https://w3id.org/security/v1',
+  'https://w3id.org/security/v2',
+  'https://w3id.org/security/suites/ed25519-2020/v1',
+  'https://w3id.org/security/suites/jws-2020/v1',
+  'https://w3id.org/security/data-integrity/v2',
+  'https://piyush7034.github.io/my-files/farmer.json',
+];
+
+async function warmContexts() {
+  const fetches = CONTEXT_URLS.map(
+    (url) => `curl -sk -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors --max-time 30 '${url}'`,
+  );
+  const script = fetches.map((command, index) => `echo "${CONTEXT_URLS[index]} $(${command})"`).join('; ');
+  try {
+    const result = await dockerOrThrow([...composeArgs(), 'exec', '-T', 'tls-front', 'sh', '-c', script], {
+      capture: true,
+    });
+    const lines = String(result?.stdout ?? '')
+      .trim()
+      .split(/\r?\n/)
+      .filter(Boolean);
+    const failed = lines.filter((line) => !line.endsWith(' 200'));
+    log(`ready: JSON-LD context cache (${lines.length - failed.length} of ${CONTEXT_URLS.length} documents)`);
+    for (const line of failed) log(`warning: context not cached: ${line}`);
+  } catch (error) {
+    log(
+      `warning: JSON-LD context cache not warmed: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
 }
 
 async function wait(profiles, started = Date.now()) {

@@ -59,6 +59,19 @@ services:
   certify:
     image: injistack/inji-certify-with-plugins:0.14.0
     user: root
+    # As for certify-ac: the Temurin CA entrypoint imports the stack's test CA (the JSON-LD context hosts are
+    # answered by the TLS front), then hands over to the image's entrypoint and command.
+    entrypoint: ['/__cacert_entrypoint.sh', './configure_start.sh']
+    command:
+      [
+        'java',
+        '-jar',
+        '-Dloader.path=$${loader_path_env}',
+        '-Dspring.cloud.config.label=$${spring_config_label_env}',
+        '-Dspring.profiles.active=$${active_profile_env}',
+        '-Dspring.cloud.config.uri=$${spring_config_url_env}',
+        'certify-service.jar',
+      ]
     environment:
       container_user: mosip
       active_profile_env: default,preauth
@@ -67,6 +80,7 @@ services:
       enable_certify_artifactory: 'false'
       download_hsm_client: 'false'
       mosip_certify_domain_url: http://certify-nginx:80
+      USE_SYSTEM_CA_CERTS: '1'
     volumes:
       - ./config/certify-default.properties:/home/mosip/config/certify-default.properties:ro
       - ./config/certify-preauth.properties:/home/mosip/config/certify-preauth.properties:ro
@@ -74,9 +88,12 @@ services:
       # Signing keys (PKCS#12 key store CERTIFY_PKCS12/local.p12, relative to the working directory /home/inji).
       # Kept in a volume next to the database, whose key_alias rows point into it.
       - certify-keys:/home/inji/CERTIFY_PKCS12
+      - ${PLAYGROUND_RUN_DIR:-../../run}/stack/ca:/certificates:ro
     depends_on:
       database:
         condition: service_healthy
+      init:
+        condition: service_completed_successfully
     healthcheck:
       # Issuer metadata rather than /actuator/health, which needs a token and answers 200 with an error body.
       # The first metadata call after start took 52 s in the 2026-10-04 trial, hence the long timeout.
@@ -138,11 +155,26 @@ services:
       - host.docker.internal:host-gateway
     networks:
       default:
+        # The context hosts: the Inji services fetch JSON-LD contexts from them for every ldp_vc they sign or
+        # verify; the TLS front answers from its cache, so GitHub Pages' rate limit (HTTP 429, measured
+        # 2026-10-06) cannot fail a run.
         aliases:
-          [certify.ps02.test, certify-ac.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test]
+          [
+            certify.ps02.test,
+            certify-ac.ps02.test,
+            verify.ps02.test,
+            ref.ps02.test,
+            playground.ps02.test,
+            www.w3.org,
+            w3id.org,
+            piyush7034.github.io,
+          ]
     volumes:
       - ./nginx/tls-front.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ${PLAYGROUND_RUN_DIR:-../../run}/stack/tls:/etc/nginx/tls:ro
+      # A volume, not a bind mount: nginx's cache files fail on a Docker Desktop bind mount (fstat, measured
+      # 2026-10-06). It lives as long as the stack, so each document is fetched once per stack session.
+      - context-cache:/var/cache/nginx/contexts
     depends_on:
       init:
         condition: service_completed_successfully
@@ -400,3 +432,4 @@ volumes:
   pgdata-ac:
   certify-ac-keys:
   certify-keys:
+  context-cache:
