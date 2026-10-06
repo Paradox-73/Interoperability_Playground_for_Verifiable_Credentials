@@ -1,7 +1,7 @@
 {
   "unit": {
-    "measuredAt": "2026-10-05T21:26:36.125Z",
-    "wallSeconds": 50,
+    "measuredAt": "2026-10-06T15:49:18.264Z",
+    "wallSeconds": 45,
     "packages": {
       "cli": {
         "files": 2,
@@ -9,39 +9,39 @@
         "passed": 25,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3391.364013671875
+        "durationMs": 4243.77587890625
       },
       "deploy": {
-        "files": 3,
-        "tests": 47,
-        "passed": 47,
+        "files": 4,
+        "tests": 56,
+        "passed": 56,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 4703.21826171875
+        "durationMs": 3638.5615234375
       },
       "formats": {
-        "files": 7,
-        "tests": 148,
-        "passed": 148,
+        "files": 9,
+        "tests": 180,
+        "passed": 180,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 2860.404296875
+        "durationMs": 2767.19287109375
       },
       "oid4vci": {
-        "files": 5,
-        "tests": 49,
-        "passed": 49,
+        "files": 7,
+        "tests": 62,
+        "passed": 62,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 29365.436767578125
+        "durationMs": 41065.54443359375
       },
       "oid4vp": {
-        "files": 5,
-        "tests": 83,
-        "passed": 83,
+        "files": 7,
+        "tests": 123,
+        "passed": 123,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3299.259521484375
+        "durationMs": 2438.69970703125
       },
       "protocol": {
         "files": 3,
@@ -49,74 +49,74 @@
         "passed": 30,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 56.1513671875
+        "durationMs": 37.9677734375
       },
       "scenarios": {
         "files": 2,
-        "tests": 100,
-        "passed": 100,
+        "tests": 123,
+        "passed": 123,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 6632.8349609375
+        "durationMs": 7308.145263671875
       },
       "server": {
-        "files": 24,
-        "tests": 250,
-        "passed": 250,
+        "files": 25,
+        "tests": 278,
+        "passed": 278,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 71840.54907226562
+        "durationMs": 67627.12255859375
       },
       "web": {
         "files": 17,
-        "tests": 240,
-        "passed": 240,
+        "tests": 243,
+        "passed": 243,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 71319.0205078125
+        "durationMs": 62331.57421875
       }
     },
     "totals": {
-      "files": 68,
-      "tests": 972,
-      "passed": 972,
+      "files": 76,
+      "tests": 1120,
+      "passed": 1120,
       "failed": 0,
       "skipped": 0
     }
   },
   "e2e": {
-    "measuredAt": "2026-10-05T21:22:55.984Z",
-    "tests": 7,
-    "passed": 7,
+    "measuredAt": "2026-10-06T15:50:02.812Z",
+    "tests": 11,
+    "passed": 11,
     "failed": 0,
     "flaky": 0,
     "skipped": 0,
-    "durationSeconds": 24
+    "durationSeconds": 42
   },
   "stack": {
-    "measuredAt": "2026-10-05T21:23:27.672Z",
-    "startSeconds": 71,
+    "measuredAt": "2026-10-06T15:50:51.437Z",
+    "startSeconds": 69,
     "upStatus": 0,
     "memory": {
       "containers": {
-        "inji-web": 10,
-        "mimoto-service": 735,
-        "certify-nginx": 12,
-        "verify-ui": 11,
-        "tls-front": 19,
-        "certify": 618,
-        "certify-ac": 656,
-        "verify-service": 382,
-        "database": 87,
-        "database-ac": 50
+        "inji-web": 11,
+        "mimoto-service": 648,
+        "certify-nginx": 13,
+        "verify-ui": 12,
+        "certify-ac": 609,
+        "certify": 634,
+        "tls-front": 17,
+        "verify-service": 390,
+        "database-ac": 53,
+        "database": 86
       },
-      "totalMiB": 2580
+      "totalMiB": 2473
     },
     "memoryMeasuredAfter": "the live tests"
   },
   "live": {
-    "measuredAt": "2026-10-05T21:24:39.112Z",
-    "wallSeconds": 56,
+    "measuredAt": "2026-10-06T15:52:00.283Z",
+    "wallSeconds": 60,
     "packages": {
       "server": {
         "files": 2,
@@ -124,7 +124,7 @@
         "passed": 20,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 49266.09326171875
+        "durationMs": 54607.949462890625
       }
     },
     "totals": {
@@ -136,7 +136,7 @@
     }
   },
   "licenses": {
-    "measuredAt": "2026-10-05T21:27:29.012Z",
+    "measuredAt": "2026-10-06T15:53:11.859Z",
     "production": 445,
     "byLicense": [
       [
@@ -247,12 +247,12 @@
       "label": "reference (no Docker)",
       "page": "../interop-report/reference/matrix.md",
       "spec": "reference",
-      "date": "2026-10-05T20:49:10.757Z",
+      "date": "2026-10-06T14:43:17.842Z",
       "totals": {
-        "cells": 82,
-        "matched": 82,
+        "cells": 109,
+        "matched": 109,
         "mismatched": 0,
-        "pass": 78,
+        "pass": 105,
         "fail": 0,
         "error": 0,
         "notSupported": 4
@@ -262,13 +262,13 @@
       "label": "live (Inji stack)",
       "page": "../interop-report/live/live-core/matrix.md",
       "spec": "live-core",
-      "date": "2026-10-05T21:13:13.483Z",
+      "date": "2026-10-06T14:44:17.228Z",
       "totals": {
-        "cells": 14,
-        "matched": 14,
+        "cells": 16,
+        "matched": 16,
         "mismatched": 0,
-        "pass": 10,
-        "fail": 3,
+        "pass": 11,
+        "fail": 4,
         "error": 0,
         "notSupported": 1
       }
@@ -277,19 +277,19 @@
       "label": "live (Inji stack)",
       "page": "../interop-report/live/live-holder-web/matrix.md",
       "spec": "live-holder-web",
-      "date": "2026-10-05T21:15:18.603Z",
+      "date": "2026-10-06T14:45:42.917Z",
       "totals": {
-        "cells": 6,
-        "matched": 6,
+        "cells": 10,
+        "matched": 10,
         "mismatched": 0,
-        "pass": 1,
-        "fail": 5,
+        "pass": 4,
+        "fail": 6,
         "error": 0,
         "notSupported": 0
       }
     }
   ],
-  "generatedAt": "2026-10-05T21:27:29.019Z",
-  "commit": "e36e384",
+  "generatedAt": "2026-10-06T15:53:11.871Z",
+  "commit": "9119e63 (with uncommitted changes)",
   "environment": "Windows_NT 10.0.26200, Node 24.19.0"
 }
