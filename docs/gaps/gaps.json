@@ -310,5 +310,57 @@
     "evidence": {
       "date": "2026-10-05"
     }
+  },
+  {
+    "id": "G26",
+    "title": "Inji Certify cannot fill an mso_mdoc in the pre-authorized profile: claims are checked per namespace, the template reads flat names",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "POST /v1/certify/pre-authorized-data checks the claims of an mso_mdoc configuration against the top-level keys of its claims, which are namespaces, so flat claims are refused with unknown_claims and only {\"<namespace>\": {...}} is accepted. The mdoc template reads ${farmerID}-style names, so the credential is issued with every element value left as the literal placeholder (\"${farmerID}\", \"${fullName}\", ...). The same template filled by the CSV data provider (certify-ac) is correct. Measured 2026-10-06.",
+    "cells": ["inji-certify/*/*/mso_mdoc"],
+    "evidence": {
+      "date": "2026-10-06"
+    }
+  },
+  {
+    "id": "G27",
+    "title": "Inji Certify mso_mdoc departs from ISO/IEC 18013-5: MSO not wrapped in tag 24, validity dates as text, no signed date",
+    "repository": "inji/inji-certify",
+    "version": "0.14.0",
+    "severity": "medium",
+    "status": "new",
+    "summary": "The issuerAuth payload of a Certify mdoc is the MobileSecurityObject itself, not MobileSecurityObjectBytes #6.24(bstr .cbor MobileSecurityObject); validityInfo.validFrom and validUntil are text strings instead of tdate #6.0(tstr), and validityInfo.signed is missing (ISO/IEC 18013-5 section 9.1.2.4). The issuer signature, value digests and device key are correct: the reference verifier verifies all of them and then fails the mdoc on these points, as any reader that decodes the MSO strictly does. Measured 2026-10-06 with certify (pre-authorized) and certify-ac.",
+    "cells": ["inji-certify/*/ref-verifier/mso_mdoc", "inji-certify-ac/*/ref-verifier/mso_mdoc"],
+    "evidence": {
+      "date": "2026-10-06"
+    }
+  },
+  {
+    "id": "G28",
+    "title": "Inji Verify accepts an mso_mdoc presentation request but refuses every DeviceResponse with INVALID_VP_TOKEN",
+    "repository": "inji/inji-verify",
+    "version": "0.18.2",
+    "severity": "medium",
+    "status": "new",
+    "summary": "POST /v1/verify/vp-request with an mso_mdoc input descriptor (ISO/IEC 18013-7 Annex B form) answers 201, but the direct_post of a valid DeviceResponse is answered HTTP 400 INVALID_VP_TOKEN and the request stays ACTIVE: verify-service has no mso_mdoc path in presentation verification (VerifiablePresentationSubmissionServiceImpl handles ldp_vc and SD-JWT only), although its vc-verifier library verifies single mdoc credentials. Measured 2026-10-06 with a DeviceResponse the reference verifier accepts.",
+    "cells": ["*/*/inji-verify/mso_mdoc"],
+    "evidence": {
+      "date": "2026-10-06"
+    }
+  },
+  {
+    "id": "G29",
+    "title": "Mimoto refuses to download an mso_mdoc: Unsupported credential format",
+    "repository": "inji/mimoto",
+    "version": "0.22.0",
+    "severity": "low",
+    "status": "new",
+    "summary": "POST /v1/mimoto/credentials/download for an mso_mdoc configuration (Inji Certify FarmerMdoc, or the reference issuer) answers HTTP 500 RESIDENT-APP-028 \"Unsupported credential format: mso_mdoc\", so Inji Web cannot hold an mdoc although Mimoto's issuer metadata validator lists mso_mdoc. Measured 2026-10-06.",
+    "cells": ["*/inji-web/*/mso_mdoc"],
+    "evidence": {
+      "date": "2026-10-06"
+    }
   }
 ]

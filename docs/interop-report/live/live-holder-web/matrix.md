@@ -1,10 +1,10 @@
 # Compatibility matrix: live-holder-web
 
-Run on 2026-10-06, 12:49:42 to 12:50:24 UTC (42 s), from `live-holder-web.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
+Run on 2026-10-06, 14:45:42 to 14:46:57 UTC (1 min 15 s), from `live-holder-web.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
 
 Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certify-ac with the reference wallet.
 
-**8 of 8 cells gave the verdict their spec expects**. Verdicts: 4 pass, 4 fail, 0 error, 0 not supported.
+**10 of 10 cells gave the verdict their spec expects**. Verdicts: 4 pass, 6 fail, 0 error, 0 not supported.
 
 ## Versions
 
@@ -21,14 +21,16 @@ Inji Web (Mimoto) as the wallet, with certify-ac and the reference issuer; certi
 
 | Case | Issuer → wallet → verifier | Format | Profiles | Scenario | Expected | Actual | Verdict | Matches spec | Run |
 | ---- | -------------------------- | ------ | -------- | -------- | -------- | ------ | ------- | ------------ | --- |
-| TC_PG_WEB_01 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T124942-f7bc7f`](runs/TC_PG_WEB_01.json) |
-| TC_PG_WEB_02 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T124944-817857`](runs/TC_PG_WEB_02.json) |
-| TC_PG_WEB_03 | `inji-certify-ac` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T124949-8a81a3`](runs/TC_PG_WEB_03.json) |
-| TC_PG_WEB_04 | `inji-certify-ac` → `inji-web` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261006T125006-5a331b`](runs/TC_PG_WEB_04.json) |
-| TC_PG_WEB_05 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T125007-f22be4`](runs/TC_PG_WEB_05.json) |
-| TC_PG_WEB_06 | `ref-issuer` → `inji-web` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261006T125014-41e82f`](runs/TC_PG_WEB_06.json) |
-| TC_PG_WEB_07 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-proof-es256 | VALID | INVALID | Fail (spec: Fail) | yes | [`20261006T125018-c39616`](runs/TC_PG_WEB_07.json) |
-| TC_PG_WEB_08 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-proof-es256 | VALID | INVALID | Fail (spec: Fail) | yes | [`20261006T125024-ed24e8`](runs/TC_PG_WEB_08.json) |
+| TC_PG_WEB_01 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T144543-794bcc`](runs/TC_PG_WEB_01.json) |
+| TC_PG_WEB_02 | `inji-certify-ac` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T144548-ec4b8e`](runs/TC_PG_WEB_02.json) |
+| TC_PG_WEB_03 | `inji-certify-ac` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T144557-3e341e`](runs/TC_PG_WEB_03.json) |
+| TC_PG_WEB_04 | `inji-certify-ac` → `inji-web` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261006T144635-ecc9f7`](runs/TC_PG_WEB_04.json) |
+| TC_PG_WEB_05 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261006T144636-6df87a`](runs/TC_PG_WEB_05.json) |
+| TC_PG_WEB_06 | `ref-issuer` → `inji-web` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261006T144644-baa3fd`](runs/TC_PG_WEB_06.json) |
+| TC_PG_WEB_07 | `ref-issuer` → `inji-web` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-proof-es256 | VALID | INVALID | Fail (spec: Fail) | yes | [`20261006T144648-ff0159`](runs/TC_PG_WEB_07.json) |
+| TC_PG_WEB_08 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-proof-es256 | VALID | INVALID | Fail (spec: Fail) | yes | [`20261006T144655-e7fecc`](runs/TC_PG_WEB_08.json) |
+| TC_PG_WEB_09 | `inji-certify-ac` → `ref-wallet` → `ref-verifier` | mso_mdoc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261006T144657-24351c`](runs/TC_PG_WEB_09.json) |
+| TC_PG_WEB_10 | `inji-certify-ac` → `inji-web` → `inji-verify` | mso_mdoc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261006T144657-035a53`](runs/TC_PG_WEB_10.json) |
 
 The redacted record of each run (configuration, events, every HTTP exchange) is written to `runs/<case id>.json` next to this file. Live runs are kept in git with this file, so every link above opens the recorded exchanges; the nightly workflow also publishes them as a build artifact.
 
@@ -38,3 +40,5 @@ The redacted record of each run (configuration, events, every HTTP exchange) is 
 - TC_PG_WEB_06: `wallet.presentation-request-failed` at wallet.fetch-request: Mimoto presentation-request: HTTP 400 {"errorCode":"invalid_request","errorMessage":"Missing Input: filter->pattern param is required"}
 - TC_PG_WEB_07: `outcome.unexpected` at verifier.result: The scenario "holder-proof-es256" expects VALID; Inji Verify (API) answered INVALID.
 - TC_PG_WEB_08: `outcome.unexpected` at verifier.result: The scenario "holder-proof-es256" expects VALID; Inji Verify (API) answered INVALID.
+- TC_PG_WEB_09: `outcome.unexpected` at verifier.result: The scenario "happy" expects VALID; Reference verifier answered INVALID.
+- TC_PG_WEB_10: `wallet.download-failed` at issuer.metadata: Mimoto refused the download: HTTP 500 {"response":null,"errors":[{"errorCode":"RESIDENT-APP-028","errorMessage":"Unsupported credential format: mso_mdoc"}]}

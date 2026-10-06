@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": false
   },
-  "startedAt": "2026-10-06T12:49:42.284Z",
-  "finishedAt": "2026-10-06T12:50:24.453Z",
-  "durationMs": 42169,
+  "startedAt": "2026-10-06T14:45:42.917Z",
+  "finishedAt": "2026-10-06T14:46:57.756Z",
+  "durationMs": 74839,
   "roles": {
     "inji-certify-ac": {
       "name": "Inji Certify (authorization code)",
@@ -46,11 +46,11 @@
     }
   },
   "totals": {
-    "cells": 8,
-    "matched": 8,
+    "cells": 10,
+    "matched": 10,
     "mismatched": 0,
     "pass": 4,
-    "fail": 4,
+    "fail": 6,
     "error": 0,
     "notSupported": 0
   },
@@ -69,11 +69,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T124942-f7bc7f",
+      "runId": "20261006T144543-794bcc",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 1643,
+      "durationMs": 5751,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -95,11 +95,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T124944-817857",
+      "runId": "20261006T144548-ec4b8e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 5440,
+      "durationMs": 8346,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -121,11 +121,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T124949-8a81a3",
+      "runId": "20261006T144557-3e341e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 16435,
+      "durationMs": 37743,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -147,11 +147,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T125006-5a331b",
+      "runId": "20261006T144635-ecc9f7",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 1603,
+      "durationMs": 1845,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.no-matching-credential",
@@ -178,11 +178,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T125007-f22be4",
+      "runId": "20261006T144636-6df87a",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 6323,
+      "durationMs": 7296,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -204,11 +204,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T125014-41e82f",
+      "runId": "20261006T144644-baa3fd",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 4163,
+      "durationMs": 4197,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.presentation-request-failed",
@@ -235,11 +235,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T125018-c39616",
+      "runId": "20261006T144648-ff0159",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 5735,
+      "durationMs": 7052,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -266,11 +266,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T125024-ed24e8",
+      "runId": "20261006T144655-e7fecc",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 287,
+      "durationMs": 1569,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -280,6 +280,68 @@
       "versions": {
         "issuer": "0.1.0",
         "wallet": "0.1.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_09",
+        "description": "certify-ac -> reference wallet -> reference verifier, mso_mdoc; filled from the farmer CSV and correctly signed, but departs from ISO/IEC 18013-5 (G27)",
+        "issuer": "inji-certify-ac",
+        "wallet": "ref-wallet",
+        "verifier": "ref-verifier",
+        "format": "mso_mdoc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261006T144657-24351c",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 287,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"happy\" expects VALID; Reference verifier answered INVALID."
+      },
+      "credentialProof": "ES256",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.1.0",
+        "verifier": "0.1.0"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_10",
+        "description": "certify-ac -> Inji Web -> Inji Verify, mso_mdoc; Mimoto refuses the download, \"Unsupported credential format mso_mdoc\" (G29)",
+        "issuer": "inji-certify-ac",
+        "wallet": "inji-web",
+        "verifier": "inji-verify",
+        "format": "mso_mdoc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "happy",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261006T144657-035a53",
+      "outcome": "ERROR",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 269,
+      "error": {
+        "step": "issuer.metadata",
+        "code": "wallet.download-failed",
+        "message": "Mimoto refused the download: HTTP 500 {\"response\":null,\"errors\":[{\"errorCode\":\"RESIDENT-APP-028\",\"errorMessage\":\"Unsupported credential format: mso_mdoc\"}]}"
+      },
+      "credentialProof": "EdDSA",
+      "versions": {
+        "issuer": "0.14.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
         "verifier": "0.18.2"
       }
     }

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "exportedAt": "2026-10-06T12:49:11.612Z",
+  "exportedAt": "2026-10-06T14:44:41.067Z",
   "redacted": true,
   "redactions": 0,
   "run": {
-    "runId": "20261006T124911-f41356",
+    "runId": "20261006T144441-c33c37",
     "status": "finished",
     "mode": "live",
     "config": {
@@ -16,15 +16,15 @@
       "vpProfile": "inji-draft",
       "scenario": "happy"
     },
-    "createdAt": "2026-10-06T12:49:11.603Z",
-    "startedAt": "2026-10-06T12:49:11.604Z",
-    "finishedAt": "2026-10-06T12:49:11.604Z",
+    "createdAt": "2026-10-06T14:44:41.063Z",
+    "startedAt": "2026-10-06T14:44:41.063Z",
+    "finishedAt": "2026-10-06T14:44:41.063Z",
     "outcome": "NOT_RUN",
     "verdict": "not-supported",
     "error": {
       "step": "playground.admin",
       "code": "compatibility.verifier.format-unsupported",
-      "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+      "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt, mso_mdoc)."
     },
     "versions": {
       "issuer": "0.1.0",
@@ -32,8 +32,8 @@
       "verifier": "0.18.2"
     },
     "report": {
-      "runId": "20261006T124911-f41356",
-      "createdAt": "2026-10-06T12:49:11.604Z",
+      "runId": "20261006T144441-c33c37",
+      "createdAt": "2026-10-06T14:44:41.063Z",
       "mode": "live",
       "issuer": {
         "id": "ref-issuer",
@@ -66,7 +66,7 @@
       "error": {
         "step": "playground.admin",
         "code": "compatibility.verifier.format-unsupported",
-        "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+        "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt, mso_mdoc)."
       },
       "steps": [
         {
@@ -100,7 +100,7 @@
   "events": [
     {
       "type": "run.started",
-      "runId": "20261006T124911-f41356",
+      "runId": "20261006T144441-c33c37",
       "config": {
         "issuer": "ref-issuer",
         "wallet": "ref-wallet",
@@ -110,14 +110,14 @@
         "vpProfile": "inji-draft",
         "scenario": "happy"
       },
-      "at": "2026-10-06T12:49:11.604Z"
+      "at": "2026-10-06T14:44:41.063Z"
     },
     {
       "type": "run.finished",
-      "runId": "20261006T124911-f41356",
+      "runId": "20261006T144441-c33c37",
       "report": {
-        "runId": "20261006T124911-f41356",
-        "createdAt": "2026-10-06T12:49:11.604Z",
+        "runId": "20261006T144441-c33c37",
+        "createdAt": "2026-10-06T14:44:41.063Z",
         "mode": "live",
         "issuer": {
           "id": "ref-issuer",
@@ -150,7 +150,7 @@
         "error": {
           "step": "playground.admin",
           "code": "compatibility.verifier.format-unsupported",
-          "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt)."
+          "message": "Inji Verify (API) does not support the format dc+sd-jwt (it supports ldp_vc, vc+sd-jwt, mso_mdoc)."
         },
         "steps": [
           {
