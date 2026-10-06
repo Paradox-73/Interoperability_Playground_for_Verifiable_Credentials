@@ -578,8 +578,8 @@ function encodeVpToken(vpToken: unknown): string {
 }
 
 /**
- * The holder proof suite: ecdsa-rdfc-2019 for a P-256 holder key (Inji Certify binds credentials to one,
- * gap G9); otherwise the Ed25519 suite that matches the credential's own proof.
+ * The holder proof suite: ecdsa-rdfc-2019 for a P-256 holder key (an issuer that takes no Ed25519 key
+ * proof binds the credential to one); otherwise the Ed25519 suite that matches the credential's own proof.
  */
 function ldpSuiteFor(credential: JsonObject, holderAlg: string): LdpProofSuite {
   if (holderAlg === 'ES256') return 'ecdsa-rdfc-2019';

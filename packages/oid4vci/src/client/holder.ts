@@ -28,6 +28,18 @@ export interface HolderKey {
   kid?: string;
 }
 
+/**
+ * The name to put in `alg` for an Ed25519 key: `Ed25519` when the issuer lists it and not `EdDSA`
+ * (`proof_types_supported.jwt.proof_signing_alg_values_supported`), `EdDSA` otherwise.
+ */
+export function ed25519AlgNameFor(configuration: unknown): 'EdDSA' | 'Ed25519' {
+  const algs = (
+    configuration as { proof_types_supported?: { jwt?: { proof_signing_alg_values_supported?: unknown } } }
+  )?.proof_types_supported?.jwt?.proof_signing_alg_values_supported;
+  if (!Array.isArray(algs)) return 'EdDSA';
+  return algs.includes('Ed25519') && !algs.includes('EdDSA') ? 'Ed25519' : 'EdDSA';
+}
+
 export function createHolderKey(
   alg: KeyAlgorithm = 'ES256',
   binding: HolderBindingMethod = 'did:jwk',
@@ -52,6 +64,11 @@ export interface ProofJwtInput {
   /** `client_id`; must be left out for anonymous pre-authorized access. */
   issuer?: string;
   nowMs: number;
+  /**
+   * JOSE algorithm name for an Ed25519 holder key: `EdDSA` (default) or `Ed25519` (RFC 9864), for
+   * issuers that list only the fully specified name (Inji Certify 0.14.0, gap G9).
+   */
+  ed25519AlgName?: 'EdDSA' | 'Ed25519';
   /** Header and payload members to change after the defaults are set (tamper scenarios). */
   overrides?: { header?: Record<string, unknown>; payload?: Record<string, unknown> };
 }
@@ -59,6 +76,7 @@ export interface ProofJwtInput {
 export function createProofJwt(input: ProofJwtInput): string {
   const { holderKey } = input;
   const header: Record<string, unknown> = {
+    ...(input.ed25519AlgName === 'Ed25519' ? { alg: 'Ed25519' } : {}),
     typ: PROOF_JWT_TYP,
     ...(holderKey.kid === undefined ? { jwk: holderKey.keyPair.publicJwk } : { kid: holderKey.kid }),
     ...input.overrides?.header,

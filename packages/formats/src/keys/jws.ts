@@ -25,9 +25,13 @@ export interface DecodedJws {
   signature: Uint8Array;
 }
 
-/** Signs a JSON payload; `alg` in the header is always set from the key. */
+/**
+ * Signs a JSON payload. `alg` in the header is set from the key, except that an Ed25519 key keeps a
+ * given `alg: 'Ed25519'` (the fully specified name of RFC 9864) instead of `EdDSA`.
+ */
 export function signCompactJws(header: JoseHeader, payload: JwtPayload, keyPair: KeyPair): string {
-  const fullHeader = { ...header, alg: keyPair.alg };
+  const alg = header.alg === 'Ed25519' && keyPair.alg === 'EdDSA' ? 'Ed25519' : keyPair.alg;
+  const fullHeader = { ...header, alg };
   const signingInput = `${base64UrlEncode(JSON.stringify(fullHeader))}.${base64UrlEncode(JSON.stringify(payload))}`;
   const signature = signBytes(keyPair.privateJwk, utf8Encode(signingInput));
   return `${signingInput}.${base64UrlEncode(signature)}`;

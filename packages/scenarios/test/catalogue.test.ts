@@ -32,6 +32,7 @@ const REQUIRED_IDS = [
   'issuer-did-key',
   'issuer-did-jwk',
   'vc2-eddsa-rdfc-2022',
+  'holder-proof-es256',
   'dc-sd-jwt',
   'holder-did-canonical',
 ];

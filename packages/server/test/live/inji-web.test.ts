@@ -96,16 +96,15 @@ describe('certify-ac -> reference wallet -> Inji Verify', () => {
 });
 
 describe('certify-ac -> Inji Web -> Inji Verify', () => {
-  it('ldp_vc: Mimoto downloads from certify-ac, the presentation is INVALID (G22)', async () => {
+  it('ldp_vc: all Inji, Mimoto downloads from certify-ac and the presentation is VALID (G22 worked around)', async () => {
     const report = await run({
       issuer: 'inji-certify-ac',
       wallet: 'inji-web',
       verifier: 'inji-verify',
       format: 'ldp_vc',
     });
-    expect(report).toMatchObject({ outcome: 'INVALID', verdict: 'fail' });
+    expect(report).toMatchObject({ outcome: 'VALID', verdict: 'pass' });
     expect(report.wallet.version).toBe('0.17.0 + Mimoto 0.22.0');
-    expectGap(report, 'G22', 'verifier.result');
     const exchanges = exchangesOf(report);
     // Mimoto's own calls, recorded through /ref/* and /proxy/certify-ac: the token request and the credential.
     expect(
@@ -137,15 +136,14 @@ describe('certify-ac -> Inji Web -> Inji Verify', () => {
 });
 
 describe('reference issuer -> Inji Web', () => {
-  it('-> Inji Verify ldp_vc: Mimoto runs the authorization code flow at /ref/*, the presentation is INVALID (G22)', async () => {
+  it('-> Inji Verify ldp_vc: Mimoto runs the authorization code flow at /ref/*, the presentation is VALID (G22 worked around)', async () => {
     const report = await run({
       issuer: 'ref-issuer',
       wallet: 'inji-web',
       verifier: 'inji-verify',
       format: 'ldp_vc',
     });
-    expect(report).toMatchObject({ outcome: 'INVALID', verdict: 'fail' });
-    expectGap(report, 'G22', 'verifier.result');
+    expect(report).toMatchObject({ outcome: 'VALID', verdict: 'pass' });
     const exchanges = exchangesOf(report);
     // Mimoto's token request (private_key_jwt) and credential request to the reference roles.
     expect(

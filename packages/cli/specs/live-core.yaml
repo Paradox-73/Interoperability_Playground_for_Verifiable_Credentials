@@ -23,11 +23,10 @@ cases:
     verifier: inji-verify
     format: vc+sd-jwt
   - uniqueIdentifier: TC_PG_LIVE_02
-    description: Inji Certify -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9 (no ldp_vp suite Inji Verify accepts for the P-256 holder key Certify requires)
+    description: Inji Certify -> reference wallet -> Inji Verify, ldp_vc (Ed25519 holder key; the stack lists Ed25519 for FarmerCredential proofs, G9)
     issuer: inji-certify
     verifier: inji-verify
     format: ldp_vc
-    verdict: fail
   # Certify credentials checked by an independent verifier.
   - uniqueIdentifier: TC_PG_LIVE_03
     description: Inji Certify -> reference wallet -> reference verifier, SD-JWT VC (x5c chain to Certify's certificates)

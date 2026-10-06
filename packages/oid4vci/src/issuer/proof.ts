@@ -44,6 +44,8 @@ export interface ProofCheckOptions {
   maxAgeSeconds: number;
   /** How far in the future `iat` may be (clock skew), in seconds. */
   skewSeconds: number;
+  /** Accepted `alg` values; default `PROOF_SIGNING_ALGS`. */
+  algorithms?: readonly string[];
 }
 
 // did:jwk and did:key resolve without network access; did:web holder keys are not accepted.
@@ -64,13 +66,9 @@ export async function validateProofJwt(jwt: unknown, options: ProofCheckOptions)
     throw invalidProof(`proof typ must be ${PROOF_JWT_TYP}, got ${String(header.typ)}`);
   }
   const alg = header.alg;
-  if (
-    typeof alg !== 'string' ||
-    !(PROOF_SIGNING_ALGS as readonly string[]).includes(alg === 'Ed25519' ? 'EdDSA' : alg)
-  ) {
-    throw invalidProof(
-      `proof alg ${String(alg)} is not accepted; use one of ${PROOF_SIGNING_ALGS.join(', ')}`,
-    );
+  const accepted: readonly string[] = options.algorithms ?? PROOF_SIGNING_ALGS;
+  if (typeof alg !== 'string' || !accepted.includes(alg)) {
+    throw invalidProof(`proof alg ${String(alg)} is not accepted; use one of ${accepted.join(', ')}`);
   }
   const keyMembers = ['kid', 'jwk', 'x5c'].filter((name) => header[name] !== undefined);
   if (keyMembers.length !== 1) {

@@ -106,7 +106,12 @@ export class ReferenceWalletRole implements WalletRole {
       if (start.mode === 'credential-offer') {
         // The offer does not say the format before it is resolved; the configuration id usually does.
         holderKey = holderKeyFor(guessFormat(start.credentialConfigurationIds[0]));
-        result = await acceptOffer(start.offerUri, { fetch, holderKey, onStep });
+        result = await acceptOffer(start.offerUri, {
+          fetch,
+          holderKey,
+          holderKeyFor: keyForMetadata,
+          onStep,
+        });
       } else {
         holderKey = holderKeyFor(guessFormat(start.credentialConfigurationId));
         result = await fetchViaAuthorizationCode(start.credentialIssuer, {
@@ -116,6 +121,7 @@ export class ReferenceWalletRole implements WalletRole {
           clientAuth: { method: 'none' },
           fetch,
           holderKey,
+          holderKeyFor: keyForMetadata,
           onStep,
         });
       }
@@ -260,6 +266,23 @@ function guessFormat(configurationId: string | undefined): CredentialFormat | un
   if (id.includes('ldp')) return 'ldp_vc';
   if (id.includes('sd_jwt') || id.includes('sd-jwt') || id.includes('sdjwt')) return 'vc+sd-jwt';
   return undefined;
+}
+
+/**
+ * The key for the format the issuer metadata names: Inji Certify's configuration ids (FarmerCredential)
+ * do not tell the format, and an ldp_vc needs the Ed25519 key that Inji Verify accepts in an ldp_vp (G15).
+ */
+function keyForMetadata(configuration: Record<string, unknown>): HolderKey {
+  const format =
+    typeof configuration.format === 'string' ? (configuration.format as CredentialFormat) : undefined;
+  const algs = (
+    configuration.proof_types_supported as { jwt?: { proof_signing_alg_values_supported?: unknown } }
+  )?.jwt?.proof_signing_alg_values_supported;
+  // An issuer that takes no Ed25519 proof (FarmerCredential_ldp_vc_es256_proof) gets a P-256 key.
+  if (format === 'ldp_vc' && Array.isArray(algs) && !algs.includes('EdDSA') && !algs.includes('Ed25519')) {
+    return createHolderKey('ES256', 'did:jwk');
+  }
+  return holderKeyFor(format);
 }
 
 /** Ed25519 for ldp_vc (ldp_vp proofs need it), ES256 otherwise; did:jwk binding in both cases. */

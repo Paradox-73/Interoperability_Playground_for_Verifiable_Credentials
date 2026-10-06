@@ -21,20 +21,18 @@ cases:
     verifier: inji-verify
     format: vc+sd-jwt
   - uniqueIdentifier: TC_PG_WEB_02
-    description: certify-ac -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9, as for the core Certify
+    description: certify-ac -> reference wallet -> Inji Verify, ldp_vc (Ed25519 holder key, as for the core Certify)
     issuer: inji-certify-ac
     wallet: ref-wallet
     verifier: inji-verify
     format: ldp_vc
-    verdict: fail
   # Inji Web as the wallet: Mimoto downloads, a signed-in wallet stores and presents.
   - uniqueIdentifier: TC_PG_WEB_03
-    description: certify-ac -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (the ldp_vp is signed with another key than the one the credential is bound to)
+    description: certify-ac -> Inji Web -> Inji Verify, ldp_vc, all Inji; VALID since the stack lists Ed25519 proofs, so Mimoto binds the credential to the key it signs the ldp_vp with (G22 worked around)
     issuer: inji-certify-ac
     wallet: inji-web
     verifier: inji-verify
     format: ldp_vc
-    verdict: fail
   - uniqueIdentifier: TC_PG_WEB_04
     description: certify-ac -> Inji Web -> Inji Verify, SD-JWT VC; blocked by G25 (Mimoto matches only ldp_vc for presentation)
     issuer: inji-certify-ac
@@ -43,16 +41,33 @@ cases:
     format: vc+sd-jwt
     verdict: fail
   - uniqueIdentifier: TC_PG_WEB_05
-    description: Reference issuer -> Inji Web -> Inji Verify, ldp_vc; blocked by G22
+    description: Reference issuer -> Inji Web -> Inji Verify, ldp_vc; VALID since the reference issuer lists the RFC 9864 name Ed25519 (G22 worked around)
     issuer: ref-issuer
     wallet: inji-web
     verifier: inji-verify
     format: ldp_vc
-    verdict: fail
   - uniqueIdentifier: TC_PG_WEB_06
     description: Reference issuer -> Inji Web -> reference verifier, ldp_vc; blocked by G23 (Mimoto requires a pattern in every field filter)
     issuer: ref-issuer
     wallet: inji-web
     verifier: ref-verifier
     format: ldp_vc
+    verdict: fail
+  # The issuer lists only ES256 for key proofs, as the Inji Certify sample does for FarmerCredential: the
+  # credential is bound to a P-256 key. These cells keep the upstream gaps visible after the work-around above.
+  - uniqueIdentifier: TC_PG_WEB_07
+    description: Reference issuer (ES256 key proofs only) -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (Mimoto binds the credential to its P-256 key but signs the ldp_vp with its Ed25519 key)
+    issuer: ref-issuer
+    wallet: inji-web
+    verifier: inji-verify
+    format: ldp_vc
+    scenario: holder-proof-es256
+    verdict: fail
+  - uniqueIdentifier: TC_PG_WEB_08
+    description: Reference issuer (ES256 key proofs only) -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 (the ldp_vp of a P-256 holder is signed with ecdsa-rdfc-2019)
+    issuer: ref-issuer
+    wallet: ref-wallet
+    verifier: inji-verify
+    format: ldp_vc
+    scenario: holder-proof-es256
     verdict: fail

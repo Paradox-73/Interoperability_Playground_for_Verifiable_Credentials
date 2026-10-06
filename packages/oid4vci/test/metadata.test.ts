@@ -32,6 +32,7 @@ describe('credential issuer metadata (draft 13 section 11.2, 1.0 section 12.2)',
       expect(Object.keys(configurations).sort()).toEqual([
         'FarmerCredential_dc_sd_jwt',
         'FarmerCredential_ldp_vc',
+        'FarmerCredential_ldp_vc_es256_proof',
         'FarmerCredential_ldp_vc_v2',
         'FarmerCredential_vc_sd_jwt',
       ]);

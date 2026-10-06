@@ -55,10 +55,16 @@ export interface CredentialConfiguration {
   claims: ClaimDescription[];
   /** Validity of an issued credential when the offer does not set one. */
   validitySeconds: number;
+  /** Key proof algorithms of this configuration; default `PROOF_SIGNING_ALGS`. */
+  proofSigningAlgs?: readonly string[];
 }
 
-/** Algorithms the issuer accepts in key proof JWTs (ES256 first: the combination Certify accepted). */
-export const PROOF_SIGNING_ALGS = ['ES256', 'EdDSA'] as const;
+/**
+ * Algorithms the issuer accepts in key proof JWTs (ES256 first: the combination Certify accepted).
+ * `Ed25519` is the fully specified name of EdDSA with Ed25519 (RFC 9864); Mimoto 0.22.0 picks its
+ * Ed25519 wallet key only when the issuer lists that name, and it signs every ldp_vp with that key (G22).
+ */
+export const PROOF_SIGNING_ALGS = ['ES256', 'EdDSA', 'Ed25519'] as const;
 
 /** Holder binding methods the issuer accepts in proof JWTs (`kid` DID URL, or `jwk` header). */
 export const BINDING_METHODS = ['did:jwk', 'did:key', 'jwk'] as const;
@@ -92,7 +98,10 @@ export const DEFAULT_FARMER_CLAIMS: Readonly<Record<string, string>> = {
 
 const YEAR = 365 * 24 * 3600;
 
-/** The four configurations the plan asks for: two ldp_vc data models and both SD-JWT VC names. */
+/**
+ * The four configurations the plan asks for (two ldp_vc data models and both SD-JWT VC names), and one
+ * ldp_vc that accepts only ES256 key proofs (a probe of gap G22).
+ */
 export const DEFAULT_CONFIGURATIONS: readonly CredentialConfiguration[] = [
   {
     id: 'FarmerCredential_ldp_vc',
@@ -121,6 +130,23 @@ export const DEFAULT_CONFIGURATIONS: readonly CredentialConfiguration[] = [
     description: 'Farmer identity, W3C VC Data Model 2.0 with DataIntegrityProof eddsa-rdfc-2022',
     claims: FARMER_CLAIMS,
     validitySeconds: YEAR,
+  },
+  {
+    // Probe of G22 (scenario holder-proof-es256): the same credential, but key proofs only with ES256, the
+    // list the Inji Certify sample has for FarmerCredential. A wallet must still present with the bound key.
+    id: 'FarmerCredential_ldp_vc_es256_proof',
+    format: 'ldp_vc',
+    scope: 'farmer_ldp_vc_es256_proof',
+    ldp: {
+      suite: 'Ed25519Signature2020',
+      contexts: [CREDENTIALS_V1_URL, PLAYGROUND_CONTEXT_V1_URL],
+      types: ['VerifiableCredential', 'FarmerCredential'],
+    },
+    name: 'Farmer credential (W3C VC 1.1, ES256 key proofs)',
+    description: 'Farmer identity, W3C VC Data Model 1.1; the issuer accepts only ES256 key proofs',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+    proofSigningAlgs: ['ES256'],
   },
   {
     id: 'FarmerCredential_vc_sd_jwt',
@@ -189,7 +215,9 @@ export function configurationMetadata(
     scope: config.scope,
     cryptographic_binding_methods_supported: [...BINDING_METHODS],
     credential_signing_alg_values_supported: signingAlgs(config),
-    proof_types_supported: { jwt: { proof_signing_alg_values_supported: [...PROOF_SIGNING_ALGS] } },
+    proof_types_supported: {
+      jwt: { proof_signing_alg_values_supported: [...(config.proofSigningAlgs ?? PROOF_SIGNING_ALGS)] },
+    },
   };
   if (profile === 'draft13') {
     const claims = Object.fromEntries(

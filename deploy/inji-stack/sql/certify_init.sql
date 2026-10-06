@@ -197,7 +197,9 @@ VALUES (
     'mock_identity_vc_ldp',  -- scope
     ARRAY['did:jwk'],  -- cryptographic_binding_methods_supported
     ARRAY['Ed25519Signature2020'],  -- credential_signing_alg_values_supported
-    '{"jwt": {"proof_signing_alg_values_supported": ["RS256", "ES256"]}}'::JSONB,  -- proof_types_supported
+    -- PS02 playground (G9, G22): Ed25519 added, as the sample already lists for FarmerSdJwt. Mimoto then binds
+    -- the credential to the Ed25519 key it signs every ldp_vp with, and Inji Verify accepts the holder proof.
+    '{"jwt": {"proof_signing_alg_values_supported": ["RS256", "ES256", "Ed25519"]}}'::JSONB,  -- proof_types_supported
     '{"fullName": {"display": [{"name": "Full Name", "locale": "en"}]}, "phone": {"display": [{"name": "Phone Number", "locale": "en"}]}, "dateOfBirth": {"display": [{"name": "Date of Birth", "locale": "en"}]}, "gender": {"display": [{"name": "Gender", "locale": "en"}]}}'::JSONB,  -- credential_subject
     NULL,  -- claims (optional)
     '[{"mosip.certify.mock.data-provider.csv.identifier-column": "id", "mosip.certify.mock.data-provider.csv.data-columns": "id,fullName,mobileNumber,dateOfBirth,gender,state,district,villageOrTown,postalCode,landArea,landOwnershipType,primaryCropType,secondaryCropType,face,farmerID", "mosip.certify.mock.data-provider.csv-registry-uri": "/home/mosip/config/farmer_identity_data.csv"}]'::JSONB,  -- plugin_configurations

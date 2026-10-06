@@ -479,6 +479,18 @@ cases:
     vpProfile: final-1.0
     scenario: dc-sd-jwt
     expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_17
+    description: 'Probe: issuer that takes only ES256 key proofs, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: holder-proof-es256
+    expected: VALID
+  - uniqueIdentifier: TC_PG_PROBE_18
+    description: 'Probe: issuer that takes only ES256 key proofs, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: holder-proof-es256
+    expected: VALID
   - uniqueIdentifier: TC_PG_NS_01
     description: 'A credential tamper needs the reference wallet; a phone wallet cannot produce it'
     wallet: mobile-wallet

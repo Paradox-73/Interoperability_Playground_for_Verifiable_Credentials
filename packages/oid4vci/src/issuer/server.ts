@@ -389,7 +389,10 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
   }
 
   /** Finds the configuration a draft 13 request names by `format` and `credential_definition` / `vct`. */
-  function configurationForDraft13(body: Record<string, unknown>): CredentialConfiguration {
+  function configurationForDraft13(
+    body: Record<string, unknown>,
+    granted: readonly string[],
+  ): CredentialConfiguration {
     const format = body.format;
     if (typeof format !== 'string') {
       throw new OAuthError('invalid_credential_request', 'format is required (draft 13 section 7.2)');
@@ -408,9 +411,15 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
           types.length === config.ldp!.types.length &&
           config.ldp!.types.every((type) => types.includes(type)),
       );
-      // VC 1.1 and VC 2.0 configurations share the type list; the first @context tells them apart.
+      // VC 1.1 and VC 2.0 configurations share the type list; the first @context tells them apart, and
+      // of two with the same context the one the access token covers is meant.
       const contexts = Array.isArray(definition['@context']) ? definition['@context'] : [];
-      const chosen = matches.find((config) => config.ldp!.contexts[0] === contexts[0]) ?? matches[0];
+      const sameContext = matches.filter((config) => config.ldp!.contexts[0] === contexts[0]);
+      const chosen =
+        sameContext.find((config) => granted.includes(config.id)) ??
+        sameContext[0] ??
+        matches.find((config) => granted.includes(config.id)) ??
+        matches[0];
       if (!chosen) {
         throw new OAuthError(
           'unsupported_credential_type',
@@ -446,7 +455,7 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
     let configuration: CredentialConfiguration;
     let proofJwts: unknown[];
     if (profile === 'draft13') {
-      configuration = configurationForDraft13(body);
+      configuration = configurationForDraft13(body, resolved.grant.configurationIds);
       const proof = body.proof as { proof_type?: unknown; jwt?: unknown } | undefined;
       if (!proof) throw proofError('proof is missing');
       if (proof.proof_type !== 'jwt')
@@ -501,6 +510,7 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
             nowSeconds,
             maxAgeSeconds: proofMaxAge,
             skewSeconds: 60,
+            ...(configuration.proofSigningAlgs ? { algorithms: configuration.proofSigningAlgs } : {}),
           }),
         );
       } catch (error) {

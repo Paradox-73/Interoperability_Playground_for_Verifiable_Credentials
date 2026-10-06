@@ -22,6 +22,8 @@ beforeAll(async () => {
     ...process.env,
     PLAYGROUND_STACK: 'host',
     PLAYGROUND_PORT: String(PORT),
+    // Inji Verify resolves the reference issuer's did:web through the TLS front, which serves ref.ps02.test.
+    PLAYGROUND_PUBLIC_URL: 'https://ref.ps02.test',
     PLAYGROUND_DB: ':memory:',
     PLAYGROUND_LOG_LEVEL: 'warn',
   });
@@ -94,10 +96,10 @@ describe('Inji Certify -> reference wallet -> Inji Verify (all-Inji issuance and
     );
   });
 
-  it('ldp_vc is INVALID: Inji Verify rejects the ecdsa-rdfc-2019 holder proof a P-256 holder can make (G15, with G9)', async () => {
+  it('ldp_vc is VALID with an Ed25519 holder key: the stack lists Ed25519 for FarmerCredential proofs (G9, G15 avoided)', async () => {
     const report = await run({ issuer: 'inji-certify', verifier: 'inji-verify', format: 'ldp_vc' });
-    expect(report).toMatchObject({ outcome: 'INVALID', verdict: 'fail' });
-    expectGapEvidence(report, 'G15', 'verifier.result');
+    expect(report).toMatchObject({ outcome: 'VALID', verdict: 'pass' });
+    expect(report.credentialProof).toBe('Ed25519Signature2020');
   });
 });
 

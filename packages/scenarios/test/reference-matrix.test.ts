@@ -70,6 +70,8 @@ let issuers: Record<'did:key' | 'did:jwk', ReferenceIssuer>;
 let verifier: ReferenceVerifier;
 let fetch: FetchFn;
 let holderKeyPair: KeyPair;
+/** P-256, for the issuer configuration that takes only ES256 key proofs (holder-proof-es256). */
+let p256KeyPair: KeyPair;
 
 beforeAll(async () => {
   vi.stubGlobal('fetch', networkAttempts);
@@ -89,6 +91,7 @@ beforeAll(async () => {
     url.startsWith(`${VERIFIER_BASE}/`) ? toVerifier(new Request(url, init)) : toIssuers(url, init);
   // Ed25519, so the same key signs ldp_vp proofs and KB-JWTs.
   holderKeyPair = generateKeyPair('EdDSA');
+  p256KeyPair = generateKeyPair('ES256');
 });
 
 afterAll(async () => {
@@ -100,7 +103,8 @@ afterAll(async () => {
 /** The orchestrator's part of a run, with the scenario's hooks between the phases. */
 async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, vpProfile: VpProfile) {
   const hooks = scenarioHooks(scenario);
-  const holderKey = holderKeyFrom(holderKeyPair, 'did:key');
+  const keyPair = scenario.id === 'holder-proof-es256' ? p256KeyPair : holderKeyPair;
+  const holderKey = holderKeyFrom(keyPair, 'did:key');
   const vciProfile = vpProfile === 'inji-draft' ? 'draft13' : 'v1';
 
   // Issue.
@@ -129,7 +133,7 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
   // Present and verify.
   const wallet = new PresentationClient({
     fetch,
-    holder: { keyPair: holderKeyPair, did: holderKey.did, verificationMethod: holderKey.kid! },
+    holder: { keyPair, did: holderKey.did, verificationMethod: holderKey.kid! },
     documentLoader,
     didResolver: resolver,
     ...walletClientOptions(scenario),
@@ -145,19 +149,13 @@ async function runCell(scenario: ScenarioDefinition, format: CredentialFormat, v
   if (scenario.presentationTamper === 'replay-earlier') {
     // A genuine earlier exchange with the same verifier, whose vp_token is then replayed.
     const earlier = ask(spec.credentialType);
-    const answered = await respondWithScenario(
-      wallet,
-      earlier.uri,
-      [stored],
-      {},
-      { holderKey: holderKeyPair },
-    );
+    const answered = await respondWithScenario(wallet, earlier.uri, [stored], {}, { holderKey: keyPair });
     expect((await verifier.awaitResult(earlier.handle, { timeoutMs: 10_000 })).outcome).toBe('VALID');
     earlierVpToken = answered.form.vp_token;
   }
   const created = ask(spec.credentialType);
   await respondWithScenario(wallet, created.uri, [stored], scenario, {
-    holderKey: holderKeyPair,
+    holderKey: keyPair,
     documentLoader,
     ...(earlierVpToken === undefined ? {} : { earlierVpToken }),
   });

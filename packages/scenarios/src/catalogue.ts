@@ -288,6 +288,21 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     issuer: { configurationIds: { ldp_vc: 'FarmerCredential_ldp_vc_v2' } },
   },
   {
+    id: 'holder-proof-es256',
+    title: 'Probe: issuer that takes only ES256 key proofs',
+    description:
+      'A valid ldp_vc from an issuer whose credential configuration lists only ES256 for key proofs, as the Inji Certify sample does for FarmerCredential. The wallet binds the credential to a P-256 key and must sign the presentation with that same key; a wallet that signs with another key fails holder binding.',
+    expected: 'VALID',
+    target: 'none',
+    category: 'probe',
+    formats: ['ldp_vc'],
+    requires: { issuer: REF_ISSUER },
+    reference:
+      'OpenID4VCI draft 13 section 7.2.1.1 (proof binds the credential to the key); VC Data Model 1.1 section 5.8 (holder binding)',
+    gap: 'G22',
+    issuer: { configurationIds: { ldp_vc: 'FarmerCredential_ldp_vc_es256_proof' } },
+  },
+  {
     id: 'dc-sd-jwt',
     title: 'Probe: SD-JWT VC under the format id dc+sd-jwt',
     description:

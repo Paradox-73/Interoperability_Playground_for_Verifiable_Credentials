@@ -23,7 +23,7 @@ import {
 } from '../common/constants.js';
 import { Oid4vciClientError, type ClientErrorCode } from '../common/errors.js';
 import { epochSeconds, pkceChallenge, randomToken, systemClock, type Clock } from '../common/util.js';
-import { createHolderKey, createProofJwt, type HolderKey } from './holder.js';
+import { createHolderKey, createProofJwt, ed25519AlgNameFor, type HolderKey } from './holder.js';
 import {
   parseAuthorizationServerMetadata,
   parseCredentialOffer,
@@ -40,6 +40,11 @@ export interface ClientOptions {
   fetch?: FetchFn;
   /** Holder key; default a fresh ES256 key with a did:jwk `kid`. */
   holderKey?: HolderKey;
+  /**
+   * Picks the holder key from the first requested configuration of the issuer metadata (its `format`),
+   * when the configuration id does not tell the format. Takes precedence over `holderKey`.
+   */
+  holderKeyFor?: (configuration: Record<string, unknown>) => HolderKey;
   /** Protocol version; default detected from metadata (`nonce_endpoint` present = 1.0). */
   profile?: VciProfile;
   /** Called before each protocol step. */
@@ -514,6 +519,9 @@ async function requestCredentials(
       );
     }
     if (profile === 'v1') nonce = await fetchNonce(metadata, ctx);
+    if (received.length === 0 && ctx.options.holderKeyFor) {
+      ctx.holderKey = ctx.options.holderKeyFor(configuration);
+    }
 
     // One retry with the nonce the issuer hands back (draft 13 section 7.3.1.2, 1.0 section 8.3.1.2).
     for (let attempt = 0; ; attempt += 1) {
@@ -524,6 +532,7 @@ async function requestCredentials(
         ...(nonce === undefined ? {} : { nonce }),
         ...(clientId === undefined ? {} : { issuer: clientId }),
         nowMs: ctx.clock(),
+        ed25519AlgName: ed25519AlgNameFor(configuration),
         ...(ctx.options.proofOverrides ? { overrides: ctx.options.proofOverrides } : {}),
       });
       const body =
