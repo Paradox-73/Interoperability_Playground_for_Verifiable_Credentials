@@ -96,6 +96,7 @@ test('mso_mdoc happy path: the inspector shows the CBOR vp_token as JSON', async
   const decoded = page.getByTestId('artifact-detail').getByTestId('cbor-view').first();
   await expect(decoded).toContainText('DeviceResponse');
   await expect(decoded).toContainText('test.ps02.playground.farmer.1');
+  await shot(page, '15-mdoc-inspector');
   await expectAccessible(page);
 });
 

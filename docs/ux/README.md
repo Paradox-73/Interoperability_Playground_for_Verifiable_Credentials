@@ -75,6 +75,20 @@ no page get a page that says so.
 
 ![Page not found](screenshots/12-not-found.png)
 
+## 8. Present through the browser, read an mdoc, use a phone screen
+
+With the browser wallet and the Digital Credentials API verifier, the run page plays the verifier's web page:
+"Ask the browser" passes the request to `navigator.credentials.get()`, and "Answer with the playground
+wallet" lets the reference wallet answer the same request where the browser has no wallet for it; the
+request the page passes is shown in the inspector. An mso_mdoc run shows its CBOR messages decoded as JSON
+next to the raw base64url. Every page fits a 390 px wide phone screen without sideways scrolling.
+
+![Digital Credentials API step](screenshots/13-dc-api.png)
+
+![mso_mdoc vp_token decoded in the inspector](screenshots/15-mdoc-inspector.png)
+
+![The playground on a phone-sized screen](screenshots/14-phone-playground.png)
+
 ## Accessibility checks
 
 - `npm run e2e` runs axe-core (WCAG 2.1 A and AA rules) in Chromium on the playground, run, playback,
