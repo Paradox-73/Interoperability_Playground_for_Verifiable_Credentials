@@ -2,7 +2,7 @@
   "name": "@inji-playground/formats",
   "version": "0.1.0",
   "private": true,
-  "description": "Keys, DIDs and credential formats (W3C VC Data Integrity, SD-JWT VC) used by the reference issuer, wallet and verifier.",
+  "description": "Keys, DIDs and credential formats (W3C VC Data Integrity, SD-JWT VC, mso_mdoc) used by the reference issuer, wallet and verifier.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -47,6 +47,7 @@
     "@peculiar/x509": "^2.1.0",
     "@sd-jwt/core": "^0.21.1",
     "@sd-jwt/sd-jwt-vc": "^0.21.1",
+    "cbor-x": "^1.6.6",
     "did-resolver": "^6.0.0",
     "jose": "^6.2.12",
     "key-did-resolver": "^4.0.0",

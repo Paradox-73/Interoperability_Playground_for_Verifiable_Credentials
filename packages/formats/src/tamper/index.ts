@@ -20,3 +20,12 @@ export {
   type KeyBindingChanges,
 } from './sd-jwt.js';
 export { flipEmbeddedCredentialProof, flipProofValue, representLdpVp, type RepresentOptions } from './ldp.js';
+export {
+  addUnreferencedMdocElement,
+  alterMdocElement,
+  firstMdocElement,
+  flipMdocIssuerSignature,
+  forgeMdocWithSelfSignedX5chain,
+  resignMdocDeviceSignature,
+  type ForgedMdoc,
+} from './mdoc.js';
