@@ -36,9 +36,10 @@ services:
       PLAYGROUND_STACK: bundle
       # Trust the stack's test CA for https://*.ps02.test (did:web documents behind the TLS front).
       NODE_EXTRA_CA_CERTS: /stack/ca/ps02-test-ca.crt
-      # Inji Web runs (holder-web) need https://ref.ps02.test: certify-ac and Mimoto reach the test
-      # authorization server and the reference issuer there. Unset, the playground uses http://localhost:28100.
-      PLAYGROUND_PUBLIC_URL: ${PLAYGROUND_PUBLIC_URL:-}
+      # Default https://ref.ps02.test: certify-ac and Mimoto reach the test authorization server and the reference
+      # issuer there, and Inji Verify resolves the reference issuer's did:web only over https (G2). Set it to a LAN
+      # or tunnel address for a phone wallet. The UI is still opened at http://localhost:28100.
+      PLAYGROUND_PUBLIC_URL: ${PLAYGROUND_PUBLIC_URL:-https://ref.ps02.test}
     volumes:
       - ${PLAYGROUND_RUN_DIR:-../run}/stack/ca:/stack/ca:ro
       # Mimoto's client certificate, registered at the test authorization server (private_key_jwt).
