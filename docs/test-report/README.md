@@ -74,3 +74,11 @@ Checked on 2026-10-06 (`scripts/lib/licenses.mjs`; the full list is in [THIRD_PA
 - npm packages in the playground image: 445, under MIT (308), ISC (53), BSD-3-Clause (40), Apache-2.0 (20), BlueOak-1.0.0 (5), (MIT AND Zlib) (3), (MIT OR CC0-1.0) (2), 0BSD (2), Apache-2.0 OR MIT (2), MPL-2.0 (2), Unlicense (2), W3C-20150513 AND BSD-3-Clause (2), (Apache-2.0 OR MIT) (1), (MIT OR GPL-3.0-or-later) (1), (MPL-2.0 OR Apache-2.0) (1), EPL-2.0 (1).
 - Container images of the Inji stack: injistack/inji-certify-with-plugins (MPL-2.0), injistack/inji-verify-service (MPL-2.0), injistack/inji-verify-ui (MPL-2.0), injistack/mimoto (MPL-2.0), injistack/inji-web (MPL-2.0), postgres (PostgreSQL), nginx (BSD-2-Clause).
 - Development-only packages (not distributed): 367; not OSI-approved among them: caniuse-lite (CC-BY-4.0), language-subtag-registry (CC0-1.0), mdn-data (CC0-1.0) (data files used by build tools).
+
+## Hosted GitHub Actions runs, 2026-10-06
+
+| Run | Workflow | Commit | Result |
+| --- | --- | --- | --- |
+| 37491520206 | ci | 093fd39 | failure: eslint error at `packages/oid4vp/src/verifier/verifier.ts:371` |
+| 37492155844 | ci | 9860930 | success |
+| 37491817574 | interop-nightly (manual) | 093fd39 | success |

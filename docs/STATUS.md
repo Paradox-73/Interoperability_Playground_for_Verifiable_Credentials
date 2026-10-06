@@ -564,7 +564,8 @@ check never leaves containers running.
   - Nightly workflow: cron 20:30 UTC and manual trigger; job 1 the reference matrix; job 2 `stack:up` with
     `holder-web`, `matrix:live` for both live specs, upload `docs/interop-report/` as an artifact, matrix as
     job summary, `stack:down`. Whether a GitHub-hosted runner has enough memory for the stack is not known
-    yet; the first run measures it.
+    yet; the first run measures it. The first run (2026-10-06, run 37491817574, manual trigger on 093fd39)
+    finished green: reference matrix and live matrices both passed, so the hosted runner has enough memory.
   - Add the reference matrix job to `.github/workflows/ci.yml` (minimal change to a shared file).
 
 ### WP-16 Manual-wallet QR step, Inji Verify SDK panel, browser end-to-end and accessibility tests (DONE)
@@ -772,3 +773,11 @@ Only after every task above is DONE:
 - `direct_post.jwt`, `x509_san_dns` and `x509_hash` client ids in the reference roles.
 - A public did:web for Certify so a phone wallet can verify `ldp_vc`.
 - A second UI language with a right-to-left check.
+
+
+## Hosted runs of 2026-10-06
+
+- `ci` run 37491520206 on 093fd39: failed. Step `npm run lint` reported `restrict-template-expressions` at
+  `packages/oid4vp/src/verifier/verifier.ts:371`.
+- Fixed in 9860930; `ci` run 37492155844 on 9860930: success (all four jobs).
+- `interop-nightly` run 37491817574 (manual trigger, 093fd39): success.
