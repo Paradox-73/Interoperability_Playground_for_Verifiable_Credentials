@@ -10,15 +10,19 @@ MOSIP Decode 2026, problem statement 02, team Badmosip.
 
 ## Status
 
-| Date       | State                                                                                                                                                                                                                                                                                                                                                                                  |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-10-04 | Repository scaffold: eight npm workspaces, the shared contracts (`packages/protocol`), a server answering `GET /api/health`, a skeleton UI, the test and build tooling, CI and image.                                                                                                                                                                                                  |
-| 2026-10-05 | Every work package built and measured (branches awaiting review, [docs/STATUS.md](docs/STATUS.md)): reference roles in both protocol profiles, recording, Inji Certify, certify-ac, Inji Web through Mimoto and Inji Verify (API and web component) as roles, the UI with matrix, history, reports and gaps, the headless matrix, browser tests, the demo command and the test report. |
-| 2026-10-06 | Reviewed and merged to `main`; every acceptance check run again ([docs/STATUS.md](docs/STATUS.md)). Fixed in review: redaction of PKCE verifiers, keyboard access to scrollable message bodies, a flaky browser test, the licence audit; Dependabot updates applied.                                                                                                                   |
+| Date       | State                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-04 | Repository scaffold: eight npm workspaces, the shared contracts (`packages/protocol`), a server answering `GET /api/health`, a skeleton UI, the test and build tooling, CI and image.                                                                                                                                                                                                                                                     |
+| 2026-10-05 | Every work package built and measured (branches awaiting review, [docs/STATUS.md](docs/STATUS.md)): reference roles in both protocol profiles, recording, Inji Certify, certify-ac, Inji Web through Mimoto and Inji Verify (API and web component) as roles, the UI with matrix, history, reports and gaps, the headless matrix, browser tests, the demo command and the test report.                                                    |
+| 2026-10-06 | Reviewed and merged to `main`; every acceptance check run again ([docs/STATUS.md](docs/STATUS.md)). Fixed in review: redaction of PKCE verifiers, keyboard access to scrollable message bodies, a flaky browser test, the licence audit; Dependabot updates applied.                                                                                                                                                                      |
+| 2026-10-06 | Second pass: an Inji Web (Mimoto) presentation verifies `VALID` at Inji Verify, also all-Inji from Inji Certify (gaps G22 and G9 worked around in the stack); `mso_mdoc` end to end for the reference roles and measured live against Inji Certify, Inji Verify and Mimoto (gaps G26-G29); OpenID4VP over the W3C Digital Credentials API; the nightly workflow replayed locally; JSON-LD context cache in the stack; phone-width layout. |
 
-Measured on 2026-10-06 ([test report](docs/test-report/README.md)): 972 unit and integration tests, 7
-browser tests and 20 live tests against the Inji stack pass; the reference matrix has 82 of 82 cells as
-specified, the live matrices 20 of 20. Nothing in this README claims more than has been run.
+Measured on 2026-10-06 ([test report](docs/test-report/README.md)): 1120 unit and integration tests, 11
+browser tests and 20 live tests against the Inji stack pass; the reference matrix has 109 of 109 cells as
+specified, the live matrices 26 of 26; `npm run demo` passes 5 of 5 cells, including Inji Certify -> Inji Web
+-> Inji Verify `VALID`; the nightly workflow passed when replayed locally
+([nightly-replay.md](docs/test-report/nightly-replay.md)). Nothing in this README claims more than has been
+run.
 
 ## Status and contributing
 
@@ -63,22 +67,23 @@ The design decisions are recorded in [docs/adr](docs/adr/README.md).
 
 ## Commands
 
-| Command                                                                           | What it does                                                                                                                       |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`                                                                     | Server from source with reload (28100) and the UI dev server (28173)                                                               |
-| `npm start`                                                                       | Built server, serving the built UI (28100)                                                                                         |
-| `npm run build`                                                                   | Compile every package (`tsc -b`) and bundle the UI                                                                                 |
-| `npm run lint` / `npm run format:check` / `npm run typecheck`                     | ESLint, Prettier, TypeScript                                                                                                       |
-| `npm test`                                                                        | All unit and integration tests (Vitest), without the live Inji stack                                                               |
-| `npm run test:live`                                                               | Tests against the running Inji stack                                                                                               |
-| `npm run smoke`                                                                   | One reference run end to end, printing the recorded exchanges and the verdict                                                      |
-| `npm run e2e` / `npm run e2e:live`                                                | Browser tests: reference mode (no Docker) / against the bundle or a host-mode server on 28100                                      |
-| `npm run stack:init` / `stack:up` / `stack:down` / `stack:status` / `stack:smoke` | Local Inji stack ([docs/setup.md](docs/setup.md#local-inji-stack))                                                                 |
-| `npm run up` / `npm run down`                                                     | One-command bundle: Inji stack + playground ([docs/setup.md](docs/setup.md#one-command-bundle))                                    |
-| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                                                             |
-| `npm run demo`                                                                    | Checks Docker, ports and memory, starts the bundle, runs the demo cells, prints `DEMO PASS` ([scripts/demo.mjs](scripts/demo.mjs)) |
-| `npm run test:report` / `npm run openapi`                                         | Dated test report in [docs/test-report/](docs/test-report/README.md) and THIRD_PARTY_LICENSES.md / OpenAPI export                  |
-| `npm run docs:check`                                                              | Documentation check: links, required sections, gap issue drafts, commands                                                          |
+| Command                                                                           | What it does                                                                                                                                     |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`                                                                     | Server from source with reload (28100) and the UI dev server (28173)                                                                             |
+| `npm start`                                                                       | Built server, serving the built UI (28100)                                                                                                       |
+| `npm run build`                                                                   | Compile every package (`tsc -b`) and bundle the UI                                                                                               |
+| `npm run lint` / `npm run format:check` / `npm run typecheck`                     | ESLint, Prettier, TypeScript                                                                                                                     |
+| `npm test`                                                                        | All unit and integration tests (Vitest), without the live Inji stack                                                                             |
+| `npm run test:live`                                                               | Tests against the running Inji stack                                                                                                             |
+| `npm run smoke`                                                                   | One reference run end to end, printing the recorded exchanges and the verdict                                                                    |
+| `npm run e2e` / `npm run e2e:live`                                                | Browser tests: reference mode (no Docker) / against the bundle or a host-mode server on 28100                                                    |
+| `npm run stack:init` / `stack:up` / `stack:down` / `stack:status` / `stack:smoke` | Local Inji stack ([docs/setup.md](docs/setup.md#local-inji-stack))                                                                               |
+| `npm run up` / `npm run down`                                                     | One-command bundle: Inji stack + playground ([docs/setup.md](docs/setup.md#one-command-bundle))                                                  |
+| `npm run matrix:reference` / `npm run matrix:live`                                | Headless compatibility matrix ([packages/cli](packages/cli/README.md))                                                                           |
+| `npm run demo`                                                                    | Checks Docker, ports and memory, starts the bundle, runs the demo cells, prints `DEMO PASS` ([scripts/demo.mjs](scripts/demo.mjs))               |
+| `npm run test:report` / `npm run openapi`                                         | Dated test report in [docs/test-report/](docs/test-report/README.md) and THIRD_PARTY_LICENSES.md / OpenAPI export                                |
+| `node scripts/nightly-replay.mjs`                                                 | Runs the nightly workflow's jobs locally, step by step with their env ([docs/test-report/nightly-replay.md](docs/test-report/nightly-replay.md)) |
+| `npm run docs:check`                                                              | Documentation check: links, required sections, gap issue drafts, commands                                                                        |
 
 ## Flows
 
@@ -89,7 +94,11 @@ recorded:
   wallet-initiated authorization code flow for wallets that cannot take an offer (Inji Web through Mimoto,
   with certify-ac or the reference issuer). OpenID4VCI draft 13 or 1.0.
 - **Presentation:** OpenID4VP drafts 21-23 with Presentation Exchange (as Inji Verify and Inji Wallet speak
-  it) or OpenID4VP 1.0 with DCQL; `ldp_vc` / `ldp_vp` and SD-JWT VC with a key binding JWT.
+  it) or OpenID4VP 1.0 with DCQL; `ldp_vc` / `ldp_vp`, SD-JWT VC with a key binding JWT, and `mso_mdoc`
+  (ISO/IEC 18013-5 DeviceResponse, session transcript of ISO/IEC 18013-7 Annex B or OpenID4VP 1.0).
+- **Same device and browser:** deep links for a wallet app on the same phone, the Inji Verify web component's
+  same-device switch, and OpenID4VP over the W3C Digital Credentials API (`navigator.credentials.get()`), with
+  the verifier binding the answer to the page's origin.
 - **Scenarios:** the happy path, tampered credentials and presentations (expired, bad signature, altered
   disclosure, wrong key binding, replay, wrong holder) and probes, each with the outcome the specifications
   require.
@@ -100,12 +109,12 @@ where traffic is recorded: [docs/architecture.md](docs/architecture.md).
 ## Interoperability matrix and gaps
 
 - Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
-  82 of 82 cells as specified (2026-10-06).
+  109 of 109 cells as specified (2026-10-06), with `mso_mdoc` and Digital Credentials API cells.
 - Live matrix against Inji Certify 0.14.0, certify-ac, Inji Web 0.17.0 with Mimoto 0.22.0 and Inji Verify
-  0.18.2: [docs/interop-report/live/matrix.md](docs/interop-report/live/matrix.md), 20 of 20 cells as
-  specified (2026-10-06). All-Inji SD-JWT VC issuance and verification is `VALID`; the cells that fail are
-  blocked by recorded gaps.
-- Gaps: [docs/gaps/README.md](docs/gaps/README.md) lists 23 public gaps in Inji Certify, Inji Verify and
+  0.18.2: [docs/interop-report/live/matrix.md](docs/interop-report/live/matrix.md), 26 of 26 cells as
+  specified (2026-10-06). All-Inji SD-JWT VC and `ldp_vc` are `VALID`, the latter also with Inji Web as the
+  wallet (Inji Certify -> Inji Web -> Inji Verify); the cells that fail are blocked by recorded gaps.
+- Gaps: [docs/gaps/README.md](docs/gaps/README.md) lists 27 public gaps in Inji Certify, Inji Verify and
   Mimoto, each with an issue draft (repository, version, steps, expected and actual result, playground case
   and date). Two further findings are reported privately.
 

@@ -9,7 +9,9 @@ for set-up and the rules every change follows.
 - Work stopped: 2026-10-04 20:45 IST.
 - `main` at that time: commit `447f05d` (2026-10-04 17:04 IST), pushed to
   <https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials>.
-- Review: 2026-10-06, every task DONE on `main` (not pushed yet).
+- Review: 2026-10-06, every task DONE on `main`.
+- Second pass: 2026-10-06, the gaps of the review closed where no person is needed; see
+  [Second pass of 2026-10-06](#second-pass-of-2026-10-06).
 - Unfinished work of 2026-10-04: branch `wip/2026-10-04-stop`, commit `6778946` (WP-08, WP-11, WP-13). On
   2026-10-05 it was split into one branch per task as described below, finished, and WP-15 was added;
   see [Branches awaiting review](#branches-awaiting-review).
@@ -18,6 +20,7 @@ for set-up and the rules every change follows.
 
 - [Task table](#task-table)
 - [Review of 2026-10-06](#review-of-2026-10-06)
+- [Second pass of 2026-10-06](#second-pass-of-2026-10-06)
 - [Branches awaiting review](#branches-awaiting-review)
 - [State of the unfinished branch](#state-of-the-unfinished-branch)
 - [Task cards](#task-cards)
@@ -89,6 +92,34 @@ Run on `main` (Windows 11, Node 24.19.0, npm 11.17.0, Docker Desktop 29.7 with 8
   build and every suite passed with them.
 - Problems fixed in review, one commit each: `f93e045`, `294dd2d`, `324eb2e`, `c9d4709`, `cf0d103`,
   `fef7445`, `e153d70`, `9e1ae2c`. The live run records are now kept in git (`d350e56`).
+
+## Second pass of 2026-10-06
+
+What the review left open and could be done without people, in the order of its priority. Every result was
+measured on 2026-10-06 (Windows 11, Docker Desktop with 8 GB, Node 24.19.0).
+
+| Item                                       | What changed                                                                                                                                                                                                                                                                                                                                                   | Commits                                                                     | Measured result                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inji wallet presentation `VALID` (G22, G9) | Mimoto signs every `ldp_vp` with its Ed25519 key and picks the key of the credential request from the issuer's algorithm list. The reference issuer lists the RFC 9864 name `Ed25519`, the stack adds it to Certify's `FarmerCredential`, the reference wallet picks its key from the metadata. Probe scenario `holder-proof-es256` keeps G22 and G15 visible. | `bdb504c`, `373518a`                                                        | certify-ac -> Inji Web -> Inji Verify `ldp_vc` `VALID` (TC_PG_WEB_03), reference issuer -> Inji Web -> Inji Verify `VALID` (TC_PG_WEB_05), Certify -> reference wallet -> Inji Verify `ldp_vc` `VALID` (TC_PG_LIVE_02); G22 still shown by TC_PG_WEB_07, G15 by TC_PG_WEB_08                        |
+| `mso_mdoc`                                 | Reference issuer, wallet and verifier: IssuerSigned, DeviceResponse, both session transcripts, tamper primitives, inspector CBOR view. Inji Certify and certify-ac issue `FarmerMdoc` from the stack seed; the Inji Verify and Inji Web adapters were opened to mdoc to measure them.                                                                          | `3d7f713`, `bd37ac1`, `018cc14`, `190d4b8`, `e75ff46`, `c97e0e7`, `39e3d35` | 20 reference mdoc cells as specified (TC_PG_MDOC_*). Certify mdocs: issuer signature, digests and device signature verify, structure departs from ISO/IEC 18013-5 (G27), pre-authorized elements unfilled (G26); Inji Verify refuses every DeviceResponse (G28); Mimoto refuses the download (G29). |
+| Deep link and Digital Credentials API      | OpenID4VP 1.0 Appendix A: `ref-verifier-dc-api` (unsigned request, `response_mode` `dc_api`, answer bound to the page origin) and `browser-wallet` (the run page calls `navigator.credentials.get()`, or the playground wallet answers for a browser without a wallet); a same-device switch on the Inji Verify web component.                                 | `d6fe992`, `0468f63`                                                        | 5 reference cells TC_PG_DCAPI_01-05 as specified; 2 browser tests, one through `navigator.credentials.get()` with a stand-in browser wallet; an answer posted from another origin is `INVALID`                                                                                                      |
+| Nightly CI                                 | `scripts/nightly-replay.mjs` runs the workflow's jobs locally; the live job uses one server with the public URL.                                                                                                                                                                                                                                               | `4e65fac`                                                                   | reference job under nektos/act 0.2.89 and with the replay, live job with the replay: every step succeeded ([nightly-replay.md](test-report/nightly-replay.md)); replayed again with the mdoc cells: reference 109 of 109, live 16 of 16 and 10 of 10                                                |
+| Flaky live runs                            | GitHub Pages (behind `w3id.org` and the farmer sample context) answered HTTP 429; the TLS front now caches the JSON-LD contexts, Certify trusts the stack CA, `stack:up` warms the cache.                                                                                                                                                                      | `80b5471`, `d2ee09b`                                                        | before: 5 to 7 of 20 live tests failed with `LOADING_REMOTE_CONTEXT_FAILED`; after: 5 of 6 runs 20 of 20, no context failure (one run had two 30 s step timeouts)                                                                                                                                   |
+| Phone screens                              | Run bar selects and table captions pushed pages sideways on a 390 px screen.                                                                                                                                                                                                                                                                                   | `fedb6bd`                                                                   | browser test: 6 pages at 390 x 844, no sideways scroll, axe clean                                                                                                                                                                                                                                   |
+| Bundle                                     | Public URL `https://ref.ps02.test` by default, so Inji Web cells run in the bundle.                                                                                                                                                                                                                                                                            | `9119e63`                                                                   | `npm run demo -- --ci`: 5 of 5 (`DEMO PASS`), including the new all-Inji Inji Web cell TC_PG_DEMO_05; `npm run e2e:live` 1 of 1                                                                                                                                                                     |
+| Documentation                              | Gap register G26-G29 with drafts, README, UX screenshots 13-15, test report.                                                                                                                                                                                                                                                                                   | `2bb0cb4`, `cbd1ffc`                                                        | `npm test` 1120, `npm run e2e` 11, `npm run test:live` 20, all passed (`npm run test:report -- --all`)                                                                                                                                                                                              |
+
+Still open, and why:
+
+- A run with Inji Wallet on a real phone: needs a person with a phone, and no Inji Wallet APK is in the
+  releases.
+- Inji Web cannot present SD-JWT VCs (G25) or hold an mdoc (G29), and refuses specification-conformant filters
+  (G23); Inji Verify cannot verify an mdoc presentation (G28): upstream changes.
+- `mso_mdoc` over the Digital Credentials API: its session transcript (OpenID4VPDCAPIHandover) is not
+  implemented; the DC API verifier refuses mdoc requests.
+- Filing the gap drafts upstream and running the workflows on GitHub: the repository stays private until the
+  submission; people file the issues (G7 and G20 privately).
+- The demo video and the slide deck: made by people from `docs/demo/README.md`.
 
 ## Branches awaiting review
 
@@ -702,26 +733,27 @@ A task moves to DONE only when, in one pull request:
 Short ids for upstream problems found while building the stack. "Measured" means it was run and seen;
 "code reading" means found in the source but not run yet.
 
-| Id      | Component                  | Gap                                                                                                                     | Evidence     | Local state                                            |
-| ------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------ |
-| G1      | inji-certify sample config | `credentialOfferCache` missing from `mosip.certify.cache.names`; pre-authorized issuance fails                          | measured     | fixed in `ba25dc6`                                     |
-| G2      | vc-verifier (Inji Verify)  | did:web resolved only over `https://`                                                                                   | measured     | worked around by the TLS front and test CA (`e19cb30`) |
-| G3      | inji-certify sample nginx  | `/.well-known/oauth-authorization-server` at the host root is not routed                                                | measured     | fixed in `af9e36d`                                     |
-| G4      | Mimoto                     | needs `display` logo, `background_color`, `text_color` on every credential configuration (optional in OpenID4VCI)       | measured     | reference issuer and seed set them                     |
-| G5      | Mimoto / Inji Web          | no pre-authorized code or credential offer support                                                                      | code reading | WP-14 uses certify-ac instead                          |
-| G6      | Inji Certify               | authorization-server metadata has no `authorization_endpoint`                                                           | measured     | WP-14 uses the test authorization server               |
-| G7      | Inji Verify                | reported privately                                                                                                      | -            | not in the repository                                  |
-| G8      | Inji Certify SD-JWT output | `typ` `vc+sd-jwt` (newer drafts use `dc+sd-jwt`), holder key as `cnf.kid`, no `iat`/`exp` unless the template adds them | measured     | open                                                   |
-| G9      | inji-certify sample config | proof algorithm list says `Ed25519` where the rest of the config uses `EdDSA`; an EdDSA holder proof may be rejected    | code reading | reference wallet uses ES256                            |
-| G10     | inji-verify compose        | `OVP_QR_HEADER` value missing `$`                                                                                       | code reading | fixed in our compose (`76f2b67`)                       |
-| G11     | Inji Certify sample config | credential-configuration and pre-authorized-data APIs are unauthenticated                                               | measured     | local only; never expose these ports                   |
-| G12-G19 | Inji Certify, Inji Verify  | see `docs/gaps/gaps.json` (WP-10)                                                                                       | measured     | open                                                   |
-| G20     | Inji Verify                | reported privately                                                                                                      | measured     | not in the repository                                  |
-| G21     | Mimoto                     | sign-in fails for a returning user whose first ID token lacked `picture` or `phone_number`                              | measured     | test identity has both claims                          |
-| G22     | Mimoto / Inji Web          | ldp_vp signed with an Ed25519 key while the credential is bound to a P-256 key                                          | measured     | open; Inji Web -> Inji Verify is `INVALID`             |
-| G23     | Mimoto (inji-openid4vp)    | field filters without `pattern` refused                                                                                 | measured     | playground's Inji Verify requests add `pattern`        |
-| G24     | Mimoto                     | `http` `response_uri` refused; the Inji Verify sample hands one out                                                     | measured     | stack uses `https://verify.ps02.test`                  |
-| G25     | Mimoto / Inji Web          | no presentation of SD-JWT VCs (matching supports only `ldp_vc`)                                                         | measured     | open                                                   |
+| Id      | Component                         | Gap                                                                                                                                                          | Evidence     | Local state                                                |
+| ------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | ---------------------------------------------------------- |
+| G1      | inji-certify sample config        | `credentialOfferCache` missing from `mosip.certify.cache.names`; pre-authorized issuance fails                                                               | measured     | fixed in `ba25dc6`                                         |
+| G2      | vc-verifier (Inji Verify)         | did:web resolved only over `https://`                                                                                                                        | measured     | worked around by the TLS front and test CA (`e19cb30`)     |
+| G3      | inji-certify sample nginx         | `/.well-known/oauth-authorization-server` at the host root is not routed                                                                                     | measured     | fixed in `af9e36d`                                         |
+| G4      | Mimoto                            | needs `display` logo, `background_color`, `text_color` on every credential configuration (optional in OpenID4VCI)                                            | measured     | reference issuer and seed set them                         |
+| G5      | Mimoto / Inji Web                 | no pre-authorized code or credential offer support                                                                                                           | code reading | WP-14 uses certify-ac instead                              |
+| G6      | Inji Certify                      | authorization-server metadata has no `authorization_endpoint`                                                                                                | measured     | WP-14 uses the test authorization server                   |
+| G7      | Inji Verify                       | reported privately                                                                                                                                           | -            | not in the repository                                      |
+| G8      | Inji Certify SD-JWT output        | `typ` `vc+sd-jwt` (newer drafts use `dc+sd-jwt`), holder key as `cnf.kid`, no `iat`/`exp` unless the template adds them                                      | measured     | open                                                       |
+| G9      | inji-certify sample config        | proof algorithms compared by exact name: `Ed25519` accepted where listed, `EdDSA` refused; FarmerCredential lists neither                                    | measured     | stack lists `Ed25519` for FarmerCredential (`bdb504c`)     |
+| G10     | inji-verify compose               | `OVP_QR_HEADER` value missing `$`                                                                                                                            | code reading | fixed in our compose (`76f2b67`)                           |
+| G11     | Inji Certify sample config        | credential-configuration and pre-authorized-data APIs are unauthenticated                                                                                    | measured     | local only; never expose these ports                       |
+| G12-G19 | Inji Certify, Inji Verify         | see `docs/gaps/gaps.json` (WP-10)                                                                                                                            | measured     | open                                                       |
+| G20     | Inji Verify                       | reported privately                                                                                                                                           | measured     | not in the repository                                      |
+| G21     | Mimoto                            | sign-in fails for a returning user whose first ID token lacked `picture` or `phone_number`                                                                   | measured     | test identity has both claims                              |
+| G22     | Mimoto / Inji Web                 | every ldp_vp signed with the Ed25519 key, whatever key the credential is bound to                                                                            | measured     | worked around (`bdb504c`): Inji Web -> Inji Verify `VALID` |
+| G23     | Mimoto (inji-openid4vp)           | field filters without `pattern` refused                                                                                                                      | measured     | playground's Inji Verify requests add `pattern`            |
+| G24     | Mimoto                            | `http` `response_uri` refused; the Inji Verify sample hands one out                                                                                          | measured     | stack uses `https://verify.ps02.test`                      |
+| G25     | Mimoto / Inji Web                 | no presentation of SD-JWT VCs (matching supports only `ldp_vc`)                                                                                              | measured     | open                                                       |
+| G26-G29 | Inji Certify, Inji Verify, Mimoto | `mso_mdoc`: Certify's pre-authorized mdoc unfilled, mdoc structure outside ISO/IEC 18013-5, Inji Verify refuses DeviceResponses, Mimoto refuses the download | measured     | open; see `docs/gaps/gaps.json`                            |
 
 Also seen, written up in `docs/gaps/README.md` ("Other observations") by WP-18: the inji-verify compose `init.sql` does not match the 0.18.x schema
 (500 errors on status and submission; fixed locally in `d4b9a35`); verify-service has no CORS support; the
@@ -732,7 +764,7 @@ allows only `ldp_vc`; the SDK rejects QR uploads under 10 KB.
 
 Only after every task above is DONE:
 
-- `mso_mdoc` as a third format in the reference roles.
+- `mso_mdoc` over the Digital Credentials API (OpenID4VPDCAPIHandover session transcript).
 - eSignet in place of the test authorization server (becomes required if certify-ac rejects its tokens).
 - Inji 1.0.0-alpha.1 images as extra columns, to run the `final-1.0` profile against Inji.
 - An external non-Inji implementation as a role, or the OpenID Foundation conformance suite against the
