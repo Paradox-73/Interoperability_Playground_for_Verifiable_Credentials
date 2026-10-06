@@ -4,19 +4,19 @@
 
 **Version:** 0.18.2
 
-**Case:** TC_PG_LIVE_02 (Certify -> reference wallet -> Inji Verify, `ldp_vc`)
+**Case:** TC_PG_WEB_08 (reference issuer that lists only ES256 for key proofs -> reference wallet -> Inji Verify, `ldp_vc`, scenario `holder-proof-es256`); until 2026-10-05 also TC_PG_LIVE_02
 
-**Date:** 2026-10-05
+**Date:** 2026-10-06 (first measured 2026-10-05)
 
 **Severity:** medium; **status:** new; no upstream issue found
 
 ## Summary
 
-A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key the credential is bound to gets holderProofCheck ERR_SIGNATURE_VERIFICATION_FAILED, while the credential's own signature and expiry pass. Inji Verify advertises Ed25519Signature2018/2020 and RsaSignature2018 for ldp_vp. With G9 (Certify accepts only ES256 and RS256 holder proofs), a wallet with a P-256 key cannot present a Certify ldp_vc to Inji Verify; only RSA keys work across both.
+A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key the credential is bound to gets holderProofCheck ERR_SIGNATURE_VERIFICATION_FAILED, while the credential's own signature and expiry pass. Inji Verify advertises Ed25519Signature2018/2020 and RsaSignature2018 for ldp_vp. A wallet whose issuer takes no Ed25519 key proof (the Inji Certify sample for FarmerCredential, G9) cannot present an ldp_vc to Inji Verify.
 
 ## Steps
 
-1. Obtain a Certify `ldp_vc` bound to a P-256 holder key (the key type Certify accepts, G9).
+1. Obtain an `ldp_vc` bound to a P-256 holder key (from Inji Certify with the sample configuration, G9, or from the reference issuer's `FarmerCredential_ldp_vc_es256_proof`).
 2. Present it to Inji Verify 0.18.2 in an `ldp_vp` signed with `DataIntegrityProof` / `ecdsa-rdfc-2019` by that key.
 3. Read `POST /v1/verify/v2/vp-results/{transactionId}`.
 
@@ -26,7 +26,7 @@ A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key t
 
 ## Actual
 
-`holderProofCheck` fails with `ERR_SIGNATURE_VERIFICATION_FAILED`, while the credential's signature and expiry pass. Inji Verify advertises only Ed25519Signature2018/2020 and RsaSignature2018 for `ldp_vp`. With G9, only RSA holder keys work across Certify and Inji Verify.
+`holderProofCheck` fails with `ERR_SIGNATURE_VERIFICATION_FAILED`, while the credential's signature and expiry pass. Inji Verify advertises only Ed25519Signature2018/2020 and RsaSignature2018 for `ldp_vp`. With the Inji Certify sample configuration (G9), only RSA holder keys work across Certify and Inji Verify; with `Ed25519` added to `FarmerCredential` (the playground stack), an Ed25519 holder key works (TC_PG_LIVE_02 `VALID`, 2026-10-06).
 
 ## Suggested change
 

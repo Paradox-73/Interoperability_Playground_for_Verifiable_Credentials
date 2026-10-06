@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": false
   },
-  "startedAt": "2026-10-05T21:13:13.483Z",
-  "finishedAt": "2026-10-05T21:13:46.902Z",
-  "durationMs": 33419,
+  "startedAt": "2026-10-06T12:48:47.845Z",
+  "finishedAt": "2026-10-06T12:49:11.616Z",
+  "durationMs": 23771,
   "roles": {
     "inji-certify": {
       "name": "Inji Certify",
@@ -44,8 +44,8 @@
     "cells": 14,
     "matched": 14,
     "mismatched": 0,
-    "pass": 10,
-    "fail": 3,
+    "pass": 11,
+    "fail": 2,
     "error": 0,
     "notSupported": 1
   },
@@ -64,11 +64,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211313-6567d5",
+      "runId": "20261006T124848-a09b40",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 2959,
+      "durationMs": 3134,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -79,7 +79,7 @@
     {
       "case": {
         "id": "TC_PG_LIVE_02",
-        "description": "Inji Certify -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9 (no ldp_vp suite Inji Verify accepts for the P-256 holder key Certify requires)",
+        "description": "Inji Certify -> reference wallet -> Inji Verify, ldp_vc (Ed25519 holder key; the stack lists Ed25519 for FarmerCredential proofs, G9)",
         "issuer": "inji-certify",
         "wallet": "ref-wallet",
         "verifier": "inji-verify",
@@ -87,19 +87,14 @@
         "vpProfile": "inji-draft",
         "vciProfile": "draft13",
         "scenario": "happy",
-        "verdict": "fail"
+        "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211316-66d140",
-      "outcome": "INVALID",
-      "verdict": "fail",
+      "runId": "20261006T124851-418161",
+      "outcome": "VALID",
+      "verdict": "pass",
       "matches": true,
-      "durationMs": 17632,
-      "error": {
-        "step": "verifier.result",
-        "code": "outcome.unexpected",
-        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
-      },
+      "durationMs": 7754,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -121,11 +116,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211334-354e37",
+      "runId": "20261006T124858-2ef4b6",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 527,
+      "durationMs": 269,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -147,11 +142,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261005T211334-9ff5e1",
+      "runId": "20261006T124859-cd3370",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 2104,
+      "durationMs": 1819,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -178,11 +173,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211337-f5c089",
+      "runId": "20261006T124901-48aa02",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 2419,
+      "durationMs": 2336,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -204,11 +199,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261005T211339-14ecd6",
+      "runId": "20261006T124903-cefadb",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 284,
+      "durationMs": 262,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -235,11 +230,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261005T211339-d208eb",
+      "runId": "20261006T124903-2ea6ca",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 1577,
+      "durationMs": 2601,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -261,11 +256,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211341-a34fcb",
+      "runId": "20261006T124906-d5c4f1",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 535,
+      "durationMs": 525,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -287,11 +282,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211341-157cb8",
+      "runId": "20261006T124906-3d7137",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 530,
+      "durationMs": 522,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -313,11 +308,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211342-1e930a",
+      "runId": "20261006T124907-155ffd",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 533,
+      "durationMs": 520,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -339,11 +334,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211343-a4c989",
+      "runId": "20261006T124907-f67e4c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 547,
+      "durationMs": 521,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -365,11 +360,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211343-14dab0",
+      "runId": "20261006T124908-40268c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 522,
+      "durationMs": 519,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -391,11 +386,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261005T211344-f1b033",
+      "runId": "20261006T124908-c2222b",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 2637,
+      "durationMs": 2597,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -417,11 +412,11 @@
         "verdict": "not-supported"
       },
       "expected": "VALID",
-      "runId": "20261005T211346-090a5d",
+      "runId": "20261006T124911-f41356",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 12,
+      "durationMs": 10,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.verifier.format-unsupported",

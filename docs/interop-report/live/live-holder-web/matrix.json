@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": false
   },
-  "startedAt": "2026-10-05T21:15:18.603Z",
-  "finishedAt": "2026-10-05T21:15:58.507Z",
-  "durationMs": 39904,
+  "startedAt": "2026-10-06T12:49:42.284Z",
+  "finishedAt": "2026-10-06T12:50:24.453Z",
+  "durationMs": 42169,
   "roles": {
     "inji-certify-ac": {
       "name": "Inji Certify (authorization code)",
@@ -46,11 +46,11 @@
     }
   },
   "totals": {
-    "cells": 6,
-    "matched": 6,
+    "cells": 8,
+    "matched": 8,
     "mismatched": 0,
-    "pass": 1,
-    "fail": 5,
+    "pass": 4,
+    "fail": 4,
     "error": 0,
     "notSupported": 0
   },
@@ -69,11 +69,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211518-94de71",
+      "runId": "20261006T124942-f7bc7f",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 2409,
+      "durationMs": 1643,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -84,7 +84,7 @@
     {
       "case": {
         "id": "TC_PG_WEB_02",
-        "description": "certify-ac -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 with G9, as for the core Certify",
+        "description": "certify-ac -> reference wallet -> Inji Verify, ldp_vc (Ed25519 holder key, as for the core Certify)",
         "issuer": "inji-certify-ac",
         "wallet": "ref-wallet",
         "verifier": "inji-verify",
@@ -92,19 +92,14 @@
         "vpProfile": "inji-draft",
         "vciProfile": "draft13",
         "scenario": "happy",
-        "verdict": "fail"
+        "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211521-6770bb",
-      "outcome": "INVALID",
-      "verdict": "fail",
+      "runId": "20261006T124944-817857",
+      "outcome": "VALID",
+      "verdict": "pass",
       "matches": true,
-      "durationMs": 6612,
-      "error": {
-        "step": "verifier.result",
-        "code": "outcome.unexpected",
-        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
-      },
+      "durationMs": 5440,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -115,7 +110,7 @@
     {
       "case": {
         "id": "TC_PG_WEB_03",
-        "description": "certify-ac -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (the ldp_vp is signed with another key than the one the credential is bound to)",
+        "description": "certify-ac -> Inji Web -> Inji Verify, ldp_vc, all Inji; VALID since the stack lists Ed25519 proofs, so Mimoto binds the credential to the key it signs the ldp_vp with (G22 worked around)",
         "issuer": "inji-certify-ac",
         "wallet": "inji-web",
         "verifier": "inji-verify",
@@ -123,19 +118,14 @@
         "vpProfile": "inji-draft",
         "vciProfile": "draft13",
         "scenario": "happy",
-        "verdict": "fail"
+        "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211527-8d0a9e",
-      "outcome": "INVALID",
-      "verdict": "fail",
+      "runId": "20261006T124949-8a81a3",
+      "outcome": "VALID",
+      "verdict": "pass",
       "matches": true,
-      "durationMs": 17577,
-      "error": {
-        "step": "verifier.result",
-        "code": "outcome.unexpected",
-        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
-      },
+      "durationMs": 16435,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -157,11 +147,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261005T211545-96b551",
+      "runId": "20261006T125006-5a331b",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 1560,
+      "durationMs": 1603,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.no-matching-credential",
@@ -177,7 +167,7 @@
     {
       "case": {
         "id": "TC_PG_WEB_05",
-        "description": "Reference issuer -> Inji Web -> Inji Verify, ldp_vc; blocked by G22",
+        "description": "Reference issuer -> Inji Web -> Inji Verify, ldp_vc; VALID since the reference issuer lists the RFC 9864 name Ed25519 (G22 worked around)",
         "issuer": "ref-issuer",
         "wallet": "inji-web",
         "verifier": "inji-verify",
@@ -185,19 +175,14 @@
         "vpProfile": "inji-draft",
         "vciProfile": "draft13",
         "scenario": "happy",
-        "verdict": "fail"
+        "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261005T211547-01ef35",
-      "outcome": "INVALID",
-      "verdict": "fail",
+      "runId": "20261006T125007-f22be4",
+      "outcome": "VALID",
+      "verdict": "pass",
       "matches": true,
-      "durationMs": 7338,
-      "error": {
-        "step": "verifier.result",
-        "code": "outcome.unexpected",
-        "message": "The scenario \"happy\" expects VALID; Inji Verify (API) answered INVALID."
-      },
+      "durationMs": 6323,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -219,11 +204,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261005T211554-c54de1",
+      "runId": "20261006T125014-41e82f",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 3945,
+      "durationMs": 4163,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.presentation-request-failed",
@@ -234,6 +219,68 @@
         "issuer": "0.1.0",
         "wallet": "0.17.0 + Mimoto 0.22.0",
         "verifier": "0.1.0"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_07",
+        "description": "Reference issuer (ES256 key proofs only) -> Inji Web -> Inji Verify, ldp_vc; blocked by G22 (Mimoto binds the credential to its P-256 key but signs the ldp_vp with its Ed25519 key)",
+        "issuer": "ref-issuer",
+        "wallet": "inji-web",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "holder-proof-es256",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261006T125018-c39616",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 5735,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"holder-proof-es256\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.17.0 + Mimoto 0.22.0",
+        "verifier": "0.18.2"
+      }
+    },
+    {
+      "case": {
+        "id": "TC_PG_WEB_08",
+        "description": "Reference issuer (ES256 key proofs only) -> reference wallet -> Inji Verify, ldp_vc; blocked by G15 (the ldp_vp of a P-256 holder is signed with ecdsa-rdfc-2019)",
+        "issuer": "ref-issuer",
+        "wallet": "ref-wallet",
+        "verifier": "inji-verify",
+        "format": "ldp_vc",
+        "vpProfile": "inji-draft",
+        "vciProfile": "draft13",
+        "scenario": "holder-proof-es256",
+        "verdict": "fail"
+      },
+      "expected": "VALID",
+      "runId": "20261006T125024-ed24e8",
+      "outcome": "INVALID",
+      "verdict": "fail",
+      "matches": true,
+      "durationMs": 287,
+      "error": {
+        "step": "verifier.result",
+        "code": "outcome.unexpected",
+        "message": "The scenario \"holder-proof-es256\" expects VALID; Inji Verify (API) answered INVALID."
+      },
+      "credentialProof": "Ed25519Signature2020",
+      "versions": {
+        "issuer": "0.1.0",
+        "wallet": "0.1.0",
+        "verifier": "0.18.2"
       }
     }
   ]

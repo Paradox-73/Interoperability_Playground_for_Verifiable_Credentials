@@ -97,15 +97,15 @@
   },
   {
     "id": "G9",
-    "title": "Inji Certify refuses an EdDSA holder proof",
+    "title": "Inji Certify accepts an Ed25519 holder proof only under the name Ed25519, and the sample lists it only for FarmerSdJwt",
     "repository": "inji/inji-certify",
     "version": "0.14.0 (sample config)",
     "severity": "medium",
-    "status": "new",
-    "summary": "A credential request whose jwt proof is signed with EdDSA (did:jwk Ed25519 key) is answered 400 invalid_proof \"Error encountered during proof jwt parsing\" for both FarmerCredential and FarmerSdJwt; ES256 works. Wallets with Ed25519 keys cannot receive credentials, and the ldp_vc is bound to a P-256 key, which limits the ldp_vp proof suites a holder can use (see G15).",
+    "status": "fixed-locally",
+    "summary": "Certify compares the proof alg with the proof_signing_alg_values_supported of the requested configuration by exact name. The sample lists RS256 and ES256 for FarmerCredential (ldp_vc) and RS256, PS256, ES256 and Ed25519 for FarmerSdJwt, so a proof with alg EdDSA (the name RFC 7518 registers) is refused for both, answered 400 invalid_proof \"Error encountered during proof jwt parsing\", which names the wrong cause. A proof with the RFC 9864 name Ed25519 is accepted where the configuration lists it (measured 2026-10-06). The playground stack adds Ed25519 to FarmerCredential (sql/certify_init.sql); the reference wallet then signs with alg Ed25519 and an Ed25519 key.",
     "cells": ["inji-certify"],
     "evidence": {
-      "date": "2026-10-05"
+      "date": "2026-10-06"
     }
   },
   {
@@ -180,10 +180,10 @@
     "version": "0.18.2",
     "severity": "medium",
     "status": "new",
-    "summary": "A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key the credential is bound to gets holderProofCheck ERR_SIGNATURE_VERIFICATION_FAILED, while the credential's own signature and expiry pass. Inji Verify advertises Ed25519Signature2018/2020 and RsaSignature2018 for ldp_vp. With G9 (Certify accepts only ES256 and RS256 holder proofs), a wallet with a P-256 key cannot present a Certify ldp_vc to Inji Verify; only RSA keys work across both.",
-    "cells": ["inji-certify/*/inji-verify/ldp_vc"],
+    "summary": "A presentation signed with DataIntegrityProof ecdsa-rdfc-2019 by the P-256 key the credential is bound to gets holderProofCheck ERR_SIGNATURE_VERIFICATION_FAILED, while the credential's own signature and expiry pass. Inji Verify advertises Ed25519Signature2018/2020 and RsaSignature2018 for ldp_vp. A wallet whose issuer takes no Ed25519 key proof (the Inji Certify sample for FarmerCredential, G9) cannot present an ldp_vc to Inji Verify. Since the stack lists Ed25519 for FarmerCredential, the Certify cells use an Ed25519 holder key and pass; the probe holder-proof-es256 keeps the gap visible (TC_PG_WEB_08, measured 2026-10-06).",
+    "cells": ["ref-issuer/ref-wallet/inji-verify/ldp_vc/*/holder-proof-es256"],
     "evidence": {
-      "date": "2026-10-05"
+      "date": "2026-10-06"
     }
   },
   {
@@ -261,15 +261,15 @@
   },
   {
     "id": "G22",
-    "title": "Inji Web binds the credential to a P-256 key but signs the ldp_vp with an Ed25519 key",
+    "title": "Inji Web signs every ldp_vp with its Ed25519 key, whatever key the credential is bound to",
     "repository": "inji/mimoto",
     "version": "0.22.0",
     "severity": "high",
-    "status": "new",
-    "summary": "Mimoto requests the credential with an ES256 proof (holder key P-256), then signs the presentation for OpenID4VP with an Ed25519Signature2020 proof under a different key. Inji Verify answers INVALID with holderProofCheck ERR_HOLDER_BINDING_CHECK_FAILED; any verifier that checks holder binding must reject it. Measured with Inji Certify (certify-ac) and with the reference issuer, so no Inji Web presentation of an ldp_vc verifies.",
-    "cells": ["*/inji-web/inji-verify/ldp_vc"],
+    "status": "fixed-locally",
+    "summary": "Mimoto picks the key of the credential request from the issuer's proof_signing_alg_values_supported (priority ED25519, ES256K, ES256, RS256; CredentialRequestServiceImpl), but WalletPresentationServiceImpl signs every presentation with the wallet's ED25519 key (DEFAULT_SIGNING_ALGORITHM_NAME). When the issuer does not list Ed25519, as the Inji Certify sample for FarmerCredential, the credential is bound to a P-256 key and Inji Verify answers INVALID with holderProofCheck ERR_HOLDER_BINDING_CHECK_FAILED (\"Holder mismatch in VP\"). Worked around in the playground: the reference issuer lists the RFC 9864 name Ed25519 and the stack adds Ed25519 to FarmerCredential, so Mimoto binds the credential to its Ed25519 key and Certify -> Inji Web -> Inji Verify is VALID (TC_PG_WEB_03, TC_PG_WEB_05). The probe holder-proof-es256 keeps the gap visible (TC_PG_WEB_07, measured 2026-10-06).",
+    "cells": ["*/inji-web/inji-verify/ldp_vc/*/holder-proof-es256"],
     "evidence": {
-      "date": "2026-10-05"
+      "date": "2026-10-06"
     }
   },
   {
