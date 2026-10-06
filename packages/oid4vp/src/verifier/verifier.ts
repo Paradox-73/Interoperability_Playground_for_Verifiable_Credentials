@@ -368,7 +368,7 @@ export class ReferenceVerifier {
   createDcApiRequest(input: CreateDcApiRequestInput): CreatedDcApiRequest {
     const { format } = input;
     if (!isPresentableFormat(format)) {
-      throw new Oid4vpError('REQUEST_INVALID', `the reference verifier does not verify ${format}`);
+      throw new Oid4vpError('REQUEST_INVALID', `the reference verifier does not verify ${String(format)}`);
     }
     if (format === 'mso_mdoc') {
       // An mdoc over the API needs the OpenID4VPDCAPIHandover session transcript (Appendix B.2.6.2).
