@@ -91,6 +91,13 @@ function Decoded({ view }: { view: DecodedView }) {
           ))}
         </div>
       );
+    case 'cbor':
+      return (
+        <div className="space-y-2" data-testid="cbor-view">
+          <p className="text-xs text-fg-muted">{t('inspector.cbor', { structure: view.structure })}</p>
+          <JsonTree value={view.value} />
+        </div>
+      );
     case 'params':
       return <ParamsTable params={view.params} />;
     case 'opaque':

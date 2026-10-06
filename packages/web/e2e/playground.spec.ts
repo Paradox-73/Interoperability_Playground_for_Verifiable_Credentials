@@ -85,6 +85,20 @@ test('tamper path: the expected outcome before the run, expected and actual afte
   await shot(page, '4-tamper-result');
 });
 
+test('mso_mdoc happy path: the inspector shows the CBOR vp_token as JSON', async ({ page }) => {
+  await page.goto('/');
+  await chooseReferenceTrio(page);
+  await page.getByLabel('Credential format').selectOption('mso_mdoc');
+  await page.getByRole('button', { name: 'Run' }).click();
+  await finishedRunId(page);
+  await expect(page.getByTestId('run-result')).toContainText('Pass');
+  await page.getByRole('button', { name: 'Artefact: vp_token' }).click();
+  const decoded = page.getByTestId('artifact-detail').getByTestId('cbor-view').first();
+  await expect(decoded).toContainText('DeviceResponse');
+  await expect(decoded).toContainText('test.ps02.playground.farmer.1');
+  await expectAccessible(page);
+});
+
 test('matrix and history show stored runs, linked to their reports', async ({ page, request }) => {
   const created = await request.post(`${SERVER}/api/runs`, {
     data: { issuer: 'ref-issuer', wallet: 'ref-wallet', verifier: 'ref-verifier', format: 'ldp_vc' },

@@ -14,6 +14,7 @@ import {
   REQUEST_OBJECT,
   RUN_ID,
 } from './fixtures/decodable-run';
+import MDOC from './fixtures/mdoc.synthetic.json';
 
 const byKind = (sections: DecodedSection[], kind: DecodedSection['kind']) =>
   sections.filter((section) => section.kind === kind);
@@ -222,5 +223,60 @@ describe('buildInspectorModel', () => {
     ]);
     expect(model.groups).toHaveLength(1);
     expect(model.groups[0]!.step).toBe('issuer.offer');
+  });
+});
+
+describe('mso_mdoc (base64url CBOR)', () => {
+  it('a credential response with an mdoc shows IssuerSigned as JSON, MSO decoded, instead of opaque text', () => {
+    const sections = analyseExchange(
+      exchangeWith({
+        step: 'credential',
+        response: {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ credential: MDOC.credential, c_nonce: 'n' }),
+          bodyEncoding: 'utf8',
+        },
+      }),
+    );
+    const [credential] = byKind(sections, 'credential');
+    expect(credential!.view.type).toBe('cbor');
+    const view = credential!.view as Extract<DecodedSection['view'], { type: 'cbor' }>;
+    expect(view.structure).toBe('IssuerSigned');
+    expect(view.value).toMatchObject({
+      issuerAuth: {
+        protected: { alg: -7 },
+        payload: { docType: 'test.ps02.playground.farmer.1', version: '1.0', digestAlgorithm: 'SHA-256' },
+      },
+    });
+    const items = (view.value as { nameSpaces: Record<string, unknown[]> }).nameSpaces[
+      'test.ps02.playground.farmer.1'
+    ]!;
+    expect(items).toContainEqual(
+      expect.objectContaining({ elementIdentifier: 'givenName', elementValue: 'Gorge' }),
+    );
+  });
+
+  it('a vp_token artefact with a DeviceResponse (inji-draft: JSON string; final-1.0: keyed by query id)', () => {
+    for (const raw of [
+      JSON.stringify(MDOC.deviceResponse),
+      JSON.stringify({ credential: [MDOC.deviceResponse] }),
+    ]) {
+      const [section] = analyseArtifact('vp-token', raw);
+      expect(section!.view).toMatchObject({
+        type: 'cbor',
+        structure: 'DeviceResponse',
+        value: { status: 0, documents: [{ docType: 'test.ps02.playground.farmer.1' }] },
+      });
+      // The DeviceSignature payload is detached (ISO/IEC 18013-5 section 9.1.3.6).
+      expect(section!.view).toMatchObject({
+        value: { documents: [{ deviceSigned: { deviceAuth: { deviceSignature: { payload: null } } } }] },
+      });
+    }
+  });
+
+  it('other base64url text is not mistaken for an mdoc', () => {
+    const [section] = analyseArtifact('credential', 'aGVsbG8gd29ybGQ');
+    expect(section!.view.type).toBe('opaque');
   });
 });
