@@ -106,7 +106,7 @@ function EmptyRegister({ source }: { source: string | null }) {
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         aria-label={t('gaps.howToAdd')}
-        className="overflow-x-auto rounded bg-surface-muted p-2 font-mono text-xs"
+        className="relative overflow-x-auto rounded bg-surface-muted p-2 font-mono text-xs"
       >
         {GAP_EXAMPLE}
       </pre>

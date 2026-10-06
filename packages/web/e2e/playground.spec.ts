@@ -333,3 +333,39 @@ test('Digital Credentials API: "Ask the browser" calls navigator.credentials.get
   });
   await expect(page.getByTestId('run-result')).toContainText('Pass', { timeout: 15_000 });
 });
+
+test('phone-sized screen: no page scrolls sideways and the pages stay accessible', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const noSidewaysScroll = async (where: string) => {
+    const overflow = await page.evaluate(() => {
+      const root = (
+        globalThis as unknown as {
+          document: { documentElement: { scrollWidth: number; clientWidth: number } };
+        }
+      ).document.documentElement;
+      return root.scrollWidth - root.clientWidth;
+    });
+    expect(overflow, `${where} is ${overflow}px wider than the screen`).toBeLessThanOrEqual(1);
+  };
+  await page.goto('/');
+  await expect(page.getByRole('radio', { name: 'Reference issuer' })).toBeVisible();
+  await chooseReferenceTrio(page);
+  await noSidewaysScroll('the playground page');
+  await expectAccessible(page);
+  await page.getByRole('button', { name: 'Run' }).click();
+  const runId = await finishedRunId(page);
+  await shot(page, '14-phone-playground');
+  await noSidewaysScroll('the playground page with a finished run');
+  for (const path of [
+    `/runs/${encodeURIComponent(runId)}`,
+    `/runs/${encodeURIComponent(runId)}/report`,
+    '/runs',
+    '/matrix',
+    '/gaps',
+  ]) {
+    await page.goto(path);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await noSidewaysScroll(path);
+    await expectAccessible(page);
+  }
+});

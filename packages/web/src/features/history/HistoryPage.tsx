@@ -81,7 +81,7 @@ function RunTable({ runs }: { runs: readonly RunSummary[] }) {
   const { t } = useTranslation();
   const th = 'px-3 py-2 font-semibold';
   return (
-    <div className="overflow-x-auto rounded-lg border border-line bg-surface">
+    <div className="relative overflow-x-auto rounded-lg border border-line bg-surface">
       <table className="w-full text-left text-sm">
         <caption className="sr-only">{t('history.tableCaption')}</caption>
         <thead className="border-b border-line bg-surface-muted">

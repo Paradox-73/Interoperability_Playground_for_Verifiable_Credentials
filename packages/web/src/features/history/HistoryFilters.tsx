@@ -135,7 +135,7 @@ export function HistoryFilters({ filter, onChange, onClear }: HistoryFiltersProp
 function FilterField({ label, children }: { label: string; children: (id: string) => ReactNode }) {
   const id = useId();
   return (
-    <div className="flex flex-col gap-1 text-sm">
+    <div className="flex min-w-0 max-w-full flex-col gap-1 text-sm">
       <label htmlFor={id}>{label}</label>
       {children(id)}
     </div>

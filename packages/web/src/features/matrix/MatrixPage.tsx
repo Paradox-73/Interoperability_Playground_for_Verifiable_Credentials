@@ -120,7 +120,7 @@ export function MatrixPage() {
               {t('pages.matrix.empty')}
             </p>
           ) : (
-            <div className="overflow-x-auto rounded-lg border border-line bg-surface">
+            <div className="relative overflow-x-auto rounded-lg border border-line bg-surface">
               <table className="w-full border-separate border-spacing-1 text-left text-sm">
                 <caption className="p-3 text-left font-semibold">
                   {t('matrix.caption', { scenario: filter.scenario })}

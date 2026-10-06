@@ -243,7 +243,7 @@ function StepTable({ document: doc }: { document: RunReportDocument }) {
       <h2 id="steps-heading" className="text-lg font-semibold">
         {t('report.stepsHeading')}
       </h2>
-      <div className="overflow-x-auto rounded-lg border border-line bg-surface">
+      <div className="relative overflow-x-auto rounded-lg border border-line bg-surface">
         <table className="w-full text-left text-sm">
           <caption className="sr-only">{t('report.stepsCaption', { runId: doc.report.runId })}</caption>
           <thead className="border-b border-line bg-surface-muted">

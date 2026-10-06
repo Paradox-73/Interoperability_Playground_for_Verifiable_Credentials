@@ -56,7 +56,7 @@ export function ReplayWithTamper({ runId, format, currentScenario }: ReplayWithT
       </h2>
       <p className="text-sm text-fg-muted">{t('tamper.replayIntro')}</p>
       <form onSubmit={onSubmit} className="flex flex-wrap items-end gap-3">
-        <div className="flex flex-col gap-1 text-sm">
+        <div className="flex min-w-0 max-w-full flex-col gap-1 text-sm">
           <label htmlFor={selectId}>{t('tamper.replayScenario')}</label>
           <select
             id={selectId}

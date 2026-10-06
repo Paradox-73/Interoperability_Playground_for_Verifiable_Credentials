@@ -16,7 +16,7 @@ interface JsonTreeProps {
 
 export function JsonTree({ value, openDepth = 2 }: JsonTreeProps) {
   return (
-    <div className="overflow-x-auto font-mono text-xs leading-5" data-testid="json-tree">
+    <div className="relative overflow-x-auto font-mono text-xs leading-5" data-testid="json-tree">
       <Node value={value} depth={0} openDepth={openDepth} />
     </div>
   );

@@ -55,9 +55,10 @@ export function RunBar() {
     });
   };
 
-  const field = 'flex flex-col gap-1 text-sm';
+  // min-w-0 and max-w-full: a select sized to its longest option must not push a phone screen sideways.
+  const field = 'flex min-w-0 max-w-full flex-col gap-1 text-sm';
   const select =
-    'rounded-md border border-line-strong bg-surface px-2 py-1.5 text-fg disabled:bg-surface-muted disabled:text-fg-muted';
+    'max-w-full rounded-md border border-line-strong bg-surface px-2 py-1.5 text-fg disabled:bg-surface-muted disabled:text-fg-muted';
 
   return (
     <section aria-labelledby="run-bar-heading" className="rounded-lg border border-line bg-surface p-4">

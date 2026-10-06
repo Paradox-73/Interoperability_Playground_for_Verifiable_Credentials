@@ -113,7 +113,7 @@ function Select({ label, value, options, onChange, required = false }: SelectPro
   const all =
     value && !options.some((o) => o.value === value) ? [...options, { value, label: value }] : options;
   return (
-    <div className="flex flex-col gap-1 text-sm">
+    <div className="flex min-w-0 max-w-full flex-col gap-1 text-sm">
       <label htmlFor={id}>{label}</label>
       <select id={id} className={control} value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
         {!required && <option value="">{t('history.filters.any')}</option>}
