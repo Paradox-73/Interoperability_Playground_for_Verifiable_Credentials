@@ -34,6 +34,7 @@ import type {
 } from '@inji-playground/protocol';
 import { formatClientId } from '../common/client-id.js';
 import {
+  MDOC_GENERATED_NONCE_PARAMETER,
   REQUEST_OBJECT_MEDIA_TYPE,
   SELF_ISSUED_AUDIENCE,
   isPresentableFormat,
@@ -212,7 +213,7 @@ export class ReferenceVerifier {
   createRequest(input: CreateRequestInput): CreatedRequest {
     const { profile, format } = input;
     if (!isPresentableFormat(format)) {
-      throw new Oid4vpError('REQUEST_INVALID', `the reference verifier does not verify ${format}`);
+      throw new Oid4vpError('REQUEST_INVALID', `the reference verifier does not verify ${String(format)}`);
     }
     const scheme = input.clientIdScheme ?? 'did';
     const identifier = scheme === 'did' ? this.did : this.responseUri;
@@ -232,7 +233,7 @@ export class ReferenceVerifier {
         : { dcql_query: input.dcqlQuery ?? buildDcqlQuery(format, input.query) };
     const clientMetadata = {
       client_name: this.options.clientName ?? 'Playground reference verifier',
-      [profile === 'inji-draft' ? 'vp_formats' : 'vp_formats_supported']: vpFormatsMetadata(),
+      [profile === 'inji-draft' ? 'vp_formats' : 'vp_formats_supported']: vpFormatsMetadata(profile),
     };
     const parameters: JsonObject = {
       client_id: clientId,
@@ -381,7 +382,12 @@ export class ReferenceVerifier {
 
     let report: VerificationReport;
     try {
-      report = await this.verifyResponse(pending, field('vp_token'), field('presentation_submission'));
+      report = await this.verifyResponse(
+        pending,
+        field('vp_token'),
+        field('presentation_submission'),
+        field(MDOC_GENERATED_NONCE_PARAMETER),
+      );
     } catch (error) {
       const failure =
         error instanceof Oid4vpError
@@ -462,10 +468,16 @@ export class ReferenceVerifier {
     };
   }
 
-  private presentationContext(pending: PendingRequest): PresentationVerifierContext {
+  private presentationContext(
+    pending: PendingRequest,
+    mdocGeneratedNonce?: string,
+  ): PresentationVerifierContext {
     return {
       nonce: pending.nonce,
       clientId: pending.clientId,
+      profile: pending.profile,
+      responseUri: pending.responseUri,
+      ...(mdocGeneratedNonce ? { mdocGeneratedNonce } : {}),
       documentLoader: this.options.documentLoader,
       didResolver: this.resolver,
       ...(this.options.sdJwtIssuerKeys ? { sdJwtIssuerKeys: this.options.sdJwtIssuerKeys } : {}),
@@ -481,12 +493,13 @@ export class ReferenceVerifier {
     pending: PendingRequest,
     vpTokenField: string | undefined,
     submissionField: string | undefined,
+    mdocGeneratedNonce: string | undefined,
   ): Promise<VerificationReport> {
     if (!vpTokenField) {
       throw new Oid4vpError('RESPONSE_INVALID', 'vp_token is missing', { spec: 'OpenID4VP 1.0 section 8.1' });
     }
     return pending.profile === 'inji-draft'
-      ? this.verifyDraftResponse(pending, vpTokenField, submissionField)
+      ? this.verifyDraftResponse(pending, vpTokenField, submissionField, mdocGeneratedNonce)
       : this.verifyFinalResponse(pending, vpTokenField);
   }
 
@@ -495,6 +508,7 @@ export class ReferenceVerifier {
     pending: PendingRequest,
     vpTokenField: string,
     submissionField: string | undefined,
+    mdocGeneratedNonce: string | undefined,
   ): Promise<VerificationReport> {
     if (!submissionField) {
       // Inji Verify rejects this too (VPSubmissionController.java:47-52).
@@ -518,7 +532,11 @@ export class ReferenceVerifier {
     for (const entry of submission.descriptor_map) {
       const format = presentationFormat(entry.format);
       const presentation = resolveSubmissionPath(entry.path, vpToken);
-      const verification = await verifyPresentation(format, presentation, this.presentationContext(pending));
+      const verification = await verifyPresentation(
+        format,
+        presentation,
+        this.presentationContext(pending, mdocGeneratedNonce),
+      );
       const descriptor = definition.input_descriptors.find((candidate) => candidate.id === entry.id);
       if (verification.view && descriptor) {
         const evaluation = evaluateInputDescriptor(descriptor, definition, verification.view);
@@ -659,7 +677,7 @@ export function toVerificationResult(report: VerificationReport): VerificationRe
 /** Descriptor map formats name the presentation (`ldp_vp`); the credential format is what we verify. */
 function presentationFormat(format: string): PresentableFormat {
   if (format === 'ldp_vp' || format === 'ldp_vc') return 'ldp_vc';
-  if (isSdJwtVcFormat(format)) return format;
+  if (isSdJwtVcFormat(format) || format === 'mso_mdoc') return format;
   throw new Oid4vpError('SUBMISSION_INVALID', `presentation format ${format} is not supported`, {
     details: { format },
   });

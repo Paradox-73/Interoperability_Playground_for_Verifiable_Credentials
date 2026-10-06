@@ -11,6 +11,11 @@
  *   `credential_definition.credentialSubject` (ldp_vc) or `claims` (SD-JWT).
  * - 1.0 (section 12.2.4, Appendix A): `display` and `claims` (a list of `{path, display}`) move into
  *   `credential_metadata`.
+ *
+ * `mso_mdoc` (draft 13 Appendix A.2, 1.0 Appendix A.2): `doctype` instead of a type or `vct`; claims are
+ * grouped by namespace (draft 13: `claims.{namespace}.{element}`; 1.0: `path: [namespace, element]`);
+ * the holder key is a COSE_Key (`cose_key` binding); signing algorithms are JOSE names in draft 13 and
+ * COSE algorithm identifiers in 1.0 (Appendix A.2.2: `-7` for ES256).
  */
 import {
   CREDENTIALS_V1_URL,
@@ -20,7 +25,7 @@ import {
 } from '@inji-playground/formats';
 import type { VciProfile } from '@inji-playground/protocol';
 
-export type IssuedFormat = 'ldp_vc' | 'vc+sd-jwt' | 'dc+sd-jwt';
+export type IssuedFormat = 'ldp_vc' | 'vc+sd-jwt' | 'dc+sd-jwt' | 'mso_mdoc';
 
 export interface CredentialDisplay {
   name: string;
@@ -49,6 +54,8 @@ export interface CredentialConfiguration {
   vct?: string;
   /** SD-JWT VC only: the issuer's JOSE algorithm. */
   sdJwtAlg?: 'EdDSA' | 'ES256';
+  /** mso_mdoc only: the docType and the namespace that holds the claims (signed with ES256). */
+  mdoc?: { doctype: string; namespace: string };
   /** `display.name`; logo and colours are added from the issuer's branding. */
   name: string;
   description: string;
@@ -70,6 +77,12 @@ export const PROOF_SIGNING_ALGS = ['ES256', 'EdDSA', 'Ed25519'] as const;
 export const BINDING_METHODS = ['did:jwk', 'did:key', 'jwk'] as const;
 
 export const FARMER_VCT = 'https://playground.ps02.test/vct/farmer/v1';
+/** docType and namespace of the playground's farmer mdoc (a test doctype, not an ISO one). */
+export const FARMER_MDOC_DOCTYPE = 'test.ps02.playground.farmer.1';
+export const FARMER_MDOC_NAMESPACE = 'test.ps02.playground.farmer.1';
+
+/** COSE algorithm identifier of ES256 (RFC 9053 section 2.1), as OpenID4VCI 1.0 Appendix A.2.2 lists it. */
+const COSE_ES256 = -7;
 
 const FARMER_CLAIMS: ClaimDescription[] = [
   { name: 'farmerId', label: 'Farmer ID', mandatory: true },
@@ -99,8 +112,8 @@ export const DEFAULT_FARMER_CLAIMS: Readonly<Record<string, string>> = {
 const YEAR = 365 * 24 * 3600;
 
 /**
- * The four configurations the plan asks for (two ldp_vc data models and both SD-JWT VC names), and one
- * ldp_vc that accepts only ES256 key proofs (a probe of gap G22).
+ * The four configurations the plan asks for (two ldp_vc data models and both SD-JWT VC names), one
+ * ldp_vc that accepts only ES256 key proofs (a probe of gap G22), and the farmer as an mso_mdoc.
  */
 export const DEFAULT_CONFIGURATIONS: readonly CredentialConfiguration[] = [
   {
@@ -170,6 +183,18 @@ export const DEFAULT_CONFIGURATIONS: readonly CredentialConfiguration[] = [
     claims: FARMER_CLAIMS,
     validitySeconds: YEAR,
   },
+  {
+    id: 'FarmerCredential_mso_mdoc',
+    format: 'mso_mdoc',
+    scope: 'farmer_mso_mdoc',
+    mdoc: { doctype: FARMER_MDOC_DOCTYPE, namespace: FARMER_MDOC_NAMESPACE },
+    name: 'Farmer credential (mdoc, mso_mdoc)',
+    description: 'Farmer identity as an ISO/IEC 18013-5 mdoc, MSO signed with ES256 and an x5chain',
+    claims: FARMER_CLAIMS,
+    validitySeconds: YEAR,
+    // The device key is a P-256 COSE_Key (ISO 18013-5 section 9.1.5.2), so only ES256 key proofs fit.
+    proofSigningAlgs: ['ES256'],
+  },
 ];
 
 export interface IssuerBranding {
@@ -197,8 +222,9 @@ export function credentialDisplay(
 }
 
 /** Algorithms named in `credential_signing_alg_values_supported`. */
-function signingAlgs(config: CredentialConfiguration): string[] {
+function signingAlgs(config: CredentialConfiguration, profile: VciProfile): (string | number)[] {
   if (config.format === 'ldp_vc') return [config.ldp!.suite];
+  if (config.format === 'mso_mdoc') return profile === 'v1' ? [COSE_ES256] : ['ES256'];
   return [config.sdJwtAlg ?? 'EdDSA'];
 }
 
@@ -213,12 +239,37 @@ export function configurationMetadata(
   const common = {
     format: config.format,
     scope: config.scope,
-    cryptographic_binding_methods_supported: [...BINDING_METHODS],
-    credential_signing_alg_values_supported: signingAlgs(config),
+    cryptographic_binding_methods_supported:
+      config.format === 'mso_mdoc' ? ['cose_key'] : [...BINDING_METHODS],
+    credential_signing_alg_values_supported: signingAlgs(config, profile),
     proof_types_supported: {
       jwt: { proof_signing_alg_values_supported: [...(config.proofSigningAlgs ?? PROOF_SIGNING_ALGS)] },
     },
   };
+  if (config.format === 'mso_mdoc') {
+    const { doctype, namespace } = config.mdoc!;
+    if (profile === 'draft13') {
+      const elements = Object.fromEntries(
+        config.claims.map((claim) => [
+          claim.name,
+          { ...(claim.mandatory ? { mandatory: true } : {}), display: claimDisplay(claim) },
+        ]),
+      );
+      return { ...common, doctype, claims: { [namespace]: elements }, display };
+    }
+    return {
+      ...common,
+      doctype,
+      credential_metadata: {
+        display,
+        claims: config.claims.map((claim) => ({
+          path: [namespace, claim.name],
+          ...(claim.mandatory ? { mandatory: true } : {}),
+          display: claimDisplay(claim),
+        })),
+      },
+    };
+  }
   if (profile === 'draft13') {
     const claims = Object.fromEntries(
       config.claims.map((claim) => [

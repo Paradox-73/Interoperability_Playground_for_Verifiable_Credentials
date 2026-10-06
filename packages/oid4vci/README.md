@@ -11,7 +11,7 @@ specifications and independent of Inji's code:
 Every HTTP request of the client goes through a `fetch` the caller passes in, and both servers are
 Fastify plugins, so the playground's recording layer sees every exchange in both directions.
 
-Status (2026-10-04): `npm test -w @inji-playground/oid4vci` passes 49 tests in 5 files (measured on
+Status (2026-10-06): `npm test -w @inji-playground/oid4vci` passes 62 tests in 7 files (measured on
 this date, Node 24.19.0). Not yet run against Inji Certify or Mimoto; that happens in the stack
 work packages (WP-10, WP-14).
 
@@ -20,9 +20,9 @@ work packages (WP-10, WP-14).
 | Path                           | What it holds                                                                    |
 | ------------------------------ | -------------------------------------------------------------------------------- |
 | `src/issuer/server.ts`         | `createReferenceIssuer()`: Fastify plugin, offers, token, nonce, credential      |
-| `src/issuer/configurations.ts` | The four credential configurations and how each profile writes them in metadata  |
+| `src/issuer/configurations.ts` | The credential configurations and how each profile writes them in metadata       |
 | `src/issuer/proof.ts`          | Key proof JWT validation                                                         |
-| `src/issuer/signing.ts`        | Issuer keys, issuer DID (did:key, did:jwk or did:web), credential signing        |
+| `src/issuer/signing.ts`        | Issuer keys, issuer DID, mdoc test certificates, credential signing              |
 | `src/as/server.ts`             | `createTestAuthorizationServer()`: authorize, token, JWKS, userinfo, metadata    |
 | `src/as/identity.ts`           | The default test identity (farmer `2154189532` from the upstream Certify sample) |
 | `src/client/wallet-client.ts`  | `acceptOffer()`, `fetchViaAuthorizationCode()`                                   |
@@ -98,22 +98,35 @@ metadata differs between them and a wallet finds metadata from the identifier al
 
 What differs between the profiles:
 
-| Topic                | `draft13`                                                     | `v1`                                                           |
-| -------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
-| First nonce          | `c_nonce` in the token response                               | `POST /v1/nonce`                                               |
-| Credential request   | `format` + `credential_definition.type` or `vct`, one `proof` | `credential_configuration_id` + `proofs.jwt[]`                 |
-| Credential response  | `credential` plus a fresh `c_nonce`                           | `credentials: [{ credential }]`                                |
-| Bad or missing nonce | `invalid_proof` with a fresh `c_nonce`                        | `invalid_nonce` (fetch a new one from the Nonce Endpoint)      |
-| Display in metadata  | `display` on the configuration                                | `credential_metadata.display` and `credential_metadata.claims` |
+| Topic                | `draft13`                                                                | `v1`                                                           |
+| -------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| First nonce          | `c_nonce` in the token response                                          | `POST /v1/nonce`                                               |
+| Credential request   | `format` + `credential_definition.type`, `vct` or `doctype`, one `proof` | `credential_configuration_id` + `proofs.jwt[]`                 |
+| Credential response  | `credential` plus a fresh `c_nonce`                                      | `credentials: [{ credential }]`                                |
+| Bad or missing nonce | `invalid_proof` with a fresh `c_nonce`                                   | `invalid_nonce` (fetch a new one from the Nonce Endpoint)      |
+| Display in metadata  | `display` on the configuration                                           | `credential_metadata.display` and `credential_metadata.claims` |
 
-Credential configurations (all four in both profiles):
+Credential configurations (each one in both profiles):
 
-| Id                           | Format      | Proof                                            | Scope              |
-| ---------------------------- | ----------- | ------------------------------------------------ | ------------------ |
-| `FarmerCredential_ldp_vc`    | `ldp_vc`    | VC 1.1, `Ed25519Signature2020`                   | `farmer_ldp_vc`    |
-| `FarmerCredential_ldp_vc_v2` | `ldp_vc`    | VC 2.0, `DataIntegrityProof` / `eddsa-rdfc-2022` | `farmer_ldp_vc_v2` |
-| `FarmerCredential_vc_sd_jwt` | `vc+sd-jwt` | EdDSA                                            | `farmer_vc_sd_jwt` |
-| `FarmerCredential_dc_sd_jwt` | `dc+sd-jwt` | ES256                                            | `farmer_dc_sd_jwt` |
+| Id                                    | Format      | Proof                                                 | Scope                       |
+| ------------------------------------- | ----------- | ----------------------------------------------------- | --------------------------- |
+| `FarmerCredential_ldp_vc`             | `ldp_vc`    | VC 1.1, `Ed25519Signature2020`                        | `farmer_ldp_vc`             |
+| `FarmerCredential_ldp_vc_v2`          | `ldp_vc`    | VC 2.0, `DataIntegrityProof` / `eddsa-rdfc-2022`      | `farmer_ldp_vc_v2`          |
+| `FarmerCredential_ldp_vc_es256_proof` | `ldp_vc`    | VC 1.1; key proofs ES256 only (probe of G22)          | `farmer_ldp_vc_es256_proof` |
+| `FarmerCredential_vc_sd_jwt`          | `vc+sd-jwt` | EdDSA                                                 | `farmer_vc_sd_jwt`          |
+| `FarmerCredential_dc_sd_jwt`          | `dc+sd-jwt` | ES256                                                 | `farmer_dc_sd_jwt`          |
+| `FarmerCredential_mso_mdoc`           | `mso_mdoc`  | MSO in COSE_Sign1, ES256, `x5chain`; key proofs ES256 | `farmer_mso_mdoc`           |
+
+`FarmerCredential_mso_mdoc` (OpenID4VCI draft 13 Appendix A.2, 1.0 Appendix A.2) has doctype
+`test.ps02.playground.farmer.1` and the farmer claims as elements of the namespace of the same name
+(draft 13: `claims.{namespace}.{element}`; 1.0: `credential_metadata.claims[].path` =
+`[namespace, element]`). `cryptographic_binding_methods_supported` is `["cose_key"]`: the holder's
+P-256 key from the proof JWT (`jwk` header or a did:jwk / did:key `kid`) becomes the MSO's
+`deviceKeyInfo.deviceKey`. `credential_signing_alg_values_supported` is `["ES256"]` in draft 13 and the
+COSE identifier `[-7]` in 1.0. The credential is base64url CBOR of `IssuerSigned` (1.0 Appendix
+A.2.4). The MSO is signed by the issuer's P-256 key as a document signer whose test certificate is
+issued by a test IACA root made in memory on the first mdoc; `issuer.mdocTrustAnchors()` returns that
+root (PEM) for a verifier to trust. The playground server adds it to the reference verifier at start.
 
 Every configuration has display name, logo, `background_color` and `text_color`. OpenID4VCI makes
 them optional, but Mimoto refuses the whole issuer when one configuration lacks them (gap G4).
@@ -187,7 +200,7 @@ const result = await acceptOffer(offerUri, {
   holderKey: createHolderKey(), // default: ES256 with a did:jwk kid
   onStep: (step) => ctx.enterStep(step), // issuer.offer, issuer.metadata, as.metadata, token, nonce, credential
 });
-result.credentials[0].credential; // ldp_vc object or SD-JWT string
+result.credentials[0].credential; // ldp_vc object, SD-JWT string or base64url mso_mdoc
 
 await fetchViaAuthorizationCode('http://localhost:28100/ref/issuer/draft13', {
   configurationId: 'FarmerCredential_ldp_vc',
@@ -205,6 +218,10 @@ await fetchViaAuthorizationCode('http://localhost:28100/ref/issuer/draft13', {
   listed server, else the grant's `authorization_server`, else the first listed server that supports
   the grant, else the credential issuer.
 - One retry with a fresh nonce after `invalid_proof` with `c_nonce` (draft 13) or `invalid_nonce` (1.0).
+- `mso_mdoc`: a draft 13 request is `{format: "mso_mdoc", doctype, proof}`; the response's `credential`
+  is kept as the text the issuer sent (`raw`), whether it is the OpenID4VCI 1.0 `IssuerSigned` or Inji
+  Certify 0.14.0's `{docType, issuerSigned}` (both are read by `decodeMdocCredential` of
+  `@inji-playground/formats`).
 - Errors are `Oid4vciClientError` with a `code`, the failed `step`, the HTTP `status` and the
   server's `oauthError`, ready for the run report.
 
@@ -227,4 +244,5 @@ await fetchViaAuthorizationCode('http://localhost:28100/ref/issuer/draft13', {
 
 Deferred issuance, batch issuance (more than one proof), credential request and response
 encryption, DPoP, PAR, wallet attestation, `authorization_details`, refresh tokens, `x5c` holder
-proofs, `mso_mdoc` (stretch goal S-1), and revoking tokens when a code is reused.
+proofs, ISO certificate profiles for the mdoc document signer and IACA (the test certificates have no
+mdoc extended key usage), and revoking tokens when a code is reused.

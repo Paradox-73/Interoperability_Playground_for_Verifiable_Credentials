@@ -9,7 +9,10 @@
  *    subset) or the DCQL query (`dcql` library).
  * 3. `buildResponse()`: one presentation per match. ldp_vp signed with `challenge` = nonce and
  *    `domain` = client_id; SD-JWT VC with only the requested disclosures and a KB-JWT whose `aud` is
- *    the full client_id. The holder DID is the one the credential binds, byte for byte.
+ *    the full client_id. The holder DID is the one the credential binds, byte for byte. mso_mdoc as a
+ *    DeviceResponse with only the requested elements and a DeviceSignature over the SessionTranscript of
+ *    the profile (ISO/IEC TS 18013-7 Annex B.4.4 for `inji-draft`, with a fresh mdoc generated nonce
+ *    sent as the `mdoc_generated_nonce` form parameter; OpenID4VP 1.0 Appendix B.2.6.1 for `final-1.0`).
  * 4. `submit()`: `direct_post`, form-encoded, with `presentation_submission` in the draft profile.
  *    `beforeSubmit` sees the encoded `vp_token` last, so tamper scenarios change exactly what is sent.
  */
@@ -20,6 +23,8 @@ import {
   createLdpVp,
   errorMessage,
   isRecord,
+  mdocSessionTranscript,
+  presentMdoc,
   presentSdJwtVc,
   type DidResolver,
   type DocumentLoader,
@@ -32,11 +37,16 @@ import type { VpProfile } from '@inji-playground/protocol';
 /** Presentation frame of `presentSdJwtVc` (claim name -> true, or a nested frame). */
 type PresentationFrame = Exclude<Parameters<typeof presentSdJwtVc>[0]['disclose'], string[] | 'all'>;
 import { parseClientId, type ParsedClientId } from '../common/client-id.js';
-import { REQUEST_OBJECT_MEDIA_TYPE, isSdJwtVcFormat, type PresentableFormat } from '../common/constants.js';
+import {
+  MDOC_GENERATED_NONCE_PARAMETER,
+  REQUEST_OBJECT_MEDIA_TYPE,
+  isSdJwtVcFormat,
+  type PresentableFormat,
+} from '../common/constants.js';
 import { Oid4vpError } from '../common/errors.js';
 import { decodeRequestObject, verifyDidSignedRequestObject } from '../common/request-object.js';
 import { parseRequestUri } from '../common/request-uri.js';
-import { objectParameter, type FetchFn } from '../common/util.js';
+import { objectParameter, randomToken, type FetchFn } from '../common/util.js';
 import { credentialView, type CredentialView, type StoredCredential } from '../query/credential-view.js';
 import { matchDcqlQuery, parseDcqlQuery } from '../query/dcql.js';
 import {
@@ -115,6 +125,8 @@ export interface AuthorizationResponse {
   form: Record<string, string>;
   /** Format of each presentation, in `vp_token` order. */
   formats: PresentableFormat[];
+  /** mso_mdoc in `inji-draft`: the mdoc generated nonce of the SessionTranscript (ISO/IEC TS 18013-7 Annex B.4.4). */
+  mdocGeneratedNonce?: string;
 }
 
 export interface SubmitOptions {
@@ -363,9 +375,14 @@ export class PresentationClient {
 
   /** Builds the presentations, `vp_token` and (drafts) `presentation_submission`. */
   async buildResponse(request: ResolvedRequest, matches: CredentialMatch[]): Promise<AuthorizationResponse> {
+    // One mdoc generated nonce per response: every mdoc in it shares the SessionTranscript.
+    const mdocGeneratedNonce =
+      request.profile === 'inji-draft' && matches.some((match) => match.view.format === 'mso_mdoc')
+        ? randomToken()
+        : undefined;
     const presentations: { match: CredentialMatch; presentation: unknown }[] = [];
     for (const match of matches)
-      presentations.push({ match, presentation: await this.present(request, match) });
+      presentations.push({ match, presentation: await this.present(request, match, mdocGeneratedNonce) });
 
     let vpToken: unknown;
     let presentationSubmission: PresentationSubmission | undefined;
@@ -386,10 +403,12 @@ export class PresentationClient {
     }
     const form: Record<string, string> = { vp_token: encodeVpToken(vpToken) };
     if (presentationSubmission) form.presentation_submission = JSON.stringify(presentationSubmission);
+    if (mdocGeneratedNonce !== undefined) form[MDOC_GENERATED_NONCE_PARAMETER] = mdocGeneratedNonce;
     if (request.state !== undefined) form.state = request.state;
     return {
       vpToken,
       formats: matches.map((match) => match.view.format),
+      ...(mdocGeneratedNonce === undefined ? {} : { mdocGeneratedNonce }),
       ...(presentationSubmission ? { presentationSubmission } : {}),
       ...(request.state === undefined ? {} : { state: request.state }),
       form,
@@ -435,7 +454,26 @@ export class PresentationClient {
     return { ...submission, request, response };
   }
 
-  private async present(request: ResolvedRequest, match: CredentialMatch): Promise<unknown> {
+  private async present(
+    request: ResolvedRequest,
+    match: CredentialMatch,
+    mdocGeneratedNonce: string | undefined,
+  ): Promise<unknown> {
+    if (match.view.format === 'mso_mdoc') {
+      const holderKey = this.options.holder.keyPair;
+      if (holderKey.alg !== 'ES256') {
+        throw new Oid4vpError('HOLDER_KEY_MISMATCH', 'an mdoc is presented with its P-256 device key', {
+          spec: 'ISO/IEC 18013-5 section 9.1.3.6',
+        });
+      }
+      return presentMdoc({
+        credential: match.credential.raw,
+        disclose:
+          match.requestedPaths.length > 0 ? match.requestedPaths.map((path) => mdocElementPath(path)) : 'all',
+        deviceKey: holderKey,
+        sessionTranscript: mdocTranscriptFor(request, mdocGeneratedNonce),
+      });
+    }
     if (isSdJwtVcFormat(match.view.format)) {
       return presentSdJwtVc({
         sdJwt: match.credential.raw,
@@ -561,8 +599,50 @@ export class PresentationClient {
   }
 }
 
+/** The SessionTranscript of the request's profile (see `mdocSessionTranscript`). */
+export function mdocTranscriptFor(
+  request: ResolvedRequest,
+  mdocGeneratedNonce: string | undefined,
+): unknown[] {
+  if (request.profile === 'final-1.0') {
+    return mdocSessionTranscript({
+      kind: 'openid4vp-1.0',
+      clientId: request.clientId,
+      responseUri: request.responseUri,
+      nonce: request.nonce,
+      jwkThumbprint: null,
+    });
+  }
+  if (mdocGeneratedNonce === undefined) {
+    throw new Oid4vpError('REQUEST_INVALID', 'an Annex B SessionTranscript needs an mdoc generated nonce');
+  }
+  return mdocSessionTranscript({
+    kind: 'iso-18013-7-annex-b',
+    clientId: request.clientId,
+    responseUri: request.responseUri,
+    nonce: request.nonce,
+    mdocGeneratedNonce,
+  });
+}
+
+/** A requested claim path of an mdoc: exactly `[namespace, element]` (OpenID4VP 1.0 Appendix B.2.4). */
+function mdocElementPath(path: string[]): [string, string] {
+  if (path.length !== 2) {
+    throw new Oid4vpError(
+      'REQUEST_INVALID',
+      `an mso_mdoc claim path has two segments, got ${JSON.stringify(path)}`,
+      {
+        spec: 'OpenID4VP 1.0 Appendix B.2.4',
+      },
+    );
+  }
+  return [path[0]!, path[1]!];
+}
+
 function descriptorEntry(match: CredentialMatch, path: string): DescriptorMapEntry {
-  if (isSdJwtVcFormat(match.view.format)) return { id: match.queryId, format: match.view.format, path };
+  if (isSdJwtVcFormat(match.view.format) || match.view.format === 'mso_mdoc') {
+    return { id: match.queryId, format: match.view.format, path };
+  }
   // Inji Wallet's shape (LdpVPTokenBuilder.kt): the VP at `path`, the credential nested inside it.
   return {
     id: match.queryId,

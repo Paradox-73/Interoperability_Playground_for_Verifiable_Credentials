@@ -1,10 +1,15 @@
 /**
- * The JSON a query is evaluated against, for each format: the credential itself for `ldp_vc`, and the
+ * The JSON a query is evaluated against, for each format: the credential itself for `ldp_vc`, the
  * SD-JWT payload with every disclosure put back in place for SD-JWT VC (RFC 9901 section 7.1 step 3,
- * without the signature checks, which belong to the verifier).
+ * without the signature checks, which belong to the verifier), and for `mso_mdoc` the element values by
+ * namespace (`{namespace: {element: value}}`), which is what DCQL claim paths `[namespace, element]`
+ * (OpenID4VP 1.0 Appendix B.2.4) and Presentation Exchange paths `$['namespace']['element']`
+ * (ISO/IEC TS 18013-7 Annex B.3.1.1) address.
  */
 import {
+  decodeMdocCredential,
   decodeSdJwt,
+  mdocClaims,
   disclosureDigest,
   isRecord,
   splitSdJwt,
@@ -16,9 +21,12 @@ import { Oid4vpError } from '../common/errors.js';
 /** A credential as a wallet holds it; `HeldCredential` of the protocol package fits this shape. */
 export interface StoredCredential {
   id: string;
-  /** Any format string; only `ldp_vc`, `vc+sd-jwt` and `dc+sd-jwt` can be presented. */
+  /** Any format string; only `ldp_vc`, `vc+sd-jwt`, `dc+sd-jwt` and `mso_mdoc` can be presented. */
   format: string;
-  /** JSON string for `ldp_vc`, compact SD-JWT (`<JWT>~<disclosures>~`) for SD-JWT VC. */
+  /**
+   * JSON string for `ldp_vc`, compact SD-JWT (`<JWT>~<disclosures>~`) for SD-JWT VC, base64url CBOR
+   * (IssuerSigned or Inji Certify's `{docType, issuerSigned}`) for mso_mdoc.
+   */
   raw: string;
 }
 
@@ -30,6 +38,8 @@ export interface CredentialView {
   types: string[];
   /** `vct` of an SD-JWT VC. */
   vct?: string;
+  /** docType of an mso_mdoc. */
+  doctype?: string;
 }
 
 export function credentialView(credential: StoredCredential): CredentialView {
@@ -51,6 +61,22 @@ export function credentialView(credential: StoredCredential): CredentialView {
       json,
       types: [],
       ...(typeof json.vct === 'string' ? { vct: json.vct } : {}),
+    };
+  }
+  if (credential.format === 'mso_mdoc') {
+    let decoded;
+    try {
+      decoded = decodeMdocCredential(credential.raw);
+    } catch (cause) {
+      throw new Oid4vpError('NO_MATCHING_CREDENTIAL', `credential ${credential.id} is not an mdoc`, {
+        cause,
+      });
+    }
+    return {
+      format: 'mso_mdoc',
+      json: mdocClaims(decoded.issuerSigned.nameSpaces),
+      types: [],
+      doctype: decoded.docType,
     };
   }
   throw new Oid4vpError('NO_MATCHING_CREDENTIAL', `format ${credential.format} cannot be presented`);

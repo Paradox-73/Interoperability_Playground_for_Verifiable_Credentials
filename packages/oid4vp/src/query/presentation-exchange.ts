@@ -18,6 +18,9 @@ import {
 } from '../common/constants.js';
 import { Oid4vpError } from '../common/errors.js';
 import { randomToken } from '../common/util.js';
+
+/** JOSE names of the algorithms an mso_mdoc may be signed with (ISO/IEC TS 18013-7 Annex B.2.2). */
+const MDOC_ALGORITHMS = ['ES256'] as const;
 import type { CredentialView } from './credential-view.js';
 
 export interface JsonSchemaFilter {
@@ -38,6 +41,8 @@ export interface FieldConstraint {
   path: string[];
   filter?: JsonSchemaFilter;
   optional?: boolean;
+  /** mso_mdoc: whether the verifier keeps the element (ISO/IEC TS 18013-7 Annex B.3.1.1). */
+  intent_to_retain?: boolean;
 }
 
 export interface InputDescriptor {
@@ -70,10 +75,33 @@ export interface PresentationSubmission {
 }
 
 export interface QuerySpec {
-  /** W3C credential type for `ldp_vc`, `vct` for SD-JWT VC. Missing: any credential of the format. */
+  /**
+   * W3C credential type for `ldp_vc`, `vct` for SD-JWT VC, docType for `mso_mdoc`. Missing: any
+   * credential of the format.
+   */
   type?: string;
-  /** Claims to ask for, as dot-separated paths (`credentialSubject.fullName`, `given_name`). */
+  /**
+   * Claims to ask for, as dot-separated paths (`credentialSubject.fullName`, `given_name`); for
+   * `mso_mdoc` as `<namespace>/<element>`, because namespaces contain dots.
+   */
   claims?: string[];
+}
+
+/** `<namespace>/<element>` as the two segments of an mdoc claim path (split at the last `/`). */
+export function mdocClaimPath(claim: string): [namespace: string, element: string] {
+  const slash = claim.lastIndexOf('/');
+  if (slash <= 0 || slash === claim.length - 1) {
+    throw new Oid4vpError('REQUEST_INVALID', `mso_mdoc claim "${claim}" must be <namespace>/<element>`, {
+      spec: 'OpenID4VP 1.0 Appendix B.2.4 (claims path [namespace, element])',
+    });
+  }
+  return [claim.slice(0, slash), claim.slice(slash + 1)];
+}
+
+/** Presentation Exchange JSONPath of an mdoc element (ISO/IEC TS 18013-7 Annex B.3.1.1). */
+function mdocFieldPath(namespace: string, element: string): string {
+  const quote = (segment: string) => segment.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  return `$['${quote(namespace)}']['${quote(element)}']`;
 }
 
 /** A presentation definition asking for one credential of `format`. */
@@ -81,6 +109,7 @@ export function buildPresentationDefinition(
   format: PresentableFormat,
   spec: QuerySpec = {},
 ): PresentationDefinition {
+  if (format === 'mso_mdoc') return buildMdocPresentationDefinition(spec);
   const fields: FieldConstraint[] = [];
   if (format === 'ldp_vc') {
     fields.push({
@@ -114,6 +143,31 @@ export function buildPresentationDefinition(
             : {}),
           fields,
         },
+      },
+    ],
+  };
+}
+
+/**
+ * ISO/IEC TS 18013-7 Annex B.3.1.1: the input descriptor id is the docType, the format is `mso_mdoc`,
+ * `limit_disclosure` is `required`, and each field names one element as `$['namespace']['element']`
+ * with `intent_to_retain`.
+ */
+function buildMdocPresentationDefinition(spec: QuerySpec): PresentationDefinition {
+  const formatMetadata = { mso_mdoc: { alg: [...MDOC_ALGORITHMS] } };
+  const fields: FieldConstraint[] = (spec.claims ?? []).map((claim) => {
+    const [namespace, element] = mdocClaimPath(claim);
+    return { path: [mdocFieldPath(namespace, element)], intent_to_retain: false };
+  });
+  return {
+    id: `pd-${randomToken(8)}`,
+    purpose: 'Interoperability playground reference verifier',
+    format: formatMetadata,
+    input_descriptors: [
+      {
+        id: spec.type ?? 'mso_mdoc',
+        format: formatMetadata,
+        constraints: { limit_disclosure: 'required', fields },
       },
     ],
   };
@@ -159,6 +213,14 @@ export function evaluateInputDescriptor(
   if (formats !== undefined && !formatAccepted(formats, view.format)) {
     return { matched: false, reason: `format ${view.format} not requested`, requestedPaths };
   }
+  // ISO/IEC TS 18013-7 Annex B.3.1.1: an mso_mdoc input descriptor's id is the requested docType.
+  if (view.format === 'mso_mdoc' && descriptor.id !== view.doctype) {
+    return {
+      matched: false,
+      reason: `docType ${view.doctype ?? 'unknown'} is not the requested ${descriptor.id}`,
+      requestedPaths,
+    };
+  }
   for (const field of descriptor.constraints?.fields ?? []) {
     const match = evaluateField(field, view.json);
     if (match.segments) requestedPaths.push(match.segments);
@@ -175,6 +237,7 @@ export function evaluateInputDescriptor(
 
 function formatAccepted(formats: Record<string, unknown>, format: PresentableFormat): boolean {
   if (format === 'ldp_vc') return 'ldp_vc' in formats || 'ldp_vp' in formats || 'ldp' in formats;
+  if (format === 'mso_mdoc') return 'mso_mdoc' in formats;
   // Wallets and verifiers mix the old and new SD-JWT VC names; both mean the same credential.
   return 'vc+sd-jwt' in formats || 'dc+sd-jwt' in formats;
 }

@@ -9,12 +9,20 @@
  *   padded and an unpadded did:jwk of one key are reported (inji/inji-certify#1054).
  * - SD-JWT VC: issuer signature, disclosures, validity, and the KB-JWT `nonce`, `aud` (the full
  *   client_id, prefix included, Appendix B.3.6), `sd_hash` and `iat` (RFC 9901 section 7.3).
+ * - `mso_mdoc` (Appendix B.2): a base64url DeviceResponse. Issuer certificate chain to a trust anchor,
+ *   issuer signature, value digests, validity, and the DeviceSignature over the SessionTranscript the
+ *   verifier rebuilds from its own request: ISO/IEC TS 18013-7 Annex B.4.4 in `inji-draft` (with the
+ *   wallet's mdoc generated nonce), OpenID4VP 1.0 Appendix B.2.6.1 in `final-1.0`. Nonce and client_id
+ *   are inside that transcript, so a presentation made for another request fails the device signature
+ *   (reported as holder binding: the check that failed cannot tell which input differed).
  */
 import {
   FormatError,
   errorMessage,
   isRecord,
+  mdocSessionTranscript,
   verifyLdpVp,
+  verifyMdocDeviceResponse,
   verifySdJwtVc,
   type DidResolver,
   type DocumentLoader,
@@ -22,7 +30,7 @@ import {
   type JsonObject,
   type PublicJwk,
 } from '@inji-playground/formats';
-import type { Outcome } from '@inji-playground/protocol';
+import type { Outcome, VpProfile } from '@inji-playground/protocol';
 import { isSdJwtVcFormat, type PresentableFormat } from '../common/constants.js';
 import { credentialTypes, type CredentialView } from '../query/credential-view.js';
 
@@ -76,6 +84,12 @@ const CHECK_FOR_CODE: Partial<Record<FormatErrorCode, PresentationCheck>> = {
   SDJWT_ISSUER_MISMATCH: 'signature',
   X5C_INVALID: 'signature',
   X5C_UNTRUSTED: 'signature',
+  MDOC_DEVICE_SIGNATURE_INVALID: 'holder-binding',
+  MDOC_EXPIRED: 'validity',
+  MDOC_NOT_YET_VALID: 'validity',
+  MDOC_ISSUER_SIGNATURE_INVALID: 'signature',
+  MDOC_DIGEST_MISMATCH: 'signature',
+  MDOC_ALG_REJECTED: 'signature',
   VERIFICATION_METHOD_NOT_FOUND: 'signature',
   DID_INVALID: 'signature',
   DID_METHOD_UNSUPPORTED: 'signature',
@@ -84,7 +98,7 @@ const CHECK_FOR_CODE: Partial<Record<FormatErrorCode, PresentationCheck>> = {
   DID_DOCUMENT_INVALID: 'signature',
 };
 
-const EXPIRY_CODES: ReadonlySet<string> = new Set(['LDP_EXPIRED', 'SDJWT_EXPIRED']);
+const EXPIRY_CODES: ReadonlySet<string> = new Set(['LDP_EXPIRED', 'SDJWT_EXPIRED', 'MDOC_EXPIRED']);
 
 export interface PresentationVerifierContext {
   nonce: string;
@@ -92,11 +106,16 @@ export interface PresentationVerifierContext {
   clientId: string;
   documentLoader: DocumentLoader;
   didResolver?: DidResolver;
-  /** SD-JWT issuer keys known out of band, and x5c trust anchors. */
+  /** SD-JWT issuer keys known out of band, and x5c trust anchors (SD-JWT x5c and mdoc x5chain). */
   sdJwtIssuerKeys?: PublicJwk[];
   x5cTrustAnchors?: string[];
   now?: Date;
   clockSkewSeconds?: number;
+  /** mso_mdoc: the profile picks the SessionTranscript; `response_uri` is part of it. */
+  profile?: VpProfile;
+  responseUri?: string;
+  /** mso_mdoc in `inji-draft`: the wallet's mdoc generated nonce (ISO/IEC TS 18013-7 Annex B.4.4). */
+  mdocGeneratedNonce?: string;
 }
 
 export interface PresentationVerification {
@@ -120,6 +139,7 @@ export async function verifyPresentation(
   context: PresentationVerifierContext,
 ): Promise<PresentationVerification> {
   try {
+    if (format === 'mso_mdoc') return await verifyMdocPresentation(presentation, context);
     return isSdJwtVcFormat(format)
       ? await verifySdJwtPresentation(format, presentation, context)
       : await verifyLdpPresentation(presentation, context);
@@ -201,6 +221,69 @@ async function verifySdJwtPresentation(
     issuer:
       typeof claims.iss === 'string' ? claims.iss : (verified.issuerKey.kid ?? verified.issuerKey.source),
     proofType: typeof verified.header.alg === 'string' ? verified.header.alg : 'unknown',
+    errors: [],
+    warnings: verified.warnings,
+  };
+}
+
+async function verifyMdocPresentation(
+  presentation: unknown,
+  context: PresentationVerifierContext,
+): Promise<PresentationVerification> {
+  if (typeof presentation !== 'string') {
+    throw new FormatError(
+      'MDOC_MALFORMED',
+      'an mso_mdoc presentation must be a base64url DeviceResponse string',
+      {
+        spec: 'OpenID4VP 1.0 Appendix B.2.6',
+      },
+    );
+  }
+  if (context.responseUri === undefined) {
+    throw new FormatError('MDOC_MALFORMED', 'the verifier has no response_uri for the SessionTranscript');
+  }
+  let sessionTranscript: unknown[];
+  if (context.profile === 'final-1.0') {
+    sessionTranscript = mdocSessionTranscript({
+      kind: 'openid4vp-1.0',
+      clientId: context.clientId,
+      responseUri: context.responseUri,
+      nonce: context.nonce,
+      // The response is not encrypted (direct_post), so there is no verifier key thumbprint.
+      jwkThumbprint: null,
+    });
+  } else {
+    if (!context.mdocGeneratedNonce) {
+      throw new FormatError(
+        'MDOC_MALFORMED',
+        'mdoc_generated_nonce is missing; the SessionTranscript of ISO/IEC TS 18013-7 Annex B.4.4 needs it',
+        { spec: 'ISO/IEC TS 18013-7 Annex B.4.4' },
+      );
+    }
+    sessionTranscript = mdocSessionTranscript({
+      kind: 'iso-18013-7-annex-b',
+      clientId: context.clientId,
+      responseUri: context.responseUri,
+      nonce: context.nonce,
+      mdocGeneratedNonce: context.mdocGeneratedNonce,
+    });
+  }
+  const verified = await verifyMdocDeviceResponse(presentation, {
+    sessionTranscript,
+    // ISO 18013-5 section 9.3.1 step 1: the document signer chain must end at a trusted IACA.
+    trustAnchors: context.x5cTrustAnchors ?? [],
+    requireTrusted: true,
+    ...(context.now ? { now: context.now } : {}),
+    ...(context.clockSkewSeconds === undefined ? {} : { clockSkewSeconds: context.clockSkewSeconds }),
+  });
+  const [document] = verified.documents;
+  return {
+    outcome: 'VALID',
+    checks: PRESENTATION_CHECKS.map((id) => ({ id, status: 'pass' as const })),
+    view: { format: 'mso_mdoc', json: document!.claims, types: [], doctype: document!.docType },
+    claims: document!.claims,
+    issuer: document!.issuer,
+    proofType: document!.alg,
     errors: [],
     warnings: verified.warnings,
   };

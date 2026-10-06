@@ -7,7 +7,7 @@ import { errorMessage } from '@inji-playground/formats';
 import { isSdJwtVcFormat, type PresentableFormat } from '../common/constants.js';
 import { Oid4vpError } from '../common/errors.js';
 import type { CredentialView } from './credential-view.js';
-import type { QuerySpec } from './presentation-exchange.js';
+import { mdocClaimPath, type QuerySpec } from './presentation-exchange.js';
 
 /** Query id the reference verifier uses for its single credential query. */
 export const DEFAULT_CREDENTIAL_QUERY_ID = 'credential';
@@ -16,13 +16,18 @@ export type DcqlQueryJson = DcqlQuery.Input;
 
 /** A DCQL query asking for one credential of `format`. */
 export function buildDcqlQuery(format: PresentableFormat, spec: QuerySpec = {}): DcqlQueryJson {
-  const claims = (spec.claims ?? []).map((claim) => ({ path: claim.split('.') }));
-  const meta =
-    format === 'ldp_vc'
-      ? { type_values: [['VerifiableCredential', ...(spec.type ? [spec.type] : [])]] }
-      : spec.type
-        ? { vct_values: [spec.type] }
-        : undefined;
+  // mso_mdoc claims are [namespace, element] (OpenID4VP 1.0 Appendix B.2.4), with the mdoc-specific
+  // intent_to_retain.
+  const claims = (spec.claims ?? []).map((claim) =>
+    format === 'mso_mdoc'
+      ? { path: [...mdocClaimPath(claim)], intent_to_retain: false }
+      : { path: claim.split('.') },
+  );
+  let meta: Record<string, unknown> | undefined;
+  if (format === 'ldp_vc')
+    meta = { type_values: [['VerifiableCredential', ...(spec.type ? [spec.type] : [])]] };
+  else if (format === 'mso_mdoc') meta = spec.type ? { doctype_value: spec.type } : undefined;
+  else meta = spec.type ? { vct_values: [spec.type] } : undefined;
   const query = {
     credentials: [
       {
@@ -51,8 +56,16 @@ export function parseDcqlQuery(value: unknown): DcqlQuery {
   }
 }
 
-/** The library's view of a credential: format, type or vct, and claims. */
+/** The library's view of a credential: format, type, vct or doctype, and claims. */
 export function toDcqlCredential(view: CredentialView): DcqlCredential {
+  if (view.format === 'mso_mdoc') {
+    return {
+      credential_format: 'mso_mdoc',
+      doctype: view.doctype ?? '',
+      namespaces: view.json,
+      cryptographic_holder_binding: true,
+    } as DcqlCredential;
+  }
   if (isSdJwtVcFormat(view.format)) {
     return {
       credential_format: view.format,
