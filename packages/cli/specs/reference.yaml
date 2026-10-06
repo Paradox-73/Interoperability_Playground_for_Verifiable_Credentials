@@ -491,6 +491,41 @@ cases:
     vpProfile: final-1.0
     scenario: holder-proof-es256
     expected: VALID
+  - uniqueIdentifier: TC_PG_DCAPI_01
+    description: 'Happy path over the Digital Credentials API (ref-verifier-dc-api), ldp_vc, final-1.0'
+    verifier: ref-verifier-dc-api
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_DCAPI_02
+    description: 'Happy path over the Digital Credentials API (ref-verifier-dc-api), vc+sd-jwt, final-1.0'
+    verifier: ref-verifier-dc-api
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_DCAPI_03
+    description: 'Happy path over the Digital Credentials API (ref-verifier-dc-api), dc+sd-jwt, final-1.0'
+    verifier: ref-verifier-dc-api
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: happy
+    expected: VALID
+  - uniqueIdentifier: TC_PG_DCAPI_04
+    description: 'Expired credential over the Digital Credentials API (ref-verifier-dc-api), vc+sd-jwt, final-1.0'
+    verifier: ref-verifier-dc-api
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: expired
+    expected: EXPIRED
+  - uniqueIdentifier: TC_PG_DCAPI_05
+    description: 'Issuer signature changed over the Digital Credentials API (ref-verifier-dc-api), ldp_vc, final-1.0'
+    verifier: ref-verifier-dc-api
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: bad-signature
+    expected: INVALID
   - uniqueIdentifier: TC_PG_NS_01
     description: 'A credential tamper needs the reference wallet; a phone wallet cannot produce it'
     wallet: mobile-wallet

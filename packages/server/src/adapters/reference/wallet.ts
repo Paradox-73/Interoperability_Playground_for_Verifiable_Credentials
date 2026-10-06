@@ -33,6 +33,10 @@ import {
 } from '@inji-playground/oid4vci';
 import {
   PresentationClient,
+  dcApiResponse,
+  resolveDcApiRequest,
+  type DcApiRequest,
+  type DcApiResponse,
   type PresentationClientOptions,
   type ResolvedRequest,
 } from '@inji-playground/oid4vp';
@@ -45,6 +49,7 @@ import {
 import { REFERENCE_WALLET_CLIENT_ID, type ReferenceHosting } from '../../hosting/reference-hosting.js';
 import { SERVER_VERSION } from '../../version.js';
 import { credentialFacts, processHealth, runFetch, toRoleError } from './common.js';
+import { dcApiResponseUri, isDcApiRequestUri } from './dc-api-verifier.js';
 
 /** Runs whose holder keys are kept at most; older ones are dropped (their runs have long ended). */
 const MAX_HELD_RUNS = 100;
@@ -84,7 +89,8 @@ export class ReferenceWalletRole implements WalletRole {
         vciProfiles: ['draft13', 'v1'],
         vpProfiles: ['inji-draft', 'final-1.0'],
         issuance: ['credential-offer', 'wallet-initiated'],
-        responseModes: ['direct_post'],
+        // dc_api: answers a Digital Credentials API request in-process, as a browser and a platform wallet would.
+        responseModes: ['direct_post', 'dc_api'],
       },
     };
   }
@@ -165,6 +171,15 @@ export class ReferenceWalletRole implements WalletRole {
       );
     }
     const scenario: Partial<ScenarioDefinition> = findScenarioDefinition(ctx.scenario.id) ?? {};
+    if (isDcApiRequestUri(request.requestUri)) {
+      try {
+        return await this.#presentDcApi(ctx, request, credential, holderKey, scenario);
+      } catch (error) {
+        throw toRoleError(error, 'vp');
+      } finally {
+        this.#holderKeys.delete(ctx.runId);
+      }
+    }
     const client = new PresentationClient({
       fetch: runFetch(ctx),
       holder: {
@@ -227,6 +242,111 @@ export class ReferenceWalletRole implements WalletRole {
     } finally {
       this.#holderKeys.delete(ctx.runId);
     }
+  }
+
+  /**
+   * A Digital Credentials API request (OpenID4VP 1.0 Appendix A), answered the way a browser and a wallet on
+   * the device would: read the request, answer it for the page's origin (the verifier's own origin, where
+   * its page runs), and post the answer as the page does. Presentation tampers come through the run's hook.
+   */
+  async #presentDcApi(
+    ctx: RunContext,
+    request: PresentationRequestRef,
+    credential: HeldCredential,
+    holderKey: HolderKey,
+    scenario: Partial<ScenarioDefinition>,
+  ): Promise<SubmissionReceipt> {
+    if (scenario.presentationTamper && !ctx.hooks.tamperPresentation) {
+      throw new RoleError(
+        'wallet.scenario-unsupported',
+        `the scenario ${ctx.scenario.id} changes the presentation in a way the Digital Credentials API path does not apply`,
+      );
+    }
+    const fetch = runFetch(ctx);
+    const origin = new URL(request.requestUri).origin;
+    ctx.enterStep('wallet.fetch-request');
+    const fetched = await fetch(request.requestUri, { headers: { accept: 'application/json' } });
+    if (!fetched.ok) {
+      throw new RoleError(
+        'wallet.request-unavailable',
+        `the Digital Credentials API request answered HTTP ${fetched.status}`,
+      );
+    }
+    const answer = await this.answerDcApi(
+      ctx.runId,
+      (await fetched.json()) as DcApiRequest,
+      origin,
+      credential,
+      holderKey,
+    );
+    const hookTamper = ctx.hooks.tamperPresentation?.bind(ctx.hooks);
+    if (hookTamper) {
+      const grouped = answer.data.vp_token as Record<string, unknown[]>;
+      for (const [queryId, presentations] of Object.entries(grouped)) {
+        grouped[queryId] = await Promise.all(
+          presentations.map(async (presentation) => {
+            const encoded = typeof presentation === 'string' ? presentation : JSON.stringify(presentation);
+            const changed = await hookTamper(encoded, credential.format);
+            return typeof presentation === 'string' ? changed : (JSON.parse(changed) as unknown);
+          }),
+        );
+      }
+    }
+    ctx.emit({
+      type: 'artifact',
+      runId: ctx.runId,
+      kind: 'vp-token',
+      format: credential.format,
+      raw: JSON.stringify(answer.data.vp_token),
+    });
+    ctx.enterStep('wallet.submit');
+    const posted = await fetch(dcApiResponseUri(request.requestUri), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin },
+      body: JSON.stringify(answer),
+    });
+    return { submittedAt: new Date().toISOString(), status: posted.status };
+  }
+
+  /**
+   * The answer a wallet returns through `navigator.credentials.get()` for `request`, from a page at `origin`,
+   * with the credential and holder key this wallet holds for the run. Used by `present` and by the browser
+   * wallet role, whose page asks the playground to answer when the browser has no wallet for the request.
+   */
+  async answerDcApi(
+    runId: string,
+    request: DcApiRequest,
+    origin: string,
+    credential: HeldCredential,
+    holderKey = this.#holderKeys.get(runId),
+  ): Promise<DcApiResponse> {
+    if (!holderKey) {
+      throw new RoleError('wallet.holder-key-missing', 'the reference wallet holds no key for this run', {
+        category: 'environment',
+      });
+    }
+    const client = new PresentationClient({
+      // The request came with the call; answering it needs no network.
+      fetch: (url) =>
+        Promise.reject(new Error(`no network call expected in a Digital Credentials API answer (${url})`)),
+      holder: {
+        keyPair: holderKey.keyPair,
+        did: holderKey.did,
+        ...(holderKey.kid ? { verificationMethod: holderKey.kid } : {}),
+      },
+      documentLoader: this.#hosting.documentLoader,
+      didResolver: this.#hosting.didResolver,
+    });
+    const resolved = resolveDcApiRequest(request, origin);
+    const matches = client.selectCredentials(resolved, [
+      { id: credential.id, format: credential.format, raw: credential.raw },
+    ]);
+    return dcApiResponse(await client.buildResponse(resolved, matches));
+  }
+
+  /** Forgets the holder key of a run whose presentation another role made (the browser wallet). */
+  release(runId: string): void {
+    this.#holderKeys.delete(runId);
   }
 
   /** The presentation to replay; throws, before anything is posted, when there is none. */

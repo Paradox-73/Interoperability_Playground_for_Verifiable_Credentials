@@ -9,6 +9,10 @@
  * Routes, relative to the path of `baseUrl`:
  * - `GET /requests/:handle`: the signed request object, `application/oauth-authz-req+jwt`.
  * - `POST /response`: `direct_post` response, `application/x-www-form-urlencoded`.
+ * - `GET /dc-api/requests/:handle`: a Digital Credentials API request (`{ protocol, data }`, JSON), what the
+ *   verifier's page passes to `navigator.credentials.get()` (OpenID4VP 1.0 Appendix A).
+ * - `POST /dc-api/responses/:handle`: what the page got back from the browser (`{ protocol, data }`, JSON);
+ *   answers the outcome. Same-origin only in practice: the browser binds the answer to the page's origin.
  */
 import { Oid4vpError } from '../common/errors.js';
 import { formFields, type ReferenceVerifier } from './verifier.js';
@@ -22,6 +26,7 @@ interface RouteReply {
 interface RouteRequest {
   params: unknown;
   body: unknown;
+  headers?: Record<string, string | string[] | undefined>;
 }
 
 /** The part of a Fastify instance this module calls. */
@@ -49,6 +54,28 @@ export function registerVerifierRoutes(
   app.post(`${base}/response`, async (request, reply) => {
     const result = await verifier.handleResponse(formFields(request.body));
     return reply.code(result.status).header('cache-control', 'no-store').send(result.body);
+  });
+  app.get(`${base}/dc-api/requests/:handle`, (request, reply) => {
+    const handle = (request.params as { handle?: string }).handle ?? '';
+    try {
+      return Promise.resolve(
+        reply.code(200).header('cache-control', 'no-store').send(verifier.dcApiRequest(handle)),
+      );
+    } catch (error) {
+      return Promise.resolve(sendError(reply, error));
+    }
+  });
+  app.post(`${base}/dc-api/responses/:handle`, async (request, reply) => {
+    const handle = (request.params as { handle?: string }).handle ?? '';
+    try {
+      const origin = request.headers?.origin;
+      const report = await verifier.handleDcApiResponse(handle, request.body, {
+        ...(typeof origin === 'string' ? { origin } : {}),
+      });
+      return reply.code(200).header('cache-control', 'no-store').send({ outcome: report.outcome });
+    } catch (error) {
+      return sendError(reply, error);
+    }
   });
 }
 
@@ -100,6 +127,31 @@ export function verifierFetchHandler(verifier: ReferenceVerifier): (request: Req
       }
       const result = await verifier.handleResponse(new URLSearchParams(await request.text()));
       return Response.json(result.body, { status: result.status, headers: { 'cache-control': 'no-store' } });
+    }
+    const dcRequest = path === undefined ? null : /^\/dc-api\/requests\/([^/]+)$/.exec(path);
+    const dcResponse = path === undefined ? null : /^\/dc-api\/responses\/([^/]+)$/.exec(path);
+    try {
+      if (request.method === 'GET' && dcRequest) {
+        return Response.json(verifier.dcApiRequest(decodeURIComponent(dcRequest[1] ?? '')), {
+          headers: { 'cache-control': 'no-store' },
+        });
+      }
+      if (request.method === 'POST' && dcResponse) {
+        const origin = request.headers.get('origin');
+        const report = await verifier.handleDcApiResponse(
+          decodeURIComponent(dcResponse[1] ?? ''),
+          await request.json(),
+          origin ? { origin } : {},
+        );
+        return Response.json({ outcome: report.outcome }, { headers: { 'cache-control': 'no-store' } });
+      }
+    } catch (error) {
+      const failure =
+        error instanceof Oid4vpError ? error : new Oid4vpError('HTTP_ERROR', String(error), { status: 500 });
+      return Response.json(
+        { error: failure.oauthError, error_description: failure.message },
+        { status: failure.status },
+      );
     }
     return Response.json({ error: 'not_found' }, { status: 404 });
   };

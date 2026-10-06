@@ -16,6 +16,7 @@ import { describeError, postJson } from '../../api/http';
 import { announce } from '../../state/announcer';
 import { useRunEvents } from '../../state/run-events';
 import { buildRunView, formatDuration } from '../../state/run-view';
+import { DcApiPanel } from './DcApiPanel';
 import { pendingPersonAction, type PendingAction } from './pending';
 
 export function ManualWalletModal({ runId }: { runId: string | undefined }) {
@@ -88,9 +89,16 @@ function ActionDialog({ runId, action, startedAt }: ActionDialogProps) {
         <h2 id={titleId} ref={heading} tabIndex={-1} className="text-xl font-semibold focus:outline-none">
           {action.title}
         </h2>
-        <p className="mt-1 text-sm text-fg-muted">{t('manualWallet.intro', { runId })}</p>
+        <p className="mt-1 text-sm text-fg-muted">
+          {t(action.dcApi ? 'manualWallet.introBrowser' : 'manualWallet.intro', { runId })}
+        </p>
 
-        <div className="mt-4 grid gap-6 sm:grid-cols-[auto_1fr]">
+        {action.dcApi && (
+          <div className="mt-4">
+            <DcApiPanel dcApi={action.dcApi} />
+          </div>
+        )}
+        <div className={action.dcApi ? 'hidden' : 'mt-4 grid gap-6 sm:grid-cols-[auto_1fr]'}>
           {action.qrText && (
             <figure className="flex flex-col items-center gap-2">
               {/* White quiet zone in both themes: phone cameras need dark modules on a light background. */}

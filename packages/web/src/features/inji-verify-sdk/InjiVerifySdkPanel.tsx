@@ -8,7 +8,8 @@
  * - Its callbacks go to `POST /api/runs/{id}/verifier-callback`; the server-side role then rebuilds the
  *   request for the wallet from the recorded session and fetches the result itself.
  * - The SDK and its dependencies (about 2 MB) load only when the panel is shown (`lazy`).
- * - Same-device flow is off: its default (`true`) expects a web wallet URL and fails on a desktop browser.
+ * - Same-device flow (the SDK's deep link to a wallet app on the same phone) is a choice of the person: on by
+ *   default on a touch device, off on a desktop browser, where the SDK's same-device button has no wallet to open.
  */
 import type { CredentialFormat, VerifierCallback } from '@inji-playground/protocol';
 import { lazy, Suspense, useState } from 'react';
@@ -30,6 +31,9 @@ export function InjiVerifySdkPanel({ runId, format }: InjiVerifySdkPanelProps) {
   const { t } = useTranslation();
   const [state, setState] = useState<'waiting' | 'received' | 'error'>('waiting');
   const [problem, setProblem] = useState<string | undefined>();
+  const [sameDevice, setSameDevice] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches === true,
+  );
 
   const send = (callback: VerifierCallback) =>
     postJson(`/api/runs/${encodeURIComponent(runId)}/verifier-callback`, callback, (json) => json).catch(
@@ -46,14 +50,26 @@ export function InjiVerifySdkPanel({ runId, format }: InjiVerifySdkPanelProps) {
         {t('injiVerifySdk.heading')}
       </h2>
       <p className="mt-1 text-sm text-fg-muted">{t('injiVerifySdk.intro')}</p>
+      <label className="mt-2 flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={sameDevice}
+          onChange={(event) => setSameDevice(event.target.checked)}
+          data-testid="inji-verify-sdk-same-device"
+        />
+        {t('injiVerifySdk.sameDevice')}
+      </label>
       <div className="mt-3 flex justify-center rounded-md bg-white p-3">
-        <Suspense fallback={<p className="text-sm text-neutral-700">{t('injiVerifySdk.loading')}</p>}>
+        <Suspense
+          key={sameDevice ? 'same' : 'cross'}
+          fallback={<p className="text-sm text-neutral-700">{t('injiVerifySdk.loading')}</p>}
+        >
           <OpenID4VPVerification
             verifyServiceUrl={apiUrl('/v1/verify')}
             clientId={SDK_CLIENT_ID}
             // The SDK types allow only ldp_vc input descriptors; verify-service accepts vc+sd-jwt too.
             presentationDefinition={presentationDefinitionFor(format) as never}
-            isSameDeviceFlowEnabled={false}
+            isSameDeviceFlowEnabled={sameDevice}
             onVPReceived={(transactionId) => {
               setState('received');
               announce(t('injiVerifySdk.received'));

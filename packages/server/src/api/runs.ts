@@ -19,10 +19,13 @@ import {
 } from '@inji-playground/protocol';
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
+import { BrowserWalletRole } from '../adapters/manual/browser-wallet.js';
 import { RunRequestError } from '../orchestrator/errors.js';
 import type { RouteOptions } from './services.js';
 
 const RunParamsSchema = z.object({ id: RunIdSchema });
+/** A Digital Credentials API request or answer (`{ protocol, data }`, OpenID4VP 1.0 Appendix A). */
+const DcApiMessageSchema = z.object({ protocol: z.string().min(1), data: z.record(z.string(), z.unknown()) });
 const errors = { 400: ApiErrorSchema, 404: ApiErrorSchema, 409: ApiErrorSchema };
 
 export const runRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { services }, done) => {
@@ -169,6 +172,39 @@ export const runRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { service
     async (request, reply) => {
       orchestrator.deliverCallback(request.params.id, request.body);
       return reply.code(202).send({ runId: request.params.id, status: 'running' as const });
+    },
+  );
+  app.post(
+    '/api/runs/:id/dc-api/provider',
+    {
+      schema: {
+        summary: "Let the playground's reference wallet answer a Digital Credentials API request",
+        description:
+          "For a run with the browser wallet: the page passes the request it would give to navigator.credentials.get() and gets the answer a wallet would return, bound to the page's origin (the Origin header). The page then posts that answer to the verifier as it would post the browser's.",
+        tags: ['runs'],
+        params: RunParamsSchema,
+        body: DcApiMessageSchema,
+        response: { 200: DcApiMessageSchema, ...errors },
+      },
+    },
+    async (request, reply) => {
+      const run = store.getRun(request.params.id);
+      if (!run) throw new RunRequestError('run-not-found', `no run with id "${request.params.id}"`, 404);
+      const role = services.registry.wallet(run.config.wallet);
+      if (!(role instanceof BrowserWalletRole)) {
+        throw new RunRequestError('dc-api-not-browser', 'this run does not use the browser wallet', 409);
+      }
+      const origin = request.headers.origin ?? `${request.protocol}://${request.headers.host ?? 'localhost'}`;
+      try {
+        const answer = await role.provide(request.params.id, request.body, origin);
+        return reply.code(200).send(answer);
+      } catch (error) {
+        throw new RunRequestError(
+          'dc-api-provider-failed',
+          error instanceof Error ? error.message : String(error),
+          409,
+        );
+      }
     },
   );
   done();

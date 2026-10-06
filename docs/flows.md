@@ -100,3 +100,33 @@ The `mobile-wallet` role stands for a person with Inji Wallet (or another wallet
 shows the credential offer and then the presentation request as QR codes; the run continues when the
 recorded traffic shows the phone acted, or when the person presses "Done". A phone must reach the server:
 set `PLAYGROUND_PUBLIC_URL` to a LAN or tunnel address and `PLAYGROUND_HOST=0.0.0.0`.
+
+Same-device flows: the phone modal has an "Open on this device" link with the same `openid4vp://` (or
+`openid-credential-offer://`) URI, for a wallet app on the phone that shows the playground; the Inji Verify web
+component's panel has a "Same device" switch (on by default on touch screens) that turns on the SDK's own deep
+link to a wallet app.
+
+## Digital Credentials API
+
+The W3C Digital Credentials API lets a web page ask the browser for a credential:
+`navigator.credentials.get({ digital: { requests: [{ protocol, data }] } })`. OpenID4VP 1.0 Appendix A defines
+the protocol `openid4vp-v1-unsigned` for it, which the pair `ref-verifier-dc-api` and `browser-wallet` use
+(OpenID4VP 1.0 profile only):
+
+1. The verifier creates an unsigned request: DCQL, `response_mode` `dc_api`, a nonce, and no `client_id`,
+   `state` or `response_uri` (`/ref/verifier/dc-api/requests/{handle}`).
+2. The run page reads it and passes it to `navigator.credentials.get()`; the browser lets a wallet on the device
+   answer. The wallet takes the verifier's identity from the browser: its client id is `origin:<page origin>`,
+   which becomes the KB-JWT `aud` or the `ldp_vp` `domain`.
+3. The page posts the answer (`{protocol, data: {vp_token}}`) to `/ref/verifier/dc-api/responses/{handle}`.
+   The verifier accepts it only from one of its own pages (the `Origin` header: this server, the Vite dev and
+   preview servers) and only when the presentation is bound to that origin.
+
+A browser without the API (Chrome and Edge 141 or later have it, on `localhost` or `https`), or without a wallet
+holding the run's credential, can let the playground's reference wallet answer the same request
+(`POST /api/runs/{id}/dc-api/provider`); the page still posts the answer itself, so transport and origin
+binding are unchanged. `ref-wallet` with `ref-verifier-dc-api` does all three steps in-process, which is how
+the reference matrix runs the cell. Tests: `packages/oid4vp/test/dc-api.test.ts` (request, answer, origin
+binding, replay), `packages/server/test/dc-api.test.ts` (both wallets, a page of another origin), and two browser
+tests in `packages/web/e2e/playground.spec.ts`, one of them through `navigator.credentials.get()` with a
+stand-in browser wallet.

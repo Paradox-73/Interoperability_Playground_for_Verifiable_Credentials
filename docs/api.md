@@ -9,28 +9,29 @@ Errors share one body, `{"error": "<code>", "message": "<text>"}`.
 
 ## REST
 
-| Route                                   | Answer                                                                                  |
-| --------------------------------------- | --------------------------------------------------------------------------------------- |
-| `GET /api/health`                       | Liveness of the server                                                                  |
-| `GET /api/roles`                        | Registered roles with their capabilities and current health                             |
-| `GET /api/stack/status`                 | Health and image tags of the local Inji stack, and the health of every role             |
-| `GET /api/scenarios`                    | The scenario catalogue with expected outcomes                                           |
-| `GET /api/compatibility`                | Whether one issuer x wallet x verifier x format combination can run, and why not        |
-| `POST /api/runs`                        | Start a run (or repeat one with `replayOf`); answers `{"runId": ...}` with status 201   |
-| `GET /api/runs`                         | Run history, newest first, with filters and paging                                      |
-| `GET /api/runs/{id}`                    | One run: configuration, status, report once finished, and the action a person must take |
-| `GET /api/runs/{id}/events`             | The run's events in order (what the WebSocket streams)                                  |
-| `GET /api/runs/{id}/exchanges`          | The run's recorded HTTP exchanges with full headers and bodies                          |
-| `POST /api/runs/{id}/cancel`            | Cancel a queued or running run                                                          |
-| `POST /api/runs/{id}/person-done`       | Confirm that the person did what the run waits for (manual fallback for phone wallets)  |
-| `POST /api/runs/{id}/verifier-callback` | Deliver a signal from a verifier component in the page (the Inji Verify web component)  |
-| `GET /api/runs/{id}/report.json`        | Interoperability report of a finished run                                               |
-| `GET /api/runs/{id}/report.md`          | The same report as Markdown                                                             |
-| `GET /api/runs/{id}/export`             | Everything stored about a run, with tokens, codes, cookies and keys redacted            |
-| `GET /api/matrix`                       | Compatibility matrix: newest run per cell, plus the cells that cannot run and why       |
-| `GET /api/metrics`                      | Success rates and p50/p95 durations per step, role pair and flow; credential sizes      |
-| `GET /metrics`                          | The same metrics in the Prometheus text format                                          |
-| `GET /api/gaps`                         | The interoperability gap register, [gaps/gaps.json](gaps/gaps.json)                     |
+| Route                                   | Answer                                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /api/health`                       | Liveness of the server                                                                                     |
+| `GET /api/roles`                        | Registered roles with their capabilities and current health                                                |
+| `GET /api/stack/status`                 | Health and image tags of the local Inji stack, and the health of every role                                |
+| `GET /api/scenarios`                    | The scenario catalogue with expected outcomes                                                              |
+| `GET /api/compatibility`                | Whether one issuer x wallet x verifier x format combination can run, and why not                           |
+| `POST /api/runs`                        | Start a run (or repeat one with `replayOf`); answers `{"runId": ...}` with status 201                      |
+| `GET /api/runs`                         | Run history, newest first, with filters and paging                                                         |
+| `GET /api/runs/{id}`                    | One run: configuration, status, report once finished, and the action a person must take                    |
+| `GET /api/runs/{id}/events`             | The run's events in order (what the WebSocket streams)                                                     |
+| `GET /api/runs/{id}/exchanges`          | The run's recorded HTTP exchanges with full headers and bodies                                             |
+| `POST /api/runs/{id}/cancel`            | Cancel a queued or running run                                                                             |
+| `POST /api/runs/{id}/person-done`       | Confirm that the person did what the run waits for (manual fallback for phone wallets)                     |
+| `POST /api/runs/{id}/verifier-callback` | Deliver a signal from a verifier component in the page (the Inji Verify web component)                     |
+| `POST /api/runs/{id}/dc-api/provider`   | Browser wallet runs: the playground wallet answers a Digital Credentials API request for the page's origin |
+| `GET /api/runs/{id}/report.json`        | Interoperability report of a finished run                                                                  |
+| `GET /api/runs/{id}/report.md`          | The same report as Markdown                                                                                |
+| `GET /api/runs/{id}/export`             | Everything stored about a run, with tokens, codes, cookies and keys redacted                               |
+| `GET /api/matrix`                       | Compatibility matrix: newest run per cell, plus the cells that cannot run and why                          |
+| `GET /api/metrics`                      | Success rates and p50/p95 durations per step, role pair and flow; credential sizes                         |
+| `GET /metrics`                          | The same metrics in the Prometheus text format                                                             |
+| `GET /api/gaps`                         | The interoperability gap register, [gaps/gaps.json](gaps/gaps.json)                                        |
 
 Start a run:
 
@@ -60,14 +61,15 @@ mid-run misses nothing. The event shapes are zod schemas in
 The reference roles are real HTTP services on the same port, so other wallets and verifiers (a phone,
 Mimoto, Inji Verify) can talk to them:
 
-| Path                                             | What                                                                                                            |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `/ref/issuer/draft13/*`, `/ref/issuer/v1/*`      | Reference issuer, OpenID4VCI draft 13 and 1.0 (metadata, token, credential, nonce)                              |
-| `/ref/issuer/did-key/*`, `/ref/issuer/did-jwk/*` | The same issuer keys under another DID method, for the DID-method probes                                        |
-| `/ref/as/*`                                      | Test authorization server: metadata, authorize (auto-approve), token, JWKS, userinfo                            |
-| `/ref/verifier/*`                                | Reference verifier: request objects and `direct_post` responses                                                 |
-| `/.well-known/*`                                 | The RFC 8615 "insert" form of the reference issuer's and authorization server's metadata URLs, at the host root |
-| `/contexts/v1.jsonld`                            | The JSON-LD context of the reference credentials (`https://playground.ps02.test/contexts/v1.jsonld`)            |
+| Path                                                                      | What                                                                                                                                                                                                              |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ref/issuer/draft13/*`, `/ref/issuer/v1/*`                               | Reference issuer, OpenID4VCI draft 13 and 1.0 (metadata, token, credential, nonce)                                                                                                                                |
+| `/ref/issuer/did-key/*`, `/ref/issuer/did-jwk/*`                          | The same issuer keys under another DID method, for the DID-method probes                                                                                                                                          |
+| `/ref/as/*`                                                               | Test authorization server: metadata, authorize (auto-approve), token, JWKS, userinfo                                                                                                                              |
+| `/ref/verifier/*`                                                         | Reference verifier: request objects and `direct_post` responses                                                                                                                                                   |
+| `/ref/verifier/dc-api/requests/{h}`, `/ref/verifier/dc-api/responses/{h}` | Reference verifier over the Digital Credentials API: the unsigned request (`{protocol, data}`) a page passes to `navigator.credentials.get()`, and where the page posts the answer (checked against its `Origin`) |
+| `/.well-known/*`                                                          | The RFC 8615 "insert" form of the reference issuer's and authorization server's metadata URLs, at the host root                                                                                                   |
+| `/contexts/v1.jsonld`                                                     | The JSON-LD context of the reference credentials (`https://playground.ps02.test/contexts/v1.jsonld`)                                                                                                              |
 
 And the recording proxy in front of the Inji services:
 

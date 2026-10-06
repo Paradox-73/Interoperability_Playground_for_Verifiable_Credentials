@@ -28,7 +28,8 @@ import {
   injiRoles,
   injiVerifyResponseUris,
 } from './adapters/inji/index.js';
-import { MobileWalletRole } from './adapters/manual/index.js';
+import { BrowserWalletRole, MobileWalletRole } from './adapters/manual/index.js';
+import { ReferenceDcApiVerifierRole, ReferenceWalletRole } from './adapters/reference/index.js';
 import { referenceRoles } from './adapters/reference/index.js';
 import { catalogueRoutes } from './api/catalogue.js';
 import { installErrorHandler } from './api/errors.js';
@@ -180,6 +181,25 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     })) {
       registry.register({ role });
     }
+    // The Digital Credentials API pair: a verifier that asks through the browser, and the browser's wallet.
+    // Its pages: this server, and the UI's Vite dev (28173) and preview (28174) servers, which forward to it.
+    const dcApiOrigins = [...selfOrigins, 'http://localhost:28173', 'http://localhost:28174'];
+    registry.register({ role: new ReferenceDcApiVerifierRole(reference, capture, dcApiOrigins) });
+    registry.register({
+      role: new BrowserWalletRole({
+        referenceWallet: new ReferenceWalletRole(reference),
+        hub: capture,
+        completePerson: (runId, actionId) => {
+          try {
+            orchestratorRef.current?.personDone(runId, actionId);
+          } catch {
+            // The person pressed "done" first, or the run ended: nothing is waiting any more.
+          }
+        },
+        timeoutMs: config.personTimeoutMs,
+      }),
+      stepTimeoutMs: config.personTimeoutMs,
+    });
     registry.register({
       role: new MobileWalletRole({
         hub: capture,

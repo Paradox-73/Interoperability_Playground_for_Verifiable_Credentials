@@ -32,7 +32,7 @@ async function expectAccessible(page: Page): Promise<void> {
 async function chooseReferenceTrio(page: Page): Promise<void> {
   await page.getByRole('radio', { name: 'Reference issuer' }).check();
   await page.getByRole('radio', { name: 'Reference wallet (headless)' }).check();
-  await page.getByRole('radio', { name: 'Reference verifier' }).check();
+  await page.getByRole('radio', { name: 'Reference verifier', exact: true }).check();
 }
 
 /** Waits for the followed run to finish and returns its id from the timeline. */
@@ -119,7 +119,7 @@ test('manual-wallet modal completed by a scripted wallet', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('radio', { name: 'Reference issuer' }).check();
   await page.getByRole('radio', { name: /Phone wallet/ }).check();
-  await page.getByRole('radio', { name: 'Reference verifier' }).check();
+  await page.getByRole('radio', { name: 'Reference verifier', exact: true }).check();
   await page.getByLabel('Credential format').selectOption('vc+sd-jwt');
   await page.getByRole('button', { name: 'Run' }).click();
 
@@ -240,4 +240,82 @@ test('run page, playback, gaps and not-found pages render a stored run and the g
   await expect(page.getByRole('heading', { level: 1, name: 'Page not found' })).toBeVisible();
   await shot(page, '12-not-found');
   await expectAccessible(page);
+});
+
+test('Digital Credentials API: the browser wallet answers through the page, the verifier checks the origin', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('radio', { name: 'Reference issuer' }).check();
+  await page.getByRole('radio', { name: 'Browser wallet (Digital Credentials API)' }).check();
+  await page.getByRole('radio', { name: 'Reference verifier (Digital Credentials API)' }).check();
+  await page.getByLabel('Credential format').selectOption('vc+sd-jwt');
+  await page.getByLabel('Presentation protocol').selectOption('final-1.0');
+  await page.getByRole('button', { name: 'Run' }).click();
+
+  const dialog = page.getByRole('dialog', { name: "Present through the browser's Digital Credentials API" });
+  await expect(dialog.getByTestId('dc-api-panel')).toBeVisible({ timeout: 15_000 });
+  await shot(page, '13-dc-api');
+  await expectAccessible(page);
+  await dialog.getByRole('button', { name: 'Answer with the playground wallet' }).click();
+  // The step ends as soon as the verifier has the answer, which closes the dialog.
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 15_000 });
+  await expect(page.getByTestId('run-result')).toContainText('Pass', { timeout: 15_000 });
+});
+
+test('Digital Credentials API: "Ask the browser" calls navigator.credentials.get with the unsigned request', async ({
+  page,
+}) => {
+  // A browser wallet stand-in: records the request the page passes and answers through the playground wallet.
+  await page.addInitScript(() => {
+    const calls: unknown[] = [];
+    (globalThis as unknown as { __dcApiCalls: unknown[] }).__dcApiCalls = calls;
+    (globalThis as unknown as { DigitalCredential: unknown }).DigitalCredential = class {};
+    const get = async (options: { digital: { requests: { protocol: string; data: unknown }[] } }) => {
+      calls.push(options);
+      const doc = (
+        globalThis as unknown as {
+          document: {
+            querySelector(selector: string): { dataset: Record<string, string | undefined> } | null;
+          };
+        }
+      ).document;
+      const provider = doc.querySelector('[data-provider-url]')?.dataset.providerUrl;
+      const answered = await fetch(provider ?? '/missing', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(options.digital.requests[0]),
+      });
+      const body = (await answered.json()) as { protocol: string; data: unknown };
+      return { protocol: body.protocol, data: body.data };
+    };
+    // Chromium has the real API; its get() would open the browser's own wallet dialog.
+    (
+      globalThis as unknown as { CredentialsContainer: { prototype: { get: unknown } } }
+    ).CredentialsContainer.prototype.get = get;
+  });
+  await page.goto('/');
+  await page.getByRole('radio', { name: 'Reference issuer' }).check();
+  await page.getByRole('radio', { name: 'Browser wallet (Digital Credentials API)' }).check();
+  await page.getByRole('radio', { name: 'Reference verifier (Digital Credentials API)' }).check();
+  await page.getByLabel('Credential format').selectOption('ldp_vc');
+  await page.getByLabel('Presentation protocol').selectOption('final-1.0');
+  await page.getByRole('button', { name: 'Run' }).click();
+
+  const dialog = page.getByRole('dialog', { name: "Present through the browser's Digital Credentials API" });
+  await expect(dialog.getByTestId('dc-api-support')).toContainText('has the Digital Credentials API', {
+    timeout: 15_000,
+  });
+  await expectAccessible(page);
+  await dialog.getByRole('button', { name: 'Ask the browser' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 15_000 });
+  const calls = await page.evaluate(
+    () => (globalThis as unknown as { __dcApiCalls: unknown[] }).__dcApiCalls,
+  );
+  expect(calls).toHaveLength(1);
+  expect(calls[0]).toMatchObject({
+    mediation: 'required',
+    digital: { requests: [{ protocol: 'openid4vp-v1-unsigned', data: { response_mode: 'dc_api' } }] },
+  });
+  await expect(page.getByTestId('run-result')).toContainText('Pass', { timeout: 15_000 });
 });

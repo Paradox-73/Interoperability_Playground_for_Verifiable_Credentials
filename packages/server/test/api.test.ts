@@ -19,7 +19,14 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { FAKE_CELL, buildTestApp, fakeSet, registrations, type FakeSetOptions } from './helpers.js';
 
 /** Roles every server registers: no Inji adapter yet (WP-10), the reference roles, the phone wallet. */
-const BUILT_IN_ROLES = ['ref-issuer', 'ref-wallet', 'ref-verifier', 'mobile-wallet'];
+const BUILT_IN_ROLES = [
+  'ref-issuer',
+  'ref-wallet',
+  'ref-verifier',
+  'ref-verifier-dc-api',
+  'browser-wallet',
+  'mobile-wallet',
+];
 
 let app: FastifyInstance | undefined;
 afterEach(async () => {
@@ -68,6 +75,7 @@ describe('catalogue routes', () => {
     const wallets = RoleListResponseSchema.parse((await server.inject('/api/roles?kind=wallet')).json());
     expect(wallets.map((entry) => entry.descriptor.id)).toEqual([
       'ref-wallet',
+      'browser-wallet',
       'mobile-wallet',
       'fake-wallet',
     ]);

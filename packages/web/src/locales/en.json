@@ -597,6 +597,7 @@
   },
   "manualWallet": {
     "intro": "Run {{runId}} is waiting for a wallet app on a phone.",
+    "introBrowser": "Run {{runId}} is waiting for this browser to present through the Digital Credentials API.",
     "qrLabel": "QR code for the wallet app",
     "qrCaption": "Scan with the wallet app",
     "linkHeading": "Or open this link on the phone",
@@ -623,6 +624,22 @@
       "received": "Presentation received; the playground is fetching the result.",
       "error": "The Inji Verify component reported a problem; the run records it."
     },
-    "callbackFailed": "The playground did not accept the component's signal: {{reason}}"
+    "callbackFailed": "The playground did not accept the component's signal: {{reason}}",
+    "sameDevice": "Same device: offer a deep link that opens a wallet app on this device (for a phone)"
+  },
+  "dcApi": {
+    "intro": "The verifier's request goes to navigator.credentials.get(); the browser lets a wallet on this device answer, and this page posts the answer to the verifier, which checks that it is bound to this page's origin.",
+    "supported": "This browser has the Digital Credentials API.",
+    "unsupported": "This browser has no Digital Credentials API (Chrome or Edge 141 or later, on localhost or https). The playground wallet can answer the same request instead.",
+    "askBrowser": "Ask the browser",
+    "askPlayground": "Answer with the playground wallet",
+    "request": "Request passed to the browser",
+    "posted": "Answer posted; the verifier says {{outcome}}",
+    "status": {
+      "idle": "Choose how to answer.",
+      "asking": "Waiting for the answer...",
+      "posted": "Answer posted to the verifier: {{outcome}}. The run continues.",
+      "error": "That did not work: {{reason}}"
+    }
   }
 }

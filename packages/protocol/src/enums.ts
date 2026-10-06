@@ -79,7 +79,8 @@ export type Interaction = z.infer<typeof InteractionSchema>;
 export const IssuanceModeSchema = z.enum(['credential-offer', 'wallet-initiated']);
 export type IssuanceMode = z.infer<typeof IssuanceModeSchema>;
 
-export const ResponseModeSchema = z.enum(['direct_post', 'direct_post.jwt']);
+/** `dc_api`: the answer comes back through the browser's Digital Credentials API (OpenID4VP 1.0 Appendix A). */
+export const ResponseModeSchema = z.enum(['direct_post', 'direct_post.jwt', 'dc_api']);
 export type ResponseMode = z.infer<typeof ResponseModeSchema>;
 
 export const StepStatusSchema = z.enum(['ok', 'failed', 'skipped']);

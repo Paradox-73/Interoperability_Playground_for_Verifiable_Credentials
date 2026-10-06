@@ -34,6 +34,12 @@ import type {
 } from '@inji-playground/protocol';
 import { formatClientId } from '../common/client-id.js';
 import {
+  DC_API_PROTOCOL_UNSIGNED,
+  DC_API_RESPONSE_MODE,
+  originClientId,
+  type DcApiRequest,
+} from '../common/dc-api.js';
+import {
   REQUEST_OBJECT_MEDIA_TYPE,
   SELF_ISSUED_AUDIENCE,
   isPresentableFormat,
@@ -129,6 +135,27 @@ export interface CreatedRequest {
   ref: PresentationRequestRef;
 }
 
+export interface CreateDcApiRequestInput {
+  format: CredentialFormat;
+  /**
+   * Origins of the verifier's own web pages, which may call `navigator.credentials.get()` (a server reached
+   * as http://localhost:28100 and through a public URL has two). The answer must be bound to the origin
+   * of the page that posts it (the `Origin` header), and that origin must be one of these.
+   */
+  origins: readonly string[];
+  query?: QuerySpec;
+  dcqlQuery?: DcqlQueryJson;
+}
+
+export interface CreatedDcApiRequest {
+  handle: string;
+  nonce: string;
+  /** `origin:<origin>` for each allowed origin: the client ids a wallet may use (OpenID4VP 1.0 Appendix A.4). */
+  clientIds: string[];
+  /** The entry for `digital.requests` of `navigator.credentials.get()`. */
+  request: DcApiRequest;
+}
+
 export interface PresentedCredential {
   /** Descriptor id (`inji-draft`) or credential query id (`final-1.0`). */
   queryId: string;
@@ -168,6 +195,8 @@ interface PendingRequest {
   parameters: JsonObject;
   requestObject?: string;
   redirectUri?: string;
+  /** Set for a request sent through the Digital Credentials API (no state, no response_uri). */
+  dcApi?: { origins: string[]; origin?: string };
   expiresAt: number;
   consumed: boolean;
   report?: VerificationReport;
@@ -327,6 +356,154 @@ export class ReferenceVerifier {
       throw new Oid4vpError('REQUEST_EXPIRED', 'the authorization request has expired', { status: 410 });
     }
     return { body: pending.requestObject, contentType: REQUEST_OBJECT_MEDIA_TYPE };
+  }
+
+  /**
+   * An unsigned OpenID4VP 1.0 request for the Digital Credentials API (Appendix A.2 and A.3.1): DCQL,
+   * `response_mode` `dc_api`, a fresh nonce, and no `client_id`, `state` or `response_uri`. The page that
+   * calls `navigator.credentials.get()` must have one of `input.origins`, because the wallet binds the
+   * presentation to the calling origin.
+   */
+  createDcApiRequest(input: CreateDcApiRequestInput): CreatedDcApiRequest {
+    const { format } = input;
+    if (!isPresentableFormat(format)) {
+      throw new Oid4vpError('REQUEST_INVALID', `the reference verifier does not verify ${format}`);
+    }
+    const origins = [...new Set(input.origins.map((origin) => new URL(origin).origin))];
+    if (origins.length === 0)
+      throw new Oid4vpError('REQUEST_INVALID', 'a Digital Credentials API request needs an origin');
+    const handle = randomToken();
+    const nonce = randomToken();
+    const expiresAt = this.now().getTime() + (this.options.requestTtlSeconds ?? 300) * 1000;
+    const parameters: JsonObject = {
+      response_type: 'vp_token',
+      response_mode: DC_API_RESPONSE_MODE,
+      nonce,
+      dcql_query: input.dcqlQuery ?? buildDcqlQuery(format, input.query),
+      client_metadata: {
+        client_name: this.options.clientName ?? 'Playground reference verifier',
+        vp_formats_supported: vpFormatsMetadata(),
+      },
+    };
+    const pending: PendingRequest = {
+      handle,
+      profile: 'final-1.0',
+      format,
+      // Not sent: the Digital Credentials API answer goes back to the calling page, not to a response_uri.
+      state: randomToken(),
+      nonce,
+      // Set from the posting page's origin when the answer arrives.
+      clientId: originClientId(origins[0]!),
+      responseUri: '',
+      parameters,
+      dcApi: { origins },
+      expiresAt,
+      consumed: false,
+      waiters: [],
+    };
+    this.prune();
+    this.byHandle.set(handle, pending);
+    return {
+      handle,
+      nonce,
+      clientIds: origins.map(originClientId),
+      request: { protocol: DC_API_PROTOCOL_UNSIGNED, data: parameters },
+    };
+  }
+
+  /** The Digital Credentials API request of `handle`, as the page passes it to the browser. */
+  dcApiRequest(handle: string): DcApiRequest {
+    const pending = this.byHandle.get(handle);
+    if (!pending?.dcApi) {
+      throw new Oid4vpError('REQUEST_NOT_FOUND', 'no Digital Credentials API request with this handle', {
+        status: 404,
+      });
+    }
+    if (this.now().getTime() > pending.expiresAt) {
+      throw new Oid4vpError('REQUEST_EXPIRED', 'the authorization request has expired', { status: 410 });
+    }
+    return { protocol: DC_API_PROTOCOL_UNSIGNED, data: pending.parameters };
+  }
+
+  /**
+   * Verifies what the page received from `navigator.credentials.get()`: `{ protocol, data }` with `data` the
+   * authorization response, `{ vp_token: { <query id>: [ ... ] } }` (Appendix A.5 and section 8.1), or an
+   * error response. `origin` is the origin of the page that posts it (its `Origin` header), the origin the
+   * browser bound the answer to; default the first allowed origin. Single use, like a `direct_post` state.
+   */
+  async handleDcApiResponse(
+    handle: string,
+    response: unknown,
+    options: { origin?: string } = {},
+  ): Promise<VerificationReport> {
+    const pending = this.byHandle.get(handle);
+    if (!pending?.dcApi) {
+      throw new Oid4vpError('REQUEST_NOT_FOUND', 'no Digital Credentials API request with this handle', {
+        status: 404,
+      });
+    }
+    if (pending.consumed) {
+      throw new Oid4vpError('STATE_REPLAYED', 'a response for this request was already received', {
+        spec: 'OpenID4VP 1.0 section 14.1 (replay)',
+      });
+    }
+    pending.consumed = true;
+    let report: VerificationReport;
+    try {
+      const origin = options.origin ? new URL(options.origin).origin : pending.dcApi.origins[0]!;
+      if (!pending.dcApi.origins.includes(origin)) {
+        throw new Oid4vpError(
+          'CLIENT_ID_MISMATCH',
+          `the answer comes from ${origin}, not from a page of this verifier`,
+          {
+            spec: 'OpenID4VP 1.0 Appendix A.4 (origin binding)',
+            details: { origin, allowed: pending.dcApi.origins },
+          },
+        );
+      }
+      pending.dcApi.origin = origin;
+      pending.clientId = originClientId(origin);
+      if (this.now().getTime() > pending.expiresAt) {
+        throw new Oid4vpError(
+          'REQUEST_EXPIRED',
+          'the authorization request expired before the response arrived',
+        );
+      }
+      const envelope = isRecord(response) ? response : {};
+      if (envelope.protocol !== undefined && envelope.protocol !== DC_API_PROTOCOL_UNSIGNED) {
+        throw new Oid4vpError(
+          'RESPONSE_INVALID',
+          `protocol ${JSON.stringify(envelope.protocol)} was not requested`,
+          {
+            spec: 'OpenID4VP 1.0 Appendix A.1',
+          },
+        );
+      }
+      const data = isRecord(envelope.data) ? envelope.data : envelope;
+      if (typeof data.error === 'string') {
+        const error = new Oid4vpError('VERIFIER_REJECTED', `wallet answered with error ${data.error}`, {
+          details: { error: data.error, error_description: data.error_description },
+        });
+        report = { ...this.errorReport(pending, error), outcome: 'ERROR' };
+      } else {
+        const vpToken =
+          typeof data.vp_token === 'string' ? data.vp_token : JSON.stringify(data.vp_token ?? '');
+        if (data.vp_token === undefined) {
+          throw new Oid4vpError('RESPONSE_INVALID', 'vp_token is missing', {
+            spec: 'OpenID4VP 1.0 Appendix A.5',
+          });
+        }
+        report = await this.verifyResponse(pending, vpToken, undefined);
+      }
+    } catch (error) {
+      const failure =
+        error instanceof Oid4vpError
+          ? error
+          : new Oid4vpError('RESPONSE_INVALID', String(error), { cause: error });
+      report = this.errorReport(pending, failure);
+    }
+    this.finish(pending, report);
+    return report;
   }
 
   /**
@@ -546,7 +723,16 @@ export class ReferenceVerifier {
     const vpToken = objectParameter('vp_token', vpTokenField, 'RESPONSE_INVALID');
     const query = parseDcqlQuery(pending.parameters.dcql_query);
     const formats = new Map(query.credentials.map((credential) => [credential.id, credential.format]));
-    const checks: Check[] = [{ id: 'state', status: 'pass' }];
+    // A Digital Credentials API answer has no state: the browser returns it to the page that asked.
+    const checks: Check[] = [
+      pending.dcApi
+        ? {
+            id: 'dc_api',
+            status: 'pass',
+            detail: `answer for ${pending.dcApi.origin ?? pending.dcApi.origins[0]}`,
+          }
+        : { id: 'state', status: 'pass' },
+    ];
     const unknown = Object.keys(vpToken).filter((id) => !formats.has(id));
     if (unknown.length > 0) {
       throw new Oid4vpError('RESPONSE_INVALID', 'vp_token has keys that are not credential query ids', {

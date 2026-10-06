@@ -11,6 +11,7 @@ import { ReferenceWalletRole, type ReferenceWalletOptions } from './wallet.js';
 
 export { DEFAULT_CONFIGURATION_FOR_FORMAT, ReferenceIssuerRole } from './issuer.js';
 export { ReferenceVerifierRole } from './verifier.js';
+export { ReferenceDcApiVerifierRole, dcApiResponseUri, isDcApiRequestUri } from './dc-api-verifier.js';
 export { ReferenceWalletRole, type ReferenceWalletOptions } from './wallet.js';
 export { credentialFacts, toRoleError } from './common.js';
 

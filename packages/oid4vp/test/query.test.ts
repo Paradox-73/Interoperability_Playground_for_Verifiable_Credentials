@@ -122,7 +122,12 @@ describe('registerVerifierRoutes on a Fastify-shaped host', () => {
     };
     const { verifier } = harness();
     registerVerifierRoutes(host, verifier);
-    expect([...routes.keys()]).toEqual(['GET /ref/verifier/requests/:handle', 'POST /ref/verifier/response']);
+    expect([...routes.keys()]).toEqual([
+      'GET /ref/verifier/requests/:handle',
+      'POST /ref/verifier/response',
+      'GET /ref/verifier/dc-api/requests/:handle',
+      'POST /ref/verifier/dc-api/responses/:handle',
+    ]);
 
     const created = verifier.createRequest({ profile: 'inji-draft', format: 'ldp_vc' });
     const sent: { status?: number; headers: Record<string, string>; body?: unknown } = { headers: {} };

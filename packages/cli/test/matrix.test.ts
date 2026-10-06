@@ -129,11 +129,9 @@ cases:
     expect(spec.cases.length).toBeGreaterThanOrEqual(30);
     expect(spec.cases.filter((entry) => entry.verdict === 'not-supported')).toHaveLength(4);
     for (const entry of spec.cases.filter((e) => e.verdict === 'pass')) {
-      expect([entry.issuer, entry.wallet, entry.verifier]).toEqual([
-        'ref-issuer',
-        'ref-wallet',
-        'ref-verifier',
-      ]);
+      expect([entry.issuer, entry.wallet]).toEqual(['ref-issuer', 'ref-wallet']);
+      // The reference verifier, over a QR request or over the Digital Credentials API.
+      expect(['ref-verifier', 'ref-verifier-dc-api']).toContain(entry.verifier);
     }
     // vp-replay replays an earlier happy presentation, so every replay cell comes after its happy cell.
     const index = (scenario: string, format: string, profile: string) =>
