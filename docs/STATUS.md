@@ -774,7 +774,6 @@ Only after every task above is DONE:
 - A public did:web for Certify so a phone wallet can verify `ldp_vc`.
 - A second UI language with a right-to-left check.
 
-
 ## Hosted runs of 2026-10-06
 
 - `ci` run 37491520206 on 093fd39: failed. Step `npm run lint` reported `restrict-template-expressions` at
