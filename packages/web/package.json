@@ -30,7 +30,7 @@
     "@inji-playground/formats": "0.1.0",
     "@inji-playground/oid4vci": "0.1.0",
     "@inji-playground/oid4vp": "0.1.0",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
@@ -38,10 +38,10 @@
     "@testing-library/user-event": "^14.6.7",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "axe-core": "^4.13.0",
-    "jsdom": "^30.1.1",
+    "@vitejs/plugin-react": "^6.1.2",
+    "axe-core": "^4.14.0",
+    "jsdom": "^30.1.2",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.2"
+    "vite": "^8.3.4"
   }
 }
