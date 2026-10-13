@@ -152,6 +152,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     ...(config.dbPath === ':memory:' ? {} : { keysDir: join(config.runDir, 'keys') }),
     issuerDidMethod: config.refIssuerDid,
     trustedIssuers: config.trustedIssuers,
+    didWebAllowedHosts: config.didWebAllowedHosts,
     fetch: () => transport,
     ...(config.stack === 'off'
       ? {}

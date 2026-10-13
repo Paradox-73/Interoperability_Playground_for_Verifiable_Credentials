@@ -82,6 +82,8 @@ export interface ReferenceHostingOptions {
   extraClients?: RegisteredClient[];
   /** Issuer DIDs the reference verifier accepts besides the reference issuers' own (Inji Certify, outside issuers). */
   trustedIssuers?: readonly string[];
+  /** did:web hosts that may be private addresses (formats' `DidWebOptions.allowedHosts`). */
+  didWebAllowedHosts?: readonly string[];
 }
 
 export interface ReferenceHosting {
@@ -124,6 +126,7 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   const overridable = /^localhost(:\d+)?$|\.ps02\.test(:\d+)?$/.test(didWebHost);
   const didResolver = createDidResolver({
     ...(overridable ? { hostOverrides: { [didWebHost]: publicUrl } } : {}),
+    ...(options.didWebAllowedHosts ? { allowedHosts: options.didWebAllowedHosts } : {}),
     ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
   });
   const documentLoader = createDocumentLoader({

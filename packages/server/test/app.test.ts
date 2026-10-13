@@ -75,6 +75,13 @@ describe('loadConfig', () => {
       /PLAYGROUND_TRUSTED_ISSUERS/,
     );
   });
+
+  it('lets did:web reach the local stack names by default and reads more from PLAYGROUND_DID_WEB_ALLOWED_HOSTS', () => {
+    expect(loadConfig({}).didWebAllowedHosts).toEqual(['*.ps02.test', 'localhost']);
+    expect(
+      loadConfig({ PLAYGROUND_DID_WEB_ALLOWED_HOSTS: ' Issuer.LAN ,*.corp,, ' }).didWebAllowedHosts,
+    ).toEqual(['issuer.lan', '*.corp']);
+  });
 });
 
 describe('Inji adapter registry', () => {

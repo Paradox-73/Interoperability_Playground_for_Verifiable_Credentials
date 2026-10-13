@@ -201,6 +201,79 @@ describe('did:web', () => {
   });
 });
 
+describe('did:web: what the server may fetch', () => {
+  const document = (did: string) =>
+    buildDidDocument(did, [{ publicJwk: generateKeyPair('EdDSA').publicJwk, fragment: 'key-0' }]);
+
+  it.each([
+    'did:web:169.254.169.254',
+    'did:web:127.0.0.1%3A28443',
+    'did:web:10.0.0.5%3A8443',
+    'did:web:192.168.1.1',
+  ])('refuses %s (a private, loopback or link-local address) without fetching it', async (did) => {
+    const web = fakeWeb();
+    const resolver = createDidResolver({ fetch: web.fetch });
+    await expect(resolver.resolve(did)).rejects.toMatchObject({ code: 'DID_WEB_INSECURE' });
+    expect(web.requests).toEqual([]);
+  });
+
+  it('refuses a host name that resolves to a private address, and fetches one that resolves to a public one', async () => {
+    const web = fakeWeb();
+    web.serve('https://public.example/.well-known/did.json', document('did:web:public.example'));
+    const addresses: Record<string, string[]> = {
+      'inside.example': ['93.184.216.34', '10.1.2.3'],
+      'mapped.example': ['::ffff:127.0.0.1'],
+      'public.example': ['93.184.216.34', '2606:2800:220:1:248:1893:25c8:1946'],
+    };
+    const resolver = createDidResolver({
+      fetch: web.fetch,
+      lookup: (hostname) => Promise.resolve(addresses[hostname] ?? []),
+    });
+    await expect(resolver.resolve('did:web:inside.example')).rejects.toMatchObject({
+      code: 'DID_WEB_INSECURE',
+    });
+    await expect(resolver.resolve('did:web:mapped.example')).rejects.toMatchObject({
+      code: 'DID_WEB_INSECURE',
+    });
+    await expect(resolver.resolve('did:web:public.example')).resolves.toBeDefined();
+    expect(web.requests).toEqual(['https://public.example/.well-known/did.json']);
+  });
+
+  it('*.ps02.test and localhost are allowed by default; the list is configurable', async () => {
+    const web = fakeWeb();
+    web.serve('https://certify.ps02.test/.well-known/did.json', document('did:web:certify.ps02.test'));
+    web.serve('https://intranet.example/.well-known/did.json', document('did:web:intranet.example'));
+    const lookup = () => Promise.resolve(['10.0.0.7']);
+    await expect(
+      createDidResolver({ fetch: web.fetch, lookup }).resolve('did:web:certify.ps02.test'),
+    ).resolves.toBeDefined();
+    await expect(
+      createDidResolver({ fetch: web.fetch, lookup }).resolve('did:web:intranet.example'),
+    ).rejects.toMatchObject({ code: 'DID_WEB_INSECURE' });
+    await expect(
+      createDidResolver({ fetch: web.fetch, lookup, allowedHosts: ['*.example'] }).resolve(
+        'did:web:intranet.example',
+      ),
+    ).resolves.toBeDefined();
+  });
+
+  it('refuses a document larger than 100 KB and does not follow redirects', async () => {
+    const inits: unknown[] = [];
+    const resolver = createDidResolver({
+      lookup: () => Promise.resolve(['93.184.216.34']),
+      fetch: (_url, init) => {
+        inits.push(init);
+        return Promise.resolve(new Response(`{"id":"${'x'.repeat(200_000)}"}`));
+      },
+    });
+    await expect(resolver.resolve('did:web:big.example')).rejects.toMatchObject({
+      code: 'DID_WEB_FETCH_FAILED',
+      message: expect.stringContaining('102400 bytes'),
+    });
+    expect(inits[0]).toMatchObject({ redirect: 'error' });
+  });
+});
+
 describe('DID resolver', () => {
   it('DID Core section 5.3: a key not listed under the requested relationship is refused', async () => {
     const signing = generateKeyPair('EdDSA');
