@@ -118,8 +118,9 @@ function isAllowedHost(url: URL, allowed: readonly string[]): boolean {
   return allowed.some((raw) => {
     const entry = raw.toLowerCase();
     if (entry.startsWith('*.')) return url.hostname.endsWith(entry.slice(1));
-    // URL.host leaves out a scheme's default port, so `name:443` never matches an https URL: write `name`.
-    return /:\d+$/.test(entry) ? url.host === entry : url.hostname === entry;
+    if (!/:\d+$/.test(entry)) return url.hostname === entry;
+    // URL.port is empty for the scheme's default port, so `name:443` must still match https://name/.
+    return `${url.hostname}:${url.port || (url.protocol === 'https:' ? '443' : '80')}` === entry;
   });
 }
 

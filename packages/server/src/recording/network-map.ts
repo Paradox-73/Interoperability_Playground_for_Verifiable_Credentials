@@ -28,7 +28,7 @@ interface Target {
 }
 
 /** Default port of a URL scheme, as undici passes it when the URL has none. */
-function portOf(url: URL): string {
+export function portOf(url: URL): string {
   if (url.port) return url.port;
   return url.protocol === 'https:' ? '443' : '80';
 }
@@ -39,7 +39,7 @@ function key(protocol: string, hostname: string, port: string): string {
 
 export class NetworkMap {
   readonly #targets = new Map<string, Target>();
-  /** The mapped origins' hosts as `URL.host` writes them (`certify-nginx`, `verify-service:8080`). */
+  /** The mapped origins as `host:port`, default port written out (`certify-nginx:80`). */
   readonly hosts: string[] = [];
 
   constructor(entries: readonly NetworkMapEntry[] = []) {
@@ -49,7 +49,7 @@ export class NetworkMap {
       if (from.protocol !== to.protocol) {
         throw new Error(`network map entry ${entry.from} -> ${entry.to} changes the scheme`);
       }
-      this.hosts.push(from.host);
+      this.hosts.push(`${from.hostname}:${portOf(from)}`);
       this.#targets.set(key(from.protocol, from.hostname, portOf(from)), {
         hostname: to.hostname,
         port: portOf(to),

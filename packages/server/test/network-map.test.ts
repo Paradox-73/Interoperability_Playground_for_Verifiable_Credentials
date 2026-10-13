@@ -66,10 +66,13 @@ describe('NetworkMap', () => {
 
 describe('status and DID fetches from the Inji stack', () => {
   // Inji Certify's domain URL is http://certify-nginx:80, so a status list it names lives on that host.
-  const fetchFromCertify = (allowedHosts: readonly string[]) =>
+  const fetchFromCertify = (
+    allowedHosts: readonly string[],
+    url = 'http://certify-nginx/v1/certify/status-list/1',
+  ) =>
     fetchLimited(
       {
-        url: 'http://certify-nginx:80/v1/certify/status-list/1',
+        url,
         accept: 'application/json',
         codes: { insecure: 'STATUS_LIST_UNAVAILABLE', failed: 'STATUS_LIST_UNAVAILABLE' },
       },
@@ -100,6 +103,12 @@ describe('status and DID fetches from the Inji stack', () => {
       await expect(fetchFromCertify(hostsFor({ PLAYGROUND_STACK: stack }))).resolves.toBe('{}');
     },
   );
+
+  it.each(['bundle', 'host'])('stack %s: a stack name is allowed on its own port only', async (stack) => {
+    await expect(
+      fetchFromCertify(hostsFor({ PLAYGROUND_STACK: stack }), 'http://certify-nginx:9000/internal'),
+    ).rejects.toMatchObject({ code: 'STATUS_LIST_UNAVAILABLE' });
+  });
 
   it('INJI_*_URL hosts are allowed when the stack is on; with the stack off nothing is added', () => {
     expect(hostsFor({ PLAYGROUND_STACK: 'bundle', INJI_CERTIFY_URL: 'http://certify.lan:8090' })).toContain(

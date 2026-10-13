@@ -6,7 +6,7 @@
  * `deploy/inji-stack/compose.yaml`. `INJI_*_URL` variables override either.
  */
 import type { Config } from '../config/index.js';
-import type { NetworkMap } from './network-map.js';
+import { portOf, type NetworkMap } from './network-map.js';
 import type { ProxyTarget } from './proxy.js';
 
 const HOST_DEFAULTS = {
@@ -69,8 +69,7 @@ export function proxyTargets(config: Config): Record<string, ProxyTarget> {
  */
 export function stackFetchHosts(config: Config, networkMap: NetworkMap): string[] {
   if (config.stack === 'off') return [];
-  return [
-    ...Object.values(proxyTargets(config)).map((target) => new URL(target.url).host),
-    ...networkMap.hosts,
-  ];
+  // `host:port`, so a stack name skips the address check on its own port only.
+  const upstreams = Object.values(proxyTargets(config)).map((target) => new URL(target.url));
+  return [...upstreams.map((url) => `${url.hostname}:${portOf(url)}`), ...networkMap.hosts];
 }
