@@ -456,7 +456,8 @@ export class ReferenceVerifier {
    * Verifies what the page received from `navigator.credentials.get()`: `{ protocol, data }` with `data` the
    * authorization response, `{ vp_token: { <query id>: [ ... ] } }` (Appendix A.5 and section 8.1), or an
    * error response. `origin` is the origin of the page that posts it (its `Origin` header), the origin the
-   * browser bound the answer to; default the first allowed origin. Single use, like a `direct_post` state.
+   * browser bound the answer to. Without it the answer is refused (400) and the request stays open: a client
+   * that sends no Origin is not a page of this verifier. Single use, like a `direct_post` state.
    */
   async handleDcApiResponse(
     handle: string,
@@ -474,10 +475,15 @@ export class ReferenceVerifier {
         spec: 'OpenID4VP 1.0 section 14.1 (replay)',
       });
     }
+    if (!options.origin) {
+      throw new Oid4vpError('CLIENT_ID_MISMATCH', 'the answer carries no Origin header', {
+        spec: 'OpenID4VP 1.0 Appendix A.4 (origin binding)',
+      });
+    }
     pending.consumed = true;
     let report: VerificationReport;
     try {
-      const origin = options.origin ? new URL(options.origin).origin : pending.dcApi.origins[0]!;
+      const origin = new URL(options.origin).origin;
       if (!pending.dcApi.origins.includes(origin)) {
         throw new Oid4vpError(
           'CLIENT_ID_MISMATCH',
@@ -774,7 +780,7 @@ export class ReferenceVerifier {
         ? {
             id: 'dc_api',
             status: 'pass',
-            detail: `answer for ${pending.dcApi.origin ?? pending.dcApi.origins[0]}`,
+            detail: `answer for ${pending.dcApi.origin}`,
           }
         : { id: 'state', status: 'pass' },
     ];

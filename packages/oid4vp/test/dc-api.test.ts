@@ -53,11 +53,9 @@ async function answer(
   const request = resolveDcApiRequest(created.request, walletOrigin);
   const matches = wallet.selectCredentials(request, [credential ?? (await credentialFor(format))]);
   const response = dcApiResponse(await wallet.buildResponse(request, matches));
-  const report = await verifier.handleDcApiResponse(
-    created.handle,
-    response,
-    postOrigin ? { origin: postOrigin } : {},
-  );
+  const report = await verifier.handleDcApiResponse(created.handle, response, {
+    origin: postOrigin ?? walletOrigin,
+  });
   return { verifier, created, request, response, report };
 }
 
@@ -119,7 +117,7 @@ describe.each<Format>(['ldp_vc', 'vc+sd-jwt'])('Digital Credentials API, %s', (f
   });
 
   it('an answer bound to another origin is INVALID (a page cannot replay a presentation made for another site)', async () => {
-    const { report } = await answer(format, 'https://attacker.example');
+    const { report } = await answer(format, 'https://attacker.example', undefined, ORIGIN);
     expect(report.outcome).toBe('INVALID');
   });
 });
@@ -132,8 +130,10 @@ describe('Digital Credentials API, verifier', () => {
       flipSdJwtSignature(await farmerSdJwtVc()),
     );
     expect(report.outcome).toBe('INVALID');
-    await expect(verifier.handleDcApiResponse(created.handle, response)).rejects.toThrow(/already received/);
-    await expect(verifier.handleDcApiResponse('nope', response)).rejects.toThrow(
+    await expect(verifier.handleDcApiResponse(created.handle, response, { origin: ORIGIN })).rejects.toThrow(
+      /already received/,
+    );
+    await expect(verifier.handleDcApiResponse('nope', response, { origin: ORIGIN })).rejects.toThrow(
       /no Digital Credentials API/,
     );
     expect(() => verifier.dcApiRequest('nope')).toThrow(/no Digital Credentials API/);
@@ -142,19 +142,39 @@ describe('Digital Credentials API, verifier', () => {
   it('reports a wallet error as ERROR and a missing vp_token or a foreign protocol as INVALID', async () => {
     const { verifier } = harness();
     const ask = () => verifier.createDcApiRequest({ format: 'ldp_vc', origins: [ORIGIN] });
-    const declined = await verifier.handleDcApiResponse(ask().handle, {
-      protocol: DC_API_PROTOCOL_UNSIGNED,
-      data: { error: 'access_denied' },
-    });
+    const declined = await verifier.handleDcApiResponse(
+      ask().handle,
+      { protocol: DC_API_PROTOCOL_UNSIGNED, data: { error: 'access_denied' } },
+      { origin: ORIGIN },
+    );
     expect(declined.outcome).toBe('ERROR');
-    const empty = await verifier.handleDcApiResponse(ask().handle, {
-      protocol: DC_API_PROTOCOL_UNSIGNED,
-      data: {},
-    });
+    const empty = await verifier.handleDcApiResponse(
+      ask().handle,
+      { protocol: DC_API_PROTOCOL_UNSIGNED, data: {} },
+      { origin: ORIGIN },
+    );
     expect(empty.outcome).toBe('INVALID');
     expect(empty.checks[0]?.detail).toMatch(/vp_token is missing/);
-    const foreign = await verifier.handleDcApiResponse(ask().handle, { protocol: 'org-iso-mdoc', data: {} });
+    const foreign = await verifier.handleDcApiResponse(
+      ask().handle,
+      { protocol: 'org-iso-mdoc', data: {} },
+      { origin: ORIGIN },
+    );
     expect(foreign.checks[0]?.detail).toMatch(/was not requested/);
+  });
+
+  it('refuses an answer without an Origin header, and the request stays open for the real page', async () => {
+    const { verifier, wallet } = harness();
+    const created = verifier.createDcApiRequest({ format: 'ldp_vc', origins: [ORIGIN] });
+    const request = resolveDcApiRequest(created.request, ORIGIN);
+    const matches = wallet.selectCredentials(request, [await farmerLdpVc()]);
+    const response = dcApiResponse(await wallet.buildResponse(request, matches));
+    await expect(verifier.handleDcApiResponse(created.handle, response, {})).rejects.toMatchObject({
+      code: 'CLIENT_ID_MISMATCH',
+      status: 400,
+    });
+    const report = await verifier.handleDcApiResponse(created.handle, response, { origin: ORIGIN });
+    expect(report.outcome).toBe('VALID');
   });
 
   it('a direct_post with the state of no request does not reach a Digital Credentials API request', async () => {
@@ -183,6 +203,15 @@ describe('Digital Credentials API, verifier', () => {
       body: JSON.stringify(body),
     });
     expect(await posted.json()).toEqual({ outcome: 'VALID' });
+
+    const unsent = verifier.createDcApiRequest({ format: 'vc+sd-jwt', origins: [ORIGIN] });
+    const noOrigin = await fetch(`${VERIFIER_BASE_URL}/dc-api/responses/${unsent.handle}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    expect(noOrigin.status).toBe(400);
+    expect(((await noOrigin.json()) as { error_description: string }).error_description).toMatch(/Origin/);
     const missing = await fetch(`${VERIFIER_BASE_URL}/dc-api/requests/unknown`);
     expect(missing.status).toBe(404);
   });
