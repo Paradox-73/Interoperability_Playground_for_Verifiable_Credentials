@@ -51,6 +51,24 @@ describe('serving the built UI', () => {
     expect((await app.inject({ method: 'GET', url: '/api/missing' })).statusCode).toBe(404);
     await app.close();
   });
+
+  it('sends security headers with pages and API answers: CSP without inline scripts, no framing, nosniff', async () => {
+    const app = await buildApp({
+      config: loadConfig({ PLAYGROUND_DB: ':memory:', PLAYGROUND_WEB_DIST: dist }),
+      logger: false,
+    });
+    for (const url of ['/', '/runs/42', '/api/health']) {
+      const { headers } = await app.inject({ method: 'GET', url });
+      expect(headers['x-content-type-options']).toBe('nosniff');
+      expect(headers['referrer-policy']).toBe('no-referrer');
+      expect(headers['x-frame-options']).toBe('DENY');
+      const csp = String(headers['content-security-policy']);
+      expect(csp).toContain("frame-ancestors 'none'");
+      expect(csp).toContain("script-src 'self'");
+      expect(csp).not.toMatch(/script-src[^;]*unsafe/);
+    }
+    await app.close();
+  });
 });
 
 describe('loadConfig', () => {

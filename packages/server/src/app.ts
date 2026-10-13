@@ -103,6 +103,29 @@ const SERVER_PREFIXES = [
   '/contexts/',
 ];
 
+/**
+ * Second line of defence for a UI that shows untrusted credential content: scripts only from this server
+ * (the Vite build has no inline script), no plugins, no framing. Inline styles stay allowed because
+ * mermaid writes a <style> element into each diagram.
+ */
+const SECURITY_HEADERS = {
+  'content-security-policy': [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+  ].join('; '),
+  'x-content-type-options': 'nosniff',
+  'x-frame-options': 'DENY',
+  'referrer-policy': 'no-referrer',
+};
+
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const { config } = options;
   const app = Fastify({
@@ -116,6 +139,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
   installErrorHandler(app);
+  // Proxied Inji answers keep the upstream's own headers.
+  app.addHook('onRequest', async (request, reply) => {
+    if (!request.url.startsWith('/proxy/')) void reply.headers(SECURITY_HEADERS);
+  });
 
   const store = RunStore.open(databasePath(config));
   const interrupted = store.interruptUnfinished(new Date().toISOString());
