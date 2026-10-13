@@ -21,8 +21,13 @@ in (did:web documents, JSON-LD contexts that are not pinned).
 | `mso_mdoc`          | ISO/IEC 18013-5 IssuerSigned (MSO in COSE_Sign1, ES256, `x5chain`), DeviceResponse with DeviceSignature, SessionTranscript of ISO/IEC TS 18013-7 Annex B and of OpenID4VP 1.0 Appendix B.2.6.1 | `issueMdoc`, `presentMdoc`, `verifyMdocDeviceResponse`, `mdocSessionTranscript`, `decodeMdocCredential` |
 | Size                | Credential bytes and PixelPass QR text length (Inji's QR encoding: CBOR, zlib, base45) against version 40 QR capacity                                                                          | `credentialSize`, `pixelPassText`, `qrLevelsThatFit`                                                    |
 
-Not covered here: status lists (a credential with `credentialStatus` verifies with a warning that
-status was not checked). Tamper primitives for every format are exported separately from
+`statusEntriesOf` reads a credential's status entries, and `checkStatusEntry` checks one against a Token
+Status List (draft-ietf-oauth-status-list-21, SD-JWT VC) or a Bitstring Status List v1.0 (`ldp_vc`). The
+list must be signed by the credential's own issuer. `fetchLimited` fetches the lists and did:web documents.
+It refuses a private, loopback or link-local address outside `allowedHosts`, follows no redirects and reads
+at most 100 KB. `verifyLdpVc` on its own does not check status; it warns that status was not checked. Not
+covered: mdoc status, Status List Tokens signed through `x5c`, StatusList2021, and Bitstring entries with
+status messages. Tamper primitives for every format are exported separately from
 `@inji-playground/formats/tamper` (`src/tamper/`).
 
 ## Examples
@@ -266,8 +271,8 @@ received values. `error.toJSON()` gives a plain object for run reports. Examples
 
 ## Tests
 
-`npm test -w @inji-playground/formats` runs 176 tests in 8 files (measured 2026-10-06: all pass in about
-2 s on the team laptop, Node 24.19.0; `test/tamper.test.ts` covers the tamper primitives of the other
+`npm test -w @inji-playground/formats` runs 211 tests in 10 files (measured 2026-10-14: all pass in about
+3 s on the team laptop, Node 24.19.0; `test/tamper.test.ts` covers the tamper primitives of the other
 formats). Test names start with the specification rule they check.
 
 | File                        | What it shows                                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -279,6 +284,7 @@ formats). Test names start with the specification rule they check.
 | `test/size.test.ts`         | PixelPass round trip, a small credential fits QR version 40, a credential with an 8 KB photo does not                                                                                                                                                                                                                                                                                                          |
 | `test/mdoc.test.ts`         | SessionTranscript of Annex B and of OpenID4VP 1.0 (byte level), IssuerSigned in both encodings, inspector JSON; issue, present with selective disclosure and verify in both transcripts; another nonce or client_id, another device key, flipped issuer signature, altered and unreferenced element, expired, not yet valid, untrusted and forged `x5chain`, docType mismatches, error status, missing element |
 | `test/dependencies.test.ts` | Every library loads as ESM inside Vitest on Node 24                                                                                                                                                                                                                                                                                                                                                            |
+| `test/status.test.ts`       | Status entries of both formats; Token Status List and Bitstring Status List valid, revoked, suspended; a list signed by another key or for another uri; private addresses                                                                                                                                                                                                                                      |
 
 ## Specifications
 
