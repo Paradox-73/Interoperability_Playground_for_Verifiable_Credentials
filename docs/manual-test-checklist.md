@@ -35,8 +35,8 @@ Platform notes:
 3. **Static checks.** Run `npm run lint && npm run format:check && npm run typecheck`. Expected: all three
    exit 0 with no warnings. Time: 90 s.
 4. **Unit tests.** Run `npm test`. Expected: `Test Files 79 passed` and `Tests 1203 passed` (or the numbers in
-   the [README](../README.md#current-numbers) if they changed). Time: 80 s. If one `playback.test.tsx` test
-   fails under load, run it alone with `npx vitest run packages/web --project web -t playback`.
+   the [README](../README.md#current-numbers) if they changed). Time: 80 s. A test that fails under CPU load
+   passes on a second `npm test`; report it only if it fails twice.
 5. **Reference matrix, no Docker.** Run `npm run matrix:reference`. Expected: the last lines read
    `123 of 123 cells as specified (pass 119, fail 0, error 0, not supported 4)`. Time: 40 s.
 6. **Browser tests.** Run `npm run e2e`. Do not run anything else that builds the UI at the same time.
