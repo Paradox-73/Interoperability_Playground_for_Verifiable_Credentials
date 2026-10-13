@@ -94,10 +94,10 @@ describe('loadConfig', () => {
     );
   });
 
-  it('lets did:web reach the local stack names by default and reads more from PLAYGROUND_DID_WEB_ALLOWED_HOSTS', () => {
-    expect(loadConfig({}).didWebAllowedHosts).toEqual(['*.ps02.test', 'localhost']);
+  it('lets did:web and status list fetches reach the local stack names by default and reads more from PLAYGROUND_FETCH_ALLOWED_HOSTS', () => {
+    expect(loadConfig({}).fetchAllowedHosts).toEqual(['*.ps02.test', 'localhost']);
     expect(
-      loadConfig({ PLAYGROUND_DID_WEB_ALLOWED_HOSTS: ' Issuer.LAN ,*.corp,, ' }).didWebAllowedHosts,
+      loadConfig({ PLAYGROUND_FETCH_ALLOWED_HOSTS: ' Issuer.LAN ,*.corp,, ' }).fetchAllowedHosts,
     ).toEqual(['issuer.lan', '*.corp']);
   });
 });

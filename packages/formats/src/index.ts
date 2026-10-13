@@ -7,6 +7,7 @@ import type { CredentialFormat } from '@inji-playground/protocol';
 
 export * from './errors.js';
 export * from './util/encoding.js';
+export * from './util/limited-fetch.js';
 
 export * from './keys/keys.js';
 export * from './keys/jws.js';

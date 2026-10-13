@@ -5,7 +5,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DEFAULT_DID_WEB_ALLOWED_HOSTS } from '@inji-playground/formats';
+import { DEFAULT_FETCH_ALLOWED_HOSTS } from '@inji-playground/formats';
 import { StackModeSchema } from '@inji-playground/protocol';
 import { z } from 'zod';
 
@@ -87,12 +87,13 @@ export const ConfigSchema = z.object({
     )
     .pipe(z.array(z.string().startsWith('did:', 'each trusted issuer must be a DID'))),
   /**
-   * did:web hosts the reference verifier may fetch even when they are private or loopback addresses,
-   * comma-separated; `*.name` matches subdomains. Other hosts on private networks are refused.
+   * Hosts the reference verifier may fetch did:web documents and status lists from even when they are
+   * private or loopback addresses, comma-separated; `*.name` matches subdomains. Other hosts on private
+   * networks are refused.
    */
-  didWebAllowedHosts: z
+  fetchAllowedHosts: z
     .string()
-    .default(DEFAULT_DID_WEB_ALLOWED_HOSTS.join(','))
+    .default(DEFAULT_FETCH_ALLOWED_HOSTS.join(','))
     .transform((value) =>
       value
         .split(',')
@@ -143,7 +144,7 @@ const ENV_KEYS = {
   PLAYGROUND_EXTRA_CA: 'extraCaFile',
   PLAYGROUND_REF_ISSUER_DID: 'refIssuerDid',
   PLAYGROUND_TRUSTED_ISSUERS: 'trustedIssuers',
-  PLAYGROUND_DID_WEB_ALLOWED_HOSTS: 'didWebAllowedHosts',
+  PLAYGROUND_FETCH_ALLOWED_HOSTS: 'fetchAllowedHosts',
   INJI_CERTIFY_URL: 'injiCertifyUrl',
   INJI_CERTIFY_AC_URL: 'injiCertifyAcUrl',
   INJI_VERIFY_URL: 'injiVerifyUrl',

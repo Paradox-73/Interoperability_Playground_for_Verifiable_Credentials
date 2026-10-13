@@ -12,7 +12,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { FormatError, errorMessage } from '../errors.js';
-import type { FetchLike } from '../did/did-web.js';
+import type { FetchLike } from '../util/limited-fetch.js';
 import type { DidResolver } from '../did/resolver.js';
 import { parseDidUrl } from '../did/resolver.js';
 import { contextForVerificationMethodType } from '../did/verification-method.js';
