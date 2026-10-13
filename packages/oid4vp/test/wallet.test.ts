@@ -200,6 +200,20 @@ describe('wallet: credentialSubject.id written as a key id (did:...#0), as Inji 
   });
 });
 
+describe('verifier: ldp_vc whose credentialSubject.id is not a DID', () => {
+  it('reports holder binding as skipped, never as passed', async () => {
+    const { verifier, wallet } = harness();
+    const created = verifier.createRequest({ profile: 'inji-draft', format: 'ldp_vc' });
+    await wallet.respond(created.uri, [await farmerLdpVc({ subjectId: 'urn:uuid:7d1f0c2e-farmer' })]);
+    const report = await verifier.awaitResult(created.handle);
+    expect(report.outcome).toBe('VALID');
+    expect(report.checks.find((check) => check.id === 'holder-binding')).toMatchObject({
+      status: 'skipped',
+      detail: expect.stringContaining('not a DID'),
+    });
+  });
+});
+
 describe('wallet: holder DID as the credential binds it (inji/inji-certify#1054)', () => {
   const padded = createDidJwk(holder.keyPair.publicJwk, { padded: true });
   const canonical = createDidJwk(holder.keyPair.publicJwk);

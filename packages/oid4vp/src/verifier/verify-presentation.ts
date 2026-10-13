@@ -6,7 +6,8 @@
  * - `ldp_vp`: proof `challenge` = request nonce and `domain` = client_id (OpenID4VP 1.0 Appendix
  *   B.1.3.2.5), holder proof, every credential proof and validity period, then holder binding: each
  *   credential's `credentialSubject.id` equals the presentation `holder`, compared literally, so a
- *   padded and an unpadded did:jwk of one key are reported (inji/inji-certify#1054).
+ *   padded and an unpadded did:jwk of one key are reported (inji/inji-certify#1054). A credential
+ *   whose `credentialSubject.id` is missing or not a DID binds no holder: the check is `skipped`.
  * - SD-JWT VC: issuer signature, disclosures, validity, and the KB-JWT `nonce`, `aud` (the full
  *   client_id, prefix included, Appendix B.3.6), `sd_hash` and `iat` (RFC 9901 section 7.3).
  * - `mso_mdoc` (Appendix B.2): a base64url DeviceResponse. Issuer certificate chain to a trust anchor,
@@ -175,10 +176,12 @@ async function verifyLdpPresentation(
   const credentials = (Array.isArray(embedded) ? embedded : [embedded]).filter(isRecord);
   const first = credentials[0];
   if (!first) throw new FormatError('LDP_MALFORMED', 'the presentation holds no credential');
+  let unbound = false;
   for (const credential of credentials) {
     const subject = credential.credentialSubject;
     const subjectId = isRecord(subject) && typeof subject.id === 'string' ? subject.id : undefined;
-    if (subjectId?.startsWith('did:') && subjectId !== verified.holder) {
+    if (!subjectId?.startsWith('did:')) unbound = true;
+    else if (subjectId !== verified.holder) {
       throw new FormatError(
         'LDP_HOLDER_MISMATCH',
         'the credential is bound to another holder than the one presenting it',
@@ -194,7 +197,15 @@ async function verifyLdpPresentation(
   const subject = first.credentialSubject;
   return {
     outcome: 'VALID',
-    checks: PRESENTATION_CHECKS.map((id) => ({ id, status: 'pass' as const })),
+    checks: PRESENTATION_CHECKS.map((id): Check =>
+      id === 'holder-binding' && unbound
+        ? {
+            id,
+            status: 'skipped',
+            detail: 'a credentialSubject.id is not a DID, so there is no holder to bind the credential to',
+          }
+        : { id, status: 'pass' },
+    ),
     view: { format: 'ldp_vc', json: first, types: credentialTypes(first) },
     claims: isRecord(subject) ? subject : {},
     issuer: verified.credentials[0]?.issuer ?? '',
