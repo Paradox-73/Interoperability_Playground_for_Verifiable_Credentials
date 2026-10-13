@@ -144,7 +144,12 @@ async function checkTokenStatusList(
   if (header.typ !== 'statuslist+jwt') {
     throw invalid('the status list token must have typ statuslist+jwt', 'section 5.1', { typ: header.typ });
   }
-  if (typeof header.kid !== 'string' || header.kid.split('#')[0] !== options.issuer) {
+  // A bare fragment (`#key-1`) names a key of the credential issuer's DID.
+  const kid =
+    typeof header.kid === 'string' && header.kid.startsWith('#')
+      ? `${options.issuer}${header.kid}`
+      : header.kid;
+  if (typeof kid !== 'string' || kid.split('#')[0] !== options.issuer) {
     throw invalid('the status list token is not signed by a key of the credential issuer', 'section 8.3', {
       kid: header.kid,
       issuer: options.issuer,
@@ -152,7 +157,7 @@ async function checkTokenStatusList(
   }
   let key;
   try {
-    key = await options.didResolver.resolveVerificationMethod(header.kid, 'assertionMethod');
+    key = await options.didResolver.resolveVerificationMethod(kid, 'assertionMethod');
   } catch (cause) {
     throw invalid(`cannot resolve the status list token key: ${errorMessage(cause)}`, 'section 8.3');
   }

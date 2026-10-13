@@ -152,6 +152,12 @@ describe('Token Status List check', () => {
     });
   });
 
+  it('a relative kid (#fragment) is read against the credential issuer DID', async () => {
+    const web = served(token({ kid: kid.slice(kid.indexOf('#')) }));
+    await expect(checkStatusEntry(entry(0), options(web))).resolves.toMatch(/valid/);
+    await expect(checkStatusEntry(entry(1), options(web))).rejects.toMatchObject({ code: 'STATUS_REVOKED' });
+  });
+
   it('refuses a list signed by someone other than the credential issuer, or made for another uri', async () => {
     const forger = generateKeyPair('EdDSA');
     const forgerDid = createDidKey(forger.publicJwk);
