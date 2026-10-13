@@ -89,8 +89,7 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
 - **Inji Wallet mobile was not run.** No APK is published and no phone was available. The playground shows
   the QR code and link for it (`mobile-wallet` role), but no run with a phone is recorded.
 - **No status check for `mso_mdoc`.** The reference verifier checks Token Status Lists (SD-JWT VC) and
-  Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Inji Verify and
-  Inji Certify were not tested for revocation, because the local Inji Certify issues no status entries.
+  Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Revocation was not tested against Inji Verify. A freshly issued Inji Certify 0.14.0 `FarmerCredential` (`ldp_vc`) had no `credentialStatus`, and the SD-JWT VC had no `status` claim (observed 2026-10-14), so there is nothing to revoke.
 - **DNS rebinding is not blocked.** The reference verifier refuses private, loopback and link-local addresses
   when it fetches a `did:web` document or a status list, but it resolves the name again when the request is
   made. Remote JSON-LD contexts (live mode) have no address or size limit.
