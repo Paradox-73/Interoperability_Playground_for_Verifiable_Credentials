@@ -63,30 +63,48 @@ describe('Bitstring Status List encoding', () => {
     expect(bitstringStatusAt(encoded, 5)).toBe(true);
     expect(bitstringStatusAt(encoded, 6)).toBe(false);
     expect(bitstringStatusAt(encoded, 131_071)).toBe(true);
+    expect(() => encodeBitstringStatusList([131_072])).toThrow(RangeError);
+    expect(() => bitstringStatusAt(encodeBitstringStatusList([], 8), 0)).toThrow(/fewer than 131072 entries/);
   });
 });
 
 describe('status entries of a credential', () => {
   it('finds a Token Status List reference, a BitstringStatusListEntry, and names an unsupported type', () => {
-    expect(statusEntriesOf({ status: { status_list: { idx: 3, uri: LIST_URL } } })).toEqual([
+    expect(statusEntriesOf({ status: { status_list: { idx: 3, uri: LIST_URL } } }, 'sd-jwt')).toEqual([
       { kind: 'token-status-list', uri: LIST_URL, idx: 3 },
     ]);
     expect(
-      statusEntriesOf({
-        credentialStatus: {
-          type: 'BitstringStatusListEntry',
-          statusPurpose: 'revocation',
-          statusListIndex: '42',
-          statusListCredential: LIST_URL,
+      statusEntriesOf(
+        {
+          credentialStatus: {
+            type: 'BitstringStatusListEntry',
+            statusPurpose: 'revocation',
+            statusListIndex: '42',
+            statusListCredential: LIST_URL,
+          },
         },
-      }),
+        'ldp',
+      ),
     ).toEqual([
       { kind: 'bitstring', statusListCredential: LIST_URL, statusListIndex: 42, statusPurpose: 'revocation' },
     ]);
-    expect(statusEntriesOf({ credentialStatus: { type: 'StatusList2021Entry' } })).toEqual([
+    expect(statusEntriesOf({ credentialStatus: { type: 'StatusList2021Entry' } }, 'ldp')).toEqual([
       { kind: 'unsupported', type: 'StatusList2021Entry' },
     ]);
-    expect(statusEntriesOf({ credentialSubject: {} })).toEqual([]);
+    expect(statusEntriesOf({ credentialSubject: {} }, 'ldp')).toEqual([]);
+    // Each format reads only its own field: an ldp_vc claim called status is not a Token Status List.
+    expect(statusEntriesOf({ status: { status_list: { idx: 3, uri: LIST_URL } } }, 'ldp')).toEqual([]);
+    const entry = {
+      type: 'BitstringStatusListEntry',
+      statusPurpose: 'revocation',
+      statusListCredential: LIST_URL,
+    };
+    expect(() => statusEntriesOf({ credentialStatus: { ...entry, statusListIndex: null } }, 'ldp')).toThrow(
+      /malformed/,
+    );
+    expect(
+      statusEntriesOf({ credentialStatus: { ...entry, statusListIndex: '1', statusSize: 2 } }, 'ldp'),
+    ).toEqual([{ kind: 'unsupported', type: 'BitstringStatusListEntry with status messages' }]);
   });
 });
 

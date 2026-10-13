@@ -91,7 +91,7 @@ beforeAll(async () => {
     baseUrl: VERIFIER_BASE,
     didResolver: resolver,
     documentLoader,
-    fetchLimits: { fetch: (url, init) => toIssuers(url, init) },
+    fetchLimits: { fetch: (url, init) => toIssuers(url, init), allowedHosts: [new URL(ORIGIN).host] },
   });
   // The verifier trusts the issuers' mdoc IACA roots and their DIDs, as the playground server sets it up.
   for (const issuer of Object.values(issuers)) {

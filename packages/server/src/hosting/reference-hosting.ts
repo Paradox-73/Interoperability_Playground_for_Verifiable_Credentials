@@ -84,7 +84,7 @@ export interface ReferenceHostingOptions {
   extraClients?: RegisteredClient[];
   /** Issuer DIDs the reference verifier accepts besides the reference issuers' own (Inji Certify, outside issuers). */
   trustedIssuers?: readonly string[];
-  /** Hosts that may be private addresses when fetching did:web documents and status lists (`FetchLimits`). */
+  /** Hosts that may be private addresses when fetching did:web documents and status lists, besides the defaults. */
   fetchAllowedHosts?: readonly string[];
 }
 
@@ -130,8 +130,9 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   // (a LAN address for phones): the reference issuer's status lists are fetched from it.
   const fetchLimits: FetchLimits = {
     allowedHosts: [
-      ...(options.fetchAllowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS),
-      new URL(publicUrl).hostname,
+      ...DEFAULT_FETCH_ALLOWED_HOSTS,
+      ...(options.fetchAllowedHosts ?? []),
+      new URL(publicUrl).host,
     ],
     ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
   };

@@ -36,12 +36,17 @@ export const BITSTRING_MIN_ENTRIES = 131_072;
 const MAX_LIST_BYTES = 8 * 1024 * 1024;
 
 /**
- * The status entries of a credential: SD-JWT VC claims (`status`) or an ldp_vc (`credentialStatus`).
- * Empty when it has none.
+ * The status entries of a credential: the claims of an SD-JWT VC (`status`) or an ldp_vc
+ * (`credentialStatus`). Empty when it has none.
  */
-export function statusEntriesOf(credential: Record<string, unknown>): StatusEntry[] {
-  const status = credential.status;
-  if (isRecord(status)) {
+export function statusEntriesOf(
+  credential: Record<string, unknown>,
+  format: 'sd-jwt' | 'ldp',
+): StatusEntry[] {
+  if (format === 'sd-jwt') {
+    const status = credential.status;
+    if (status === undefined) return [];
+    if (!isRecord(status)) return [{ kind: 'unsupported', type: 'status' }];
     const list = status.status_list;
     if (!isRecord(list) || typeof list.uri !== 'string' || !Number.isSafeInteger(list.idx)) {
       const types = Object.keys(status);
@@ -56,7 +61,17 @@ export function statusEntriesOf(credential: Record<string, unknown>): StatusEntr
     if (!isRecord(entry) || type !== 'BitstringStatusListEntry') {
       return { kind: 'unsupported', type: typeof type === 'string' ? type : 'credentialStatus' };
     }
-    const index = Number(entry.statusListIndex);
+    // Multi-bit entries (`statusSize` above 1) and `message` lists carry status messages, not a flag.
+    if (
+      (entry.statusSize !== undefined && Number(entry.statusSize) !== 1) ||
+      entry.statusPurpose === 'message'
+    ) {
+      return { kind: 'unsupported', type: 'BitstringStatusListEntry with status messages' };
+    }
+    const index =
+      typeof entry.statusListIndex === 'string' || typeof entry.statusListIndex === 'number'
+        ? Number(entry.statusListIndex)
+        : Number.NaN;
     if (
       typeof entry.statusListCredential !== 'string' ||
       typeof entry.statusPurpose !== 'string' ||
@@ -201,6 +216,9 @@ async function checkBitstringStatusList(
       'section 3.2 (validate algorithm)',
     );
   }
+  if (isRecord(list) && list.id !== undefined && list.id !== url) {
+    throw invalid('the status list credential id is not the statusListCredential URL', 'section 3.2');
+  }
   const subject = isRecord(list) ? list.credentialSubject : undefined;
   if (!isRecord(subject) || typeof subject.encodedList !== 'string') {
     throw invalid('the status list credential has no credentialSubject.encodedList', 'section 2.2');
@@ -267,6 +285,15 @@ export function bitstringStatusAt(encodedList: string, index: number): boolean {
       cause,
     });
   }
+  if (bytes.length * 8 < BITSTRING_MIN_ENTRIES) {
+    throw new FormatError(
+      'STATUS_LIST_INVALID',
+      `the status list has fewer than ${BITSTRING_MIN_ENTRIES} entries`,
+      {
+        spec: `${BITSTRING_SPEC} section 2.2 (encodedList, at least 16KB)`,
+      },
+    );
+  }
   const byte = bytes[Math.floor(index / 8)];
   if (byte === undefined) {
     throw new FormatError('STATUS_LIST_INVALID', `statusListIndex ${index} is outside the status list`, {
@@ -279,7 +306,12 @@ export function bitstringStatusAt(encodedList: string, index: number): boolean {
 /** Encodes the set indexes as a Bitstring Status List `encodedList` of `size` entries. */
 export function encodeBitstringStatusList(set: Iterable<number>, size = BITSTRING_MIN_ENTRIES): string {
   const bytes = new Uint8Array(Math.ceil(size / 8));
-  for (const index of set) bytes[Math.floor(index / 8)]! |= 1 << (7 - (index % 8));
+  for (const index of set) {
+    if (!Number.isSafeInteger(index) || index < 0 || index >= size) {
+      throw new RangeError(`status list index ${index} is outside a list of ${size} entries`);
+    }
+    bytes[Math.floor(index / 8)]! |= 1 << (7 - (index % 8));
+  }
   return `u${base64UrlEncode(gzipSync(bytes))}`;
 }
 

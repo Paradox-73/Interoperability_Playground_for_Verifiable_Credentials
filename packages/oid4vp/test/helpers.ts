@@ -51,7 +51,7 @@ export interface CredentialOptions {
   subjectId?: string;
   expired?: boolean;
   /** `credentialStatus` of the credential. */
-  credentialStatus?: Record<string, unknown>;
+  credentialStatus?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const hour = 3_600_000;

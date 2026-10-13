@@ -25,6 +25,7 @@ import {
   LDP_STATUS_NOT_CHECKED,
   checkStatusEntry,
   createDidResolver,
+  decodeCompactJws,
   errorMessage,
   isRecord,
   mdocSessionTranscript,
@@ -38,6 +39,7 @@ import {
   type FormatErrorCode,
   type JsonObject,
   type PublicJwk,
+  type StatusEntry,
 } from '@inji-playground/formats';
 import type { Outcome, VpProfile } from '@inji-playground/protocol';
 import { isSdJwtVcFormat, type PresentableFormat } from '../common/constants.js';
@@ -211,7 +213,7 @@ async function verifyLdpPresentation(
   for (const credential of verified.credentials) checkIssuerTrusted(credential.issuer, context);
   const status = await checkStatus(
     credentials.map((credential, index) => ({
-      credential,
+      entries: statusEntriesOf(credential, 'ldp'),
       issuer: verified.credentials[index]?.issuer ?? '',
     })),
     context,
@@ -261,7 +263,23 @@ async function verifySdJwtPresentation(
   });
   const { claims, issuerKey } = verified;
   if (issuerKey.source === 'did') checkIssuerTrusted(issuerKey.issuer ?? '', context);
-  const status = await checkStatus([{ credential: claims, issuer: issuerKey.issuer ?? '' }], context);
+  if (
+    claims.status !== undefined &&
+    decodeCompactJws(presentation.split('~')[0] ?? '').payload.status === undefined
+  ) {
+    // A disclosable status lets a holder hide a revocation by leaving it out, which no verifier can see;
+    // when it does show up as a disclosure, the issuer broke the rule and the credential is refused.
+    throw new FormatError('STATUS_LIST_INVALID', 'the status claim is selectively disclosable', {
+      spec: 'SD-JWT VC draft 19 section 2.2.2.3 (status must not be selectively disclosed)',
+    });
+  }
+  const status =
+    issuerKey.source === 'did'
+      ? await checkStatus(
+          [{ entries: statusEntriesOf(claims, 'sd-jwt'), issuer: issuerKey.issuer ?? '' }],
+          context,
+        )
+      : notCheckedForKeySource(claims);
   return {
     outcome: 'VALID',
     checks: PRESENTATION_CHECKS.map((id): Check => (id === 'status' ? status : { id, status: 'pass' })),
@@ -282,13 +300,21 @@ async function verifySdJwtPresentation(
  * reason: the report never says revocation was checked when it was not.
  */
 async function checkStatus(
-  credentials: { credential: Record<string, unknown>; issuer: string }[],
+  credentials: { entries: StatusEntry[]; issuer: string }[],
   context: PresentationVerifierContext,
 ): Promise<Check> {
+  const count = credentials.reduce((sum, { entries }) => sum + entries.length, 0);
+  if (count > MAX_STATUS_ENTRIES) {
+    // Each entry is a fetch and a signature check: a presentation must not make the server do thousands.
+    throw new FormatError(
+      'STATUS_LIST_INVALID',
+      `the presentation has ${count} status entries, more than ${MAX_STATUS_ENTRIES}`,
+    );
+  }
   const checked: string[] = [];
   const unsupported: string[] = [];
-  for (const { credential, issuer } of credentials) {
-    for (const entry of statusEntriesOf(credential)) {
+  for (const { entries, issuer } of credentials) {
+    for (const entry of entries) {
       if (entry.kind === 'unsupported') {
         unsupported.push(entry.type);
         continue;
@@ -319,6 +345,27 @@ async function checkStatus(
     };
   }
   return { id: 'status', status: 'pass', detail: checked.join('; ') };
+}
+
+const MAX_STATUS_ENTRIES = 8;
+
+/**
+ * An SD-JWT VC whose issuer key comes from x5c or configuration: its Token Status List would have to be
+ * checked against that key, which this verifier does not do yet, so the status is reported as not checked.
+ */
+function notCheckedForKeySource(claims: Record<string, unknown>): Check {
+  return claims.status === undefined
+    ? {
+        id: 'status',
+        status: 'skipped',
+        detail: 'the credential has no status entry, so revocation was not checked',
+      }
+    : {
+        id: 'status',
+        status: 'skipped',
+        detail:
+          'the status list of an issuer named by x5c or a configured key is not checked by this verifier',
+      };
 }
 
 /** Rejects an issuer DID that is not in the verifier's list, when the verifier keeps one. */

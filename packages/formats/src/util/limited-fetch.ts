@@ -25,15 +25,16 @@ export interface FetchLimits {
   /** Per-request timeout. Default 10 s. */
   timeoutMs?: number;
   /**
-   * Hosts (without port) whose address is not checked, for private networks you test against; `*.name`
-   * matches every subdomain of `name`. Default: `*.ps02.test` and `localhost`, the local stack's names.
+   * Hosts whose address is not checked, for private networks you test against: `name` (any port),
+   * `name:port` (that port only), or `*.name` (every subdomain of `name`). Default: `*.ps02.test`, the
+   * local stack's names.
    */
   allowedHosts?: readonly string[];
   /** Addresses of a host name. Default: the system resolver (`dns.lookup`). */
   lookup?: (hostname: string) => Promise<string[]>;
 }
 
-export const DEFAULT_FETCH_ALLOWED_HOSTS: readonly string[] = ['*.ps02.test', 'localhost'];
+export const DEFAULT_FETCH_ALLOWED_HOSTS: readonly string[] = ['*.ps02.test'];
 const MAX_DOCUMENT_BYTES = 100 * 1024;
 
 const BLOCKED_ADDRESSES = new BlockList();
@@ -52,7 +53,11 @@ for (const [network, prefix] of [
   BLOCKED_ADDRESSES.addSubnet(network, prefix, 'ipv4');
 }
 for (const [network, prefix] of [
-  ['::', 127],
+  // IPv4-compatible (with :: and ::1), NAT64 and 6to4 addresses carry an IPv4 address that may be private.
+  ['::', 96],
+  ['64:ff9b::', 96],
+  ['64:ff9b:1::', 48],
+  ['2002::', 16],
   ['fc00::', 7],
   ['fe80::', 10],
   ['ff00::', 8],
@@ -72,7 +77,7 @@ export interface LimitedGet {
 /** The body of a successful GET as text. Rejects with a FormatError. */
 export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}): Promise<string> {
   const { url, codes } = request;
-  if (!request.configured) await assertPublicHost(new URL(url).hostname, limits, codes);
+  if (!request.configured) await assertPublicHost(new URL(url), limits, codes);
   const fetchImpl: FetchLike = limits.fetch ?? ((input, init) => globalThis.fetch(input, init));
   try {
     const response = await fetchImpl(url, {
@@ -95,21 +100,20 @@ export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}
   }
 }
 
-function isAllowedHost(hostname: string, allowed: readonly string[]): boolean {
-  return allowed.some((entry) =>
-    entry.startsWith('*.') ? hostname.endsWith(entry.slice(1)) : hostname === entry.toLowerCase(),
-  );
+function isAllowedHost(url: URL, allowed: readonly string[]): boolean {
+  return allowed.some((raw) => {
+    const entry = raw.toLowerCase();
+    if (entry.startsWith('*.')) return url.hostname.endsWith(entry.slice(1));
+    // URL.host leaves out a scheme's default port, so `name:443` never matches an https URL: write `name`.
+    return /:\d+$/.test(entry) ? url.host === entry : url.hostname === entry;
+  });
 }
 
 /** Refuses a host that is, or resolves to, an address inside the server's own networks. */
-async function assertPublicHost(
-  host: string,
-  limits: FetchLimits,
-  codes: LimitedGet['codes'],
-): Promise<void> {
+async function assertPublicHost(url: URL, limits: FetchLimits, codes: LimitedGet['codes']): Promise<void> {
+  if (isAllowedHost(url, limits.allowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS)) return;
   // URL keeps the brackets of an IPv6 literal (`[::1]`); the address checks need it bare.
-  const hostname = host.toLowerCase().replace(/^\[(.*)\]$/, '$1');
-  if (isAllowedHost(hostname, limits.allowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS)) return;
+  const hostname = url.hostname.replace(/^\[(.*)\]$/, '$1');
   // shortcut: the name is resolved again when fetching, so DNS rebinding can slip past; pin the address
   // in the connector if this server ever runs where internal services are worth reaching.
   let addresses: string[];

@@ -12,6 +12,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import {
+  BITSTRING_MIN_ENTRIES,
   CREDENTIALS_V1_URL,
   FormatError,
   PLAYGROUND_CONTEXT_V1_URL,
@@ -97,6 +98,8 @@ export class IssuerSigner {
   /** Status list indexes handed out so far, and the revoked ones; one index space for every list. */
   private nextStatusIndex = 0;
   private readonly revokedIndexes = new Set<number>();
+  /** The signed Bitstring Status List credential, kept until the next revocation (JSON-LD signing is slow). */
+  private bitstringList: { revoked: number; list: Promise<Record<string, unknown>> } | undefined;
 
   constructor(
     keys: IssuerKeys,
@@ -264,8 +267,17 @@ export class IssuerSigner {
   }
 
   /** The Bitstring Status List credential (revocation), signed like the issuer's ldp_vc credentials. */
-  async bitstringStatusList(now = new Date()): Promise<Record<string, unknown>> {
+  bitstringStatusList(now = new Date()): Promise<Record<string, unknown>> {
+    if (this.bitstringList?.revoked !== this.revokedIndexes.size) {
+      this.bitstringList = { revoked: this.revokedIndexes.size, list: this.signBitstringStatusList(now) };
+    }
+    return this.bitstringList.list;
+  }
+
+  private signBitstringStatusList(now: Date): Promise<Record<string, unknown>> {
     const url = this.statusListUrl('bitstring');
+    // At least the minimum size, rounded up to whole bytes, so every index handed out fits.
+    const size = Math.max(BITSTRING_MIN_ENTRIES, Math.ceil(this.nextStatusIndex / 8) * 8);
     return issueLdpVc({
       credential: {
         '@context': [CREDENTIALS_V1_URL, PLAYGROUND_CONTEXT_V1_URL],
@@ -277,7 +289,7 @@ export class IssuerSigner {
           id: `${url}#list`,
           type: 'BitstringStatusList',
           statusPurpose: 'revocation',
-          encodedList: encodeBitstringStatusList(this.revokedIndexes),
+          encodedList: encodeBitstringStatusList(this.revokedIndexes, size),
         },
       },
       suite: 'Ed25519Signature2020',

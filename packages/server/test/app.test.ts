@@ -94,8 +94,8 @@ describe('loadConfig', () => {
     );
   });
 
-  it('lets did:web and status list fetches reach the local stack names by default and reads more from PLAYGROUND_FETCH_ALLOWED_HOSTS', () => {
-    expect(loadConfig({}).fetchAllowedHosts).toEqual(['*.ps02.test', 'localhost']);
+  it('adds the hosts of PLAYGROUND_FETCH_ALLOWED_HOSTS to the fetch allowlist, none by default', () => {
+    expect(loadConfig({}).fetchAllowedHosts).toEqual([]);
     expect(
       loadConfig({ PLAYGROUND_FETCH_ALLOWED_HOSTS: ' Issuer.LAN ,*.corp,, ' }).fetchAllowedHosts,
     ).toEqual(['issuer.lan', '*.corp']);

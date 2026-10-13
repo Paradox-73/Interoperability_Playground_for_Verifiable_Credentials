@@ -5,7 +5,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DEFAULT_FETCH_ALLOWED_HOSTS } from '@inji-playground/formats';
 import { StackModeSchema } from '@inji-playground/protocol';
 import { z } from 'zod';
 
@@ -88,12 +87,12 @@ export const ConfigSchema = z.object({
     .pipe(z.array(z.string().startsWith('did:', 'each trusted issuer must be a DID'))),
   /**
    * Hosts the reference verifier may fetch did:web documents and status lists from even when they are
-   * private or loopback addresses, comma-separated; `*.name` matches subdomains. Other hosts on private
-   * networks are refused.
+   * private or loopback addresses, comma-separated: `name`, `name:port` or `*.name`. They are added to
+   * `*.ps02.test` (the local stack) and this server's own host; other hosts on private networks are refused.
    */
   fetchAllowedHosts: z
     .string()
-    .default(DEFAULT_FETCH_ALLOWED_HOSTS.join(','))
+    .default('')
     .transform((value) =>
       value
         .split(',')

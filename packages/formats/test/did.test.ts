@@ -210,6 +210,7 @@ describe('did:web: what the server may fetch', () => {
     'did:web:127.0.0.1%3A28443',
     'did:web:10.0.0.5%3A8443',
     'did:web:192.168.1.1',
+    'did:web:localhost%3A2375',
   ])('refuses %s (a private, loopback or link-local address) without fetching it', async (did) => {
     const web = fakeWeb();
     const resolver = createDidResolver({ fetch: web.fetch });
@@ -223,6 +224,9 @@ describe('did:web: what the server may fetch', () => {
     const addresses: Record<string, string[]> = {
       'inside.example': ['93.184.216.34', '10.1.2.3'],
       'mapped.example': ['::ffff:127.0.0.1'],
+      'nat64.example': ['64:ff9b::7f00:1'],
+      'sixtofour.example': ['2002:7f00:1::'],
+      'compatible.example': ['::7f00:1'],
       'public.example': ['93.184.216.34', '2606:2800:220:1:248:1893:25c8:1946'],
     };
     const resolver = createDidResolver({
@@ -232,14 +236,16 @@ describe('did:web: what the server may fetch', () => {
     await expect(resolver.resolve('did:web:inside.example')).rejects.toMatchObject({
       code: 'DID_WEB_INSECURE',
     });
-    await expect(resolver.resolve('did:web:mapped.example')).rejects.toMatchObject({
-      code: 'DID_WEB_INSECURE',
-    });
+    for (const host of ['mapped', 'nat64', 'sixtofour', 'compatible']) {
+      await expect(resolver.resolve(`did:web:${host}.example`)).rejects.toMatchObject({
+        code: 'DID_WEB_INSECURE',
+      });
+    }
     await expect(resolver.resolve('did:web:public.example')).resolves.toBeDefined();
     expect(web.requests).toEqual(['https://public.example/.well-known/did.json']);
   });
 
-  it('*.ps02.test and localhost are allowed by default; the list is configurable', async () => {
+  it('*.ps02.test is allowed by default; the list takes names, name:port and *.name', async () => {
     const web = fakeWeb();
     web.serve('https://certify.ps02.test/.well-known/did.json', document('did:web:certify.ps02.test'));
     web.serve('https://intranet.example/.well-known/did.json', document('did:web:intranet.example'));
@@ -255,6 +261,15 @@ describe('did:web: what the server may fetch', () => {
         'did:web:intranet.example',
       ),
     ).resolves.toBeDefined();
+    web.serve(
+      'https://intranet.example:8443/.well-known/did.json',
+      document('did:web:intranet.example%3A8443'),
+    );
+    const portOnly = createDidResolver({ fetch: web.fetch, lookup, allowedHosts: ['intranet.example:8443'] });
+    await expect(portOnly.resolve('did:web:intranet.example%3A8443')).resolves.toBeDefined();
+    await expect(portOnly.resolve('did:web:intranet.example')).rejects.toMatchObject({
+      code: 'DID_WEB_INSECURE',
+    });
   });
 
   it('refuses a document larger than 100 KB and does not follow redirects', async () => {

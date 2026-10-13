@@ -8,11 +8,26 @@ import {
   PLAYGROUND_CONTEXT_V1_URL,
   encodeBitstringStatusList,
   encodeTokenStatusList,
+  base64UrlEncode,
+  createTestCertificate,
+  generateKeyPair,
   issueLdpVc,
+  issueSdJwtVc,
+  sha256,
+  signCompactJws,
   signStatusListToken,
+  toPublicJwk,
   type FetchLike,
 } from '@inji-playground/formats';
-import { documentLoader, farmerLdpVc, farmerSdJwtVc, harness, issuer } from './helpers.js';
+import {
+  FARMER_VCT,
+  documentLoader,
+  farmerLdpVc,
+  farmerSdJwtVc,
+  harness,
+  holder,
+  issuer,
+} from './helpers.js';
 
 const networkAttempts = vi.fn((url: unknown) =>
   Promise.reject(new Error(`network disabled in tests: ${String(url)}`)),
@@ -104,5 +119,77 @@ describe.each(['ldp_vc', 'vc+sd-jwt'] as const)('status of a presented %s', (for
     expect(report.outcome).toBe('INVALID');
     expect(report.errors[0]?.code).toBe('STATUS_REVOKED');
     expect(report.checks.find((check) => check.id === 'status')?.status).toBe('fail');
+  });
+});
+
+describe('status entries a verifier refuses before fetching anything', () => {
+  async function present(credential: Awaited<ReturnType<typeof farmerLdpVc>>) {
+    const { verifier, wallet } = harness(
+      {},
+      { fetchLimits: { fetch: await issuerLists(), lookup: () => Promise.resolve(['93.184.216.34']) } },
+    );
+    const created = verifier.createRequest({ profile: 'final-1.0', format: credential.format as 'ldp_vc' });
+    await wallet.respond(created.uri, [credential]);
+    return verifier.awaitResult(created.handle);
+  }
+
+  it('more than 8 status entries in one presentation -> INVALID', async () => {
+    const report = await present(
+      await farmerLdpVc({ credentialStatus: Array.from({ length: 9 }, (_, index) => bitstringEntry(index)) }),
+    );
+    expect(report.outcome).toBe('INVALID');
+    expect(report.errors[0]?.message).toMatch(/9 status entries, more than 8/);
+  });
+
+  it('a status claim issued as a disclosure (so a holder could leave it out) -> INVALID', async () => {
+    // The SD-JWT library refuses to issue this, so the issuer-signed JWT is built by hand.
+    const disclosure = base64UrlEncode(
+      JSON.stringify(['c2FsdA', 'status', { status_list: { idx: REVOKED, uri: TOKEN_URL } }]),
+    );
+    const jwt = signCompactJws(
+      { typ: 'vc+sd-jwt', kid: issuer.verificationMethod },
+      {
+        iss: issuer.did,
+        iat: Math.floor(Date.now() / 1000),
+        vct: FARMER_VCT,
+        given_name: 'Asha',
+        cnf: { jwk: toPublicJwk(holder.keyPair.publicJwk) },
+        _sd: [base64UrlEncode(sha256(disclosure))],
+        _sd_alg: 'sha-256',
+      },
+      issuer.keyPair,
+    );
+    const raw = `${jwt}~${disclosure}~`;
+    const report = await present({ id: 'disclosable-status', format: 'vc+sd-jwt', raw });
+    expect(report.outcome).toBe('INVALID');
+    expect(report.errors[0]?.message).toMatch(/selectively disclosable/);
+  });
+});
+
+describe('status of an SD-JWT VC whose issuer key comes from x5c', () => {
+  it('is reported as not checked, never as passed or revoked', async () => {
+    const keyPair = generateKeyPair('ES256');
+    const certificate = await createTestCertificate({ subject: 'CN=x5c issuer', keyPair });
+    const raw = await issueSdJwtVc({
+      issuer: { keyPair, x5c: [certificate.x5c] },
+      iss: 'https://issuer.example',
+      typ: 'vc+sd-jwt',
+      vct: FARMER_VCT,
+      claims: { given_name: 'Asha' },
+      status: { status_list: { idx: REVOKED, uri: TOKEN_URL } },
+      holder: { jwk: holder.keyPair.publicJwk },
+    });
+    const { verifier, wallet } = harness(
+      {},
+      { x5cTrustAnchors: [certificate.pem], fetchLimits: { fetch: await issuerLists() } },
+    );
+    const created = verifier.createRequest({ profile: 'final-1.0', format: 'vc+sd-jwt' });
+    await wallet.respond(created.uri, [{ id: 'x5c', format: 'vc+sd-jwt', raw }]);
+    const report = await verifier.awaitResult(created.handle);
+    expect(report.outcome).toBe('VALID');
+    expect(report.checks.find((check) => check.id === 'status')).toMatchObject({
+      status: 'skipped',
+      detail: expect.stringContaining('x5c'),
+    });
   });
 });
