@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": true
   },
-  "startedAt": "2026-10-13T23:32:40.951Z",
-  "finishedAt": "2026-10-13T23:33:16.611Z",
-  "durationMs": 35660,
+  "startedAt": "2026-10-13T23:51:05.160Z",
+  "finishedAt": "2026-10-13T23:51:41.144Z",
+  "durationMs": 35984,
   "roles": {
     "ref-issuer": {
       "name": "Reference issuer",
@@ -65,11 +65,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233241-654b4e",
+      "runId": "20261013T235105-b4ac17",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 390,
+      "durationMs": 380,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -92,11 +92,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233241-a32bb2",
+      "runId": "20261013T235105-24424e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 322,
+      "durationMs": 289,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -119,11 +119,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233241-564543",
+      "runId": "20261013T235106-3ca74f",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 298,
+      "durationMs": 273,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -146,11 +146,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233242-ebe684",
+      "runId": "20261013T235106-97a099",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 296,
+      "durationMs": 272,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -173,11 +173,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233242-e00436",
+      "runId": "20261013T235106-4c9b50",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 278,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -200,11 +200,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233242-6538f2",
+      "runId": "20261013T235106-e4bda2",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 276,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -227,11 +227,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233243-cdebb2",
+      "runId": "20261013T235107-170f43",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 275,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -254,11 +254,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233243-b9fd60",
+      "runId": "20261013T235107-fb2886",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 292,
+      "durationMs": 291,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -281,11 +281,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233243-4cdd36",
+      "runId": "20261013T235107-40890e",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 307,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -308,11 +308,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233243-34a25e",
+      "runId": "20261013T235108-978faa",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 285,
+      "durationMs": 278,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -335,11 +335,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233244-a3b870",
+      "runId": "20261013T235108-3f1b92",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 285,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -362,11 +362,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233244-e48626",
+      "runId": "20261013T235108-f01ddc",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 286,
+      "durationMs": 271,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -389,11 +389,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233244-d7b969",
+      "runId": "20261013T235108-66c15c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 287,
+      "durationMs": 300,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -416,11 +416,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233245-fac9d6",
+      "runId": "20261013T235109-ab0dff",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 305,
+      "durationMs": 274,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -443,11 +443,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233245-98315b",
+      "runId": "20261013T235109-8b4cd3",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 320,
+      "durationMs": 273,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -470,11 +470,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233245-9ca359",
+      "runId": "20261013T235109-c3031e",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 287,
+      "durationMs": 266,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -497,11 +497,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233246-1011ba",
+      "runId": "20261013T235110-4637e5",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 289,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -524,11 +524,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233246-70b3c3",
+      "runId": "20261013T235110-c22b38",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 299,
+      "durationMs": 279,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -551,11 +551,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233246-890e54",
+      "runId": "20261013T235110-25574f",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 287,
+      "durationMs": 280,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -578,11 +578,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233247-f06759",
+      "runId": "20261013T235111-2a09a1",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 276,
+      "durationMs": 277,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -605,11 +605,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233247-74a72b",
+      "runId": "20261013T235111-835abd",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 306,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -632,11 +632,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233247-bab509",
+      "runId": "20261013T235111-a5a4d7",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 273,
+      "durationMs": 297,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -659,11 +659,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233247-2ca72a",
+      "runId": "20261013T235112-ffbb8e",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 290,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -686,11 +686,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233248-8eee8e",
+      "runId": "20261013T235112-d930ce",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 288,
+      "durationMs": 313,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -713,11 +713,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233248-8566c2",
+      "runId": "20261013T235112-d73d58",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 297,
+      "durationMs": 268,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -740,11 +740,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233248-b4cfbb",
+      "runId": "20261013T235113-60a23b",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 274,
+      "durationMs": 276,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -767,11 +767,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233249-31cc6a",
+      "runId": "20261013T235113-63d510",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 284,
+      "durationMs": 293,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -794,11 +794,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233249-e9ab90",
+      "runId": "20261013T235113-73727a",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 336,
+      "durationMs": 287,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -821,11 +821,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233249-2ffb60",
+      "runId": "20261013T235113-5fd616",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 297,
+      "durationMs": 282,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -848,11 +848,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233250-06a809",
+      "runId": "20261013T235114-1368e2",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 284,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -875,11 +875,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233250-a2ca20",
+      "runId": "20261013T235114-7af0cd",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 291,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -902,11 +902,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233250-14ea2b",
+      "runId": "20261013T235114-5b98c8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 275,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -929,7 +929,7 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233251-1ed803",
+      "runId": "20261013T235115-83ee3d",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
@@ -956,7 +956,7 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233251-59fd64",
+      "runId": "20261013T235115-5c2824",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
@@ -983,11 +983,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233251-527463",
+      "runId": "20261013T235115-a4c898",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 300,
+      "durationMs": 289,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1010,7 +1010,7 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233251-75321e",
+      "runId": "20261013T235116-edb2d4",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
@@ -1037,11 +1037,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233252-99666d",
+      "runId": "20261013T235116-3ea07c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 277,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1064,11 +1064,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233252-0be768",
+      "runId": "20261013T235116-b83a05",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 291,
+      "durationMs": 272,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1091,11 +1091,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233252-b1308f",
+      "runId": "20261013T235116-517ec8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 282,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1118,11 +1118,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233253-85fd59",
+      "runId": "20261013T235117-9d6972",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 280,
+      "durationMs": 304,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1145,11 +1145,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233253-bcf6b3",
+      "runId": "20261013T235117-140b31",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 283,
+      "durationMs": 280,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1172,11 +1172,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233253-aa2de0",
+      "runId": "20261013T235117-c509b0",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 289,
+      "durationMs": 288,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1199,11 +1199,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233254-892cfd",
+      "runId": "20261013T235118-514acd",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 269,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1226,11 +1226,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233254-269782",
+      "runId": "20261013T235118-5403ba",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 296,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1253,11 +1253,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233254-a31efd",
+      "runId": "20261013T235118-a21aa8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 286,
+      "durationMs": 285,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1280,11 +1280,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233254-7c7d09",
+      "runId": "20261013T235119-b013ff",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 290,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1307,11 +1307,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233255-63c44f",
+      "runId": "20261013T235119-197dad",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 302,
+      "durationMs": 298,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -1334,11 +1334,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233255-a2c03e",
+      "runId": "20261013T235119-bef6bf",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 326,
+      "durationMs": 274,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -1361,11 +1361,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233255-914140",
+      "runId": "20261013T235119-3d78cb",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 295,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1388,11 +1388,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233256-14e3d9",
+      "runId": "20261013T235120-742750",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 283,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1415,11 +1415,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233256-c94f4d",
+      "runId": "20261013T235120-631a17",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 273,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1442,11 +1442,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233256-5d7c5f",
+      "runId": "20261013T235120-564bd9",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 280,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1469,11 +1469,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233257-6beb90",
+      "runId": "20261013T235121-aaaf06",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 274,
+      "durationMs": 315,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -1496,11 +1496,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233257-745d6f",
+      "runId": "20261013T235121-7a778a",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 284,
+      "durationMs": 279,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -1523,11 +1523,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233257-7db699",
+      "runId": "20261013T235121-0ab047",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 277,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1550,11 +1550,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233257-de5789",
+      "runId": "20261013T235122-000d09",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 295,
+      "durationMs": 284,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1577,11 +1577,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233258-547d0e",
+      "runId": "20261013T235122-31f3c4",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 271,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1604,11 +1604,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233258-259515",
+      "runId": "20261013T235122-131aef",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1631,11 +1631,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233258-85d6ea",
+      "runId": "20261013T235122-8b2b21",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 286,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1658,11 +1658,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233259-73ea9b",
+      "runId": "20261013T235123-729f2a",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 289,
+      "durationMs": 280,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1685,11 +1685,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233259-fcddfe",
+      "runId": "20261013T235123-7af126",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 298,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1712,11 +1712,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233259-5b0769",
+      "runId": "20261013T235123-bcdc6a",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 289,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1739,11 +1739,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233259-ada0a7",
+      "runId": "20261013T235124-763ff0",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 283,
+      "durationMs": 277,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1766,11 +1766,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233300-41a81b",
+      "runId": "20261013T235124-c55abd",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 288,
+      "durationMs": 279,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1793,11 +1793,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233300-175d21",
+      "runId": "20261013T235124-8c871b",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 285,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1820,11 +1820,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233300-f2ba22",
+      "runId": "20261013T235125-077360",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 283,
+      "durationMs": 304,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1847,11 +1847,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233301-d18e6f",
+      "runId": "20261013T235125-0725b4",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 290,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1874,11 +1874,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233301-5c2329",
+      "runId": "20261013T235125-adb0e1",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 276,
+      "durationMs": 275,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -1901,11 +1901,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233301-98497d",
+      "runId": "20261013T235126-5d25bc",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 283,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1928,11 +1928,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233301-734d8a",
+      "runId": "20261013T235126-f6e5cf",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -1955,11 +1955,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233302-46cf0d",
+      "runId": "20261013T235126-046ac1",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 283,
+      "durationMs": 281,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -1982,11 +1982,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233302-e7ebfc",
+      "runId": "20261013T235126-e4074f",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 270,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2009,11 +2009,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233302-5c6f28",
+      "runId": "20261013T235127-099b89",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 270,
+      "durationMs": 293,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2036,11 +2036,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233303-b30951",
+      "runId": "20261013T235127-d8d0f7",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 275,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2063,11 +2063,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233303-5baa72",
+      "runId": "20261013T235127-21244b",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 266,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2090,11 +2090,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233303-0906da",
+      "runId": "20261013T235128-66afda",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 271,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2117,11 +2117,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233304-ec7ee3",
+      "runId": "20261013T235128-0a992e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 274,
+      "durationMs": 298,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2144,11 +2144,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233304-b0283d",
+      "runId": "20261013T235128-68aeb5",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 267,
+      "durationMs": 282,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2171,11 +2171,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233304-c1f24c",
+      "runId": "20261013T235128-480d67",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 280,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2198,11 +2198,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233304-766a2d",
+      "runId": "20261013T235129-5ff3d0",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 276,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2225,11 +2225,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233305-5e63d0",
+      "runId": "20261013T235129-235ca6",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 285,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2252,11 +2252,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233305-c9c9dd",
+      "runId": "20261013T235129-8eea1e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 293,
+      "durationMs": 278,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2279,11 +2279,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233305-1365b0",
+      "runId": "20261013T235130-499342",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 291,
+      "durationMs": 278,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2306,11 +2306,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233306-3f4735",
+      "runId": "20261013T235130-090c39",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 276,
+      "durationMs": 274,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2333,11 +2333,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233306-994ba4",
+      "runId": "20261013T235130-bcb109",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 280,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2360,11 +2360,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233306-586f67",
+      "runId": "20261013T235131-aa119c",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 302,
+      "durationMs": 278,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2387,11 +2387,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233306-6293a4",
+      "runId": "20261013T235131-b38279",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 274,
+      "durationMs": 278,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2414,11 +2414,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233307-6af825",
+      "runId": "20261013T235131-0f4888",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 275,
+      "durationMs": 279,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2441,11 +2441,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233307-9a3ac5",
+      "runId": "20261013T235131-f428e6",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 308,
+      "durationMs": 279,
       "credentialProof": "eddsa-rdfc-2022",
       "versions": {
         "issuer": "0.1.0",
@@ -2468,11 +2468,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233307-7165a2",
+      "runId": "20261013T235132-ca47a1",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 283,
+      "durationMs": 281,
       "credentialProof": "eddsa-rdfc-2022",
       "versions": {
         "issuer": "0.1.0",
@@ -2495,7 +2495,7 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233308-7d0660",
+      "runId": "20261013T235132-cdc09f",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
@@ -2522,11 +2522,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233308-2657c1",
+      "runId": "20261013T235132-d9fd6e",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 280,
+      "durationMs": 284,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2549,11 +2549,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233308-f0989d",
+      "runId": "20261013T235133-13a3b9",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 272,
+      "durationMs": 278,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2576,11 +2576,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233309-e0703c",
+      "runId": "20261013T235133-223205",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 264,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2603,11 +2603,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233309-0e5cd8",
+      "runId": "20261013T235133-0735d7",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 280,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2630,11 +2630,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233309-c4aa0b",
+      "runId": "20261013T235133-28d020",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 281,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2657,11 +2657,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233309-f91118",
+      "runId": "20261013T235134-e0e067",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 266,
+      "durationMs": 287,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2684,11 +2684,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233310-9b64aa",
+      "runId": "20261013T235134-b989ec",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 266,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.1.0",
@@ -2711,11 +2711,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233310-f86e3f",
+      "runId": "20261013T235134-85fc69",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 288,
+      "durationMs": 269,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -2737,11 +2737,11 @@
         "verdict": "not-supported"
       },
       "expected": "INVALID",
-      "runId": "20261013T233310-c7ffff",
+      "runId": "20261013T235135-c3db0b",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 12,
+      "durationMs": 8,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.scenario.wallet-unsupported",
@@ -2768,11 +2768,11 @@
         "verdict": "not-supported"
       },
       "expected": "INVALID",
-      "runId": "20261013T233310-701250",
+      "runId": "20261013T235135-b154f1",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 13,
+      "durationMs": 4,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.scenario.wallet-unsupported",
@@ -2799,11 +2799,11 @@
         "verdict": "not-supported"
       },
       "expected": "VALID",
-      "runId": "20261013T233310-c8cd51",
+      "runId": "20261013T235135-0ef9e6",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 12,
+      "durationMs": 5,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.scenario.issuer-unsupported",
@@ -2831,11 +2831,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233310-9d5122",
+      "runId": "20261013T235135-4350f8",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 293,
+      "durationMs": 279,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2858,11 +2858,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261013T233311-342775",
+      "runId": "20261013T235135-35b779",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 268,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2885,11 +2885,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233311-91dc8d",
+      "runId": "20261013T235135-05a789",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 277,
+      "durationMs": 296,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2912,11 +2912,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261013T233311-960c91",
+      "runId": "20261013T235135-6bdf07",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 271,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2939,11 +2939,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233311-53571f",
+      "runId": "20261013T235136-c78158",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 265,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2966,11 +2966,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233312-e3bae5",
+      "runId": "20261013T235136-1bc6c3",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 276,
+      "durationMs": 277,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -2993,11 +2993,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233312-8bb29f",
+      "runId": "20261013T235136-1a95ab",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 286,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3020,11 +3020,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233312-e0b668",
+      "runId": "20261013T235137-7f17ec",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 268,
+      "durationMs": 270,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3047,11 +3047,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233313-4a17a7",
+      "runId": "20261013T235137-a059e8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 282,
+      "durationMs": 287,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3074,11 +3074,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233313-3a09e4",
+      "runId": "20261013T235137-442416",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 268,
+      "durationMs": 290,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3101,11 +3101,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233313-86c766",
+      "runId": "20261013T235138-3108f1",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 299,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3128,11 +3128,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233313-feecad",
+      "runId": "20261013T235138-d059a8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 281,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3155,11 +3155,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233314-27e8d3",
+      "runId": "20261013T235138-4366b8",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 284,
+      "durationMs": 275,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3182,11 +3182,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233314-4b1109",
+      "runId": "20261013T235138-51e389",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 304,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3209,11 +3209,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233314-6066a4",
+      "runId": "20261013T235139-5ac9d4",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 279,
+      "durationMs": 297,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3236,11 +3236,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233315-63895b",
+      "runId": "20261013T235139-cb13cf",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 299,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3263,11 +3263,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233315-263d16",
+      "runId": "20261013T235139-f07c92",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 291,
+      "durationMs": 294,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3290,11 +3290,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233315-b0c528",
+      "runId": "20261013T235140-8b32ec",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 278,
+      "durationMs": 290,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3317,11 +3317,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233316-7709f9",
+      "runId": "20261013T235140-8d53ce",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 266,
+      "durationMs": 282,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3344,11 +3344,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261013T233316-c80567",
+      "runId": "20261013T235140-e73f08",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 280,
+      "durationMs": 273,
       "credentialProof": "ES256",
       "versions": {
         "issuer": "0.1.0",
@@ -3370,11 +3370,11 @@
         "verdict": "not-supported"
       },
       "expected": "INVALID",
-      "runId": "20261013T233316-7e0c16",
+      "runId": "20261013T235141-2c7ca5",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 5,
+      "durationMs": 6,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.scenario.format-unsupported",
