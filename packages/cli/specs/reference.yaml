@@ -431,6 +431,42 @@ cases:
     vpProfile: final-1.0
     scenario: issuer-name-borrowed
     expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_65
+    description: 'Revoked credential, ldp_vc, inji-draft'
+    format: ldp_vc
+    vpProfile: inji-draft
+    scenario: revoked
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_66
+    description: 'Revoked credential, ldp_vc, final-1.0'
+    format: ldp_vc
+    vpProfile: final-1.0
+    scenario: revoked
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_67
+    description: 'Revoked credential, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: revoked
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_68
+    description: 'Revoked credential, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: revoked
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_69
+    description: 'Revoked credential, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: revoked
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_70
+    description: 'Revoked credential, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: revoked
+    expected: INVALID
   - uniqueIdentifier: TC_PG_PROBE_01
     description: 'Probe: issuer identified by did:key, ldp_vc, inji-draft'
     format: ldp_vc
