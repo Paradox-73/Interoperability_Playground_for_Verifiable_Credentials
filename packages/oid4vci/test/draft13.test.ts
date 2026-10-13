@@ -140,6 +140,28 @@ describe('draft 13 token endpoint errors (section 6.3)', () => {
     expect(wrong).toMatchObject({ status: 400, json: { error: 'invalid_grant' } });
   });
 
+  it('revokes the pre-authorized code after 5 wrong tx_code values, so the code cannot be guessed', async () => {
+    const offer = pg.issuer.createOffer({
+      profile: 'draft13',
+      configurationId: 'FarmerCredential_ldp_vc',
+      txCode: '123456',
+    });
+    const attempt = (txCode: string) =>
+      postForm(pg.app, '/ref/issuer/draft13/token', {
+        grant_type: PRE_AUTHORIZED_CODE_GRANT,
+        'pre-authorized_code': offer.preAuthorizedCode,
+        tx_code: txCode,
+      });
+    for (const guess of ['000000', '000001', '000002', '000003']) {
+      expect((await attempt(guess)).json.error_description).toBe('tx_code is wrong');
+    }
+    const fifth = await attempt('000004');
+    expect(fifth).toMatchObject({ status: 400, json: { error: 'invalid_grant' } });
+    expect(fifth.json.error_description).toMatch(/too many wrong tx_code/);
+    const right = await attempt('123456');
+    expect(right).toMatchObject({ status: 400, json: { error: 'invalid_grant' } });
+  });
+
   it('rejects a reused pre-authorized code with invalid_grant', async () => {
     const offer = pg.issuer.createOffer({ profile: 'draft13', configurationId: 'FarmerCredential_ldp_vc' });
     const form = { grant_type: PRE_AUTHORIZED_CODE_GRANT, 'pre-authorized_code': offer.preAuthorizedCode };

@@ -20,6 +20,7 @@
  * (the test AS in `../as/`) for the authorization code flow, and lists it first in
  * `authorization_servers`, because Mimoto uses the first entry (`IssuersServiceImpl.java:101`).
  */
+import { createHash, timingSafeEqual } from 'node:crypto';
 import type { FastifyInstance, FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 import { createLocalJWKSet, jwtVerify, type JWK, type JWTPayload } from 'jose';
 import type { VciProfile } from '@inji-playground/protocol';
@@ -136,7 +137,18 @@ interface PreAuthorizedGrant {
   configurationIds: string[];
   claims: Record<string, unknown>;
   txCode?: string;
+  /** Wrong `tx_code` values sent so far; the code is revoked at MAX_TX_CODE_ATTEMPTS. */
+  txCodeFailures?: number;
   issuance?: IssuanceOptions;
+}
+
+/** OpenID4VCI 1.0 section 13.6: a 6-digit tx_code must not be guessable within the code's lifetime. */
+const MAX_TX_CODE_ATTEMPTS = 5;
+
+/** Compares without leaking, through timing, how much of the guess was right. */
+function sameSecret(a: string, b: string): boolean {
+  const digest = (text: string) => createHash('sha256').update(text).digest();
+  return timingSafeEqual(digest(a), digest(b));
 }
 
 interface AccessGrant {
@@ -600,7 +612,16 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
       // `user_pin` is the draft 11/12 name of the same parameter, still sent by older Inji clients.
       const sent = stringParam(body, 'tx_code') ?? stringParam(body, 'user_pin');
       if (sent === undefined) throw new OAuthError('invalid_request', 'tx_code is required for this offer');
-      if (sent !== grant.txCode) throw new OAuthError('invalid_grant', 'tx_code is wrong');
+      if (!sameSecret(sent, grant.txCode)) {
+        grant.txCodeFailures = (grant.txCodeFailures ?? 0) + 1;
+        if (grant.txCodeFailures < MAX_TX_CODE_ATTEMPTS)
+          throw new OAuthError('invalid_grant', 'tx_code is wrong');
+        preAuthorizedCodes.consume(code);
+        throw new OAuthError(
+          'invalid_grant',
+          'tx_code is wrong; too many wrong tx_code values, so the pre-authorized code is revoked',
+        );
+      }
     }
     preAuthorizedCodes.consume(code);
     const accessToken = randomToken();
