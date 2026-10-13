@@ -15,9 +15,12 @@ export {
   forgeWithSelfSignedX5c,
   joinSdJwt,
   resignKeyBinding,
+  selfIssueSdJwt,
   type ForgeX5cOptions,
   type ForgedX5c,
   type KeyBindingChanges,
+  type SelfIssueOptions,
+  type SelfIssued,
 } from './sd-jwt.js';
 export { flipEmbeddedCredentialProof, flipProofValue, representLdpVp, type RepresentOptions } from './ldp.js';
 export {

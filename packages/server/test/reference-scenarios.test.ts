@@ -60,6 +60,18 @@ describe('scenario catalogue x reference roles, through the server', () => {
     expect(didKey.issuerDid).toMatch(/^did:key:/);
   });
 
+  it('the reference verifier trusts the reference issuers, and only them and the configured DIDs', async () => {
+    const happy = await run(app, { ...REFERENCE, format: 'vc+sd-jwt', scenario: 'happy' });
+    expect(happy.outcome).toBe('VALID');
+    const selfIssued = await run(app, { ...REFERENCE, format: 'vc+sd-jwt', scenario: 'self-issued' });
+    expect(selfIssued).toMatchObject({ outcome: 'INVALID', verdict: 'pass' });
+    // The verification result the inspector shows names the reason.
+    const result = app.playground.store
+      .listEvents(selfIssued.runId)
+      .find((event) => event.type === 'artifact' && event.kind === 'result');
+    expect(result && 'raw' in result ? result.raw : '').toContain('ISSUER_UNTRUSTED');
+  });
+
   it('records a tampered presentation as it was sent, and the verifier that rejected it', async () => {
     const created = await app.inject({
       method: 'POST',

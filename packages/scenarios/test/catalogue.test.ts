@@ -29,6 +29,8 @@ const REQUIRED_IDS = [
   'vp-replay',
   'holder-mismatch',
   'forged-x5c',
+  'self-issued',
+  'issuer-name-borrowed',
   'issuer-did-key',
   'issuer-did-jwk',
   'vc2-eddsa-rdfc-2022',

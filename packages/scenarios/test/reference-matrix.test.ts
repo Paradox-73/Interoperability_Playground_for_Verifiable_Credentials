@@ -86,8 +86,11 @@ beforeAll(async () => {
   await app.register(issuers['did:jwk'].plugin, { prefix: '/ref/issuer-jwk' });
   await app.ready();
   verifier = new ReferenceVerifier({ baseUrl: VERIFIER_BASE, didResolver: resolver, documentLoader });
-  // The verifier trusts the issuers' mdoc IACA roots, as the playground server sets it up.
-  for (const issuer of Object.values(issuers)) verifier.addX5cTrustAnchors(await issuer.mdocTrustAnchors());
+  // The verifier trusts the issuers' mdoc IACA roots and their DIDs, as the playground server sets it up.
+  for (const issuer of Object.values(issuers)) {
+    verifier.addX5cTrustAnchors(await issuer.mdocTrustAnchors());
+    verifier.addTrustedIssuers(Object.values(issuer.dids()));
+  }
   const toIssuers = injectFetch(app, ORIGIN);
   const toVerifier = verifierFetchHandler(verifier);
   fetch = (url, init) =>
@@ -185,6 +188,8 @@ const FAILING_CHECK: Record<string, string> = {
   'altered-disclosure': 'signature',
   'unreferenced-disclosure': 'signature',
   'forged-x5c': 'signature',
+  'self-issued': 'signature',
+  'issuer-name-borrowed': 'signature',
   'kb-wrong-nonce': 'nonce',
   'vp-replay': 'nonce',
   'kb-wrong-aud': 'audience',

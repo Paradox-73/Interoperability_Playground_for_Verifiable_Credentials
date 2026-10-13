@@ -84,6 +84,7 @@ const CHECK_FOR_CODE: Partial<Record<FormatErrorCode, PresentationCheck>> = {
   SDJWT_ISSUER_MISMATCH: 'signature',
   X5C_INVALID: 'signature',
   X5C_UNTRUSTED: 'signature',
+  ISSUER_UNTRUSTED: 'signature',
   MDOC_DEVICE_SIGNATURE_INVALID: 'holder-binding',
   MDOC_EXPIRED: 'validity',
   MDOC_NOT_YET_VALID: 'validity',
@@ -109,6 +110,13 @@ export interface PresentationVerifierContext {
   /** SD-JWT issuer keys known out of band, and x5c trust anchors (SD-JWT x5c and mdoc x5chain). */
   sdJwtIssuerKeys?: PublicJwk[];
   x5cTrustAnchors?: string[];
+  /**
+   * DIDs of the issuers this verifier accepts. When given, a credential whose issuer key is a DID outside
+   * the list is INVALID, however good its signature: anyone can make a DID and sign with it. Issuers named
+   * by x5c are trusted through `x5cTrustAnchors`, configured SD-JWT keys through `sdJwtIssuerKeys`.
+   * Missing: every DID issuer is accepted.
+   */
+  trustedIssuers?: readonly string[];
   now?: Date;
   clockSkewSeconds?: number;
   /** mso_mdoc: the profile picks the SessionTranscript; `response_uri` is part of it. */
@@ -181,6 +189,8 @@ async function verifyLdpPresentation(
       );
     }
   }
+  // The proof purpose already ties each credential's issuer to the controller of its signing key.
+  for (const credential of verified.credentials) checkIssuerTrusted(credential.issuer, context);
   const subject = first.credentialSubject;
   return {
     outcome: 'VALID',
@@ -212,18 +222,28 @@ async function verifySdJwtPresentation(
     ...(context.now ? { now: context.now } : {}),
     ...(context.clockSkewSeconds === undefined ? {} : { clockSkewSeconds: context.clockSkewSeconds }),
   });
-  const { claims } = verified;
+  const { claims, issuerKey } = verified;
+  if (issuerKey.source === 'did') checkIssuerTrusted(issuerKey.issuer ?? '', context);
   return {
     outcome: 'VALID',
     checks: PRESENTATION_CHECKS.map((id) => ({ id, status: 'pass' as const })),
     view: { format, json: claims, types: [], ...(typeof claims.vct === 'string' ? { vct: claims.vct } : {}) },
     claims,
-    issuer:
-      typeof claims.iss === 'string' ? claims.iss : (verified.issuerKey.kid ?? verified.issuerKey.source),
+    // The issuer the key is bound to, never a bare `iss` (which anyone can write).
+    issuer: issuerKey.issuer ?? issuerKey.kid ?? issuerKey.source,
     proofType: typeof verified.header.alg === 'string' ? verified.header.alg : 'unknown',
     errors: [],
     warnings: verified.warnings,
   };
+}
+
+/** Rejects an issuer DID that is not in the verifier's list, when the verifier keeps one. */
+function checkIssuerTrusted(issuer: string, context: PresentationVerifierContext): void {
+  if (context.trustedIssuers === undefined || context.trustedIssuers.includes(issuer)) return;
+  throw new FormatError('ISSUER_UNTRUSTED', `issuer ${issuer || '(none)'} is not one this verifier trusts`, {
+    spec: 'W3C VC Data Model 2.0, validation: the verifier decides which issuers it trusts',
+    details: { issuer },
+  });
 }
 
 async function verifyMdocPresentation(

@@ -9,6 +9,7 @@
  * a holder library (`@sd-jwt/core`) refuses to present a credential whose disclosures it cannot match.
  */
 import { randomBytes } from 'node:crypto';
+import { createDidKey, didKeyVerificationMethodId } from '../did/did-key.js';
 import { decodeCompactJws, signCompactJws, type JoseHeader } from '../keys/jws.js';
 import { generateKeyPair, type KeyPair } from '../keys/keys.js';
 import { createTestCertificate, type TestCertificate } from '../keys/x509.js';
@@ -161,4 +162,44 @@ export async function forgeWithSelfSignedX5c(
   }
   const issuerJwt = signCompactJws(header, payload, keyPair);
   return { sdJwt: joinSdJwt({ issuerJwt, disclosures: parts.disclosures }), keyPair, certificate };
+}
+
+export interface SelfIssueOptions {
+  /** The signer's key; default a fresh P-256 key. */
+  keyPair?: KeyPair;
+  /**
+   * `own-did` (default): `iss` becomes the signer's did:key, so the credential is the signer's own and only
+   * an issuer trust list can refuse it. `keep`: `iss` stays the real issuer's, so the credential claims an
+   * issuer whose key did not sign it.
+   */
+  iss?: 'own-did' | 'keep';
+}
+
+export interface SelfIssued {
+  sdJwt: string;
+  keyPair: KeyPair;
+  /** The signer's did:key. */
+  did: string;
+}
+
+/**
+ * Re-signs the issuer-signed JWT with a key anyone can make, named by its own did:key in `kid` (any `x5c` is
+ * removed). Claims, `cnf` and disclosures stay, so the holder can still present it with a valid KB-JWT.
+ *
+ * A verifier must reject both forms. With `iss: 'keep'` the DID of the key is not the issuer the credential
+ * names (RFC 9901 section 7.1 step 2c; a DID key speaks only for its DID). With `iss: 'own-did'` the
+ * signature and the issuer agree, but the issuer is one nobody vouches for: a verifier has to keep a list of
+ * the issuers it accepts.
+ */
+export function selfIssueSdJwt(sdJwt: string, options: SelfIssueOptions = {}): SelfIssued {
+  const parts = splitSdJwt(sdJwt);
+  const keyPair = options.keyPair ?? generateKeyPair('ES256');
+  const did = createDidKey(keyPair.publicJwk);
+  const decoded = decodeCompactJws(parts.issuerJwt);
+  const { kid: _kid, x5c: _x5c, alg: _alg, ...rest } = decoded.header;
+  const header: JoseHeader = { ...rest, kid: didKeyVerificationMethodId(did) };
+  const payload: Record<string, unknown> = { ...decoded.payload };
+  if ((options.iss ?? 'own-did') === 'own-did') payload.iss = did;
+  const issuerJwt = signCompactJws(header, payload, keyPair);
+  return { sdJwt: joinSdJwt({ issuerJwt, disclosures: parts.disclosures }), keyPair, did };
 }

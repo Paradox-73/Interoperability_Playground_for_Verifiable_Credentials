@@ -248,6 +248,41 @@ describe('SD-JWT VC verification policy', () => {
     });
   });
 
+  it('RFC 9901 section 7.1 step 2c: a DID kid with an iss that is not a DID is rejected', async () => {
+    // Anyone can make a did:key; naming an issuer URL in iss must not lend the credential that issuer's name.
+    const forger = generateKeyPair('ES256');
+    const forgerDid = createDidKey(forger.publicJwk);
+    const f = await fixture('ES256');
+    const forged = await issueSdJwtVc({
+      issuer: { keyPair: forger, kid: didKeyVerificationMethodId(forgerDid) },
+      iss: 'https://certify.ps02.test',
+      vct: VCT,
+      claims,
+      holder: { jwk: f.holderKeys.publicJwk },
+    });
+    const presentation = await presentSdJwtVc({
+      sdJwt: forged,
+      disclose: 'all',
+      holderKey: f.holderKeys,
+      audience: AUDIENCE,
+      nonce: NONCE,
+    });
+    await expect(verifySdJwtVc(presentation, f.options)).rejects.toMatchObject({
+      code: 'SDJWT_ISSUER_MISMATCH',
+      details: { iss: 'https://certify.ps02.test' },
+    });
+  });
+
+  it('a DID key binds the issuer: the verification names the DID, with or without iss', async () => {
+    const f = await fixture('ES256');
+    const verified = await verifySdJwtVc(await present(f), f.options);
+    expect(verified.issuerKey).toMatchObject({ source: 'did', issuer: f.issuerDid });
+
+    const withoutIss = await fixture('ES256', { iss: undefined });
+    const verifiedWithoutIss = await verifySdJwtVc(await present(withoutIss), withoutIss.options);
+    expect(verifiedWithoutIss.issuerKey.issuer).toBe(withoutIss.issuerDid);
+  });
+
   it('RFC 9901 section 7.1 step 2a: alg "none" is never accepted', async () => {
     const f = await fixture('ES256');
     const parts = f.issued.split('~');

@@ -62,7 +62,11 @@ export type CredentialTamper =
   /** One byte of the issuer signature (JWS, mdoc issuerAuth) or `proofValue` (Data Integrity) inverted. */
   | 'flip-issuer-signature'
   /** SD-JWT or mdoc MSO re-signed by a forger's key named by a self-signed `x5c` / `x5chain` certificate. */
-  | 'forge-x5c';
+  | 'forge-x5c'
+  /** SD-JWT re-signed by a key of the holder's own making; `iss` becomes that key's did:key. */
+  | 'self-issue'
+  /** SD-JWT re-signed by a key of the holder's own making, named by its did:key; `iss` stays the issuer's. */
+  | 'self-issue-keep-iss';
 
 /** Changes made to the encoded `vp_token` just before the wallet posts it. */
 export type PresentationTamper =
@@ -269,6 +273,34 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     reference:
       'SD-JWT VC draft 19 section 2.5 (issuer key via x5c must be validated); RFC 7515 section 4.1.6 (x5c); ISO/IEC 18013-5 section 9.3.1 step 1 (document signer chain to a trusted IACA)',
     credentialTamper: 'forge-x5c',
+  },
+  {
+    id: 'self-issued',
+    title: 'Credential the holder issued itself',
+    description:
+      'The holder signs the credential again with a key it made, names that key by its own did:key and puts the same DID in iss. Signature and issuer agree, but no one vouches for that issuer. A verifier must accept only issuers it trusts.',
+    expected: 'INVALID',
+    target: 'credential',
+    category: 'tamper',
+    formats: SD_JWT_FORMATS,
+    requires: { wallet: REF_WALLET },
+    reference:
+      'W3C VC Data Model 2.0 (the verifier decides which issuers it trusts); SD-JWT VC draft 19 section 2.5 (issuer key validation)',
+    credentialTamper: 'self-issue',
+  },
+  {
+    id: 'issuer-name-borrowed',
+    title: "Issuer's name kept, signed with the holder's own did:key",
+    description:
+      'The holder signs the credential again with a key it made and names that key by its did:key, but keeps the real issuer in iss. A verifier must check that the key belongs to the issuer the credential names.',
+    expected: 'INVALID',
+    target: 'credential',
+    category: 'tamper',
+    formats: SD_JWT_FORMATS,
+    requires: { wallet: REF_WALLET },
+    reference:
+      'RFC 9901 section 7.1 step 2c (the key must belong to the issuer); SD-JWT VC draft 19 section 2.5 (a DID key names a DID issuer)',
+    credentialTamper: 'self-issue-keep-iss',
   },
   {
     id: 'issuer-did-key',

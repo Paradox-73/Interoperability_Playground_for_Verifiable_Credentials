@@ -151,6 +151,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     // An in-memory database keeps nothing after the process ends; the reference keys follow it.
     ...(config.dbPath === ':memory:' ? {} : { keysDir: join(config.runDir, 'keys') }),
     issuerDidMethod: config.refIssuerDid,
+    trustedIssuers: config.trustedIssuers,
     fetch: () => transport,
     ...(config.stack === 'off'
       ? {}

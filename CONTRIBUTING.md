@@ -183,7 +183,8 @@ Environment variables read by the server (`packages/server/src/config/index.ts`)
 Recording and hosting settings: `PLAYGROUND_PROXY_TIMEOUT_MS`,
 `PLAYGROUND_NETWORK_MAP` (host mode: `deploy/inji-stack/network-map.host.json`), `PLAYGROUND_EXTRA_CA` (for
 example `$PLAYGROUND_RUN_DIR/stack/ca/ps02-test-ca.crt`), `PLAYGROUND_REF_ISSUER_DID` (`did:key`, `did:jwk` or
-`did:web`), and the server's own `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`
+`did:web`), `PLAYGROUND_TRUSTED_ISSUERS` (issuer DIDs the reference verifier accepts besides the reference
+issuers; default the two Inji Certify DIDs of the local stack), and the server's own `INJI_CERTIFY_URL`, `INJI_CERTIFY_AC_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`
 for the reverse proxy.
 
 ## Running the end-to-end path

@@ -383,6 +383,54 @@ cases:
     vpProfile: final-1.0
     scenario: forged-x5c
     expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_57
+    description: 'Credential the holder issued itself, vc+sd-jwt, inji-draft'
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: self-issued
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_58
+    description: 'Credential the holder issued itself, vc+sd-jwt, final-1.0'
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: self-issued
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_59
+    description: 'Credential the holder issued itself, dc+sd-jwt, inji-draft'
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: self-issued
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_60
+    description: 'Credential the holder issued itself, dc+sd-jwt, final-1.0'
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: self-issued
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_61
+    description: "Issuer's name kept, signed with the holder's own did:key, vc+sd-jwt, inji-draft"
+    format: vc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-name-borrowed
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_62
+    description: "Issuer's name kept, signed with the holder's own did:key, vc+sd-jwt, final-1.0"
+    format: vc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-name-borrowed
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_63
+    description: "Issuer's name kept, signed with the holder's own did:key, dc+sd-jwt, inji-draft"
+    format: dc+sd-jwt
+    vpProfile: inji-draft
+    scenario: issuer-name-borrowed
+    expected: INVALID
+  - uniqueIdentifier: TC_PG_TAMPER_64
+    description: "Issuer's name kept, signed with the holder's own did:key, dc+sd-jwt, final-1.0"
+    format: dc+sd-jwt
+    vpProfile: final-1.0
+    scenario: issuer-name-borrowed
+    expected: INVALID
   - uniqueIdentifier: TC_PG_PROBE_01
     description: 'Probe: issuer identified by did:key, ldp_vc, inji-draft'
     format: ldp_vc
