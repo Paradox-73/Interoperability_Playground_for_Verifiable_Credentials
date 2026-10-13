@@ -127,7 +127,10 @@ describe.each<[VpProfile, ClientIdScheme]>([
     const { report, posted, created } = await run(profile, farmerMdoc(), { scheme });
     expect(posted.status).toBe(200);
     expect(report.outcome).toBe('VALID');
-    expect(report.checks.every((check) => check.status === 'pass')).toBe(true);
+    // Revocation is not claimed as checked when the credential gives no way to check it.
+    expect(report.checks.filter((check) => check.status !== 'pass')).toEqual([
+      { id: 'status', status: 'skipped', detail: expect.stringContaining('mso_mdoc is not checked') },
+    ]);
     expect(report.presentations[0]).toMatchObject({
       format: 'mso_mdoc',
       proofType: 'ES256',

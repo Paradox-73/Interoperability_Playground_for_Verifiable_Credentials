@@ -21,6 +21,7 @@ import {
   type JsonObject,
   type LdpVcVerification,
   type VerifyLdpOptions,
+  LDP_STATUS_NOT_CHECKED,
 } from './credential.js';
 import {
   describeProof,
@@ -157,7 +158,7 @@ export async function verifyLdpVp(
     ...(options.expectedDomain === undefined ? {} : { domain: options.expectedDomain }),
     now,
     checkStatus: () => {
-      warnings.push('credentialStatus present but not checked (status lists are out of scope)');
+      warnings.push(LDP_STATUS_NOT_CHECKED);
       return Promise.resolve({ verified: true });
     },
   });

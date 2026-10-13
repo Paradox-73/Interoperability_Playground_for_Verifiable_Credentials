@@ -16,17 +16,25 @@
  *   wallet's mdoc generated nonce), OpenID4VP 1.0 Appendix B.2.6.1 in `final-1.0`. Nonce and client_id
  *   are inside that transcript, so a presentation made for another request fails the device signature
  *   (reported as holder binding: the check that failed cannot tell which input differed).
+ * - `status`, for `ldp_vp` and SD-JWT VC: each Bitstring Status List entry or Token Status List
+ *   reference is read from its list, which must be signed by the credential's issuer; revoked or
+ *   suspended is INVALID. No status entry, an unsupported mechanism, or an mdoc: `skipped`, with why.
  */
 import {
   FormatError,
+  LDP_STATUS_NOT_CHECKED,
+  checkStatusEntry,
+  createDidResolver,
   errorMessage,
   isRecord,
   mdocSessionTranscript,
   verifyLdpVp,
   verifyMdocDeviceResponse,
+  statusEntriesOf,
   verifySdJwtVc,
   type DidResolver,
   type DocumentLoader,
+  type FetchLimits,
   type FormatErrorCode,
   type JsonObject,
   type PublicJwk,
@@ -59,6 +67,7 @@ export const PRESENTATION_CHECKS = [
   'holder-binding',
   'validity',
   'signature',
+  'status',
 ] as const;
 export type PresentationCheck = (typeof PRESENTATION_CHECKS)[number];
 
@@ -98,6 +107,10 @@ const CHECK_FOR_CODE: Partial<Record<FormatErrorCode, PresentationCheck>> = {
   DID_WEB_FETCH_FAILED: 'signature',
   DID_WEB_INSECURE: 'signature',
   DID_DOCUMENT_INVALID: 'signature',
+  STATUS_REVOKED: 'status',
+  STATUS_SUSPENDED: 'status',
+  STATUS_LIST_UNAVAILABLE: 'status',
+  STATUS_LIST_INVALID: 'status',
 };
 
 const EXPIRY_CODES: ReadonlySet<string> = new Set(['LDP_EXPIRED', 'SDJWT_EXPIRED', 'MDOC_EXPIRED']);
@@ -118,6 +131,8 @@ export interface PresentationVerifierContext {
    * Missing: every DID issuer is accepted.
    */
   trustedIssuers?: readonly string[];
+  /** How status lists are fetched (client, address limits); default: global fetch with the default limits. */
+  fetchLimits?: FetchLimits;
   now?: Date;
   clockSkewSeconds?: number;
   /** mso_mdoc: the profile picks the SessionTranscript; `response_uri` is part of it. */
@@ -194,24 +209,35 @@ async function verifyLdpPresentation(
   }
   // The proof purpose already ties each credential's issuer to the controller of its signing key.
   for (const credential of verified.credentials) checkIssuerTrusted(credential.issuer, context);
+  const status = await checkStatus(
+    credentials.map((credential, index) => ({
+      credential,
+      issuer: verified.credentials[index]?.issuer ?? '',
+    })),
+    context,
+  );
   const subject = first.credentialSubject;
   return {
     outcome: 'VALID',
-    checks: PRESENTATION_CHECKS.map((id): Check =>
-      id === 'holder-binding' && unbound
+    checks: PRESENTATION_CHECKS.map((id): Check => {
+      if (id === 'status') return status;
+      return id === 'holder-binding' && unbound
         ? {
             id,
             status: 'skipped',
             detail: 'a credentialSubject.id is not a DID, so there is no holder to bind the credential to',
           }
-        : { id, status: 'pass' },
-    ),
+        : { id, status: 'pass' };
+    }),
     view: { format: 'ldp_vc', json: first, types: credentialTypes(first) },
     claims: isRecord(subject) ? subject : {},
     issuer: verified.credentials[0]?.issuer ?? '',
     proofType: verified.credentials[0]?.proofType ?? verified.proofType,
     errors: [],
-    warnings: verified.credentials.flatMap((credential) => credential.warnings),
+    // The status the format library could not check was checked above.
+    warnings: verified.credentials
+      .flatMap((credential) => credential.warnings)
+      .filter((warning) => warning !== LDP_STATUS_NOT_CHECKED),
   };
 }
 
@@ -235,9 +261,10 @@ async function verifySdJwtPresentation(
   });
   const { claims, issuerKey } = verified;
   if (issuerKey.source === 'did') checkIssuerTrusted(issuerKey.issuer ?? '', context);
+  const status = await checkStatus([{ credential: claims, issuer: issuerKey.issuer ?? '' }], context);
   return {
     outcome: 'VALID',
-    checks: PRESENTATION_CHECKS.map((id) => ({ id, status: 'pass' as const })),
+    checks: PRESENTATION_CHECKS.map((id): Check => (id === 'status' ? status : { id, status: 'pass' })),
     view: { format, json: claims, types: [], ...(typeof claims.vct === 'string' ? { vct: claims.vct } : {}) },
     claims,
     // The issuer the key is bound to, never a bare `iss` (which anyone can write).
@@ -246,6 +273,52 @@ async function verifySdJwtPresentation(
     errors: [],
     warnings: verified.warnings,
   };
+}
+
+/**
+ * The `status` check of verified credentials: every status entry is read from its list, which must be
+ * the issuer's. A revoked or suspended credential, or a list that cannot be used, rejects (INVALID). A
+ * credential without status, or with a mechanism this verifier does not implement, is `skipped` with the
+ * reason: the report never says revocation was checked when it was not.
+ */
+async function checkStatus(
+  credentials: { credential: Record<string, unknown>; issuer: string }[],
+  context: PresentationVerifierContext,
+): Promise<Check> {
+  const checked: string[] = [];
+  const unsupported: string[] = [];
+  for (const { credential, issuer } of credentials) {
+    for (const entry of statusEntriesOf(credential)) {
+      if (entry.kind === 'unsupported') {
+        unsupported.push(entry.type);
+        continue;
+      }
+      checked.push(
+        await checkStatusEntry(entry, {
+          issuer,
+          documentLoader: context.documentLoader,
+          didResolver: context.didResolver ?? createDidResolver(),
+          ...context.fetchLimits,
+          ...(context.now ? { now: context.now } : {}),
+        }),
+      );
+    }
+  }
+  if (unsupported.length > 0) {
+    return {
+      id: 'status',
+      status: 'skipped',
+      detail: `status type ${unsupported.join(', ')} is not supported, so the status was not checked`,
+    };
+  }
+  if (checked.length === 0) {
+    return {
+      id: 'status',
+      status: 'skipped',
+      detail: 'the credential has no status entry, so revocation was not checked',
+    };
+  }
+  return { id: 'status', status: 'pass', detail: checked.join('; ') };
 }
 
 /** Rejects an issuer DID that is not in the verifier's list, when the verifier keeps one. */
@@ -310,7 +383,11 @@ async function verifyMdocPresentation(
   const [document] = verified.documents;
   return {
     outcome: 'VALID',
-    checks: PRESENTATION_CHECKS.map((id) => ({ id, status: 'pass' as const })),
+    checks: PRESENTATION_CHECKS.map((id): Check =>
+      id === 'status'
+        ? { id, status: 'skipped', detail: 'the status of an mso_mdoc is not checked by this verifier' }
+        : { id, status: 'pass' },
+    ),
     view: { format: 'mso_mdoc', json: document!.claims, types: [], doctype: document!.docType },
     claims: document!.claims,
     issuer: document!.issuer,

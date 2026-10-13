@@ -22,6 +22,7 @@ import {
   isRecord,
   type DidResolver,
   type DocumentLoader,
+  type FetchLimits,
   type JsonObject,
   type KeyPair,
   type PublicJwk,
@@ -97,6 +98,8 @@ export interface ReferenceVerifierOptions {
    * `addTrustedIssuers`. Missing (and nothing added): every DID issuer is accepted.
    */
   trustedIssuers?: string[];
+  /** How status lists are fetched (see `PresentationVerifierContext.fetchLimits`). */
+  fetchLimits?: FetchLimits;
   /** Lifetime of a request. Default 300 s, like Inji Verify's `DEFAULT_EXPIRY`. */
   requestTtlSeconds?: number;
   clientName?: string;
@@ -692,6 +695,7 @@ export class ReferenceVerifier {
       ...(this.options.sdJwtIssuerKeys ? { sdJwtIssuerKeys: this.options.sdJwtIssuerKeys } : {}),
       ...(this.trustAnchors.length > 0 ? { x5cTrustAnchors: [...this.trustAnchors] } : {}),
       ...(this.trustedIssuers ? { trustedIssuers: [...this.trustedIssuers] } : {}),
+      ...(this.options.fetchLimits ? { fetchLimits: this.options.fetchLimits } : {}),
       now: this.now(),
       ...(this.options.clockSkewSeconds === undefined
         ? {}

@@ -21,6 +21,7 @@ import {
   verifierFetchHandler,
   type FetchFn,
   type PresentationClientOptions,
+  type ReferenceVerifierOptions,
   type StoredCredential,
 } from '../src/index.js';
 
@@ -49,6 +50,8 @@ export interface CredentialOptions {
   /** Holder DID written into `credentialSubject.id`. Default: the holder's did:key. */
   subjectId?: string;
   expired?: boolean;
+  /** `credentialStatus` of the credential. */
+  credentialStatus?: Record<string, unknown>;
 }
 
 const hour = 3_600_000;
@@ -67,6 +70,7 @@ export async function farmerLdpVc(options: CredentialOptions = {}): Promise<Stor
       familyName: 'Rao',
       landAreaAcres: 3,
     },
+    ...(options.credentialStatus ? { credentialStatus: options.credentialStatus } : {}),
   };
   const signed = await issueLdpVc({
     credential,
@@ -77,7 +81,9 @@ export async function farmerLdpVc(options: CredentialOptions = {}): Promise<Stor
   return { id: 'farmer-ldp', format: 'ldp_vc', raw: JSON.stringify(signed) };
 }
 
-export async function farmerSdJwtVc(options: { expired?: boolean } = {}): Promise<StoredCredential> {
+export async function farmerSdJwtVc(
+  options: { expired?: boolean; status?: Record<string, unknown> } = {},
+): Promise<StoredCredential> {
   const now = Date.now();
   const raw = await issueSdJwtVc({
     issuer: { keyPair: issuer.keyPair, kid: issuer.verificationMethod },
@@ -86,6 +92,7 @@ export async function farmerSdJwtVc(options: { expired?: boolean } = {}): Promis
     vct: FARMER_VCT,
     claims: { given_name: 'Asha', family_name: 'Rao', land_area_acres: 3 },
     holder: { jwk: holder.keyPair.publicJwk },
+    ...(options.status ? { status: options.status } : {}),
     issuedAt: new Date(now - 2 * hour),
     expiresAt: new Date(options.expired ? now - hour : now + hour),
   });
@@ -121,11 +128,15 @@ export interface Harness {
   requests: { method: string; url: string; body?: string }[];
 }
 
-export function harness(options: Partial<PresentationClientOptions> = {}): Harness {
+export function harness(
+  options: Partial<PresentationClientOptions> = {},
+  verifierOptions: Partial<ReferenceVerifierOptions> = {},
+): Harness {
   const verifier = new ReferenceVerifier({
     baseUrl: VERIFIER_BASE_URL,
     didResolver: resolver,
     documentLoader,
+    ...verifierOptions,
   });
   const handler = verifierFetchHandler(verifier);
   const requests: Harness['requests'] = [];

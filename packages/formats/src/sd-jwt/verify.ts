@@ -148,6 +148,9 @@ export async function verifySdJwtVc(
     const result = await sdJwtLibrary({ issuerPublicJwk: issuerKey.jwk }).verify(parts.sdJwtWithoutKb, {
       currentDate: nowSeconds,
       skewSeconds: skew,
+      // The library would fetch `status.status_list.uri` with an unlimited global fetch; status is checked
+      // by `checkStatusEntry` instead, with the address and size limits of `fetchLimited`.
+      disableStatusVerification: true,
     });
     claims = result.payload;
   } catch (cause) {

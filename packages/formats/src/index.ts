@@ -40,6 +40,7 @@ export {
   firstProof,
   issueLdpVc,
   issuerId,
+  LDP_STATUS_NOT_CHECKED,
   verifyLdpVc,
   withContext,
   type IssueLdpVcOptions,

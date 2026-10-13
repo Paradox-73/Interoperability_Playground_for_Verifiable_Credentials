@@ -147,6 +147,9 @@ export function issuerId(credential: JsonObject): string {
   });
 }
 
+/** The warning for a credential whose `credentialStatus` this package saw but did not check. */
+export const LDP_STATUS_NOT_CHECKED = 'credentialStatus present but not checked here';
+
 /** Verifies the proof and validity period of one credential. Rejects with a FormatError. */
 export async function verifyLdpVc(
   credential: unknown,
@@ -164,7 +167,7 @@ export async function verifyLdpVc(
     documentLoader: options.documentLoader,
     now,
     checkStatus: () => {
-      warnings.push('credentialStatus present but not checked (status lists are out of scope)');
+      warnings.push(LDP_STATUS_NOT_CHECKED);
       return Promise.resolve({ verified: true });
     },
   });

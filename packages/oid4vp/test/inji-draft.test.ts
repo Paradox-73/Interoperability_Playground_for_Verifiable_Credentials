@@ -85,7 +85,10 @@ describe.each<Format>(['ldp_vc', 'vc+sd-jwt'])('inji-draft, %s', (format) => {
     const report = await verifier.awaitResult(created.handle);
     expect(report.outcome).toBe('VALID');
     expect(report.errors).toEqual([]);
-    expect(report.checks.every((check) => check.status === 'pass')).toBe(true);
+    // Revocation is not claimed as checked when the credential gives no way to check it.
+    expect(report.checks.filter((check) => check.status !== 'pass')).toEqual([
+      { id: 'status', status: 'skipped', detail: expect.stringContaining('no status entry') },
+    ]);
     expect(report.claims).toMatchObject(format === 'ldp_vc' ? { givenName: 'Asha' } : { given_name: 'Asha' });
     expect(toVerificationResult(report).outcome).toBe('VALID');
   });
