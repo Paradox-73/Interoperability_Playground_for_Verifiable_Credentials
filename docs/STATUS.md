@@ -6,18 +6,20 @@ for set-up and the rules every change follows.
 - Project: Inji Interoperability Playground for Verifiable Credentials, MOSIP Decode 2026, problem statement
   02, team Badmosip.
 - Submission deadline: 2026-10-26 23:59 IST.
-- Work stopped: 2026-10-04 20:45 IST.
-- `main` at that time: commit `447f05d` (2026-10-04 17:04 IST), pushed to
-  <https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials>.
+- Repository: <https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials> (private until the submission).
+- First work stop: 2026-10-04 20:45 IST at commit `447f05d`. The sections below keep the dated record of each pass.
 - Review: 2026-10-06, every task DONE on `main`.
 - Second pass: 2026-10-06, the gaps of the review closed where no person is needed; see
   [Second pass of 2026-10-06](#second-pass-of-2026-10-06).
+- Current state: 2026-10-14, see [Current state](#current-state-of-2026-10-14). The numbers in the dated sections
+  below were true on their dates.
 - Unfinished work of 2026-10-04: branch `wip/2026-10-04-stop`, commit `6778946` (WP-08, WP-11, WP-13). On
   2026-10-05 it was split into one branch per task as described below, finished, and WP-15 was added;
   see [Branches awaiting review](#branches-awaiting-review).
 
 ## Contents
 
+- [Current state of 2026-10-14](#current-state-of-2026-10-14)
 - [Task table](#task-table)
 - [Review of 2026-10-06](#review-of-2026-10-06)
 - [Second pass of 2026-10-06](#second-pass-of-2026-10-06)
@@ -28,6 +30,49 @@ for set-up and the rules every change follows.
 - [Definition of done](#definition-of-done)
 - [Gap ids used in commits and docs](#gap-ids-used-in-commits-and-docs)
 - [Optional extras](#optional-extras)
+
+## Current state of 2026-10-14
+
+Measured on `main` at `812aaaa` or later (Windows 11, Docker Desktop with 8 GB, Node 24). Every task of the
+table below is DONE. Since the second pass of 2026-10-06 the work was a teammate review (2026-10-13), the
+fixes it led to, a security pass and a documentation pass.
+
+| Result                                          | Number                                                                                                    |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `npm test`                                      | 1203 of 1203, 79 files (1120 on 2026-10-06)                                                               |
+| `npm run matrix:reference`                      | 123 of 123 as specified, 119 pass, 4 not supported (109 on 2026-10-06, 82 on 2026-10-05)                  |
+| `npm run matrix:live`, `live-core`              | 16 of 16 as specified, 11 pass, 4 fail, 1 not supported; the same verdicts as before the security commits |
+| `npm run matrix:live -- --spec live-holder-web` | 10 of 10 as specified, 4 pass, 6 fail; the same verdicts as before                                        |
+| `npm run test:live`                             | 20 of 20, 60 s                                                                                            |
+| `npm run stack:smoke`                           | `SMOKE PASS`, 207 s (274 s earlier on 2026-10-14, before the security commits)                            |
+| `npm run demo -- --ci`                          | `DEMO PASS`, 5 of 5                                                                                       |
+| `npm audit`                                     | 0 vulnerabilities (2 low before `mermaid` 12.2.0)                                                         |
+
+What changed after the second pass, one line each (`git log --oneline` has the commits):
+
+- The stack scripts are executable in git, so the stack starts on macOS and Linux (`5282f5f`).
+- Issuer binding: an SD-JWT VC key speaks only for its own DID, the reference verifier keeps an issuer trust
+  list, and the tamper scenarios `self-issued` and `issuer-name-borrowed` check it (`7cdebda`).
+- `ldp_vp` holder binding is reported `skipped` when nothing can be bound. A Digital Credentials API answer
+  without an `Origin` header is refused. Five wrong `tx_code` values revoke a pre-authorized code. An
+  unexpected `descriptor_map` entry is refused.
+- Server-side fetches of `did:web` documents and status lists refuse private addresses, redirects and answers
+  over 100 KB. `*.ps02.test` and `PLAYGROUND_FETCH_ALLOWED_HOSTS` are allowed. The live matrices were rerun
+  after this change and no verdict changed.
+- Every page carries security headers and a Content-Security-Policy. Mimoto's CBEFF schema is served from the
+  stack instead of GitHub. The history page's scroll regions take keyboard focus.
+- Credential status: the reference verifier checks Token Status Lists and Bitstring Status Lists, every report
+  has a `status` check, and the new tamper scenario `revoked` adds six reference cells.
+
+Still open:
+
+- Inji Wallet mobile has not run with a phone.
+- mdoc status is not checked, and revocation is not tested against Inji Verify or Inji Certify.
+- DNS rebinding is not blocked for server-side fetches.
+- Hosted CI cannot run because of a GitHub billing problem. The last green `ci` run was 2026-10-06 and the last
+  green nightly 2026-10-08. Local runs replace them ([README](../README.md#continuous-integration)).
+- The demo video, the slides and filing the issue drafts need people. The shot list is
+  [video-script.md](video-script.md) and the pre-recording steps are [manual-test-checklist.md](manual-test-checklist.md).
 
 ## Task table
 

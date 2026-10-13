@@ -25,11 +25,13 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 /** Documents that must exist, with the headings each must have (level 2 unless written otherwise). */
 export const REQUIRED_SECTIONS = {
   'README.md': [
-    'Status',
-    'Quick start (reference mode, no Docker)',
+    'Start it',
+    'What it covers',
+    'Current numbers',
+    'Known limits',
+    'Continuous integration',
     'Commands',
     'Flows',
-    'Interoperability matrix and gaps',
   ],
   'docs/README.md': ['Documents'],
   'docs/architecture.md': ['Components', 'One run end to end', 'Where traffic is recorded'],
@@ -38,7 +40,7 @@ export const REQUIRED_SECTIONS = {
   'docs/api.md': ['REST', 'WebSocket', 'Hosted reference endpoints'],
   'docs/test-data.md': ['Identities', 'Keys and DIDs', 'Credentials'],
   'docs/extending.md': ['Add a role', 'Test it'],
-  'docs/demo/README.md': ['Before recording', 'Script'],
+  'docs/demo/README.md': ['Before recording', 'Script, video and slides'],
   'docs/gaps/README.md': ['Gaps', 'Reported privately'],
   'docs/adr/README.md': ['Records'],
 };
