@@ -49,7 +49,12 @@ export function MetricTiles({ metrics }: { metrics: Metrics }) {
       </ul>
 
       {metrics.steps.length > 0 && (
-        <div className="relative overflow-x-auto rounded-lg border border-line bg-surface">
+        <div
+          role="region"
+          tabIndex={0}
+          aria-label={t('history.steps.caption')}
+          className="relative overflow-x-auto rounded-lg border border-line bg-surface"
+        >
           <table className="w-full text-left text-sm">
             <caption className="p-3 text-left font-semibold">{t('history.steps.caption')}</caption>
             <thead className="border-y border-line bg-surface-muted">
