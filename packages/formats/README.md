@@ -271,7 +271,7 @@ received values. `error.toJSON()` gives a plain object for run reports. Examples
 
 ## Tests
 
-`npm test -w @inji-playground/formats` runs 211 tests in 10 files (measured 2026-10-14: all pass in about
+`npm test -w @inji-playground/formats` runs 213 tests in 10 files (measured 2026-10-14: all pass in about
 3 s on the team laptop, Node 24.19.0; `test/tamper.test.ts` covers the tamper primitives of the other
 formats). Test names start with the specification rule they check.
 

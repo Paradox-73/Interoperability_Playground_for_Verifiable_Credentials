@@ -191,7 +191,7 @@ as `KB_JWT_NONCE_MISMATCH` or `LDP_EXPIRED`).
 
 ## Tests
 
-`npm test -w @inji-playground/oid4vp` runs 154 tests in 9 files (measured 2026-10-14: all pass, Node
+`npm test -w @inji-playground/oid4vp` runs 155 tests in 9 files (measured 2026-10-14: all pass, Node
 24.19.0). Global `fetch` is replaced by a function that
 fails the test if called: every exchange goes through the verifier's Fetch API handler in-process.
 
