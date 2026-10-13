@@ -39,6 +39,8 @@ function key(protocol: string, hostname: string, port: string): string {
 
 export class NetworkMap {
   readonly #targets = new Map<string, Target>();
+  /** The mapped origins' hosts as `URL.host` writes them (`certify-nginx`, `verify-service:8080`). */
+  readonly hosts: string[] = [];
 
   constructor(entries: readonly NetworkMapEntry[] = []) {
     for (const entry of entries) {
@@ -47,6 +49,7 @@ export class NetworkMap {
       if (from.protocol !== to.protocol) {
         throw new Error(`network map entry ${entry.from} -> ${entry.to} changes the scheme`);
       }
+      this.hosts.push(from.host);
       this.#targets.set(key(from.protocol, from.hostname, portOf(from)), {
         hostname: to.hostname,
         port: portOf(to),

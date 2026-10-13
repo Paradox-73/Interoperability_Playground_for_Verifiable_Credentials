@@ -57,7 +57,7 @@ import { inboundTargetOf, installInboundRecorder } from './recording/inbound.js'
 import { NetworkMap, networkFetch } from './recording/network-map.js';
 import { registerProxyRoutes } from './recording/proxy.js';
 import { isSelfUrl, selfOriginsFor, selfTransport } from './recording/self-transport.js';
-import { proxyTargets, serviceLabels } from './recording/targets.js';
+import { proxyTargets, serviceLabels, stackFetchHosts } from './recording/targets.js';
 import { RunStore } from './store/run-store.js';
 
 declare module 'fastify' {
@@ -157,7 +157,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   // recorded there, so the roles' outbound client skips them (no duplicate records).
   const selfOrigins = selfOriginsFor(config.port, config.publicUrl);
   const caFile = extraCaPath(config);
-  const network = networkFetch(NetworkMap.fromFile(networkMapPath(config)), {
+  const networkMap = NetworkMap.fromFile(networkMapPath(config));
+  const network = networkFetch(networkMap, {
     ...(caFile ? { ca: readFileSync(caFile, 'utf8') } : {}),
   });
   const transport = selfTransport(app, { selfOrigins, network });
@@ -179,7 +180,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     ...(config.dbPath === ':memory:' ? {} : { keysDir: join(config.runDir, 'keys') }),
     issuerDidMethod: config.refIssuerDid,
     trustedIssuers: config.trustedIssuers,
-    fetchAllowedHosts: config.fetchAllowedHosts,
+    fetchAllowedHosts: [...config.fetchAllowedHosts, ...stackFetchHosts(config, networkMap)],
     fetch: () => transport,
     ...(config.stack === 'off'
       ? {}
