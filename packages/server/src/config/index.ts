@@ -70,6 +70,21 @@ export const ConfigSchema = z.object({
   extraCaFile: z.string().min(1).optional(),
   /** DID method of the reference issuer's keys. did:key resolves offline; did:web needs the TLS front for Inji Verify. */
   refIssuerDid: z.enum(['did:key', 'did:jwk', 'did:web']).default('did:key'),
+  /**
+   * Issuer DIDs the reference verifier accepts besides the reference issuers' own, comma-separated. A DID
+   * issuer outside the list is INVALID (`ISSUER_UNTRUSTED`). The default names the two Inji Certify instances
+   * of the local stack; add the DIDs of outside issuers you test against.
+   */
+  trustedIssuers: z
+    .string()
+    .default('did:web:certify.ps02.test,did:web:certify-ac.ps02.test')
+    .transform((value) =>
+      value
+        .split(',')
+        .map((did) => did.trim())
+        .filter(Boolean),
+    )
+    .pipe(z.array(z.string().startsWith('did:', 'each trusted issuer must be a DID'))),
 });
 export type Config = z.infer<typeof ConfigSchema>;
 
@@ -113,6 +128,7 @@ const ENV_KEYS = {
   PLAYGROUND_NETWORK_MAP: 'networkMap',
   PLAYGROUND_EXTRA_CA: 'extraCaFile',
   PLAYGROUND_REF_ISSUER_DID: 'refIssuerDid',
+  PLAYGROUND_TRUSTED_ISSUERS: 'trustedIssuers',
   INJI_CERTIFY_URL: 'injiCertifyUrl',
   INJI_CERTIFY_AC_URL: 'injiCertifyAcUrl',
   INJI_VERIFY_URL: 'injiVerifyUrl',

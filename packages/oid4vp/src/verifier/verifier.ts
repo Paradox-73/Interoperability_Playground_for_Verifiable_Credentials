@@ -92,6 +92,11 @@ export interface ReferenceVerifierOptions {
   /** SD-JWT VC issuer keys known out of band, and x5c trust anchors. */
   sdJwtIssuerKeys?: PublicJwk[];
   x5cTrustAnchors?: string[];
+  /**
+   * DIDs of the issuers to accept (see `PresentationVerifierContext.trustedIssuers`); more can be added with
+   * `addTrustedIssuers`. Missing (and nothing added): every DID issuer is accepted.
+   */
+  trustedIssuers?: string[];
   /** Lifetime of a request. Default 300 s, like Inji Verify's `DEFAULT_EXPIRY`. */
   requestTtlSeconds?: number;
   clientName?: string;
@@ -215,6 +220,7 @@ export class ReferenceVerifier {
   private readonly byHandle = new Map<string, PendingRequest>();
   private readonly byState = new Map<string, PendingRequest>();
   private readonly trustAnchors: string[];
+  private trustedIssuers: string[] | undefined;
 
   constructor(options: ReferenceVerifierOptions) {
     this.options = options;
@@ -225,6 +231,16 @@ export class ReferenceVerifier {
     this.responseUri = `${this.baseUrl}/response`;
     this.resolver = options.didResolver ?? createDidResolver();
     this.trustAnchors = [...(options.x5cTrustAnchors ?? [])];
+    this.trustedIssuers = options.trustedIssuers ? [...options.trustedIssuers] : undefined;
+  }
+
+  /**
+   * Adds issuer DIDs to accept. From the first call on, a DID issuer outside the list is INVALID
+   * (`ISSUER_UNTRUSTED`), so a holder cannot present a credential it signed itself.
+   */
+  addTrustedIssuers(dids: readonly string[]): void {
+    const list = (this.trustedIssuers ??= []);
+    for (const did of dids) if (!list.includes(did)) list.push(did);
   }
 
   /**
@@ -669,6 +685,7 @@ export class ReferenceVerifier {
       didResolver: this.resolver,
       ...(this.options.sdJwtIssuerKeys ? { sdJwtIssuerKeys: this.options.sdJwtIssuerKeys } : {}),
       ...(this.trustAnchors.length > 0 ? { x5cTrustAnchors: [...this.trustAnchors] } : {}),
+      ...(this.trustedIssuers ? { trustedIssuers: [...this.trustedIssuers] } : {}),
       now: this.now(),
       ...(this.options.clockSkewSeconds === undefined
         ? {}

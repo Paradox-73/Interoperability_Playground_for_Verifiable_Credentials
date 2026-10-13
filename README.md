@@ -19,7 +19,7 @@ MOSIP Decode 2026, problem statement 02, team Badmosip.
 
 Measured on 2026-10-06 ([test report](docs/test-report/README.md)): 1120 unit and integration tests, 11
 browser tests and 20 live tests against the Inji stack pass; the reference matrix has 109 of 109 cells as
-specified, the live matrices 26 of 26; `npm run demo` passes 5 of 5 cells, including Inji Certify -> Inji Web
+specified (117 of 117 on 2026-10-13, with the self-issued credential cells), the live matrices 26 of 26; `npm run demo` passes 5 of 5 cells, including Inji Certify -> Inji Web
 -> Inji Verify `VALID`; the nightly workflow passed when replayed locally
 ([nightly-replay.md](docs/test-report/nightly-replay.md)). Nothing in this README claims more than has been
 run.
@@ -109,7 +109,8 @@ where traffic is recorded: [docs/architecture.md](docs/architecture.md).
 ## Interoperability matrix and gaps
 
 - Reference matrix (no Inji module): [docs/interop-report/reference/matrix.md](docs/interop-report/reference/matrix.md),
-  109 of 109 cells as specified (2026-10-06), with `mso_mdoc` and Digital Credentials API cells.
+  117 of 117 cells as specified (2026-10-13), with `mso_mdoc`, Digital Credentials API and self-issued
+  credential cells.
 - Live matrix against Inji Certify 0.14.0, certify-ac, Inji Web 0.17.0 with Mimoto 0.22.0 and Inji Verify
   0.18.2: [docs/interop-report/live/matrix.md](docs/interop-report/live/matrix.md), 26 of 26 cells as
   specified (2026-10-06). All-Inji SD-JWT VC and `ldp_vc` are `VALID`, the latter also with Inji Web as the

@@ -62,6 +62,19 @@ describe('loadConfig', () => {
     expect(() => loadConfig({ PLAYGROUND_PORT: 'eighty' })).toThrow(/PLAYGROUND_PORT/);
     expect(() => loadConfig({ PLAYGROUND_STACK: 'cloud' })).toThrow(/PLAYGROUND_STACK/);
   });
+
+  it('trusts the two Inji Certify DIDs by default and reads more from PLAYGROUND_TRUSTED_ISSUERS', () => {
+    expect(loadConfig({}).trustedIssuers).toEqual([
+      'did:web:certify.ps02.test',
+      'did:web:certify-ac.ps02.test',
+    ]);
+    expect(
+      loadConfig({ PLAYGROUND_TRUSTED_ISSUERS: ' did:web:issuer.example , did:key:z6Mk1,, ' }).trustedIssuers,
+    ).toEqual(['did:web:issuer.example', 'did:key:z6Mk1']);
+    expect(() => loadConfig({ PLAYGROUND_TRUSTED_ISSUERS: 'https://issuer.example' })).toThrow(
+      /PLAYGROUND_TRUSTED_ISSUERS/,
+    );
+  });
 });
 
 describe('Inji adapter registry', () => {

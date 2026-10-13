@@ -80,6 +80,8 @@ export interface ReferenceHostingOptions {
   extraResources?: ReadonlyArray<{ scopes: string[]; audience: string }>;
   /** Other clients of the test authorization server (Mimoto, with its private_key_jwt key). */
   extraClients?: RegisteredClient[];
+  /** Issuer DIDs the reference verifier accepts besides the reference issuers' own (Inji Certify, outside issuers). */
+  trustedIssuers?: readonly string[];
 }
 
 export interface ReferenceHosting {
@@ -176,6 +178,12 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   verifier.addX5cTrustAnchors(
     (await Promise.all([...issuers.values()].map((hosted) => hosted.mdocTrustAnchors()))).flat(),
   );
+  // DID issuers the verifier accepts: the reference issuers and the configured ones. Without a list any DID
+  // would do, so a holder could present a credential it signed itself (scenario self-issued).
+  verifier.addTrustedIssuers([
+    ...[...issuers.values()].flatMap((hosted) => Object.values(hosted.dids())),
+    ...(options.trustedIssuers ?? []),
+  ]);
 
   return {
     publicUrl,

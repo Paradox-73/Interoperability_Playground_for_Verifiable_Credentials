@@ -61,6 +61,11 @@ export interface IssuerKeyInfo {
   source: 'did' | 'x5c' | 'configured';
   jwk: PublicJwk;
   kid?: string;
+  /**
+   * The issuer the key belongs to, as far as the key itself shows it: for a DID key, the DID (which `iss`,
+   * when present, must equal); for x5c and configured keys, `iss`. Report this, never a bare `iss`.
+   */
+  issuer?: string;
   /** For x5c: whether the chain ends at a configured trust anchor. */
   trusted?: boolean;
   /** For DIDs: resolution notes, such as a non-canonical did:jwk. */
@@ -197,7 +202,12 @@ async function resolveIssuerKey(
         },
       );
     }
-    return { source: 'x5c', jwk: chain.leafJwk, trusted: chain.trusted };
+    return {
+      source: 'x5c',
+      jwk: chain.leafJwk,
+      trusted: chain.trusted,
+      ...(typeof payload.iss === 'string' ? { issuer: payload.iss } : {}),
+    };
   }
 
   const kid = typeof header.kid === 'string' ? header.kid : undefined;
@@ -216,9 +226,13 @@ async function resolveIssuerKey(
         `kid ${didUrl} is a DID URL but no DID resolver was given`,
       );
     }
-    if (iss?.startsWith('did:') && parseDidUrl(didUrl).did !== iss) {
+    // A DID key speaks only for its DID: an `iss` that is another DID, or not a DID at all (an issuer URL,
+    // whose keys come from its metadata or x5c), would let anyone sign with their own did:key and name any
+    // issuer they like.
+    const keyDid = parseDidUrl(didUrl).did;
+    if (iss !== undefined && iss !== keyDid) {
       throw new FormatError('SDJWT_ISSUER_MISMATCH', `kid ${didUrl} does not belong to issuer ${iss}`, {
-        spec: 'RFC 9901 section 7.1 step 2c',
+        spec: 'RFC 9901 section 7.1 step 2c; SD-JWT VC draft 19 section 2.5 (a DID key names a DID issuer)',
         details: { kid: didUrl, iss },
       });
     }
@@ -228,6 +242,7 @@ async function resolveIssuerKey(
         source: 'did',
         jwk: resolved.publicJwk,
         kid: resolved.verificationMethod.id,
+        issuer: keyDid,
         ...(resolved.resolution.didResolutionMetadata.warnings
           ? { warnings: resolved.resolution.didResolutionMetadata.warnings }
           : {}),
@@ -246,7 +261,12 @@ async function resolveIssuerKey(
 
   const configured = (options.issuerKeys ?? []).filter((jwk) => kid === undefined || jwk.kid === kid);
   if (configured.length > 0)
-    return { source: 'configured', jwk: toPublicJwk(configured[0]), ...(kid ? { kid } : {}) };
+    return {
+      source: 'configured',
+      jwk: toPublicJwk(configured[0]),
+      ...(kid ? { kid } : {}),
+      ...(iss ? { issuer: iss } : {}),
+    };
 
   throw new FormatError(
     'SDJWT_ISSUER_KEY_UNRESOLVED',

@@ -41,6 +41,8 @@ export const FORMAT_ERROR_CODES = [
   'SDJWT_NOT_YET_VALID',
   'X5C_INVALID',
   'X5C_UNTRUSTED',
+  // Issuer trust (a verifier's list of the issuers it accepts)
+  'ISSUER_UNTRUSTED',
   // Key binding (SD-JWT+KB)
   'KB_JWT_MISSING',
   'KB_JWT_MALFORMED',

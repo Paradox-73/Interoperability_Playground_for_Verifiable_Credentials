@@ -44,6 +44,7 @@ import {
   representLdpVp,
   resignJws,
   resignKeyBinding,
+  selfIssueSdJwt,
 } from '../src/tamper/index.js';
 
 const networkAttempts = vi.fn((url: unknown) =>
@@ -237,6 +238,27 @@ describe('SD-JWT VC primitives (RFC 9901)', () => {
     // A verifier that skips chain validation accepts it: this is what the scenario probes.
     const lax = await verifySdJwtVc(presented, { ...options, x5c: {} });
     expect(lax.issuerKey).toMatchObject({ source: 'x5c', trusted: false });
+  });
+
+  it("self-issued with the issuer's name kept: the did:key is not the issuer's -> SDJWT_ISSUER_MISMATCH", async () => {
+    const forged = selfIssueSdJwt(issued, { iss: 'keep' });
+    const decoded = decodeSdJwt(forged.sdJwt);
+    expect(decoded.header.kid).toBe(didKeyVerificationMethodId(forged.did));
+    expect(decoded.header.x5c).toBeUndefined();
+    expect(decoded.payload.iss).toBe(issuerDid);
+    await expect(verifySdJwtVc(await present(forged.sdJwt), options)).rejects.toMatchObject({
+      code: 'SDJWT_ISSUER_MISMATCH',
+    });
+  });
+
+  it('self-issued under its own did:key: signature and issuer agree, only a trust list can refuse it', async () => {
+    const forged = selfIssueSdJwt(issued);
+    const decoded = decodeSdJwt(forged.sdJwt);
+    expect(decoded.payload.iss).toBe(forged.did);
+    expect(decoded.payload.cnf).toEqual(decodeSdJwt(issued).payload.cnf);
+    const verified = await verifySdJwtVc(await present(forged.sdJwt), options);
+    expect(verified.issuerKey).toMatchObject({ source: 'did', issuer: forged.did });
+    expect(verified.issuerKey.issuer).not.toBe(issuerDid);
   });
 });
 

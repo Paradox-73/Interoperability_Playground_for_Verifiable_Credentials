@@ -21,6 +21,7 @@ import {
   representLdpVp,
   resignKeyBinding,
   resignMdocDeviceSignature,
+  selfIssueSdJwt,
 } from '@inji-playground/formats/tamper';
 import {
   createDidKey,
@@ -60,6 +61,12 @@ export async function tamperCredential(tamper: CredentialTamper, credential: Raw
       if (credential.format === 'mso_mdoc') {
         return (await forgeMdocWithSelfSignedX5chain(credential.raw)).credential;
       }
+      break;
+    case 'self-issue':
+      if (isSdJwt(credential.format)) return selfIssueSdJwt(credential.raw, { iss: 'own-did' }).sdJwt;
+      break;
+    case 'self-issue-keep-iss':
+      if (isSdJwt(credential.format)) return selfIssueSdJwt(credential.raw, { iss: 'keep' }).sdJwt;
       break;
   }
   throw new TypeError(`credential tamper "${tamper}" does not apply to format ${credential.format}`);
