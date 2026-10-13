@@ -269,7 +269,12 @@ export class IssuerSigner {
   /** The Bitstring Status List credential (revocation), signed like the issuer's ldp_vc credentials. */
   bitstringStatusList(now = new Date()): Promise<Record<string, unknown>> {
     if (this.bitstringList?.revoked !== this.revokedIndexes.size) {
-      this.bitstringList = { revoked: this.revokedIndexes.size, list: this.signBitstringStatusList(now) };
+      const list = this.signBitstringStatusList(now);
+      this.bitstringList = { revoked: this.revokedIndexes.size, list };
+      // A failed signing is not kept: the next request signs again.
+      list.catch(() => {
+        if (this.bitstringList?.list === list) this.bitstringList = undefined;
+      });
     }
     return this.bitstringList.list;
   }
