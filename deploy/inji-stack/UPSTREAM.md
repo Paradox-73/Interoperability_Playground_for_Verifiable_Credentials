@@ -43,6 +43,15 @@ like the rest of the repository.
 
 Full commit ids: inji-certify `e54539a89616f64dc90e8f6797db9e66d826d97d`, mimoto `91692cde498d023fe141fd239f46779d6fbbe0ff`, inji-verify `b9f1e9d20737fe52d6fc3f1bc3f7b9298a5eac89`.
 
+## Vendored at runtime-fetch sites
+
+`config/mosip-cbeff.xsd` is the CBEFF biometric schema that Mimoto 0.22.0 downloads at start from
+`mosip.kernel.xsdstorage-uri`, which defaulted to raw.githubusercontent.com. It is served by `certify-nginx` instead, so the
+stack starts without internet. Copy of [mosip/mosip-config](https://github.com/mosip/mosip-config) `mosip-cbeff.xsd` on
+branch `develop`, fetched 2026-10-14, unchanged (8066 bytes). The repository is MPL-2.0; the file carries its own
+permissive CBEFF schema licence in its header comment. It is not in the table above because it was not imported from
+a pinned commit, so `verify-imports` does not check it.
+
 ## Upstream compose files (linked, not copied)
 
 `deploy/inji-stack/compose.yaml` is written by the team rather than edited from these files: they target other

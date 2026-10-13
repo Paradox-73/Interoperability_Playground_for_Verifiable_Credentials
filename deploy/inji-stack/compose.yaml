@@ -122,6 +122,7 @@ services:
       - ./config/mimoto-trusted-verifiers.json:/config/server/mimoto-trusted-verifiers.json:ro
       - ./config/credential-template.html:/config/server/credential-template.html:ro
       - ./config/vp_request_config.json:/config/server/vp_request_config.json:ro
+      - ./config/mosip-cbeff.xsd:/config/server/mosip-cbeff.xsd:ro
     depends_on:
       - certify
     healthcheck:
