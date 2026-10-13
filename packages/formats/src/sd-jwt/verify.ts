@@ -301,7 +301,8 @@ async function resolveIssuerKey(
  * DID `iss` would skip the verifier's DID trust list and be reported under, say, Inji Certify's DID.
  */
 function refuseDidIssuer(iss: unknown, keySource: string): void {
-  if (typeof iss !== 'string' || !iss.startsWith('did:')) return;
+  // Case and leading spaces too: the report would show `DID:web:...` as the issuer.
+  if (typeof iss !== 'string' || !/^\s*did:/i.test(iss)) return;
   throw new FormatError('SDJWT_ISSUER_MISMATCH', `${keySource} key cannot sign for the DID issuer ${iss}`, {
     spec: 'RFC 9901 section 7.1 step 2c; SD-JWT VC draft 19 section 2.5 (a DID issuer uses a DID key)',
     details: { iss },

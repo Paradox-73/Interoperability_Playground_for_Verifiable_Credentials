@@ -147,6 +147,22 @@ describe('an untrusted did:web issuer is refused before its DID document is fetc
     return { id: 'farmer-ldp', format, raw: JSON.stringify(signed) };
   }
 
+  it('ldp_vc naming a trusted issuer but an untrusted did:web method in object form -> INVALID, no fetch', async () => {
+    const signed = JSON.parse((await credential('ldp_vc')).raw) as Record<string, unknown>;
+    const proof = signed.proof as Record<string, unknown>;
+    const raw = JSON.stringify({
+      ...signed,
+      issuer: issuer.did,
+      proof: { ...proof, verificationMethod: { id: verificationMethod } },
+    });
+    const report = await verify('ldp_vc', 'final-1.0', { id: 'farmer-ldp', format: 'ldp_vc', raw }, [
+      issuer.did,
+    ]);
+    expect(report.outcome).toBe('INVALID');
+    expect(report.errors[0]?.code).toBe('ISSUER_UNTRUSTED');
+    expect(networkAttempts).not.toHaveBeenCalled();
+  });
+
   it.each<Format>(['vc+sd-jwt', 'ldp_vc'])('%s -> INVALID, ISSUER_UNTRUSTED, no fetch', async (format) => {
     const report = await verify(format, 'final-1.0', await credential(format), [issuer.did]);
     expect(report.outcome).toBe('INVALID');

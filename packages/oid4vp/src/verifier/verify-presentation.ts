@@ -372,11 +372,11 @@ function notCheckedForKeySource(claims: Record<string, unknown>): Check {
 
 /** The DIDs an unverified ldp_vc names for its issuer: `issuer` and its proofs' verification methods. */
 function claimedIssuerDids(credential: Record<string, unknown>): string[] {
-  const issuer = isRecord(credential.issuer) ? credential.issuer.id : credential.issuer;
+  const idOf = (value: unknown): unknown => (isRecord(value) ? value.id : value);
   const methods = [credential.proof]
     .flat()
-    .map((proof) => (isRecord(proof) ? proof.verificationMethod : undefined));
-  return [issuer, ...methods]
+    .map((proof) => (isRecord(proof) ? idOf(proof.verificationMethod) : undefined));
+  return [idOf(credential.issuer), ...methods]
     .filter((value): value is string => typeof value === 'string' && value.startsWith('did:'))
     .map((value) => value.split('#')[0]!);
 }

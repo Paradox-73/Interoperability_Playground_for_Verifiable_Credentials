@@ -469,11 +469,12 @@ describe('an x5c key names no DID issuer (RFC 9901 section 7.1 step 2c)', () => 
     });
   }
 
-  it('an anchored chain with a DID iss is refused, so it cannot pose as a trusted DID issuer', async () => {
-    await expect(anchoredX5c('did:web:certify.ps02.test')).rejects.toMatchObject({
-      code: 'SDJWT_ISSUER_MISMATCH',
-    });
-  });
+  it.each(['did:web:certify.ps02.test', 'DID:web:certify.ps02.test', ' did:web:certify.ps02.test'])(
+    'an anchored chain with the DID iss "%s" is refused, so it cannot pose as a DID issuer',
+    async (iss) => {
+      await expect(anchoredX5c(iss)).rejects.toMatchObject({ code: 'SDJWT_ISSUER_MISMATCH' });
+    },
+  );
 
   it('an anchored chain with an issuer URL in iss (Inji Certify) still verifies', async () => {
     const verified = await anchoredX5c('http://certify-nginx:80');
