@@ -14,6 +14,8 @@ Start with the [README](../README.md) for what the playground is and how to run 
 | [Test data](test-data.md)                              | Identities, keys and DIDs, credentials, recorded fixtures                                    |
 | [Extending](extending.md)                              | Add an implementation as a role, and test it                                                 |
 | [Demo](demo/README.md)                                 | Preparing and running the demo                                                               |
+| [Video script](video-script.md)                        | Shot list of the demo video and the slide outline                                            |
+| [Manual test checklist](manual-test-checklist.md)      | Steps to run on macOS, Linux and Windows before recording                                    |
 | [Interoperability gaps](gaps/README.md)                | The gap register and one issue draft per public gap                                          |
 | [Reference matrix](interop-report/reference/matrix.md) | Every reference cell, without Docker                                                         |
 | [Live matrix](interop-report/live/matrix.md)           | Inji Certify, certify-ac, Inji Web and Inji Verify against the reference roles               |
