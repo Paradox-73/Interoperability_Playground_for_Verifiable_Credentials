@@ -100,6 +100,30 @@ test('mso_mdoc happy path: the inspector shows the CBOR vp_token as JSON', async
   await expectAccessible(page);
 });
 
+test('revoked credential: the verifier reads the status list and refuses the credential', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await chooseReferenceTrio(page);
+  await page.getByLabel('Credential format').selectOption('vc+sd-jwt');
+  await page.getByLabel('Scenario').selectOption('revoked');
+  await expect(page.getByTestId('scenario-expectation')).toContainText('Expected outcome: Invalid');
+  await page.getByRole('button', { name: 'Run' }).click();
+  await finishedRunId(page);
+  const result = page.getByRole('region', { name: /Expected and actual outcome of run/ });
+  await expect(result.getByTestId('actual-outcome')).toContainText('Invalid');
+  await expect(result).toContainText('The verifier answered exactly what this scenario requires.');
+  await page
+    .getByRole('button', { name: /Artefact: .*[Vv]erification.result/ })
+    .first()
+    .click();
+  const detail = page.getByTestId('artifact-detail');
+  await expect(detail).toContainText('STATUS_REVOKED');
+  await expect(detail).toContainText('status');
+  await shot(page, '16-revoked-status-check');
+  await expectAccessible(page);
+});
+
 test('matrix and history show stored runs, linked to their reports', async ({ page, request }) => {
   const created = await request.post(`${SERVER}/api/runs`, {
     data: { issuer: 'ref-issuer', wallet: 'ref-wallet', verifier: 'ref-verifier', format: 'ldp_vc' },

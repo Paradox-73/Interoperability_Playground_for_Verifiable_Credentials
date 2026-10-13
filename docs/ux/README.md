@@ -1,7 +1,7 @@
 # User flow
 
 How a person uses the playground, shown with screenshots that the browser tests capture
-(`npm run e2e -- --screenshots`, Chromium, reference mode, 2026-10-06). Every screenshot comes from a real
+(`npm run e2e -- --screenshots`, Chromium, reference mode, 2026-10-14). Every screenshot comes from a real
 run against the playground server with its reference roles; nothing is mocked.
 
 ## 1. Choose the roles and the run
@@ -38,6 +38,14 @@ With a tamper scenario (here a key binding JWT bound to another nonce), the run 
 outcome next to the verifier's actual answer once the run ends, with a sentence that explains the result.
 
 ![Expected and actual outcome of a tamper run](screenshots/4-tamper-result.png)
+
+The "Revoked credential" scenario shows what a verifier does with a credential that carries a status entry.
+The reference issuer marks the credential revoked in its status list. The sequence diagram shows the
+verifier's extra request for the list (arrow 7, `GET /ref/issuer/status/token/EdDSA`). The verification
+result in the inspector has a `status` check that fails with `STATUS_REVOKED`, and the outcome is
+`Invalid`, as the scenario requires.
+
+![Revoked credential: the status list request and the failed status check](screenshots/16-revoked-status-check.png)
 
 ## 5. Compare combinations and track history
 
@@ -93,7 +101,7 @@ next to the raw base64url. Every page fits a 390 px wide phone screen without si
 
 - `npm run e2e` runs axe-core (WCAG 2.1 A and AA rules) in Chromium on the playground, run, playback,
   report, matrix, history, gaps, about and not-found pages and fails on any serious or critical violation;
-  on 2026-10-06 there were none. The run page had one until then: scrollable message bodies in the
+  on 2026-10-14 there were none. The run page had one until then: scrollable message bodies in the
   inspector could not be reached with the keyboard; they now take focus.
 - One test drives the happy path with the keyboard only: Tab to Run, Enter, Tab to the run, Enter, Tab to
   the report, Enter.
