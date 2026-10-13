@@ -133,6 +133,15 @@ describe('status entries a verifier refuses before fetching anything', () => {
     return verifier.awaitResult(created.handle);
   }
 
+  it('a status list uri that is not a URL fails the status check, not the format check', async () => {
+    const report = await present(
+      await farmerSdJwtVc({ status: { status_list: { idx: 0, uri: 'not a url' } } }),
+    );
+    expect(report.outcome).toBe('INVALID');
+    expect(report.errors[0]?.code).toBe('STATUS_LIST_UNAVAILABLE');
+    expect(report.checks.find((check) => check.id === 'status')?.status).toBe('fail');
+  });
+
   it('more than 8 status entries in one presentation -> INVALID', async () => {
     const report = await present(
       await farmerLdpVc({ credentialStatus: Array.from({ length: 9 }, (_, index) => bitstringEntry(index)) }),

@@ -82,7 +82,7 @@ export interface LimitedGet {
 /** The body of a successful GET as text. Rejects with a FormatError. */
 export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}): Promise<string> {
   const { url, codes } = request;
-  if (!request.configured) await assertPublicHost(new URL(url), limits, codes);
+  if (!request.configured) await assertPublicHost(parseUrl(url, codes.failed), limits, codes);
   const fetchImpl: FetchLike = limits.fetch ?? ((input, init) => globalThis.fetch(input, init));
   try {
     const response = await fetchImpl(url, {
@@ -102,6 +102,15 @@ export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}
       cause: error,
       details: { url },
     });
+  }
+}
+
+/** The URL, or a FormatError with the caller's code, so the report blames the caller's check. */
+function parseUrl(url: string, code: FormatErrorCode): URL {
+  try {
+    return new URL(url);
+  } catch (cause) {
+    throw new FormatError(code, `${url} is not a URL`, { cause, details: { url } });
   }
 }
 
