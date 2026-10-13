@@ -99,8 +99,10 @@ playground server always sets one (see `PLAYGROUND_TRUSTED_ISSUERS`).
 entry in an `ldp_vc`'s `credentialStatus`, a Token Status List in an SD-JWT VC's `status.status_list`. The
 list must be signed by the credential's issuer and is fetched with the `fetchLimits` option (address, size
 and redirect limits). Revoked or suspended is INVALID (`STATUS_REVOKED`, `STATUS_SUSPENDED`), and so is a
-list that cannot be fetched or does not verify. An SD-JWT VC whose `status` is, or holds at any depth, a
-selective disclosure is INVALID, because a holder could hide a revocation by leaving it out. The check is
+list that cannot be fetched or does not verify. An SD-JWT VC whose `status` holds a selective disclosure at
+any depth, or arrives as a disclosure itself, is INVALID, because a holder could hide a revocation by leaving
+it out. A top-level `status` disclosure that the holder withholds leaves no trace in the signed JWT, so no
+verifier can detect it. The check is
 `skipped`, with the reason, when a credential has no status entry, uses a status type this verifier does not
 implement, is an SD-JWT VC whose issuer key comes from `x5c` or configuration, or is an `mso_mdoc`. At most 8
 status entries are read per presentation.
@@ -202,7 +204,7 @@ fails the test if called: every exchange goes through the verifier's Fetch API h
 | `test/mdoc.test.ts`         | `mso_mdoc` in both profiles and both client id schemes -> VALID with only the requested elements; the PE and DCQL request shapes; `mdoc_generated_nonce` missing or changed; expired -> EXPIRED; flipped issuer signature, untrusted issuer, altered and added elements, another docType -> INVALID with the failing check; Inji Certify's credential encoding                                                                                  |
 | `test/request-uri.test.ts`  | `openid4vp://` parsing; `dcql` and `jsonpath-plus` load as ESM                                                                                                                                                                                                                                                                                                                                                                                  |
 | `test/issuer-trust.test.ts` | Trusted issuer -> VALID under its DID; self-issued credential, an untrusted did:web (refused before any fetch), a did:key signing under another issuer's name -> INVALID                                                                                                                                                                                                                                                                        |
-| `test/status.test.ts`       | Unrevoked -> VALID with the list named, revoked -> INVALID for `ldp_vc` and `vc+sd-jwt`; more than 8 entries, a status disclosure (top level or nested, presented or withheld), a `uri` that is not a URL -> INVALID; an x5c issuer's status -> skipped                                                                                                                                                                                         |
+| `test/status.test.ts`       | Unrevoked -> VALID with the list named, revoked -> INVALID for `ldp_vc` and `vc+sd-jwt`; more than 8 entries, a status disclosure (nested, presented or withheld; top level, presented), a `uri` that is not a URL -> INVALID; an x5c issuer's status -> skipped                                                                                                                                                                                |
 
 Not covered yet: `direct_post.jwt` (encrypted responses), `x509_san_dns` / `x509_hash` client ids,
 `request_uri_method=post`, `presentation_definition_uri` against a live verifier, and runs against
