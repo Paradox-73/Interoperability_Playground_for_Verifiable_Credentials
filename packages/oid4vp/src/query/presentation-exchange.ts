@@ -347,6 +347,18 @@ export function parsePresentationSubmission(
       },
     );
   }
+  const known = new Set(definition.input_descriptors.map((descriptor) => descriptor.id));
+  const extra = [...answered].filter((id) => !known.has(id));
+  if (extra.length > 0) {
+    throw new Oid4vpError(
+      'SUBMISSION_INVALID',
+      'descriptor_map has entries that answer no input descriptor',
+      {
+        spec,
+        details: { extra },
+      },
+    );
+  }
   return value as unknown as PresentationSubmission;
 }
 

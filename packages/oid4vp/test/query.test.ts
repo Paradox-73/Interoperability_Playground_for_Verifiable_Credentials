@@ -101,6 +101,15 @@ describe('presentation_submission', () => {
     );
     expect(ok.id).toBe('s');
   });
+
+  it('refuses an entry that answers no input descriptor, so its presentation is never verified', () => {
+    expect(() =>
+      parsePresentationSubmission(
+        { id: 's', definition_id: 'pd-1', descriptor_map: [entry('a'), entry('b'), entry('x')] },
+        definition,
+      ),
+    ).toThrow(/no input descriptor/);
+  });
 });
 
 describe('SD-JWT claim reconstruction for query matching', () => {
