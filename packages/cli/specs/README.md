@@ -8,10 +8,10 @@ api-test YAML, `TC_PG_<AREA>_<NN>`, in a `uniqueIdentifier` field. The schema is
 
 | File                   | Mode      | Cells | Run by                                          | State                                                   |
 | ---------------------- | --------- | ----- | ----------------------------------------------- | ------------------------------------------------------- |
-| `reference.yaml`       | reference | 82    | `npm run matrix:reference` (CI, nightly)        | runs today                                              |
-| `live-core.yaml`       | live      | 14    | `npm run matrix:live -- --spec live-core`       | runs with the stack (14 of 14 as specified, 2026-10-05) |
-| `live-holder-web.yaml` | live      | 4     | `npm run matrix:live -- --spec live-holder-web` | planned: needs Inji Web (WP-14)                         |
-| `demo.yaml`            | live      | 4     | `npm run demo` (WP-17)                          | runs with the stack                                     |
+| `reference.yaml`       | reference | 123   | `npm run matrix:reference` (CI, nightly)        | 123 of 123 as specified, 2026-10-14                     |
+| `live-core.yaml`       | live      | 16    | `npm run matrix:live -- --spec live-core`       | runs with the stack (16 of 16 as specified, 2026-10-14) |
+| `live-holder-web.yaml` | live      | 10    | `npm run matrix:live -- --spec live-holder-web` | runs with the stack (10 of 10 as specified, 2026-10-14) |
+| `demo.yaml`            | live      | 5     | `npm run demo`                                  | runs with the stack                                     |
 
 `reference.yaml` holds every cell of the scenario catalogue the reference roles can run, in catalogue
 order (happy cells before `vp-replay`, which replays an earlier presentation), in every applicable

@@ -18,5 +18,5 @@
 
 ## Consequences
 
-- Every reference test runs in both profiles, and the reference matrix covers both (82 cells, measured 2026-10-05).
+- Every reference test runs in both profiles, and the reference matrix covers both (123 cells, measured 2026-10-14).
 - A cell whose roles share no profile is reported as not supported, with the reason, instead of failing.

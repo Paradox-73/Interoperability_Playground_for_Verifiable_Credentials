@@ -194,7 +194,7 @@ Checked on 2026-10-06 on `main` (Windows 11, Node 24.19.0, Docker Desktop with 8
 1. **Reference roles only, no Docker.** `npm ci && npm run build && npm start`, then
    <http://localhost:28100>; `curl -s http://localhost:28100/api/health` answers `{"status":"ok",...}`.
    `npm run smoke` runs one cell and prints `verdict=pass` with 7 recorded exchanges; `npm run
-matrix:reference` runs the 82 cells of `packages/cli/specs/reference.yaml` (82 as specified).
+matrix:reference` runs the 123 cells of `packages/cli/specs/reference.yaml` (123 as specified).
 2. **One-command bundle.** `npm run demo` (or `npm run up`) builds the playground image, starts the Inji stack
    and the playground in Docker and runs the four demo cells (`DEMO PASS`); `npm run down` stops it.
 3. **Server on the host, Inji stack in Docker.** `npm run stack:up`, then start the server with the Inji

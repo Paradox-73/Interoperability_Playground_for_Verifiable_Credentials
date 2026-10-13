@@ -4,11 +4,11 @@ Headless runner for single runs and the compatibility matrix (`inji-playground r
 `inji-playground matrix --spec <file>`, `inji-playground index --out <dir>`), used locally, in CI, by
 `npm run demo` and by the nightly workflow.
 
-Status (2026-10-05): `run` and `matrix` work against a running server (`--server`) or an in-process
-reference server (`--reference`). `npm run matrix:reference` runs `specs/reference.yaml`: 82 cells, all as
-specified (78 pass, 4 not supported), in 21 s on a Windows 11 laptop with Node 24.11 (2026-10-05). Live, each
-in its own stack session on 2026-10-05: `live-core` 14 of 14 cells as specified in 16 s, `live-holder-web` 6
-of 6 in 34 s, and `demo` (against the bundle, `npm run demo`) 4 of 4.
+Status (2026-10-14): `run` and `matrix` work against a running server (`--server`) or an in-process
+reference server (`--reference`). `npm run matrix:reference` runs `specs/reference.yaml`: 123 cells, all as
+specified (119 pass, 4 not supported), in 36 s on a Windows 11 laptop with Node 24. Live, each in its own
+stack session: `live-core` 16 of 16 cells as specified in 1 min 18 s, `live-holder-web` 10 of 10 in 43 s, and
+`demo` (against the bundle, `npm run demo`) 5 of 5.
 
 ## Commands
 
