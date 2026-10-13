@@ -245,6 +245,27 @@ describe('did:web: what the server may fetch', () => {
     expect(web.requests).toEqual(['https://public.example/.well-known/did.json']);
   });
 
+  it.each([
+    ['an SIIT (::ffff:0:0:0/96)', '::ffff:0:a9fe:a9fe'],
+    ['a site-local (fec0::/10)', 'fec0::1'],
+    ['a Teredo (2001::/32)', '2001::1'],
+    ['a discard-only (100::/64)', '100::1'],
+  ])('refuses a host name that resolves to %s address', async (_, address) => {
+    const web = fakeWeb();
+    const resolver = createDidResolver({ fetch: web.fetch, lookup: () => Promise.resolve([address]) });
+    await expect(resolver.resolve('did:web:v6.example')).rejects.toMatchObject({ code: 'DID_WEB_INSECURE' });
+    expect(web.requests).toEqual([]);
+  });
+
+  it('*.ps02.test does not match evil.ps02.test.attacker.com or xps02.test: they get the address check', async () => {
+    const web = fakeWeb();
+    const resolver = createDidResolver({ fetch: web.fetch, lookup: () => Promise.resolve(['10.0.0.7']) });
+    for (const did of ['did:web:evil.ps02.test.attacker.com', 'did:web:xps02.test']) {
+      await expect(resolver.resolve(did)).rejects.toMatchObject({ code: 'DID_WEB_INSECURE' });
+    }
+    expect(web.requests).toEqual([]);
+  });
+
   it('*.ps02.test is allowed by default; the list takes names, name:port and *.name', async () => {
     const web = fakeWeb();
     web.serve('https://certify.ps02.test/.well-known/did.json', document('did:web:certify.ps02.test'));

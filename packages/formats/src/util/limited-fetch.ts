@@ -53,13 +53,18 @@ for (const [network, prefix] of [
   BLOCKED_ADDRESSES.addSubnet(network, prefix, 'ipv4');
 }
 for (const [network, prefix] of [
-  // IPv4-compatible (with :: and ::1), NAT64 and 6to4 addresses carry an IPv4 address that may be private.
+  // IPv4-compatible (with :: and ::1), SIIT, NAT64, 6to4 and Teredo addresses carry an IPv4 address that
+  // may be private; discard-only (100::/64) and site-local (fec0::/10) addresses are never public.
   ['::', 96],
+  ['::ffff:0:0:0', 96],
   ['64:ff9b::', 96],
   ['64:ff9b:1::', 48],
+  ['100::', 64],
+  ['2001::', 32],
   ['2002::', 16],
   ['fc00::', 7],
   ['fe80::', 10],
+  ['fec0::', 10],
   ['ff00::', 8],
 ] as const) {
   BLOCKED_ADDRESSES.addSubnet(network, prefix, 'ipv6');
