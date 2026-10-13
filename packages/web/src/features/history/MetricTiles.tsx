@@ -51,6 +51,7 @@ export function MetricTiles({ metrics }: { metrics: Metrics }) {
       {metrics.steps.length > 0 && (
         <div
           role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users scroll the table
           tabIndex={0}
           aria-label={t('history.steps.caption')}
           className="relative overflow-x-auto rounded-lg border border-line bg-surface"

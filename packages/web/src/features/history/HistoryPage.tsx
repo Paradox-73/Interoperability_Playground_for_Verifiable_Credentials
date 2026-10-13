@@ -83,6 +83,7 @@ function RunTable({ runs }: { runs: readonly RunSummary[] }) {
   return (
     <div
       role="region"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users scroll the table
       tabIndex={0}
       aria-label={t('history.tableCaption')}
       className="relative overflow-x-auto rounded-lg border border-line bg-surface"
