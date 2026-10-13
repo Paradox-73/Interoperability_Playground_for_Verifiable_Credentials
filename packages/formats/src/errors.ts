@@ -43,6 +43,11 @@ export const FORMAT_ERROR_CODES = [
   'X5C_UNTRUSTED',
   // Issuer trust (a verifier's list of the issuers it accepts)
   'ISSUER_UNTRUSTED',
+  // Credential status (Token Status List, Bitstring Status List)
+  'STATUS_REVOKED',
+  'STATUS_SUSPENDED',
+  'STATUS_LIST_UNAVAILABLE',
+  'STATUS_LIST_INVALID',
   // Key binding (SD-JWT+KB)
   'KB_JWT_MISSING',
   'KB_JWT_MALFORMED',

@@ -24,6 +24,7 @@ export * from './did/resolver.js';
 
 export * from './jsonld/contexts.js';
 export * from './jsonld/document-loader.js';
+export * from './status/status-list.js';
 
 // The suite objects and library result types stay internal: they come from untyped libraries.
 export {

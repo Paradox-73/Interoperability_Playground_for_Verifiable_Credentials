@@ -45,6 +45,8 @@ export interface IssueSdJwtVcOptions {
   disclosable?: string[];
   disclosureFrame?: SdJwtDisclosureFrame;
   holder?: HolderBinding;
+  /** The `status` claim, for example a Token Status List reference `{ status_list: { idx, uri } }`. */
+  status?: Record<string, unknown>;
   issuedAt?: Date;
   notBefore?: Date;
   expiresAt?: Date;
@@ -80,6 +82,7 @@ export async function issueSdJwtVc(options: IssueSdJwtVcOptions): Promise<string
             'jwk' in options.holder ? { jwk: toPublicJwk(options.holder.jwk) } : { kid: options.holder.kid },
         }
       : {}),
+    ...(options.status ? { status: options.status } : {}),
     ...options.claims,
   };
   const frame: SdJwtDisclosureFrame = options.disclosureFrame ?? {
