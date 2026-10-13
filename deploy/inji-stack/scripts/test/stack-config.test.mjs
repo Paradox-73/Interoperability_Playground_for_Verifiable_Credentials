@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Invariants of the committed stack configuration, so a later edit cannot quietly break the rules the stack
 // relies on: project name, profiles, port range, the Mimoto service name, the seed data and the network map.
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
@@ -175,5 +176,27 @@ describe('JSON-LD context cache on the TLS front', () => {
     expect(template).toMatch(/resolver 1\.1\.1\.1 8\.8\.8\.8/);
     expect(template).toMatch(/proxy_cache_use_stale [^;]*http_429/);
     expect(template).toMatch(/proxy_set_header Accept-Encoding "";/);
+  });
+});
+
+describe('container entry scripts', () => {
+  // Compose mounts these read-only and the images run them directly (Postgres runs every executable file in
+  // docker-entrypoint-initdb.d), so git must record them as executable. Windows checkouts do not keep file
+  // modes, so the mode in the index is what counts.
+  it('are committed with the executable bit', () => {
+    const entries = execFileSync('git', ['ls-files', '-s', '--full-name', '--', 'scripts/*.sh'], {
+      cwd: STACK_DIR,
+      encoding: 'utf8',
+    })
+      .trim()
+      .split('\n')
+      .map((line) => ({ mode: line.split(' ')[0], path: line.split('\t')[1] }));
+    expect(entries.map((e) => e.path).sort()).toEqual([
+      'deploy/inji-stack/scripts/certify-seed.sh',
+      'deploy/inji-stack/scripts/mimoto-start.sh',
+      'deploy/inji-stack/scripts/postgres-init.sh',
+      'deploy/inji-stack/scripts/stack-init.sh',
+    ]);
+    expect(entries.filter((e) => e.mode !== '100755')).toEqual([]);
   });
 });
