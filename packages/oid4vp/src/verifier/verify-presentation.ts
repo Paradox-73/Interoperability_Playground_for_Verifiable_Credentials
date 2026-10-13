@@ -285,7 +285,7 @@ async function verifySdJwtPresentation(
     checks: PRESENTATION_CHECKS.map((id): Check => (id === 'status' ? status : { id, status: 'pass' })),
     view: { format, json: claims, types: [], ...(typeof claims.vct === 'string' ? { vct: claims.vct } : {}) },
     claims,
-    // The issuer the key is bound to, never a bare `iss` (which anyone can write).
+    // A DID key's DID. For x5c and configured keys, `iss` as written (never a DID; see IssuerKeyInfo.issuer).
     issuer: issuerKey.issuer ?? issuerKey.kid ?? issuerKey.source,
     proofType: typeof verified.header.alg === 'string' ? verified.header.alg : 'unknown',
     errors: [],

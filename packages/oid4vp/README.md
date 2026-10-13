@@ -85,8 +85,10 @@ signature cannot tell which input differed. `nonce` and `audience` pass only tog
 **Issuer.** The `signature` check also covers who the issuer is. An SD-JWT whose key is a DID URL in
 `kid` must name that DID in `iss` (or no `iss`); an `iss` that is another DID or an issuer URL is
 `SDJWT_ISSUER_MISMATCH`, because anyone can make a did:key (RFC 9901 section 7.1 step 2c). For `ldp_vc` the
-proof purpose already ties `issuer` to the controller of the signing key. The issuer in the report is the
-one the key is bound to, never a bare `iss`. A verifier with a trust list (`trustedIssuers` option or
+proof purpose already ties `issuer` to the controller of the signing key. For a DID key the issuer in the
+report is that DID. For an `x5c` or configured key it is `iss` as written: a DID there is
+`SDJWT_ISSUER_MISMATCH`, but an issuer URL is not checked against the certificate, so any key that chains to a
+trust anchor can name any issuer URL. A verifier with a trust list (`trustedIssuers` option or
 `addTrustedIssuers()`) also refuses a DID issuer outside it as `ISSUER_UNTRUSTED`, so a holder cannot present a
 credential it signed itself; issuers named by `x5c` are trusted through the x5c trust anchors instead. Without
 a list every DID issuer is accepted. The playground server always sets one (see `PLAYGROUND_TRUSTED_ISSUERS`).

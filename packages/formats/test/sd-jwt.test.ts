@@ -368,6 +368,31 @@ describe('SD-JWT VC verification policy', () => {
     });
     expect(result.issuerKey).toMatchObject({ source: 'configured', kid: 'key-1' });
   });
+
+  it('RFC 9901 section 7.1 step 2c: a configured key cannot speak for a DID iss', async () => {
+    const issuerKeys = generateKeyPair('ES256');
+    const holderKeys = generateKeyPair('ES256');
+    const issued = await issueSdJwtVc({
+      issuer: { keyPair: issuerKeys, kid: 'key-1' },
+      iss: 'did:web:certify.ps02.test',
+      vct: VCT,
+      claims,
+      holder: { jwk: holderKeys.publicJwk },
+    });
+    const presentation = await presentSdJwtVc({
+      sdJwt: issued,
+      disclose: 'all',
+      holderKey: holderKeys,
+      audience: AUDIENCE,
+      nonce: NONCE,
+    });
+    await expect(
+      verifySdJwtVc(presentation, {
+        keyBinding: { nonce: NONCE, audience: AUDIENCE },
+        issuerKeys: [{ ...issuerKeys.publicJwk, kid: 'key-1' }],
+      }),
+    ).rejects.toMatchObject({ code: 'SDJWT_ISSUER_MISMATCH' });
+  });
 });
 
 describe('SD-JWT VC with an x5c issuer key (SD-JWT VC draft 19 section 2.5)', () => {
@@ -411,4 +436,47 @@ describe('SD-JWT VC with an x5c issuer key (SD-JWT VC draft 19 section 2.5)', ()
       });
     },
   );
+});
+
+describe('an x5c key names no DID issuer (RFC 9901 section 7.1 step 2c)', () => {
+  async function anchoredX5c(iss: string) {
+    const caKeys = generateKeyPair('ES256');
+    const ca = await createTestCertificate({ subject: 'CN=Anchored CA', keyPair: caKeys, ca: true });
+    const issuerKeys = generateKeyPair('ES256');
+    const leaf = await createTestCertificate({
+      subject: 'CN=Anchored Issuer',
+      keyPair: issuerKeys,
+      issuer: { keyPair: caKeys, certificate: ca },
+    });
+    const holderKeys = generateKeyPair('ES256');
+    const issued = await issueSdJwtVc({
+      issuer: { keyPair: issuerKeys, x5c: [leaf.x5c, ca.x5c] },
+      iss,
+      vct: VCT,
+      claims,
+      holder: { jwk: holderKeys.publicJwk },
+    });
+    const presentation = await presentSdJwtVc({
+      sdJwt: issued,
+      disclose: 'all',
+      holderKey: holderKeys,
+      audience: AUDIENCE,
+      nonce: NONCE,
+    });
+    return verifySdJwtVc(presentation, {
+      keyBinding: { nonce: NONCE, audience: AUDIENCE },
+      x5c: { trustAnchors: [ca.x5c], requireTrusted: true },
+    });
+  }
+
+  it('an anchored chain with a DID iss is refused, so it cannot pose as a trusted DID issuer', async () => {
+    await expect(anchoredX5c('did:web:certify.ps02.test')).rejects.toMatchObject({
+      code: 'SDJWT_ISSUER_MISMATCH',
+    });
+  });
+
+  it('an anchored chain with an issuer URL in iss (Inji Certify) still verifies', async () => {
+    const verified = await anchoredX5c('http://certify-nginx:80');
+    expect(verified.issuerKey).toMatchObject({ source: 'x5c', issuer: 'http://certify-nginx:80' });
+  });
 });

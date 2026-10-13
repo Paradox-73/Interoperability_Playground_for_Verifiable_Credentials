@@ -235,9 +235,10 @@ describe('SD-JWT VC primitives (RFC 9901)', () => {
     expect(decoded.kb).toBeUndefined();
     const presented = await present(forged.sdJwt);
     await expect(verifySdJwtVc(presented, options)).rejects.toMatchObject({ code: 'X5C_UNTRUSTED' });
-    // A verifier that skips chain validation accepts it: this is what the scenario probes.
-    const lax = await verifySdJwtVc(presented, { ...options, x5c: {} });
-    expect(lax.issuerKey).toMatchObject({ source: 'x5c', trusted: false });
+    // Without chain validation the DID `iss` still refuses it: an x5c key never speaks for a DID.
+    await expect(verifySdJwtVc(presented, { ...options, x5c: {} })).rejects.toMatchObject({
+      code: 'SDJWT_ISSUER_MISMATCH',
+    });
   });
 
   it("self-issued with the issuer's name kept: the did:key is not the issuer's -> SDJWT_ISSUER_MISMATCH", async () => {

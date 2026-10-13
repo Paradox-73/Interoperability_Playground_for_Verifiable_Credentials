@@ -62,8 +62,9 @@ export interface IssuerKeyInfo {
   jwk: PublicJwk;
   kid?: string;
   /**
-   * The issuer the key belongs to, as far as the key itself shows it: for a DID key, the DID (which `iss`,
-   * when present, must equal); for x5c and configured keys, `iss`. Report this, never a bare `iss`.
+   * For a DID key, the DID (which `iss`, when present, must equal). For x5c and configured keys, `iss` as
+   * written: it is never a DID, but it is not checked against the certificate or the configured key, so any
+   * key that chains to a trust anchor can write any issuer URL there.
    */
   issuer?: string;
   /** For x5c: whether the chain ends at a configured trust anchor. */
@@ -205,6 +206,7 @@ async function resolveIssuerKey(
         },
       );
     }
+    refuseDidIssuer(payload.iss, 'an x5c');
     return {
       source: 'x5c',
       jwk: chain.leafJwk,
@@ -263,13 +265,15 @@ async function resolveIssuerKey(
   }
 
   const configured = (options.issuerKeys ?? []).filter((jwk) => kid === undefined || jwk.kid === kid);
-  if (configured.length > 0)
+  if (configured.length > 0) {
+    refuseDidIssuer(iss, 'a configured');
     return {
       source: 'configured',
       jwk: toPublicJwk(configured[0]),
       ...(kid ? { kid } : {}),
       ...(iss ? { issuer: iss } : {}),
     };
+  }
 
   throw new FormatError(
     'SDJWT_ISSUER_KEY_UNRESOLVED',
@@ -279,6 +283,18 @@ async function resolveIssuerKey(
       details: { kid, iss },
     },
   );
+}
+
+/**
+ * A DID issuer speaks only through a key of its DID document. An x5c or configured key that claimed a
+ * DID `iss` would skip the verifier's DID trust list and be reported under, say, Inji Certify's DID.
+ */
+function refuseDidIssuer(iss: unknown, keySource: string): void {
+  if (typeof iss !== 'string' || !iss.startsWith('did:')) return;
+  throw new FormatError('SDJWT_ISSUER_MISMATCH', `${keySource} key cannot sign for the DID issuer ${iss}`, {
+    spec: 'RFC 9901 section 7.1 step 2c; SD-JWT VC draft 19 section 2.5 (a DID issuer uses a DID key)',
+    details: { iss },
+  });
 }
 
 function checkTimeWindow(payload: JwtPayload, nowSeconds: number, skew: number): void {
