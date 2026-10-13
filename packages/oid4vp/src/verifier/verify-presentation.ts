@@ -263,12 +263,10 @@ async function verifySdJwtPresentation(
   });
   const { claims, issuerKey } = verified;
   if (issuerKey.source === 'did') checkIssuerTrusted(issuerKey.issuer ?? '', context);
-  if (
-    claims.status !== undefined &&
-    decodeCompactJws(presentation.split('~')[0] ?? '').payload.status === undefined
-  ) {
-    // A disclosable status lets a holder hide a revocation by leaving it out, which no verifier can see;
-    // when it does show up as a disclosure, the issuer broke the rule and the credential is refused.
+  const signedStatus = decodeCompactJws(presentation.split('~')[0] ?? '').payload.status;
+  if (JSON.stringify(claims.status) !== JSON.stringify(signedStatus)) {
+    // A status that is, or holds at any depth, a disclosure (`_sd`, `...`) lets a holder hide a revocation by
+    // leaving it out, which no verifier can see. Present or withheld, the issuer broke the rule: refused.
     throw new FormatError('STATUS_LIST_INVALID', 'the status claim is selectively disclosable', {
       spec: 'SD-JWT VC draft 19 section 2.2.2.3 (status must not be selectively disclosed)',
     });

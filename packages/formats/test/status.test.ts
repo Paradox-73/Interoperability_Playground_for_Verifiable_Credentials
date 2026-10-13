@@ -106,6 +106,16 @@ describe('status entries of a credential', () => {
       statusEntriesOf({ credentialStatus: { ...entry, statusListIndex: '1', statusSize: 2 } }, 'ldp'),
     ).toEqual([{ kind: 'unsupported', type: 'BitstringStatusListEntry with status messages' }]);
   });
+
+  it('SD-JWT VC: an empty status names no entry; a malformed status_list is refused, not called unsupported', () => {
+    expect(statusEntriesOf({ status: {} }, 'sd-jwt')).toEqual([]);
+    expect(statusEntriesOf({ status: { other_mechanism: {} } }, 'sd-jwt')).toEqual([
+      { kind: 'unsupported', type: 'other_mechanism' },
+    ]);
+    expect(() => statusEntriesOf({ status: { status_list: { uri: LIST_URL } } }, 'sd-jwt')).toThrow(
+      /status_list needs idx and uri/,
+    );
+  });
 });
 
 describe('Token Status List check', () => {

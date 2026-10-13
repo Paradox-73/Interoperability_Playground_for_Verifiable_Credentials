@@ -48,9 +48,14 @@ export function statusEntriesOf(
     if (status === undefined) return [];
     if (!isRecord(status)) return [{ kind: 'unsupported', type: 'status' }];
     const list = status.status_list;
+    if (list === undefined) {
+      return Object.keys(status).map((type): StatusEntry => ({ kind: 'unsupported', type }));
+    }
     if (!isRecord(list) || typeof list.uri !== 'string' || !Number.isSafeInteger(list.idx)) {
-      const types = Object.keys(status);
-      return [{ kind: 'unsupported', type: types.length > 0 ? types.join(', ') : 'status' }];
+      throw new FormatError('STATUS_LIST_INVALID', 'status.status_list needs idx and uri', {
+        spec: `${TOKEN_STATUS_SPEC} section 6 (Referenced Token)`,
+        details: { status_list: list },
+      });
     }
     return [{ kind: 'token-status-list', uri: list.uri, idx: list.idx as number }];
   }

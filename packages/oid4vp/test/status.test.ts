@@ -164,6 +164,36 @@ describe('status entries a verifier refuses before fetching anything', () => {
     expect(report.outcome).toBe('INVALID');
     expect(report.errors[0]?.message).toMatch(/selectively disclosable/);
   });
+
+  it.each([
+    ['presented', true],
+    ['withheld', false],
+  ])(
+    'a status_list issued as a nested disclosure, %s by the holder -> INVALID before any fetch',
+    async (_, presented) => {
+      const disclosure = base64UrlEncode(
+        JSON.stringify(['c2FsdA', 'status_list', { idx: REVOKED, uri: TOKEN_URL }]),
+      );
+      const jwt = signCompactJws(
+        { typ: 'vc+sd-jwt', kid: issuer.verificationMethod },
+        {
+          iss: issuer.did,
+          iat: Math.floor(Date.now() / 1000),
+          vct: FARMER_VCT,
+          given_name: 'Asha',
+          cnf: { jwk: toPublicJwk(holder.keyPair.publicJwk) },
+          status: { _sd: [base64UrlEncode(sha256(disclosure))] },
+          _sd_alg: 'sha-256',
+        },
+        issuer.keyPair,
+      );
+      const raw = presented ? `${jwt}~${disclosure}~` : `${jwt}~`;
+      const report = await present({ id: 'nested-disclosable-status', format: 'vc+sd-jwt', raw });
+      expect(report.outcome).toBe('INVALID');
+      expect(report.errors[0]).toMatchObject({ code: 'STATUS_LIST_INVALID' });
+      expect(report.errors[0]?.message).toMatch(/selectively disclosable/);
+    },
+  );
 });
 
 describe('status of an SD-JWT VC whose issuer key comes from x5c', () => {
