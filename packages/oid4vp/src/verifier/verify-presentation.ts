@@ -182,6 +182,10 @@ async function verifyLdpPresentation(
   if (!isRecord(vp)) {
     throw new FormatError('LDP_MALFORMED', 'an ldp_vp presentation must be a JSON object');
   }
+  const embedded = vp.verifiableCredential;
+  const credentials = (Array.isArray(embedded) ? embedded : [embedded]).filter(isRecord);
+  // Before verification, which resolves every verification method: an untrusted did:web causes no fetch.
+  for (const did of credentials.flatMap(claimedIssuerDids)) checkIssuerTrusted(did, context);
   const verified = await verifyLdpVp(vp, {
     documentLoader: context.documentLoader,
     expectedChallenge: context.nonce,
@@ -189,8 +193,6 @@ async function verifyLdpPresentation(
     ...(context.now ? { now: context.now } : {}),
     ...(context.clockSkewSeconds === undefined ? {} : { clockSkewSeconds: context.clockSkewSeconds }),
   });
-  const embedded = vp.verifiableCredential;
-  const credentials = (Array.isArray(embedded) ? embedded : [embedded]).filter(isRecord);
   const first = credentials[0];
   if (!first) throw new FormatError('LDP_MALFORMED', 'the presentation holds no credential');
   let unbound = false;
@@ -254,6 +256,8 @@ async function verifySdJwtPresentation(
   const verified = await verifySdJwtVc(presentation, {
     keyBinding: { nonce: context.nonce, audience: context.clientId },
     ...(context.didResolver ? { didResolver: context.didResolver } : {}),
+    // Checked before the DID is resolved, so an untrusted did:web causes no fetch.
+    ...(context.trustedIssuers ? { trustedIssuers: context.trustedIssuers } : {}),
     ...(context.sdJwtIssuerKeys ? { issuerKeys: context.sdJwtIssuerKeys } : {}),
     // An x5c chain must end at a configured trust anchor (SD-JWT VC draft 19 section 2.5): checking
     // the signature against a self-signed leaf alone would accept any forger's key (scenario forged-x5c).
@@ -262,7 +266,6 @@ async function verifySdJwtPresentation(
     ...(context.clockSkewSeconds === undefined ? {} : { clockSkewSeconds: context.clockSkewSeconds }),
   });
   const { claims, issuerKey } = verified;
-  if (issuerKey.source === 'did') checkIssuerTrusted(issuerKey.issuer ?? '', context);
   const signedStatus = decodeCompactJws(presentation.split('~')[0] ?? '').payload.status;
   if (JSON.stringify(claims.status) !== JSON.stringify(signedStatus)) {
     // A status that is, or holds at any depth, a disclosure (`_sd`, `...`) lets a holder hide a revocation by
@@ -364,6 +367,17 @@ function notCheckedForKeySource(claims: Record<string, unknown>): Check {
         detail:
           'the status list of an issuer named by x5c or a configured key is not checked by this verifier',
       };
+}
+
+/** The DIDs an unverified ldp_vc names for its issuer: `issuer` and its proofs' verification methods. */
+function claimedIssuerDids(credential: Record<string, unknown>): string[] {
+  const issuer = isRecord(credential.issuer) ? credential.issuer.id : credential.issuer;
+  const methods = [credential.proof]
+    .flat()
+    .map((proof) => (isRecord(proof) ? proof.verificationMethod : undefined));
+  return [issuer, ...methods]
+    .filter((value): value is string => typeof value === 'string' && value.startsWith('did:'))
+    .map((value) => value.split('#')[0]!);
 }
 
 /** Rejects an issuer DID that is not in the verifier's list, when the verifier keeps one. */

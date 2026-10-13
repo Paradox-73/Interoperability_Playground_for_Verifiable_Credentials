@@ -114,3 +114,43 @@ describe.each(PROFILES)('issuer trust, %s', (profile) => {
     expect(JSON.stringify(report.presentations)).not.toContain('https://certify.ps02.test');
   });
 });
+
+describe('an untrusted did:web issuer is refused before its DID document is fetched', () => {
+  // *.ps02.test skips the address check, so a resolution would go straight to the stubbed global fetch.
+  const forger = { ...didKeyParty(), did: 'did:web:attacker.ps02.test' };
+  const verificationMethod = `${forger.did}#key-1`;
+
+  async function credential(format: Format): Promise<StoredCredential> {
+    if (format === 'vc+sd-jwt') {
+      const raw = await issueSdJwtVc({
+        issuer: { keyPair: forger.keyPair, kid: verificationMethod },
+        iss: forger.did,
+        typ: 'vc+sd-jwt',
+        vct: FARMER_VCT,
+        claims: { given_name: 'Asha', family_name: 'Rao', land_area_acres: 3 },
+        holder: { jwk: holder.keyPair.publicJwk },
+      });
+      return { id: 'farmer-sd-jwt', format, raw };
+    }
+    const signed = await issueLdpVc({
+      credential: {
+        '@context': [CREDENTIALS_V1_URL, PLAYGROUND_CONTEXT_V1_URL],
+        type: ['VerifiableCredential', 'FarmerCredential'],
+        issuer: forger.did,
+        issuanceDate: new Date(Date.now() - 60_000).toISOString(),
+        credentialSubject: { id: holder.did, givenName: 'Asha', familyName: 'Rao', landAreaAcres: 3 },
+      },
+      suite: 'Ed25519Signature2020',
+      key: { keyPair: forger.keyPair, verificationMethod },
+      documentLoader,
+    });
+    return { id: 'farmer-ldp', format, raw: JSON.stringify(signed) };
+  }
+
+  it.each<Format>(['vc+sd-jwt', 'ldp_vc'])('%s -> INVALID, ISSUER_UNTRUSTED, no fetch', async (format) => {
+    const report = await verify(format, 'final-1.0', await credential(format), [issuer.did]);
+    expect(report.outcome).toBe('INVALID');
+    expect(report.errors[0]?.code).toBe('ISSUER_UNTRUSTED');
+    expect(networkAttempts).not.toHaveBeenCalled();
+  });
+});

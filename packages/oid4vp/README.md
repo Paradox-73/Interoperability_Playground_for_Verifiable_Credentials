@@ -90,8 +90,9 @@ report is that DID. For an `x5c` or configured key it is `iss` as written: a DID
 `SDJWT_ISSUER_MISMATCH`, but an issuer URL is not checked against the certificate, so any key that chains to a
 trust anchor can name any issuer URL. A verifier with a trust list (`trustedIssuers` option or
 `addTrustedIssuers()`) also refuses a DID issuer outside it as `ISSUER_UNTRUSTED`, so a holder cannot present a
-credential it signed itself; issuers named by `x5c` are trusted through the x5c trust anchors instead. Without
-a list every DID issuer is accepted. The playground server always sets one (see `PLAYGROUND_TRUSTED_ISSUERS`).
+credential it signed itself. That check runs before the issuer's DID is resolved (the SD-JWT `kid`; an
+`ldp_vc`'s `issuer` and proof verification methods), so an untrusted did:web causes no fetch. Issuers named
+by `x5c` are trusted through the x5c trust anchors instead. Without a list every DID issuer is accepted. The playground server always sets one (see `PLAYGROUND_TRUSTED_ISSUERS`).
 
 The format library stops at the first failure. The report marks that check `fail` and the checks it
 never reached `skipped`, so a report never claims a check passed that did not run.

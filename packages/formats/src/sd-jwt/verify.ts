@@ -40,6 +40,11 @@ export interface VerifySdJwtVcOptions {
   keyBinding: KeyBindingPolicy | false;
   /** Resolves `kid` DID URLs of the issuer and `cnf.kid` of the holder. */
   didResolver?: DidResolver;
+  /**
+   * DIDs whose keys may sign. A DID key outside the list is `ISSUER_UNTRUSTED` before it is resolved, so an
+   * untrusted did:web causes no fetch. Missing: every DID is accepted.
+   */
+  trustedIssuers?: readonly string[];
   /** Issuer keys known out of band (for example from JWT VC Issuer Metadata, SD-JWT VC section 4). */
   issuerKeys?: PublicJwk[];
   /** x5c policy: trust anchors (base64 DER or PEM) and whether an untrusted chain is rejected. */
@@ -239,6 +244,12 @@ async function resolveIssuerKey(
       throw new FormatError('SDJWT_ISSUER_MISMATCH', `kid ${didUrl} does not belong to issuer ${iss}`, {
         spec: 'RFC 9901 section 7.1 step 2c; SD-JWT VC draft 19 section 2.5 (a DID key names a DID issuer)',
         details: { kid: didUrl, iss },
+      });
+    }
+    if (options.trustedIssuers !== undefined && !options.trustedIssuers.includes(keyDid)) {
+      throw new FormatError('ISSUER_UNTRUSTED', `issuer ${keyDid} is not one this verifier trusts`, {
+        spec: 'W3C VC Data Model 2.0, validation: the verifier decides which issuers it trusts',
+        details: { issuer: keyDid },
       });
     }
     try {
