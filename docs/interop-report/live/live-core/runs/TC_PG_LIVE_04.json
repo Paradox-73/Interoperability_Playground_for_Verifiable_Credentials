@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "exportedAt": "2026-10-06T14:44:32.885Z",
+  "exportedAt": "2026-10-13T22:46:44.216Z",
   "redacted": true,
   "redactions": 8,
   "run": {
-    "runId": "20261006T144431-00b02e",
+    "runId": "20261013T224642-315cf7",
     "status": "finished",
     "mode": "live",
     "config": {
@@ -16,9 +16,9 @@
       "vpProfile": "inji-draft",
       "scenario": "happy"
     },
-    "createdAt": "2026-10-06T14:44:31.071Z",
-    "startedAt": "2026-10-06T14:44:31.071Z",
-    "finishedAt": "2026-10-06T14:44:32.702Z",
+    "createdAt": "2026-10-13T22:46:42.613Z",
+    "startedAt": "2026-10-13T22:46:42.614Z",
+    "finishedAt": "2026-10-13T22:46:44.157Z",
     "outcome": "INVALID",
     "verdict": "fail",
     "error": {
@@ -32,8 +32,8 @@
       "verifier": "0.1.0"
     },
     "report": {
-      "runId": "20261006T144431-00b02e",
-      "createdAt": "2026-10-06T14:44:32.702Z",
+      "runId": "20261013T224642-315cf7",
+      "createdAt": "2026-10-13T22:46:44.157Z",
       "mode": "live",
       "issuer": {
         "id": "inji-certify",
@@ -74,61 +74,61 @@
         {
           "step": "issuer.offer",
           "status": "ok",
-          "durationMs": 34,
-          "startedAt": "2026-10-06T14:44:31.072Z"
+          "durationMs": 61,
+          "startedAt": "2026-10-13T22:46:42.614Z"
         },
         {
           "step": "issuer.metadata",
           "status": "ok",
-          "durationMs": 23,
-          "startedAt": "2026-10-06T14:44:31.106Z"
+          "durationMs": 37,
+          "startedAt": "2026-10-13T22:46:42.676Z"
         },
         {
           "step": "as.metadata",
           "status": "ok",
-          "durationMs": 7,
-          "startedAt": "2026-10-06T14:44:31.129Z"
+          "durationMs": 10,
+          "startedAt": "2026-10-13T22:46:42.713Z"
         },
         {
           "step": "token",
           "status": "ok",
-          "durationMs": 21,
-          "startedAt": "2026-10-06T14:44:31.136Z"
+          "durationMs": 31,
+          "startedAt": "2026-10-13T22:46:42.723Z"
         },
         {
           "step": "credential",
           "status": "ok",
-          "durationMs": 1436,
-          "startedAt": "2026-10-06T14:44:31.157Z"
+          "durationMs": 1279,
+          "startedAt": "2026-10-13T22:46:42.754Z"
         },
         {
           "step": "verifier.request",
           "status": "ok",
-          "durationMs": 1,
-          "startedAt": "2026-10-06T14:44:32.596Z"
+          "durationMs": 2,
+          "startedAt": "2026-10-13T22:46:44.035Z"
         },
         {
           "step": "wallet.fetch-request",
           "status": "ok",
-          "durationMs": 15,
-          "startedAt": "2026-10-06T14:44:32.597Z"
+          "durationMs": 16,
+          "startedAt": "2026-10-13T22:46:44.037Z"
         },
         {
           "step": "wallet.submit",
           "status": "ok",
-          "durationMs": 89,
-          "startedAt": "2026-10-06T14:44:32.613Z"
+          "durationMs": 102,
+          "startedAt": "2026-10-13T22:46:44.054Z"
         },
         {
           "step": "verifier.result",
           "status": "ok",
-          "durationMs": 0,
-          "startedAt": "2026-10-06T14:44:32.702Z"
+          "durationMs": 1,
+          "startedAt": "2026-10-13T22:46:44.155Z"
         }
       ],
       "credentialSize": {
         "bytes": 1255,
-        "pixelpassChars": 1113,
+        "pixelpassChars": 1116,
         "fitsQrV40": true
       }
     }
@@ -136,7 +136,7 @@
   "events": [
     {
       "type": "run.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "config": {
         "issuer": "inji-certify",
         "wallet": "ref-wallet",
@@ -146,21 +146,21 @@
         "vpProfile": "inji-draft",
         "scenario": "happy"
       },
-      "at": "2026-10-06T14:44:31.071Z"
+      "at": "2026-10-13T22:46:42.614Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "issuer.offer",
       "label": "Issuer prepares a credential offer for the wallet",
-      "at": "2026-10-06T14:44:31.072Z"
+      "at": "2026-10-13T22:46:42.614Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x1",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x1",
+        "runId": "20261013T224642-315cf7",
         "seq": 1,
         "capture": "outbound",
         "step": "issuer.metadata",
@@ -180,7 +180,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -193,17 +193,17 @@
           "body": "{\"display\":[{\"name\":\"Inji Certify (local playground)\",\"locale\":\"en\"}],\"credential_issuer\":\"http://certify-nginx:80\",\"authorization_servers\":[\"http://certify-nginx:80\"],\"credential_endpoint\":\"http://certify-nginx:80/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"doctype\":\"test.ps02.playground.farmer.1\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"}}],\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"cryptographic_binding_methods_supported\":[\"did:jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]}}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.072Z",
-        "durationMs": 18.3211999999985,
+        "startedAt": "2026-10-13T22:46:42.614Z",
+        "durationMs": 30.462499999999636,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x2",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x2",
+        "runId": "20261013T224642-315cf7",
         "seq": 2,
         "capture": "outbound",
         "step": "issuer.offer",
@@ -227,7 +227,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -237,40 +237,40 @@
             "x-frame-options": "DENY",
             "x-xss-protection": "0"
           },
-          "body": "{\"credential_offer_uri\":\"openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F3d75269e-d0a1-4357-9f6c-60fbb2edc7a7\"}",
+          "body": "{\"credential_offer_uri\":\"openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F6840fa80-3619-458f-a859-53da160c5e75\"}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.091Z",
-        "durationMs": 14.440599999998085,
+        "startedAt": "2026-10-13T22:46:42.646Z",
+        "durationMs": 27.45640000000094,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "issuer.offer",
       "status": "ok",
-      "at": "2026-10-06T14:44:31.106Z"
+      "at": "2026-10-13T22:46:42.675Z"
     },
     {
       "type": "artifact",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "kind": "offer",
-      "raw": "openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F3d75269e-d0a1-4357-9f6c-60fbb2edc7a7"
+      "raw": "openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F6840fa80-3619-458f-a859-53da160c5e75"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "issuer.metadata",
       "label": "Wallet reads what the issuer can issue",
-      "at": "2026-10-06T14:44:31.106Z"
+      "at": "2026-10-13T22:46:42.676Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x3",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x3",
+        "runId": "20261013T224642-315cf7",
         "seq": 3,
         "capture": "outbound",
         "step": "issuer.offer",
@@ -278,7 +278,7 @@
         "to": "inji-certify",
         "request": {
           "method": "GET",
-          "url": "http://certify-nginx/v1/certify/credential-offer-data/3d75269e-d0a1-4357-9f6c-60fbb2edc7a7",
+          "url": "http://certify-nginx/v1/certify/credential-offer-data/6840fa80-3619-458f-a859-53da160c5e75",
           "headers": {
             "accept": "application/json"
           }
@@ -292,7 +292,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -302,20 +302,20 @@
             "x-frame-options": "DENY",
             "x-xss-protection": "0"
           },
-          "body": "{\"credential_issuer\":\"http://certify-nginx:80\",\"credential_configuration_ids\":[\"FarmerCredential\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:dc0a33be]\"}}}",
+          "body": "{\"credential_issuer\":\"http://certify-nginx:80\",\"credential_configuration_ids\":[\"FarmerCredential\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:1e30d629]\"}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.107Z",
-        "durationMs": 6.005700000001525,
+        "startedAt": "2026-10-13T22:46:42.677Z",
+        "durationMs": 9.439800000000105,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x4",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x4",
+        "runId": "20261013T224642-315cf7",
         "seq": 4,
         "capture": "outbound",
         "step": "issuer.metadata",
@@ -337,7 +337,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -350,31 +350,31 @@
           "body": "{\"display\":[{\"name\":\"Inji Certify (local playground)\",\"locale\":\"en\"}],\"credential_issuer\":\"http://certify-nginx:80\",\"authorization_servers\":[\"http://certify-nginx:80\"],\"credential_endpoint\":\"http://certify-nginx:80/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"doctype\":\"test.ps02.playground.farmer.1\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"}}],\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"cryptographic_binding_methods_supported\":[\"did:jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]}}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.113Z",
-        "durationMs": 14.56499999999869,
+        "startedAt": "2026-10-13T22:46:42.687Z",
+        "durationMs": 24.920500000000175,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "issuer.metadata",
       "status": "ok",
-      "at": "2026-10-06T14:44:31.129Z"
+      "at": "2026-10-13T22:46:42.713Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "as.metadata",
       "label": "Wallet finds the issuer’s authorization server",
-      "at": "2026-10-06T14:44:31.129Z"
+      "at": "2026-10-13T22:46:42.713Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x5",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x5",
+        "runId": "20261013T224642-315cf7",
         "seq": 5,
         "capture": "outbound",
         "step": "as.metadata",
@@ -393,7 +393,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -406,31 +406,31 @@
           "body": "{\"issuer\":\"http://certify-nginx:80\",\"token_endpoint\":\"http://certify-nginx:80/v1/certify/oauth/token\",\"jwks_uri\":\"http://certify-nginx:80/v1/certify/.well-known/jwks.json\",\"grant_types_supported\":[\"authorization_code\",\"urn:ietf:params:oauth:grant-type:pre-authorized_code\"],\"response_types_supported\":[\"code\"],\"code_challenge_methods_supported\":[\"S256\"],\"interactive_authorization_endpoint\":\"http://certify-nginx:80/v1/certify/oauth/iar\"}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.129Z",
-        "durationMs": 5.973699999998644,
+        "startedAt": "2026-10-13T22:46:42.714Z",
+        "durationMs": 8.120299999998679,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "as.metadata",
       "status": "ok",
-      "at": "2026-10-06T14:44:31.135Z"
+      "at": "2026-10-13T22:46:42.723Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "token",
       "label": "Wallet exchanges the one-time code for an access token",
-      "at": "2026-10-06T14:44:31.136Z"
+      "at": "2026-10-13T22:46:42.723Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x6",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x6",
+        "runId": "20261013T224642-315cf7",
         "seq": 6,
         "capture": "outbound",
         "step": "token",
@@ -443,7 +443,7 @@
             "accept": "application/json",
             "content-type": "application/x-www-form-urlencoded"
           },
-          "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Adc0a33be%5D",
+          "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3A1e30d629%5D",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -455,7 +455,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:42 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -465,34 +465,34 @@
             "x-frame-options": "DENY",
             "x-xss-protection": "0"
           },
-          "body": "{\"access_token\":\"[redacted sha256:2b5aa4d1]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"df08e51a-19da-46f8-b9ed-50607a01505e\",\"c_nonce_expires_in\":40}",
+          "body": "{\"access_token\":\"[redacted sha256:65a794a2]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"540ae1cf-f338-4a06-bc94-1ef15a8c5fe9\",\"c_nonce_expires_in\":40}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.136Z",
-        "durationMs": 19.904599999998027,
+        "startedAt": "2026-10-13T22:46:42.724Z",
+        "durationMs": 28.696899999999005,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "token",
       "status": "ok",
-      "at": "2026-10-06T14:44:31.157Z"
+      "at": "2026-10-13T22:46:42.754Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "credential",
       "label": "Wallet proves it holds its key and receives the credential",
-      "at": "2026-10-06T14:44:31.157Z"
+      "at": "2026-10-13T22:46:42.754Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x7",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x7",
+        "runId": "20261013T224642-315cf7",
         "seq": 7,
         "capture": "outbound",
         "step": "credential",
@@ -503,10 +503,10 @@
           "url": "http://certify-nginx/v1/certify/issuance/credential",
           "headers": {
             "accept": "application/json",
-            "authorization": "Bearer [redacted sha256:2b5aa4d1]",
+            "authorization": "Bearer [redacted sha256:65a794a2]",
             "content-type": "application/json"
           },
-          "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\"],\"type\":[\"FarmerCredential\",\"VerifiableCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoib3BlbmlkNHZjaS1wcm9vZitqd3QiLCJraWQiOiJkaWQ6andrOmV5SmpjbllpT2lKRlpESTFOVEU1SWl3aWEzUjVJam9pVDB0UUlpd2llQ0k2SW5Gd2NGRXdOMWQwZUY5VlpsRm9hbnAzUmt0b2Nrc3lSVlJxVEdjMWRHZHZaaTFWZDJScFZVWTNNMk1pZlEjMCJ9.eyJhdWQiOiJodHRwOi8vY2VydGlmeS1uZ2lueDo4MCIsImlhdCI6MTc5MTI5Nzg3MSwibm9uY2UiOiJkZjA4ZTUxYS0xOWRhLTQ2ZjgtYjllZC01MDYwN2EwMTUwNWUifQ.Jl4a8VXziuSFgcGWZSvOEac-r_WomZg9s7-qiCuU0cGXK6lYi08K8iG9qCfutp5-oxryBfE_nuR7HuW6slWEBg\"}}",
+          "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\"],\"type\":[\"FarmerCredential\",\"VerifiableCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoib3BlbmlkNHZjaS1wcm9vZitqd3QiLCJraWQiOiJkaWQ6andrOmV5SmpjbllpT2lKRlpESTFOVEU1SWl3aWEzUjVJam9pVDB0UUlpd2llQ0k2SWpCb1gxUkdPVTFRWDBVMFdYQklUMmh3TFVkSU5tNWhWVnA1YlY5M2JYWlJVbmh4V2tWUlQzQnNUVVVpZlEjMCJ9.eyJhdWQiOiJodHRwOi8vY2VydGlmeS1uZ2lueDo4MCIsImlhdCI6MTc5MTkzMTYwMiwibm9uY2UiOiI1NDBhZTFjZi1mMzM4LTRhMDYtYmM5NC0xZWYxNWE4YzVmZTkifQ.j3j2JBshDQVcqtaDO6L_Nn7i8lqjfrw6AEIse5XCU7wFwnmC5c6joK1qa72R-JSte0DBIMlpJmVNHEDp1MN5Dg\"}}",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -518,7 +518,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 06 Oct 2026 14:44:32 GMT",
+            "date": "Tue, 13 Oct 2026 22:46:44 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "server": "nginx/1.30.5",
@@ -528,61 +528,61 @@
             "x-frame-options": "DENY",
             "x-xss-protection": "0"
           },
-          "body": "{\"credential\":{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}}",
+          "body": "{\"credential\":{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:31.158Z",
-        "durationMs": 1434.5047000000013,
+        "startedAt": "2026-10-13T22:46:42.755Z",
+        "durationMs": 1276.5101999999988,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "credential",
       "status": "ok",
-      "at": "2026-10-06T14:44:32.593Z"
+      "at": "2026-10-13T22:46:44.033Z"
     },
     {
       "type": "artifact",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "kind": "credential",
       "format": "ldp_vc",
-      "raw": "{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}"
+      "raw": "{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "verifier.request",
       "label": "Verifier creates a request saying which credential it needs",
-      "at": "2026-10-06T14:44:32.596Z"
+      "at": "2026-10-13T22:46:44.035Z"
     },
     {
       "type": "artifact",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "kind": "request-object",
-      "raw": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTEyOTc4NzIsImV4cCI6MTc5MTI5ODE3MiwianRpIjoia2hMYi1BWmJEQk15RFZxcnVoTVFOUSIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiUW9hbUFWdUFTUHlYMUxmQzZTV0VsdyIsInN0YXRlIjoiS0xsMVZXX0JKMWZRQlJaWjI2bnp1dyIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtV0tWWmxRb0s3ajQiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.XXQh1765pIrjlKkrd7lOv2rldpLuomuFMUSQ_ryqaY4AWCFsj2AXxPhYTgqCCx8hZwT_a2-ALN1xiYfQVd_2Cg"
+      "raw": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTE5MzE2MDQsImV4cCI6MTc5MTkzMTkwNCwianRpIjoiams0Zm53RjJwRGg1MzlLb0lKdHYtZyIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiWklsZXB3bkxjbXRaZHNyVTdqY2pMZyIsInN0YXRlIjoiZ3E1Y1psVkhKMng0RkstVXFFcXZ0QSIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtVVl1VnJ6RkNMWEEiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.3cgmsMf2byIHAsmOZp3M6XQE7w3wNNNHjn2AZLGovLr9ahDYQUSNWcC8zwXhpMSkcZ3j1tVDCZKrjKH6a9vFBw"
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "verifier.request",
       "status": "ok",
-      "at": "2026-10-06T14:44:32.597Z"
+      "at": "2026-10-13T22:46:44.037Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "wallet.fetch-request",
       "label": "Wallet downloads the verifier’s signed request",
-      "at": "2026-10-06T14:44:32.597Z"
+      "at": "2026-10-13T22:46:44.037Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x8",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x8",
+        "runId": "20261013T224642-315cf7",
         "seq": 8,
         "capture": "inbound",
         "step": "wallet.fetch-request",
@@ -590,7 +590,7 @@
         "to": "ref-verifier",
         "request": {
           "method": "GET",
-          "url": "http://ref.ps02.test/ref/verifier/requests/ZPziHAhiBRFxZP3H-qcguw",
+          "url": "http://ref.ps02.test/ref/verifier/requests/w9zEIEbr8IK9aU6mrYIH7w",
           "headers": {
             "accept": "application/oauth-authz-req+jwt",
             "host": "ref.ps02.test",
@@ -600,36 +600,40 @@
         "response": {
           "status": 200,
           "headers": {
+            "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "referrer-policy": "no-referrer",
             "content-type": "application/oauth-authz-req+jwt"
           },
-          "body": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTEyOTc4NzIsImV4cCI6MTc5MTI5ODE3MiwianRpIjoia2hMYi1BWmJEQk15RFZxcnVoTVFOUSIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiUW9hbUFWdUFTUHlYMUxmQzZTV0VsdyIsInN0YXRlIjoiS0xsMVZXX0JKMWZRQlJaWjI2bnp1dyIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtV0tWWmxRb0s3ajQiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.XXQh1765pIrjlKkrd7lOv2rldpLuomuFMUSQ_ryqaY4AWCFsj2AXxPhYTgqCCx8hZwT_a2-ALN1xiYfQVd_2Cg",
+          "body": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTE5MzE2MDQsImV4cCI6MTc5MTkzMTkwNCwianRpIjoiams0Zm53RjJwRGg1MzlLb0lKdHYtZyIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiWklsZXB3bkxjbXRaZHNyVTdqY2pMZyIsInN0YXRlIjoiZ3E1Y1psVkhKMng0RkstVXFFcXZ0QSIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtVVl1VnJ6RkNMWEEiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.3cgmsMf2byIHAsmOZp3M6XQE7w3wNNNHjn2AZLGovLr9ahDYQUSNWcC8zwXhpMSkcZ3j1tVDCZKrjKH6a9vFBw",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:32.598Z",
-        "durationMs": 0.4355000000032305,
+        "startedAt": "2026-10-13T22:46:44.038Z",
+        "durationMs": 0.5902999999998428,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "wallet.fetch-request",
       "status": "ok",
-      "at": "2026-10-06T14:44:32.613Z"
+      "at": "2026-10-13T22:46:44.053Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "wallet.submit",
       "label": "Wallet sends the presentation to the verifier",
-      "at": "2026-10-06T14:44:32.613Z"
+      "at": "2026-10-13T22:46:44.054Z"
     },
     {
       "type": "exchange",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "exchange": {
-        "id": "20261006T144431-00b02e-x9",
-        "runId": "20261006T144431-00b02e",
+        "id": "20261013T224642-315cf7-x9",
+        "runId": "20261013T224642-315cf7",
         "seq": 9,
         "capture": "inbound",
         "step": "wallet.submit",
@@ -644,63 +648,67 @@
             "user-agent": "lightMyRequest",
             "content-length": "3117"
           },
-          "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%22%2C%22verifiableCredential%22%3A%5B%7B%22issuanceDate%22%3A%222026-10-06T14%3A44%3A31.183Z%22%2C%22credentialSubject%22%3A%7B%22gender%22%3A%22Female%22%2C%22primaryCropType%22%3A%22%24%7BprimaryCropType%7D%22%2C%22mobileNumber%22%3A%22%24%7BmobileNumber%7D%22%2C%22postalCode%22%3A%22%24%7BpostalCode%7D%22%2C%22landArea%22%3A%22%24%7BlandArea%7D%22%2C%22fullName%22%3A%22Asha+Test%22%2C%22secondaryCropType%22%3A%22%24%7BsecondaryCropType%7D%22%2C%22dateOfBirth%22%3A%221990-01-01%22%2C%22face%22%3A%22%24%7Bface%7D%22%2C%22farmerID%22%3A%22%24%7BfarmerID%7D%22%2C%22villageOrTown%22%3A%22%24%7BvillageOrTown%7D%22%2C%22district%22%3A%22%24%7Bdistrict%7D%22%2C%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%230%22%2C%22state%22%3A%22%24%7Bstate%7D%22%2C%22landOwnershipType%22%3A%22%24%7BlandOwnershipType%7D%22%7D%2C%22id%22%3A%22https%3A%2F%2Fmosip.io%2Fcredential%2F7c0c8db9-80be-43f5-800d-5b77cdbe4ee8%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fpiyush7034.github.io%2Fmy-files%2Ffarmer.json%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22issuer%22%3A%22did%3Aweb%3Acertify.ps02.test%22%2C%22expirationDate%22%3A%222028-10-05T14%3A44%3A31.183Z%22%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-06T14%3A44%3A31Z%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22verificationMethod%22%3A%22did%3Aweb%3Acertify.ps02.test%23Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8%22%2C%22proofValue%22%3A%22z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-06T14%3A44%3A32Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%230%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22QoamAVuASPyX1LfC6SWElw%22%2C%22domain%22%3A%22did%3Akey%3Az6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND%22%2C%22proofValue%22%3A%22z5ucQoEC2ZwSg9Pd7aujtcezvy4vaxc2Q5Zkbinfo46Q1E3WUmZDdQNKBVHUCBtYDbayePsk5tj74rYixaPjbx6Qj%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-QoamAVuA%22%2C%22definition_id%22%3A%22pd-WKVZlQoK7j4%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=KLl1VW_BJ1fQBRZZ26nzuw",
+          "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%22%2C%22verifiableCredential%22%3A%5B%7B%22issuanceDate%22%3A%222026-10-13T22%3A46%3A42.788Z%22%2C%22credentialSubject%22%3A%7B%22gender%22%3A%22Female%22%2C%22primaryCropType%22%3A%22%24%7BprimaryCropType%7D%22%2C%22mobileNumber%22%3A%22%24%7BmobileNumber%7D%22%2C%22postalCode%22%3A%22%24%7BpostalCode%7D%22%2C%22landArea%22%3A%22%24%7BlandArea%7D%22%2C%22fullName%22%3A%22Asha+Test%22%2C%22secondaryCropType%22%3A%22%24%7BsecondaryCropType%7D%22%2C%22dateOfBirth%22%3A%221990-01-01%22%2C%22face%22%3A%22%24%7Bface%7D%22%2C%22farmerID%22%3A%22%24%7BfarmerID%7D%22%2C%22villageOrTown%22%3A%22%24%7BvillageOrTown%7D%22%2C%22district%22%3A%22%24%7Bdistrict%7D%22%2C%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%230%22%2C%22state%22%3A%22%24%7Bstate%7D%22%2C%22landOwnershipType%22%3A%22%24%7BlandOwnershipType%7D%22%7D%2C%22id%22%3A%22https%3A%2F%2Fmosip.io%2Fcredential%2F48fd4a30-0e04-4882-9b72-050a20dff2c6%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fpiyush7034.github.io%2Fmy-files%2Ffarmer.json%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22issuer%22%3A%22did%3Aweb%3Acertify.ps02.test%22%2C%22expirationDate%22%3A%222028-10-12T22%3A46%3A42.788Z%22%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-13T22%3A46%3A42Z%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22verificationMethod%22%3A%22did%3Aweb%3Acertify.ps02.test%23cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc%22%2C%22proofValue%22%3A%22z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-13T22%3A46%3A44Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%230%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22ZIlepwnLcmtZdsrU7jcjLg%22%2C%22domain%22%3A%22did%3Akey%3Az6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND%22%2C%22proofValue%22%3A%22z3Yw8dxxypHN34oJQHwpnyvTdAoNWD9pjv7LYfSNsZ6XBwcA5r97uGA837i2Jzydvvtd4ieGhJLH4ySuFfeQPn7mm%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-ZIlepwnL%22%2C%22definition_id%22%3A%22pd-UYuVrzFCLXA%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=gq5cZlVHJ2x4FK-UqEqvtA",
           "bodyEncoding": "utf8"
         },
         "response": {
           "status": 200,
           "headers": {
+            "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "referrer-policy": "no-referrer",
             "cache-control": "no-store",
             "content-type": "application/json; charset=utf-8"
           },
           "body": "{}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-06T14:44:32.614Z",
-        "durationMs": 86.72660000000178,
+        "startedAt": "2026-10-13T22:46:44.057Z",
+        "durationMs": 95.42690000000039,
         "redacted": true
       }
     },
     {
       "type": "artifact",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "kind": "vp-token",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ\",\"verifiableCredential\":[{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}],\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:32Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"proofPurpose\":\"authentication\",\"challenge\":\"QoamAVuASPyX1LfC6SWElw\",\"domain\":\"did:key:z6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND\",\"proofValue\":\"z5ucQoEC2ZwSg9Pd7aujtcezvy4vaxc2Q5Zkbinfo46Q1E3WUmZDdQNKBVHUCBtYDbayePsk5tj74rYixaPjbx6Qj\"}}"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ\",\"verifiableCredential\":[{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}],\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:44Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"proofPurpose\":\"authentication\",\"challenge\":\"ZIlepwnLcmtZdsrU7jcjLg\",\"domain\":\"did:key:z6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND\",\"proofValue\":\"z3Yw8dxxypHN34oJQHwpnyvTdAoNWD9pjv7LYfSNsZ6XBwcA5r97uGA837i2Jzydvvtd4ieGhJLH4ySuFfeQPn7mm\"}}"
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "wallet.submit",
       "status": "ok",
-      "at": "2026-10-06T14:44:32.702Z"
+      "at": "2026-10-13T22:46:44.155Z"
     },
     {
       "type": "step.started",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "verifier.result",
       "label": "Verifier checks signatures, dates and holder binding",
-      "at": "2026-10-06T14:44:32.702Z"
+      "at": "2026-10-13T22:46:44.155Z"
     },
     {
       "type": "step.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "step": "verifier.result",
       "status": "ok",
-      "at": "2026-10-06T14:44:32.702Z"
+      "at": "2026-10-13T22:46:44.156Z"
     },
     {
       "type": "artifact",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "kind": "result",
-      "raw": "{\"handle\":\"ZPziHAhiBRFxZP3H-qcguw\",\"profile\":\"inji-draft\",\"outcome\":\"INVALID\",\"checks\":[{\"id\":\"state\",\"status\":\"pass\"},{\"id\":\"presentation_submission\",\"status\":\"pass\"},{\"id\":\"format\",\"status\":\"skipped\"},{\"id\":\"nonce\",\"status\":\"skipped\"},{\"id\":\"audience\",\"status\":\"skipped\"},{\"id\":\"holder-binding\",\"status\":\"skipped\"},{\"id\":\"validity\",\"status\":\"skipped\"},{\"id\":\"signature\",\"status\":\"fail\",\"detail\":\"LDP_PROOF_INVALID: credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\"}],\"claims\":{},\"presentations\":[{\"queryId\":\"credential\",\"format\":\"ldp_vc\",\"outcome\":\"INVALID\"}],\"errors\":[{\"code\":\"LDP_PROOF_INVALID\",\"message\":\"credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\",\"details\":{\"errors\":[\"Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\"]}}],\"warnings\":[],\"receivedAt\":\"2026-10-06T14:44:32.700Z\"}"
+      "raw": "{\"handle\":\"w9zEIEbr8IK9aU6mrYIH7w\",\"profile\":\"inji-draft\",\"outcome\":\"INVALID\",\"checks\":[{\"id\":\"state\",\"status\":\"pass\"},{\"id\":\"presentation_submission\",\"status\":\"pass\"},{\"id\":\"format\",\"status\":\"skipped\"},{\"id\":\"nonce\",\"status\":\"skipped\"},{\"id\":\"audience\",\"status\":\"skipped\"},{\"id\":\"holder-binding\",\"status\":\"skipped\"},{\"id\":\"validity\",\"status\":\"skipped\"},{\"id\":\"signature\",\"status\":\"fail\",\"detail\":\"LDP_PROOF_INVALID: credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\"},{\"id\":\"status\",\"status\":\"skipped\"}],\"claims\":{},\"presentations\":[{\"queryId\":\"credential\",\"format\":\"ldp_vc\",\"outcome\":\"INVALID\"}],\"errors\":[{\"code\":\"LDP_PROOF_INVALID\",\"message\":\"credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\",\"details\":{\"errors\":[\"Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\"]}}],\"warnings\":[],\"receivedAt\":\"2026-10-13T22:46:44.152Z\"}"
     },
     {
       "type": "run.finished",
-      "runId": "20261006T144431-00b02e",
+      "runId": "20261013T224642-315cf7",
       "report": {
-        "runId": "20261006T144431-00b02e",
-        "createdAt": "2026-10-06T14:44:32.702Z",
+        "runId": "20261013T224642-315cf7",
+        "createdAt": "2026-10-13T22:46:44.157Z",
         "mode": "live",
         "issuer": {
           "id": "inji-certify",
@@ -741,61 +749,61 @@
           {
             "step": "issuer.offer",
             "status": "ok",
-            "durationMs": 34,
-            "startedAt": "2026-10-06T14:44:31.072Z"
+            "durationMs": 61,
+            "startedAt": "2026-10-13T22:46:42.614Z"
           },
           {
             "step": "issuer.metadata",
             "status": "ok",
-            "durationMs": 23,
-            "startedAt": "2026-10-06T14:44:31.106Z"
+            "durationMs": 37,
+            "startedAt": "2026-10-13T22:46:42.676Z"
           },
           {
             "step": "as.metadata",
             "status": "ok",
-            "durationMs": 7,
-            "startedAt": "2026-10-06T14:44:31.129Z"
+            "durationMs": 10,
+            "startedAt": "2026-10-13T22:46:42.713Z"
           },
           {
             "step": "token",
             "status": "ok",
-            "durationMs": 21,
-            "startedAt": "2026-10-06T14:44:31.136Z"
+            "durationMs": 31,
+            "startedAt": "2026-10-13T22:46:42.723Z"
           },
           {
             "step": "credential",
             "status": "ok",
-            "durationMs": 1436,
-            "startedAt": "2026-10-06T14:44:31.157Z"
+            "durationMs": 1279,
+            "startedAt": "2026-10-13T22:46:42.754Z"
           },
           {
             "step": "verifier.request",
             "status": "ok",
-            "durationMs": 1,
-            "startedAt": "2026-10-06T14:44:32.596Z"
+            "durationMs": 2,
+            "startedAt": "2026-10-13T22:46:44.035Z"
           },
           {
             "step": "wallet.fetch-request",
             "status": "ok",
-            "durationMs": 15,
-            "startedAt": "2026-10-06T14:44:32.597Z"
+            "durationMs": 16,
+            "startedAt": "2026-10-13T22:46:44.037Z"
           },
           {
             "step": "wallet.submit",
             "status": "ok",
-            "durationMs": 89,
-            "startedAt": "2026-10-06T14:44:32.613Z"
+            "durationMs": 102,
+            "startedAt": "2026-10-13T22:46:44.054Z"
           },
           {
             "step": "verifier.result",
             "status": "ok",
-            "durationMs": 0,
-            "startedAt": "2026-10-06T14:44:32.702Z"
+            "durationMs": 1,
+            "startedAt": "2026-10-13T22:46:44.155Z"
           }
         ],
         "credentialSize": {
           "bytes": 1255,
-          "pixelpassChars": 1113,
+          "pixelpassChars": 1116,
           "fitsQrV40": true
         }
       }
@@ -803,8 +811,8 @@
   ],
   "exchanges": [
     {
-      "id": "20261006T144431-00b02e-x1",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x1",
+      "runId": "20261013T224642-315cf7",
       "seq": 1,
       "capture": "outbound",
       "step": "issuer.metadata",
@@ -824,7 +832,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -837,13 +845,13 @@
         "body": "{\"display\":[{\"name\":\"Inji Certify (local playground)\",\"locale\":\"en\"}],\"credential_issuer\":\"http://certify-nginx:80\",\"authorization_servers\":[\"http://certify-nginx:80\"],\"credential_endpoint\":\"http://certify-nginx:80/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"doctype\":\"test.ps02.playground.farmer.1\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"}}],\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"cryptographic_binding_methods_supported\":[\"did:jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]}}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.072Z",
-      "durationMs": 18.3211999999985,
+      "startedAt": "2026-10-13T22:46:42.614Z",
+      "durationMs": 30.462499999999636,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x2",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x2",
+      "runId": "20261013T224642-315cf7",
       "seq": 2,
       "capture": "outbound",
       "step": "issuer.offer",
@@ -867,7 +875,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -877,16 +885,16 @@
           "x-frame-options": "DENY",
           "x-xss-protection": "0"
         },
-        "body": "{\"credential_offer_uri\":\"openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F3d75269e-d0a1-4357-9f6c-60fbb2edc7a7\"}",
+        "body": "{\"credential_offer_uri\":\"openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F6840fa80-3619-458f-a859-53da160c5e75\"}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.091Z",
-      "durationMs": 14.440599999998085,
+      "startedAt": "2026-10-13T22:46:42.646Z",
+      "durationMs": 27.45640000000094,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x3",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x3",
+      "runId": "20261013T224642-315cf7",
       "seq": 3,
       "capture": "outbound",
       "step": "issuer.offer",
@@ -894,7 +902,7 @@
       "to": "inji-certify",
       "request": {
         "method": "GET",
-        "url": "http://certify-nginx/v1/certify/credential-offer-data/3d75269e-d0a1-4357-9f6c-60fbb2edc7a7",
+        "url": "http://certify-nginx/v1/certify/credential-offer-data/6840fa80-3619-458f-a859-53da160c5e75",
         "headers": {
           "accept": "application/json"
         }
@@ -908,7 +916,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -918,16 +926,16 @@
           "x-frame-options": "DENY",
           "x-xss-protection": "0"
         },
-        "body": "{\"credential_issuer\":\"http://certify-nginx:80\",\"credential_configuration_ids\":[\"FarmerCredential\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:dc0a33be]\"}}}",
+        "body": "{\"credential_issuer\":\"http://certify-nginx:80\",\"credential_configuration_ids\":[\"FarmerCredential\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:1e30d629]\"}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.107Z",
-      "durationMs": 6.005700000001525,
+      "startedAt": "2026-10-13T22:46:42.677Z",
+      "durationMs": 9.439800000000105,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x4",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x4",
+      "runId": "20261013T224642-315cf7",
       "seq": 4,
       "capture": "outbound",
       "step": "issuer.metadata",
@@ -949,7 +957,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -962,13 +970,13 @@
         "body": "{\"display\":[{\"name\":\"Inji Certify (local playground)\",\"locale\":\"en\"}],\"credential_issuer\":\"http://certify-nginx:80\",\"authorization_servers\":[\"http://certify-nginx:80\"],\"credential_endpoint\":\"http://certify-nginx:80/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":null}],\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"doctype\":\"test.ps02.playground.farmer.1\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}}},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"display\":[{\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"text_color\":\"#FFFFFF\",\"background_color\":\"#12107c\",\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"}}],\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"cryptographic_binding_methods_supported\":[\"did:jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]}}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.113Z",
-      "durationMs": 14.56499999999869,
+      "startedAt": "2026-10-13T22:46:42.687Z",
+      "durationMs": 24.920500000000175,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x5",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x5",
+      "runId": "20261013T224642-315cf7",
       "seq": 5,
       "capture": "outbound",
       "step": "as.metadata",
@@ -987,7 +995,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -1000,13 +1008,13 @@
         "body": "{\"issuer\":\"http://certify-nginx:80\",\"token_endpoint\":\"http://certify-nginx:80/v1/certify/oauth/token\",\"jwks_uri\":\"http://certify-nginx:80/v1/certify/.well-known/jwks.json\",\"grant_types_supported\":[\"authorization_code\",\"urn:ietf:params:oauth:grant-type:pre-authorized_code\"],\"response_types_supported\":[\"code\"],\"code_challenge_methods_supported\":[\"S256\"],\"interactive_authorization_endpoint\":\"http://certify-nginx:80/v1/certify/oauth/iar\"}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.129Z",
-      "durationMs": 5.973699999998644,
+      "startedAt": "2026-10-13T22:46:42.714Z",
+      "durationMs": 8.120299999998679,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x6",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x6",
+      "runId": "20261013T224642-315cf7",
       "seq": 6,
       "capture": "outbound",
       "step": "token",
@@ -1019,7 +1027,7 @@
           "accept": "application/json",
           "content-type": "application/x-www-form-urlencoded"
         },
-        "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Adc0a33be%5D",
+        "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3A1e30d629%5D",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -1031,7 +1039,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:31 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:42 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -1041,16 +1049,16 @@
           "x-frame-options": "DENY",
           "x-xss-protection": "0"
         },
-        "body": "{\"access_token\":\"[redacted sha256:2b5aa4d1]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"df08e51a-19da-46f8-b9ed-50607a01505e\",\"c_nonce_expires_in\":40}",
+        "body": "{\"access_token\":\"[redacted sha256:65a794a2]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"540ae1cf-f338-4a06-bc94-1ef15a8c5fe9\",\"c_nonce_expires_in\":40}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.136Z",
-      "durationMs": 19.904599999998027,
+      "startedAt": "2026-10-13T22:46:42.724Z",
+      "durationMs": 28.696899999999005,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x7",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x7",
+      "runId": "20261013T224642-315cf7",
       "seq": 7,
       "capture": "outbound",
       "step": "credential",
@@ -1061,10 +1069,10 @@
         "url": "http://certify-nginx/v1/certify/issuance/credential",
         "headers": {
           "accept": "application/json",
-          "authorization": "Bearer [redacted sha256:2b5aa4d1]",
+          "authorization": "Bearer [redacted sha256:65a794a2]",
           "content-type": "application/json"
         },
-        "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\"],\"type\":[\"FarmerCredential\",\"VerifiableCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoib3BlbmlkNHZjaS1wcm9vZitqd3QiLCJraWQiOiJkaWQ6andrOmV5SmpjbllpT2lKRlpESTFOVEU1SWl3aWEzUjVJam9pVDB0UUlpd2llQ0k2SW5Gd2NGRXdOMWQwZUY5VlpsRm9hbnAzUmt0b2Nrc3lSVlJxVEdjMWRHZHZaaTFWZDJScFZVWTNNMk1pZlEjMCJ9.eyJhdWQiOiJodHRwOi8vY2VydGlmeS1uZ2lueDo4MCIsImlhdCI6MTc5MTI5Nzg3MSwibm9uY2UiOiJkZjA4ZTUxYS0xOWRhLTQ2ZjgtYjllZC01MDYwN2EwMTUwNWUifQ.Jl4a8VXziuSFgcGWZSvOEac-r_WomZg9s7-qiCuU0cGXK6lYi08K8iG9qCfutp5-oxryBfE_nuR7HuW6slWEBg\"}}",
+        "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\"],\"type\":[\"FarmerCredential\",\"VerifiableCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoib3BlbmlkNHZjaS1wcm9vZitqd3QiLCJraWQiOiJkaWQ6andrOmV5SmpjbllpT2lKRlpESTFOVEU1SWl3aWEzUjVJam9pVDB0UUlpd2llQ0k2SWpCb1gxUkdPVTFRWDBVMFdYQklUMmh3TFVkSU5tNWhWVnA1YlY5M2JYWlJVbmh4V2tWUlQzQnNUVVVpZlEjMCJ9.eyJhdWQiOiJodHRwOi8vY2VydGlmeS1uZ2lueDo4MCIsImlhdCI6MTc5MTkzMTYwMiwibm9uY2UiOiI1NDBhZTFjZi1mMzM4LTRhMDYtYmM5NC0xZWYxNWE4YzVmZTkifQ.j3j2JBshDQVcqtaDO6L_Nn7i8lqjfrw6AEIse5XCU7wFwnmC5c6joK1qa72R-JSte0DBIMlpJmVNHEDp1MN5Dg\"}}",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -1076,7 +1084,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 06 Oct 2026 14:44:32 GMT",
+          "date": "Tue, 13 Oct 2026 22:46:44 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "server": "nginx/1.30.5",
@@ -1086,16 +1094,16 @@
           "x-frame-options": "DENY",
           "x-xss-protection": "0"
         },
-        "body": "{\"credential\":{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}}",
+        "body": "{\"credential\":{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:31.158Z",
-      "durationMs": 1434.5047000000013,
+      "startedAt": "2026-10-13T22:46:42.755Z",
+      "durationMs": 1276.5101999999988,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x8",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x8",
+      "runId": "20261013T224642-315cf7",
       "seq": 8,
       "capture": "inbound",
       "step": "wallet.fetch-request",
@@ -1103,7 +1111,7 @@
       "to": "ref-verifier",
       "request": {
         "method": "GET",
-        "url": "http://ref.ps02.test/ref/verifier/requests/ZPziHAhiBRFxZP3H-qcguw",
+        "url": "http://ref.ps02.test/ref/verifier/requests/w9zEIEbr8IK9aU6mrYIH7w",
         "headers": {
           "accept": "application/oauth-authz-req+jwt",
           "host": "ref.ps02.test",
@@ -1113,18 +1121,22 @@
       "response": {
         "status": 200,
         "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "no-referrer",
           "content-type": "application/oauth-authz-req+jwt"
         },
-        "body": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTEyOTc4NzIsImV4cCI6MTc5MTI5ODE3MiwianRpIjoia2hMYi1BWmJEQk15RFZxcnVoTVFOUSIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiUW9hbUFWdUFTUHlYMUxmQzZTV0VsdyIsInN0YXRlIjoiS0xsMVZXX0JKMWZRQlJaWjI2bnp1dyIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtV0tWWmxRb0s3ajQiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.XXQh1765pIrjlKkrd7lOv2rldpLuomuFMUSQ_ryqaY4AWCFsj2AXxPhYTgqCCx8hZwT_a2-ALN1xiYfQVd_2Cg",
+        "body": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTE5MzE2MDQsImV4cCI6MTc5MTkzMTkwNCwianRpIjoiams0Zm53RjJwRGg1MzlLb0lKdHYtZyIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiWklsZXB3bkxjbXRaZHNyVTdqY2pMZyIsInN0YXRlIjoiZ3E1Y1psVkhKMng0RkstVXFFcXZ0QSIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtVVl1VnJ6RkNMWEEiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.3cgmsMf2byIHAsmOZp3M6XQE7w3wNNNHjn2AZLGovLr9ahDYQUSNWcC8zwXhpMSkcZ3j1tVDCZKrjKH6a9vFBw",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:32.598Z",
-      "durationMs": 0.4355000000032305,
+      "startedAt": "2026-10-13T22:46:44.038Z",
+      "durationMs": 0.5902999999998428,
       "redacted": true
     },
     {
-      "id": "20261006T144431-00b02e-x9",
-      "runId": "20261006T144431-00b02e",
+      "id": "20261013T224642-315cf7-x9",
+      "runId": "20261013T224642-315cf7",
       "seq": 9,
       "capture": "inbound",
       "step": "wallet.submit",
@@ -1139,20 +1151,24 @@
           "user-agent": "lightMyRequest",
           "content-length": "3117"
         },
-        "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%22%2C%22verifiableCredential%22%3A%5B%7B%22issuanceDate%22%3A%222026-10-06T14%3A44%3A31.183Z%22%2C%22credentialSubject%22%3A%7B%22gender%22%3A%22Female%22%2C%22primaryCropType%22%3A%22%24%7BprimaryCropType%7D%22%2C%22mobileNumber%22%3A%22%24%7BmobileNumber%7D%22%2C%22postalCode%22%3A%22%24%7BpostalCode%7D%22%2C%22landArea%22%3A%22%24%7BlandArea%7D%22%2C%22fullName%22%3A%22Asha+Test%22%2C%22secondaryCropType%22%3A%22%24%7BsecondaryCropType%7D%22%2C%22dateOfBirth%22%3A%221990-01-01%22%2C%22face%22%3A%22%24%7Bface%7D%22%2C%22farmerID%22%3A%22%24%7BfarmerID%7D%22%2C%22villageOrTown%22%3A%22%24%7BvillageOrTown%7D%22%2C%22district%22%3A%22%24%7Bdistrict%7D%22%2C%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%230%22%2C%22state%22%3A%22%24%7Bstate%7D%22%2C%22landOwnershipType%22%3A%22%24%7BlandOwnershipType%7D%22%7D%2C%22id%22%3A%22https%3A%2F%2Fmosip.io%2Fcredential%2F7c0c8db9-80be-43f5-800d-5b77cdbe4ee8%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fpiyush7034.github.io%2Fmy-files%2Ffarmer.json%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22issuer%22%3A%22did%3Aweb%3Acertify.ps02.test%22%2C%22expirationDate%22%3A%222028-10-05T14%3A44%3A31.183Z%22%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-06T14%3A44%3A31Z%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22verificationMethod%22%3A%22did%3Aweb%3Acertify.ps02.test%23Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8%22%2C%22proofValue%22%3A%22z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-06T14%3A44%3A32Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ%230%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22QoamAVuASPyX1LfC6SWElw%22%2C%22domain%22%3A%22did%3Akey%3Az6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND%22%2C%22proofValue%22%3A%22z5ucQoEC2ZwSg9Pd7aujtcezvy4vaxc2Q5Zkbinfo46Q1E3WUmZDdQNKBVHUCBtYDbayePsk5tj74rYixaPjbx6Qj%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-QoamAVuA%22%2C%22definition_id%22%3A%22pd-WKVZlQoK7j4%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=KLl1VW_BJ1fQBRZZ26nzuw",
+        "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%22%2C%22verifiableCredential%22%3A%5B%7B%22issuanceDate%22%3A%222026-10-13T22%3A46%3A42.788Z%22%2C%22credentialSubject%22%3A%7B%22gender%22%3A%22Female%22%2C%22primaryCropType%22%3A%22%24%7BprimaryCropType%7D%22%2C%22mobileNumber%22%3A%22%24%7BmobileNumber%7D%22%2C%22postalCode%22%3A%22%24%7BpostalCode%7D%22%2C%22landArea%22%3A%22%24%7BlandArea%7D%22%2C%22fullName%22%3A%22Asha+Test%22%2C%22secondaryCropType%22%3A%22%24%7BsecondaryCropType%7D%22%2C%22dateOfBirth%22%3A%221990-01-01%22%2C%22face%22%3A%22%24%7Bface%7D%22%2C%22farmerID%22%3A%22%24%7BfarmerID%7D%22%2C%22villageOrTown%22%3A%22%24%7BvillageOrTown%7D%22%2C%22district%22%3A%22%24%7Bdistrict%7D%22%2C%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%230%22%2C%22state%22%3A%22%24%7Bstate%7D%22%2C%22landOwnershipType%22%3A%22%24%7BlandOwnershipType%7D%22%7D%2C%22id%22%3A%22https%3A%2F%2Fmosip.io%2Fcredential%2F48fd4a30-0e04-4882-9b72-050a20dff2c6%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fpiyush7034.github.io%2Fmy-files%2Ffarmer.json%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22issuer%22%3A%22did%3Aweb%3Acertify.ps02.test%22%2C%22expirationDate%22%3A%222028-10-12T22%3A46%3A42.788Z%22%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-13T22%3A46%3A42Z%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22verificationMethod%22%3A%22did%3Aweb%3Acertify.ps02.test%23cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc%22%2C%22proofValue%22%3A%22z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-13T22%3A46%3A44Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ%230%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22ZIlepwnLcmtZdsrU7jcjLg%22%2C%22domain%22%3A%22did%3Akey%3Az6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND%22%2C%22proofValue%22%3A%22z3Yw8dxxypHN34oJQHwpnyvTdAoNWD9pjv7LYfSNsZ6XBwcA5r97uGA837i2Jzydvvtd4ieGhJLH4ySuFfeQPn7mm%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-ZIlepwnL%22%2C%22definition_id%22%3A%22pd-UYuVrzFCLXA%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=gq5cZlVHJ2x4FK-UqEqvtA",
         "bodyEncoding": "utf8"
       },
       "response": {
         "status": 200,
         "headers": {
+          "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "no-referrer",
           "cache-control": "no-store",
           "content-type": "application/json; charset=utf-8"
         },
         "body": "{}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-06T14:44:32.614Z",
-      "durationMs": 86.72660000000178,
+      "startedAt": "2026-10-13T22:46:44.057Z",
+      "durationMs": 95.42690000000039,
       "redacted": true
     }
   ],
@@ -1160,34 +1176,34 @@
     {
       "seq": 6,
       "kind": "offer",
-      "raw": "openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F3d75269e-d0a1-4357-9f6c-60fbb2edc7a7",
-      "createdAt": "2026-10-06T14:44:31.106Z"
+      "raw": "openid-credential-offer://?credential_offer_uri=http%3A%2F%2Fcertify-nginx%3A80%2Fv1%2Fcertify%2Fcredential-offer-data%2F6840fa80-3619-458f-a859-53da160c5e75",
+      "createdAt": "2026-10-13T22:46:42.675Z"
     },
     {
       "seq": 20,
       "kind": "credential",
       "format": "ldp_vc",
-      "raw": "{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}",
-      "createdAt": "2026-10-06T14:44:32.593Z"
+      "raw": "{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}",
+      "createdAt": "2026-10-13T22:46:44.033Z"
     },
     {
       "seq": 22,
       "kind": "request-object",
-      "raw": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTEyOTc4NzIsImV4cCI6MTc5MTI5ODE3MiwianRpIjoia2hMYi1BWmJEQk15RFZxcnVoTVFOUSIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiUW9hbUFWdUFTUHlYMUxmQzZTV0VsdyIsInN0YXRlIjoiS0xsMVZXX0JKMWZRQlJaWjI2bnp1dyIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtV0tWWmxRb0s3ajQiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.XXQh1765pIrjlKkrd7lOv2rldpLuomuFMUSQ_ryqaY4AWCFsj2AXxPhYTgqCCx8hZwT_a2-ALN1xiYfQVd_2Cg",
-      "createdAt": "2026-10-06T14:44:32.597Z"
+      "raw": "eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0Iiwia2lkIjoiZGlkOmtleTp6Nk1rcFRUQ2o5UURyOEJDWjVwbmg4dmQ0QTRxVVZRTnJpZ2o3d1liN0xZUExQTkQjejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwiYWxnIjoiRWREU0EifQ.eyJpc3MiOiJkaWQ6a2V5Ono2TWtwVFRDajlRRHI4QkNaNXBuaDh2ZDRBNHFVVlFOcmlnajd3WWI3TFlQTFBORCIsImF1ZCI6Imh0dHBzOi8vc2VsZi1pc3N1ZWQubWUvdjIiLCJpYXQiOjE3OTE5MzE2MDQsImV4cCI6MTc5MTkzMTkwNCwianRpIjoiams0Zm53RjJwRGg1MzlLb0lKdHYtZyIsImNsaWVudF9pZCI6ImRpZDprZXk6ejZNa3BUVENqOVFEcjhCQ1o1cG5oOHZkNEE0cVVWUU5yaWdqN3dZYjdMWVBMUE5EIiwicmVzcG9uc2VfdHlwZSI6InZwX3Rva2VuIiwicmVzcG9uc2VfbW9kZSI6ImRpcmVjdF9wb3N0IiwicmVzcG9uc2VfdXJpIjoiaHR0cHM6Ly9yZWYucHMwMi50ZXN0L3JlZi92ZXJpZmllci9yZXNwb25zZSIsIm5vbmNlIjoiWklsZXB3bkxjbXRaZHNyVTdqY2pMZyIsInN0YXRlIjoiZ3E1Y1psVkhKMng0RkstVXFFcXZ0QSIsInByZXNlbnRhdGlvbl9kZWZpbml0aW9uIjp7ImlkIjoicGQtVVl1VnJ6RkNMWEEiLCJwdXJwb3NlIjoiSW50ZXJvcGVyYWJpbGl0eSBwbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsImZvcm1hdCI6eyJsZHBfdmMiOnsicHJvb2ZfdHlwZSI6WyJFZDI1NTE5U2lnbmF0dXJlMjAyMCIsIkRhdGFJbnRlZ3JpdHlQcm9vZiJdfX0sImlucHV0X2Rlc2NyaXB0b3JzIjpbeyJpZCI6ImNyZWRlbnRpYWwiLCJmb3JtYXQiOnsibGRwX3ZjIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX19LCJjb25zdHJhaW50cyI6eyJmaWVsZHMiOlt7InBhdGgiOlsiJC50eXBlIl0sImZpbHRlciI6eyJ0eXBlIjoiYXJyYXkiLCJjb250YWlucyI6eyJjb25zdCI6IlZlcmlmaWFibGVDcmVkZW50aWFsIn19fV19fV19LCJjbGllbnRfbWV0YWRhdGEiOnsiY2xpZW50X25hbWUiOiJQbGF5Z3JvdW5kIHJlZmVyZW5jZSB2ZXJpZmllciIsInZwX2Zvcm1hdHMiOnsibGRwX3ZwIjp7InByb29mX3R5cGUiOlsiRWQyNTUxOVNpZ25hdHVyZTIwMjAiLCJEYXRhSW50ZWdyaXR5UHJvb2YiXX0sImxkcF92YyI6eyJwcm9vZl90eXBlIjpbIkVkMjU1MTlTaWduYXR1cmUyMDIwIiwiRGF0YUludGVncml0eVByb29mIl19LCJ2YytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJkYytzZC1qd3QiOnsic2Qtand0X2FsZ192YWx1ZXMiOlsiRWREU0EiLCJFUzI1NiJdLCJrYi1qd3RfYWxnX3ZhbHVlcyI6WyJFZERTQSIsIkVTMjU2Il19LCJtc29fbWRvYyI6eyJhbGciOlsiRVMyNTYiXX19fX0.3cgmsMf2byIHAsmOZp3M6XQE7w3wNNNHjn2AZLGovLr9ahDYQUSNWcC8zwXhpMSkcZ3j1tVDCZKrjKH6a9vFBw",
+      "createdAt": "2026-10-13T22:46:44.037Z"
     },
     {
       "seq": 29,
       "kind": "vp-token",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ\",\"verifiableCredential\":[{\"issuanceDate\":\"2026-10-06T14:44:31.183Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/7c0c8db9-80be-43f5-800d-5b77cdbe4ee8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-05T14:44:31.183Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:31Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\",\"proofValue\":\"z23865tUQMGpCtXPoeiNHGxEUkf3SDehSrhdJCoJooeTvdy1KvpvC2gBHG5WnML56Jp6FsU3AQPwkpvgf9GLEtcSG\"}}],\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-06T14:44:32Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6InFwcFEwN1d0eF9VZlFoanp3RktocksyRVRqTGc1dGdvZi1Vd2RpVUY3M2MifQ#0\",\"proofPurpose\":\"authentication\",\"challenge\":\"QoamAVuASPyX1LfC6SWElw\",\"domain\":\"did:key:z6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND\",\"proofValue\":\"z5ucQoEC2ZwSg9Pd7aujtcezvy4vaxc2Q5Zkbinfo46Q1E3WUmZDdQNKBVHUCBtYDbayePsk5tj74rYixaPjbx6Qj\"}}",
-      "createdAt": "2026-10-06T14:44:32.701Z"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ\",\"verifiableCredential\":[{\"issuanceDate\":\"2026-10-13T22:46:42.788Z\",\"credentialSubject\":{\"gender\":\"Female\",\"primaryCropType\":\"${primaryCropType}\",\"mobileNumber\":\"${mobileNumber}\",\"postalCode\":\"${postalCode}\",\"landArea\":\"${landArea}\",\"fullName\":\"Asha Test\",\"secondaryCropType\":\"${secondaryCropType}\",\"dateOfBirth\":\"1990-01-01\",\"face\":\"${face}\",\"farmerID\":\"${farmerID}\",\"villageOrTown\":\"${villageOrTown}\",\"district\":\"${district}\",\"id\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"state\":\"${state}\",\"landOwnershipType\":\"${landOwnershipType}\"},\"id\":\"https://mosip.io/credential/48fd4a30-0e04-4882-9b72-050a20dff2c6\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://piyush7034.github.io/my-files/farmer.json\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"issuer\":\"did:web:certify.ps02.test\",\"expirationDate\":\"2028-10-12T22:46:42.788Z\",\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:42Z\",\"proofPurpose\":\"assertionMethod\",\"verificationMethod\":\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\",\"proofValue\":\"z35W6kgPTyo4qi87ed9GiMrjdqiXr8UoGwhkwpnqAEeg45EGVcGT4dytrZNiWNZbpheSgTZ2LwiWSWCxe3q2k54jm\"}}],\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-13T22:46:44Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJFZDI1NTE5Iiwia3R5IjoiT0tQIiwieCI6IjBoX1RGOU1QX0U0WXBIT2hwLUdINm5hVVp5bV93bXZRUnhxWkVRT3BsTUUifQ#0\",\"proofPurpose\":\"authentication\",\"challenge\":\"ZIlepwnLcmtZdsrU7jcjLg\",\"domain\":\"did:key:z6MkpTTCj9QDr8BCZ5pnh8vd4A4qUVQNrigj7wYb7LYPLPND\",\"proofValue\":\"z3Yw8dxxypHN34oJQHwpnyvTdAoNWD9pjv7LYfSNsZ6XBwcA5r97uGA837i2Jzydvvtd4ieGhJLH4ySuFfeQPn7mm\"}}",
+      "createdAt": "2026-10-13T22:46:44.155Z"
     },
     {
       "seq": 33,
       "kind": "result",
-      "raw": "{\"handle\":\"ZPziHAhiBRFxZP3H-qcguw\",\"profile\":\"inji-draft\",\"outcome\":\"INVALID\",\"checks\":[{\"id\":\"state\",\"status\":\"pass\"},{\"id\":\"presentation_submission\",\"status\":\"pass\"},{\"id\":\"format\",\"status\":\"skipped\"},{\"id\":\"nonce\",\"status\":\"skipped\"},{\"id\":\"audience\",\"status\":\"skipped\"},{\"id\":\"holder-binding\",\"status\":\"skipped\"},{\"id\":\"validity\",\"status\":\"skipped\"},{\"id\":\"signature\",\"status\":\"fail\",\"detail\":\"LDP_PROOF_INVALID: credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\"}],\"claims\":{},\"presentations\":[{\"queryId\":\"credential\",\"format\":\"ldp_vc\",\"outcome\":\"INVALID\"}],\"errors\":[{\"code\":\"LDP_PROOF_INVALID\",\"message\":\"credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\",\"details\":{\"errors\":[\"Verification method \\\"did:web:certify.ps02.test#Yze2nQZqDIr4Yc5Eadhrprk-BQRKQFZIPV2mqC2n_P8\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\"]}}],\"warnings\":[],\"receivedAt\":\"2026-10-06T14:44:32.700Z\"}",
-      "createdAt": "2026-10-06T14:44:32.702Z"
+      "raw": "{\"handle\":\"w9zEIEbr8IK9aU6mrYIH7w\",\"profile\":\"inji-draft\",\"outcome\":\"INVALID\",\"checks\":[{\"id\":\"state\",\"status\":\"pass\"},{\"id\":\"presentation_submission\",\"status\":\"pass\"},{\"id\":\"format\",\"status\":\"skipped\"},{\"id\":\"nonce\",\"status\":\"skipped\"},{\"id\":\"audience\",\"status\":\"skipped\"},{\"id\":\"holder-binding\",\"status\":\"skipped\"},{\"id\":\"validity\",\"status\":\"skipped\"},{\"id\":\"signature\",\"status\":\"fail\",\"detail\":\"LDP_PROOF_INVALID: credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\"},{\"id\":\"status\",\"status\":\"skipped\"}],\"claims\":{},\"presentations\":[{\"queryId\":\"credential\",\"format\":\"ldp_vc\",\"outcome\":\"INVALID\"}],\"errors\":[{\"code\":\"LDP_PROOF_INVALID\",\"message\":\"credential 0 proof did not verify: Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\",\"spec\":\"VC Data Integrity 1.0 section 4.4 (Verify Proof)\",\"details\":{\"errors\":[\"Verification method \\\"did:web:certify.ps02.test#cvu2BxpFAd7kCDFHfOGYgYMLl_2-BlTR9V09m9re8Tc\\\" not authorized by controller for proof purpose \\\"assertionMethod\\\".\"]}}],\"warnings\":[],\"receivedAt\":\"2026-10-13T22:46:44.152Z\"}",
+      "createdAt": "2026-10-13T22:46:44.156Z"
     }
   ]
 }

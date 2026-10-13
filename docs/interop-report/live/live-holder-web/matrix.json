@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": false
   },
-  "startedAt": "2026-10-06T14:45:42.917Z",
-  "finishedAt": "2026-10-06T14:46:57.756Z",
-  "durationMs": 74839,
+  "startedAt": "2026-10-13T22:47:58.072Z",
+  "finishedAt": "2026-10-13T22:48:41.482Z",
+  "durationMs": 43410,
   "roles": {
     "inji-certify-ac": {
       "name": "Inji Certify (authorization code)",
@@ -69,11 +69,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T144543-794bcc",
+      "runId": "20261013T224758-3cd203",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 5751,
+      "durationMs": 800,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -95,11 +95,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T144548-ec4b8e",
+      "runId": "20261013T224759-6ae4d0",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 8346,
+      "durationMs": 4671,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -121,11 +121,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T144557-3e341e",
+      "runId": "20261013T224803-811148",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 37743,
+      "durationMs": 12774,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -147,11 +147,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144635-ecc9f7",
+      "runId": "20261013T224816-ff1892",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 1845,
+      "durationMs": 1052,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.no-matching-credential",
@@ -178,11 +178,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261006T144636-6df87a",
+      "runId": "20261013T224817-3abc7d",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 7296,
+      "durationMs": 8302,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -204,11 +204,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144644-baa3fd",
+      "runId": "20261013T224826-ac0b63",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 4197,
+      "durationMs": 2868,
       "error": {
         "step": "wallet.fetch-request",
         "code": "wallet.presentation-request-failed",
@@ -235,11 +235,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144648-ff0159",
+      "runId": "20261013T224828-ad727d",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 7052,
+      "durationMs": 8415,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -266,11 +266,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144655-e7fecc",
+      "runId": "20261013T224837-b2ae38",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 1569,
+      "durationMs": 3148,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -297,11 +297,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144657-24351c",
+      "runId": "20261013T224840-7eb7a0",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 287,
+      "durationMs": 540,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -328,11 +328,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261006T144657-035a53",
+      "runId": "20261013T224841-b03ad0",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 269,
+      "durationMs": 273,
       "error": {
         "step": "issuer.metadata",
         "code": "wallet.download-failed",
