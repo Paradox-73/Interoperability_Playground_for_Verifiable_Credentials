@@ -12,7 +12,9 @@
  */
 import { randomUUID } from 'node:crypto';
 import {
+  CREDENTIALS_V1_URL,
   FormatError,
+  PLAYGROUND_CONTEXT_V1_URL,
   buildDidDocument,
   createDidJwk,
   createDidKey,
@@ -21,10 +23,13 @@ import {
   createTestCertificate,
   didKeyVerificationMethodId,
   didWebFromUrl,
+  encodeBitstringStatusList,
+  encodeTokenStatusList,
   generateKeyPair,
   issueLdpVc,
   issueMdoc,
   issueSdJwtVc,
+  signStatusListToken,
   toPublicJwk,
   type DidDocument,
   type DocumentLoader,
@@ -66,6 +71,11 @@ export interface IssuanceOptions {
   doctype?: string;
   /** Merged over the subject claims. */
   claims?: Record<string, unknown>;
+  /**
+   * ldp_vc and SD-JWT VC: the credential gets a status entry in the issuer's status list (Bitstring Status
+   * List, Token Status List), already set to revoked.
+   */
+  revoked?: boolean;
 }
 
 export interface IssuedCredential {
@@ -84,6 +94,9 @@ export class IssuerSigner {
   readonly documentLoader: DocumentLoader;
   private readonly certificates = new Map<string, Promise<TestCertificate>>();
   private mdocChain: Promise<MdocCertificates> | undefined;
+  /** Status list indexes handed out so far, and the revoked ones; one index space for every list. */
+  private nextStatusIndex = 0;
+  private readonly revokedIndexes = new Set<number>();
 
   constructor(
     keys: IssuerKeys,
@@ -156,6 +169,7 @@ export class IssuerSigner {
           ? { validFrom: isoSeconds(validFrom), validUntil: isoSeconds(validUntil) }
           : { issuanceDate: isoSeconds(validFrom), expirationDate: isoSeconds(validUntil) }),
         credentialSubject: { id: holder.did, ...claims },
+        ...(options.revoked ? { credentialStatus: this.revokedEntry('bitstring') } : {}),
       };
       const credential = await issueLdpVc({
         credential: unsigned,
@@ -200,11 +214,77 @@ export class IssuerSigner {
       vct: options.vct ?? configuration.vct!,
       claims,
       holder: { jwk: holder.publicJwk },
+      ...(options.revoked ? { status: this.revokedEntry('token', signer.keyPair.alg) } : {}),
       issuedAt: now,
       notBefore: validFrom,
       expiresAt: validUntil,
     });
     return { credential, issuerDid: signer.did, proofType: signer.keyPair.alg };
+  }
+
+  /** URL of a status list: the Bitstring Status List credential, or the Token Status List of one key. */
+  statusListUrl(kind: 'bitstring'): string;
+  statusListUrl(kind: 'token', alg: string): string;
+  statusListUrl(kind: 'bitstring' | 'token', alg?: string): string {
+    return kind === 'bitstring' ? `${this.baseUrl}/status/bitstring` : `${this.baseUrl}/status/token/${alg}`;
+  }
+
+  /** A new status entry, revoked from the start (the `revoked` scenario). */
+  private revokedEntry(kind: 'bitstring' | 'token', alg = 'EdDSA'): Record<string, unknown> {
+    const index = this.nextStatusIndex++;
+    this.revokedIndexes.add(index);
+    if (kind === 'token') return { status_list: { idx: index, uri: this.statusListUrl('token', alg) } };
+    const url = this.statusListUrl('bitstring');
+    return {
+      id: `${url}#${index}`,
+      type: 'BitstringStatusListEntry',
+      statusPurpose: 'revocation',
+      statusListIndex: String(index),
+      statusListCredential: url,
+    };
+  }
+
+  /**
+   * The Token Status List of the key `alg` signs SD-JWT VCs with, as a Status List Token signed by that key
+   * (so its DID is the credential's issuer). `undefined` for an unknown `alg`.
+   */
+  statusListToken(alg: string, now = new Date()): string | undefined {
+    const identity = [this.ed25519, this.p256].find((candidate) => candidate.keyPair.alg === alg);
+    if (!identity) return undefined;
+    const statuses = new Uint8Array(Math.max(this.nextStatusIndex, 1));
+    for (const index of this.revokedIndexes) statuses[index] = 1;
+    return signStatusListToken({
+      uri: this.statusListUrl('token', alg),
+      lst: encodeTokenStatusList(statuses),
+      bits: 1,
+      keyPair: identity.keyPair,
+      kid: identity.verificationMethod,
+      issuedAt: now,
+    });
+  }
+
+  /** The Bitstring Status List credential (revocation), signed like the issuer's ldp_vc credentials. */
+  async bitstringStatusList(now = new Date()): Promise<Record<string, unknown>> {
+    const url = this.statusListUrl('bitstring');
+    return issueLdpVc({
+      credential: {
+        '@context': [CREDENTIALS_V1_URL, PLAYGROUND_CONTEXT_V1_URL],
+        id: url,
+        type: ['VerifiableCredential', 'BitstringStatusListCredential'],
+        issuer: this.ed25519.did,
+        issuanceDate: isoSeconds(now),
+        credentialSubject: {
+          id: `${url}#list`,
+          type: 'BitstringStatusList',
+          statusPurpose: 'revocation',
+          encodedList: encodeBitstringStatusList(this.revokedIndexes),
+        },
+      },
+      suite: 'Ed25519Signature2020',
+      key: { keyPair: this.ed25519.keyPair, verificationMethod: this.ed25519.verificationMethod },
+      documentLoader: this.documentLoader,
+      created: now,
+    });
   }
 
   /**

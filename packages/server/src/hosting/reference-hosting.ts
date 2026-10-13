@@ -20,6 +20,7 @@ import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import formbody from '@fastify/formbody';
 import {
+  DEFAULT_FETCH_ALLOWED_HOSTS,
   PLAYGROUND_CONTEXT_V1,
   PLAYGROUND_CONTEXT_V1_URL,
   createDidResolver,
@@ -28,6 +29,7 @@ import {
   loadOrCreateKeyPair,
   type DidResolver,
   type DocumentLoader,
+  type FetchLimits,
   type KeyAlgorithm,
   type KeyPair,
 } from '@inji-playground/formats';
@@ -124,10 +126,18 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   // public URL (formats only allows overrides for localhost and *.ps02.test).
   const didWebHost = new URL(publicUrl).host;
   const overridable = /^localhost(:\d+)?$|\.ps02\.test(:\d+)?$/.test(didWebHost);
+  // This server's own host is configured, not chosen by a credential, so it may be a private address
+  // (a LAN address for phones): the reference issuer's status lists are fetched from it.
+  const fetchLimits: FetchLimits = {
+    allowedHosts: [
+      ...(options.fetchAllowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS),
+      new URL(publicUrl).hostname,
+    ],
+    ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
+  };
   const didResolver = createDidResolver({
     ...(overridable ? { hostOverrides: { [didWebHost]: publicUrl } } : {}),
-    ...(options.fetchAllowedHosts ? { allowedHosts: options.fetchAllowedHosts } : {}),
-    ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
+    ...fetchLimits,
   });
   const documentLoader = createDocumentLoader({
     didResolver,
@@ -174,6 +184,7 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
     signingKey: verifierKey,
     didResolver,
     documentLoader,
+    fetchLimits,
     clientName: 'Playground reference verifier',
   });
   // The reference issuers' mdoc IACA roots are trust anchors of the reference verifier, through the same

@@ -72,6 +72,22 @@ describe('scenario catalogue x reference roles, through the server', () => {
     expect(result && 'raw' in result ? result.raw : '').toContain('ISSUER_UNTRUSTED');
   });
 
+  it.each(['ldp_vc', 'vc+sd-jwt'])(
+    'a revoked %s is refused for its status, read from the issuer status list the run records',
+    async (format) => {
+      const report = await run(app, { ...REFERENCE, format, scenario: 'revoked' });
+      expect(report).toMatchObject({ outcome: 'INVALID', verdict: 'pass' });
+      const result = app.playground.store
+        .listEvents(report.runId)
+        .find((event) => event.type === 'artifact' && event.kind === 'result');
+      expect(result && 'raw' in result ? result.raw : '').toContain('STATUS_REVOKED');
+      const statusFetch = app.playground.store
+        .listExchanges(report.runId)
+        .find((exchange) => exchange.request.url.includes('/ref/issuer/status/'));
+      expect(statusFetch?.response?.status).toBe(200);
+    },
+  );
+
   it('records a tampered presentation as it was sent, and the verifier that rejected it', async () => {
     const created = await app.inject({
       method: 'POST',

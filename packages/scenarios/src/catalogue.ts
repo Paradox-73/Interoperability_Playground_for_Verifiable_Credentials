@@ -55,6 +55,8 @@ export interface IssuerVariant {
   didMethod?: 'did:web' | 'did:key' | 'did:jwk';
   /** Credential configuration to issue, per format, instead of the issuer's default for the format. */
   configurationIds?: Partial<Record<CredentialFormat, string>>;
+  /** ldp_vc and SD-JWT VC: a status list entry that the issuer has already set to revoked. */
+  revoked?: boolean;
 }
 
 /** Changes made to the issued credential while the wallet holds it. */
@@ -259,6 +261,20 @@ export const scenarioCatalog: readonly ScenarioDefinition[] = [
     reference:
       'RFC 9901 section 7.3 step 5c (KB-JWT signed by the key in cnf); VC Data Model 1.1 section 5.8 and OpenID4VP 1.0 Appendix B.1.3.2.5 (ldp_vp holder binding); ISO/IEC 18013-5 section 9.1.3.6 (DeviceSignature by the MSO deviceKey)',
     presentationTamper: 'present-as-other-holder',
+  },
+  {
+    id: 'revoked',
+    title: 'Revoked credential',
+    description:
+      'The issuer signs a valid credential with a status entry (Bitstring Status List for ldp_vc, Token Status List for SD-JWT VC) and marks it revoked in its status list before the wallet presents it. A verifier must read the status list and refuse the credential.',
+    expected: 'INVALID',
+    target: 'credential',
+    category: 'tamper',
+    formats: DID_ISSUER_FORMATS,
+    requires: { issuer: REF_ISSUER },
+    reference:
+      'W3C Bitstring Status List v1.0 section 3.2 (validate algorithm); draft-ietf-oauth-status-list-21 section 7.1 (status 0x01 INVALID) and section 8.3 (validation rules)',
+    issuer: { revoked: true },
   },
   {
     id: 'forged-x5c',

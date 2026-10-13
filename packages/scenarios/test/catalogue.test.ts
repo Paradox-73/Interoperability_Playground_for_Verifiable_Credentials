@@ -28,6 +28,7 @@ const REQUIRED_IDS = [
   'kb-wrong-aud',
   'vp-replay',
   'holder-mismatch',
+  'revoked',
   'forged-x5c',
   'self-issued',
   'issuer-name-borrowed',

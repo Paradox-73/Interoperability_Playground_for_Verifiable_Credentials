@@ -660,6 +660,19 @@ export function createReferenceIssuer(options: ReferenceIssuerOptions): Referenc
     };
     app.get('/did.json', didDocument);
     app.get('/.well-known/did.json', didDocument);
+    // Status lists for credentials issued with `revoked` (Token Status List, Bitstring Status List).
+    app.get<{ Params: { alg: string } }>('/status/token/:alg', (request, reply) => {
+      const token = signer.statusListToken(request.params.alg, new Date(clock()));
+      if (!token)
+        return reply.code(404).send({ error: 'not_found', error_description: 'no such status list' });
+      return reply.type('application/statuslist+jwt').header('cache-control', 'no-store').send(token);
+    });
+    app.get('/status/bitstring', async (_request, reply) =>
+      reply
+        .type('application/vc+ld+json')
+        .header('cache-control', 'no-store')
+        .send(await signer.bitstringStatusList(new Date(clock()))),
+    );
 
     for (const profile of VCI_PROFILES) {
       app.get(`/${profile}${WELL_KNOWN.credentialIssuer}`, (_request, reply) =>

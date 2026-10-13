@@ -85,13 +85,19 @@ beforeAll(async () => {
   await app.register(issuers['did:key'].plugin, { prefix: '/ref/issuer' });
   await app.register(issuers['did:jwk'].plugin, { prefix: '/ref/issuer-jwk' });
   await app.ready();
-  verifier = new ReferenceVerifier({ baseUrl: VERIFIER_BASE, didResolver: resolver, documentLoader });
+  const toIssuers = injectFetch(app, ORIGIN);
+  // Status lists come from the issuers, as the playground server's transport serves them in-process.
+  verifier = new ReferenceVerifier({
+    baseUrl: VERIFIER_BASE,
+    didResolver: resolver,
+    documentLoader,
+    fetchLimits: { fetch: (url, init) => toIssuers(url, init) },
+  });
   // The verifier trusts the issuers' mdoc IACA roots and their DIDs, as the playground server sets it up.
   for (const issuer of Object.values(issuers)) {
     verifier.addX5cTrustAnchors(await issuer.mdocTrustAnchors());
     verifier.addTrustedIssuers(Object.values(issuer.dids()));
   }
-  const toIssuers = injectFetch(app, ORIGIN);
   const toVerifier = verifierFetchHandler(verifier);
   fetch = (url, init) =>
     url.startsWith(`${VERIFIER_BASE}/`) ? toVerifier(new Request(url, init)) : toIssuers(url, init);
@@ -194,6 +200,7 @@ const FAILING_CHECK: Record<string, string> = {
   'vp-replay': 'nonce',
   'kb-wrong-aud': 'audience',
   'holder-mismatch': 'holder-binding',
+  revoked: 'status',
 };
 /**
  * Where an mso_mdoc fails another check: nonce and client_id are inside the SessionTranscript that the

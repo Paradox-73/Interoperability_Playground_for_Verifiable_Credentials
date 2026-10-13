@@ -15,6 +15,7 @@ export interface ScenarioIssuanceOptions {
   vct?: string;
   doctype?: string;
   useX5c?: boolean;
+  revoked?: boolean;
 }
 
 /** Issuance options for one offer, or `undefined` when the scenario changes nothing at issuance. */
@@ -36,6 +37,7 @@ export function issuanceOptionsFor(
     ...(variant.vct === undefined ? {} : { vct: variant.vct }),
     ...(variant.doctype === undefined ? {} : { doctype: variant.doctype }),
     ...(variant.useX5c === undefined ? {} : { useX5c: variant.useX5c }),
+    ...(variant.revoked === undefined ? {} : { revoked: variant.revoked }),
   };
   return Object.keys(options).length > 0 ? options : undefined;
 }
