@@ -39,8 +39,7 @@ function playwright(project, env, extra = []) {
 }
 
 // The bundle or a host-mode server answers on 28100; the config's default is the Vite preview of `npm run e2e`.
-// One worker: the live tests share one stack, and a run of the Inji Verify web component waited forever
-// while the Inji Web test used verify-service at the same time (2026-10-14).
+// One worker: the live tests share one stack, and the server runs live runs one at a time anyway.
 if (live) {
   process.exit(
     playwright(

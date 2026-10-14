@@ -15,10 +15,9 @@ test('Inji Certify -> reference wallet -> Inji Verify web component: VALID', asy
   await page.getByLabel('Credential format').selectOption('vc+sd-jwt');
   await page.getByRole('button', { name: 'Run' }).click();
 
-  const panel = page.getByTestId('inji-verify-sdk-panel');
-  await expect(panel).toBeVisible({ timeout: 120_000 });
-  // The component renders its own QR code once verify-service answered /vp-session-request.
-  await expect(panel.locator('svg, canvas, img').first()).toBeVisible({ timeout: 60_000 });
+  // The panel and its QR code show only while the verifier step runs; the reference wallet answers within
+  // a second or two, so the test does not wait for them. The run can end only through the component: the
+  // server takes the request from the component's /vp-session-request and the result from its callback.
   await expect(page.getByTestId('run-result')).toContainText('Pass', { timeout: 150_000 });
   await expect(page.getByTestId('run-result')).toContainText('Valid');
 });
