@@ -1,6 +1,6 @@
 # Third-party licences
 
-Generated on 2026-10-06 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
+Generated on 2026-10-14 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
 
 Every licence below is OSI-approved. Development-only packages (build, test and lint tools: 367 packages) are not distributed and not listed.
 
@@ -220,8 +220,8 @@ Base images contain operating system packages under their own licences; see each
 | `clsx` | 2.1.1 | MIT | <lukeed/clsx> |
 | `color-convert` | 2.0.1 | MIT | <Qix-/color-convert> |
 | `color-name` | 1.1.4 | MIT | <git@github.com:colorjs/color-name> |
+| `commander` | 15.0.0 | MIT | <https://github.com/tj/commander.js> |
 | `commander` | 7.2.0 | MIT | <https://github.com/tj/commander.js> |
-| `commander` | 8.3.0 | MIT | <https://github.com/tj/commander.js> |
 | `content-disposition` | 3.0.0 | MIT | <jshttp/content-disposition> |
 | `convert-source-map` | 1.9.0 | MIT | <https://github.com/thlorenz/convert-source-map> |
 | `cookie` | 1.1.1 | MIT | <jshttp/cookie> |
@@ -341,7 +341,7 @@ Base images contain operating system packages under their own licences; see each
 | `jsonld-signatures` | 11.6.0 | BSD-3-Clause | <https://github.com/digitalbazaar/jsonld-signatures> |
 | `jsonpath-plus` | 11.1.1 | MIT | <https://github.com/s3u/JSONPath> |
 | `jszip` | 3.10.2 | (MIT OR GPL-3.0-or-later) | <https://github.com/Stuk/jszip> |
-| `katex` | 0.16.47 | MIT | <https://github.com/KaTeX/KaTeX> |
+| `katex` | 0.18.10 | MIT | <https://github.com/KaTeX/KaTeX> |
 | `key-did-resolver` | 4.0.0 | (Apache-2.0 OR MIT) | <https://github.com/ceramicnetwork/js-did> |
 | `khroma` | 2.1.0 | MIT | <github:fabiospampinato/khroma> |
 | `ky` | 1.14.3 | MIT | <sindresorhus/ky> |
@@ -356,7 +356,7 @@ Base images contain operating system packages under their own licences; see each
 | `lru-cache` | 11.5.3 | BlueOak-1.0.0 | <ssh://git@github.com/isaacs/node-lru-cache> |
 | `lru-cache` | 6.0.0 | ISC | <https://github.com/isaacs/node-lru-cache> |
 | `marked` | 16.4.2 | MIT | <https://github.com/markedjs/marked> |
-| `mermaid` | 12.1.0 | MIT | <https://github.com/mermaid-js/mermaid> |
+| `mermaid` | 12.2.0 | MIT | <https://github.com/mermaid-js/mermaid> |
 | `mime` | 3.0.0 | MIT | <https://github.com/broofa/mime> |
 | `minimatch` | 10.2.6 | BlueOak-1.0.0 | <git@github.com:isaacs/minimatch> |
 | `minipass` | 7.1.3 | BlueOak-1.0.0 | <https://github.com/isaacs/minipass> |

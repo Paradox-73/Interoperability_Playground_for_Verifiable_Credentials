@@ -317,6 +317,12 @@ function render(results) {
       );
     }
   }
+  lines.push(
+    '',
+    '## Hosted CI',
+    '',
+    'Hosted GitHub Actions cannot run since 2026-10-09 because of a billing problem on the GitHub account, so `main` has no green hosted run. The last green `ci` run was on 2026-10-06 and the last green `interop-nightly` run on 2026-10-08. The local commands in this report replace them.',
+  );
   const licenses = results.licenses;
   lines.push(
     '',
