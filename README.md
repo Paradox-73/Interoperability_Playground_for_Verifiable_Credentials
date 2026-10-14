@@ -19,7 +19,7 @@ npm run demo      # checks Docker, ports and memory, starts Inji Certify, Mimoto
 npm run down      # stops and removes everything
 ```
 
-`npm run demo` took 384 s from a clean checkout on 2026-10-14 (the bundle was up after 156 s). `npm run up`
+`npm run demo` took 384 s from a clean checkout on 2026-10-14 (the bundle was up after 156 s; 132 s on a later run with the image layers cached). `npm run up`
 starts the same bundle without running the cells. Without Docker, the reference roles alone run with
 `npm ci && npm run build && npm start`, then open <http://localhost:28100>. More modes and troubleshooting:
 [docs/setup.md](docs/setup.md). A teammate's pre-recording checklist for macOS, Linux and Windows:
@@ -69,13 +69,13 @@ All measured on 2026-10-14 at commit `812aaaa` or later, on Windows 11 with Dock
 
 | Check                                             | Result                                                                       |
 | ------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm test` (unit and integration)                 | 1203 of 1203 tests, 79 files                                                 |
+| `npm test` (unit and integration)                 | 1228 of 1228 tests, 80 files                                                 |
 | `npm run e2e` (browser, axe accessibility checks) | see the [test report](docs/test-report/README.md)                            |
 | `npm run test:live` (against the Inji stack)      | 20 of 20, 60 s                                                               |
 | `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported                     |
-| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 18 s |
-| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 43 s                                  |
-| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 207 s                                                          |
+| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 17 s |
+| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 40 s                                  |
+| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 161 s                                                          |
 | `npm run demo -- --ci`                            | `DEMO PASS`, 5 of 5 cells                                                    |
 | `npm audit`                                       | 0 vulnerabilities                                                            |
 
@@ -90,9 +90,10 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
   the QR code and link for it (`mobile-wallet` role), but no run with a phone is recorded.
 - **No status check for `mso_mdoc`.** The reference verifier checks Token Status Lists (SD-JWT VC) and
   Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Revocation was not tested against Inji Verify. A freshly issued Inji Certify 0.14.0 `FarmerCredential` (`ldp_vc`) had no `credentialStatus`, and the SD-JWT VC had no `status` claim (observed 2026-10-14), so there is nothing to revoke.
-- **DNS rebinding is not blocked.** The reference verifier refuses private, loopback and link-local addresses
-  when it fetches a `did:web` document or a status list, but it resolves the name again when the request is
-  made. Remote JSON-LD contexts (live mode) have no address or size limit.
+- **Outbound requests are not fully limited.** The reference verifier refuses private, loopback and link-local
+  addresses when it fetches a `did:web` document or a status list, but it resolves the name again when the
+  request is made, so DNS rebinding is not blocked. The JSON-LD context loader (live mode) fetches unpinned
+  contexts with no address check, no size cap and redirects followed. It is the main request path still open.
 - **mdoc over the Digital Credentials API is not done**, and Inji Web cannot present SD-JWT VC (G25) or
   hold an mdoc (G29). Inji Verify cannot verify an mdoc presentation (G28).
 - **The API on port 28100 has no login.** It listens on 127.0.0.1 by default; the container image listens on

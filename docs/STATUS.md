@@ -39,12 +39,12 @@ fixes it led to, a security pass and a documentation pass.
 
 | Result                                          | Number                                                                                                    |
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `npm test`                                      | 1203 of 1203, 79 files (1120 on 2026-10-06)                                                               |
+| `npm test`                                      | 1228 of 1228, 80 files (1120 on 2026-10-06)                                                               |
 | `npm run matrix:reference`                      | 123 of 123 as specified, 119 pass, 4 not supported (109 on 2026-10-06, 82 on 2026-10-05)                  |
 | `npm run matrix:live`, `live-core`              | 16 of 16 as specified, 11 pass, 4 fail, 1 not supported; the same verdicts as before the security commits |
 | `npm run matrix:live -- --spec live-holder-web` | 10 of 10 as specified, 4 pass, 6 fail; the same verdicts as before                                        |
 | `npm run test:live`                             | 20 of 20, 60 s                                                                                            |
-| `npm run stack:smoke`                           | `SMOKE PASS`, 207 s (274 s earlier on 2026-10-14, before the security commits)                            |
+| `npm run stack:smoke`                           | `SMOKE PASS`, 161 s (274 s on 2026-10-14 before the security commits, 207 s after them)                   |
 | `npm run demo -- --ci`                          | `DEMO PASS`, 5 of 5                                                                                       |
 | `npm audit`                                     | 0 vulnerabilities (2 low before `mermaid` 12.2.0)                                                         |
 
@@ -63,12 +63,17 @@ What changed after the second pass, one line each (`git log --oneline` has the c
   stack instead of GitHub. The history page's scroll regions take keyboard focus.
 - Credential status: the reference verifier checks Token Status Lists and Bitstring Status Lists, every report
   has a `status` check, and the new tamper scenario `revoked` adds six reference cells.
+- Follow-ups from a second review of those commits: an SD-JWT VC signed through x5c or a configured key may
+  not name a DID in `iss`; the issuer trust list is checked before any DID document is fetched; a `status`
+  claim with a selective disclosure at any depth is `INVALID`; four more IPv6 ranges are refused in server-side
+  fetches; the Inji stack hosts are allowed for status lists, each on its own port.
 
 Still open:
 
 - Inji Wallet mobile has not run with a phone.
 - mdoc status is not checked, and revocation is not tested against Inji Verify or Inji Certify.
-- DNS rebinding is not blocked for server-side fetches.
+- DNS rebinding is not blocked for server-side fetches, and the JSON-LD context loader fetches unpinned
+  contexts with no address check or size cap.
 - Hosted CI cannot run because of a GitHub billing problem. The last green `ci` run was 2026-10-06 and the last
   green nightly 2026-10-08. Local runs replace them ([README](../README.md#continuous-integration)).
 - The demo video, the slides and filing the issue drafts need people. The shot list is

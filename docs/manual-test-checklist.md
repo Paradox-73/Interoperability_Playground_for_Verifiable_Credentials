@@ -34,7 +34,7 @@ Platform notes:
 2. **Install.** Run `npm ci`. Expected: it ends without `ERR!` and `npm ls --depth=0` lists no `UNMET`. Time: 40 s.
 3. **Static checks.** Run `npm run lint && npm run format:check && npm run typecheck`. Expected: all three
    exit 0 with no warnings. Time: 90 s.
-4. **Unit tests.** Run `npm test`. Expected: `Test Files 79 passed` and `Tests 1203 passed` (or the numbers in
+4. **Unit tests.** Run `npm test`. Expected: `Test Files 80 passed` and `Tests 1228 passed` (or the numbers in
    the [README](../README.md#current-numbers) if they changed). Time: 80 s. A test that fails under CPU load
    passes on a second `npm test`; report it only if it fails twice.
 5. **Reference matrix, no Docker.** Run `npm run matrix:reference`. Expected: the last lines read
