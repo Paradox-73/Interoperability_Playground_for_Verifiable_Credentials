@@ -27,8 +27,10 @@ const keepUp = args.has('--keep-up') || !ci;
 const PLAYGROUND_URL = 'http://localhost:28100';
 /** Host ports the bundle publishes (deploy/compose.yaml and deploy/inji-stack/compose.yaml). */
 const BUNDLE_PORTS = [28100, 28091, 28443, 28080, 28093, 28099, 28004, 28030];
-/** The stack with every profile used about 2.7 GiB (docker stats, 2026-10-05); below this it may not start. */
+/** The bundle used 2.6-2.9 GiB in steady state (docker stats, 2026-10-14); below this it may not start. */
 const MIN_MEMORY_GIB = 3.5;
+/** A Docker VM set to 6 GB reports about 5.8 GiB; on a 4 GB VM Mimoto never became ready (2026-10-13). */
+const RECOMMENDED_MEMORY_GIB = 5.5;
 const MIN_COMPOSE = [2, 24];
 
 const log = (line) => console.log(`[demo] ${line}`);
@@ -90,8 +92,10 @@ async function preflight() {
     const gib = memory / 1024 ** 3;
     if (gib < MIN_MEMORY_GIB)
       problems.push(
-        `Docker has ${gib.toFixed(1)} GiB of memory; give it at least 4 GB (the stack uses about 2.7 GiB)`,
+        `Docker has ${gib.toFixed(1)} GiB of memory; give it 6 to 8 GB (the bundle uses about 2.9 GiB)`,
       );
+    else if (gib < RECOMMENDED_MEMORY_GIB)
+      log(`warning: Docker memory ${gib.toFixed(1)} GiB; with less than 6 GB Mimoto may never become ready`);
     else log(`Docker memory ${gib.toFixed(1)} GiB`);
   }
   const bundle = await capture(['compose', '-p', 'ps02-bundle', 'ps', '-q']);

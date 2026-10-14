@@ -13,12 +13,12 @@ measured on the date given next to it; nothing here claims more than was run.
 
 ## Prerequisites
 
-| What                               | Needed for                                            | Version used by the team                                                       |
-| ---------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Node.js and npm                    | reference mode, the stack and bundle commands         | Node 24.21 or newer with npm 11.19 or newer (`.nvmrc`)                         |
-| Docker with Compose v2.24 or newer | the local Inji stack and the bundle                   | Docker Desktop 29 (Linux containers)                                           |
-| Git                                | `npm run up` builds the image from `git archive HEAD` | any recent                                                                     |
-| Memory for Docker                  | the stack                                             | about 2.7 GiB in use with every profile, see [memory](#memory-and-start-times) |
+| What                               | Needed for                                            | Version used by the team                                                                   |
+| ---------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Node.js and npm                    | reference mode, the stack and bundle commands         | Node 24.21 or newer with npm 11.19 or newer (`.nvmrc`)                                     |
+| Docker with Compose v2.24 or newer | the local Inji stack and the bundle                   | Docker Desktop 29 (Linux containers)                                                       |
+| Git                                | `npm run up` builds the image from `git archive HEAD` | any recent                                                                                 |
+| Memory for Docker                  | the stack                                             | 6 to 8 GB; 2.6 to 2.9 GiB in use with every profile, see [memory](#memory-and-start-times) |
 
 Only Docker is needed to run the bundle from a clone (see [without Node](#without-node)).
 

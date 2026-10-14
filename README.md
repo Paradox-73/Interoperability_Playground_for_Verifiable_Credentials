@@ -9,8 +9,10 @@ MOSIP Decode 2026, problem statement 02 (Interoperability Playground for Verifia
 
 ## Start it
 
-Needs Docker Desktop (or Docker Engine with Compose 2.24 or newer), Node.js 24, Git and about 4 GB of memory
-for Docker.
+Needs Docker Desktop (or Docker Engine with Compose 2.24 or newer), Node.js 24, Git, and 6 to 8 GB of memory
+for Docker. The bundle itself used 2.6 to 2.9 GiB in steady state (`docker stats`, 2026-10-14); the rest is
+headroom for the Java services starting together and for the image build. On a 4 GB Docker VM Mimoto never
+became ready, so Inji Web runs fail; `npm run demo` stops below 3.5 GiB and warns below 6 GB.
 
 ```bash
 npm ci
@@ -27,18 +29,18 @@ starts the same bundle without running the cells. Without Docker, the reference 
 
 ## What it covers
 
-| Dimension           | Covered                                                                                                                                                                                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Issuers             | Inji Certify 0.14.0 (pre-authorized code), certify-ac (authorization code), reference issuer (did:key, did:jwk, did:web)                                                                                                                                  |
-| Wallets             | Inji Web 0.17.0 through Mimoto 0.22.0 (in runs, and its own pages in a browser test), reference wallet (headless), browser wallet (Digital Credentials API), phone wallet by QR code or deep link (Inji Wallet mobile: the step exists, no phone run yet) |
-| Verifiers           | Inji Verify 0.18.2 (API and the `react-inji-verify-sdk` web component), reference verifier, reference verifier over the Digital Credentials API                                                                                                           |
-| Credential formats  | `ldp_vc` (W3C VC 1.1 and 2.0, Ed25519 and ECDSA Data Integrity), `vc+sd-jwt` and `dc+sd-jwt` (SD-JWT VC), `mso_mdoc` (ISO/IEC 18013-5)                                                                                                                    |
-| Protocol profiles   | OpenID4VCI draft 13 with OpenID4VP drafts 21-23 and Presentation Exchange (the Inji profile), and OpenID4VCI 1.0 with OpenID4VP 1.0 and DCQL ([ADR 0006](docs/adr/0006-two-protocol-profiles.md))                                                         |
-| Presentation flows  | Cross-device QR code, same-device deep link, W3C Digital Credentials API                                                                                                                                                                                  |
-| Tamper scenarios    | 21 scenarios, among them `expired`, `bad-signature`, `altered-disclosure`, `kb-wrong-nonce`, `vp-replay`, `holder-mismatch`, `forged-x5c`, `self-issued`, `issuer-name-borrowed` and `revoked`; each states the outcome a correct verifier must give      |
-| Reports and history | A pass/fail report per run (Markdown, JSON, redacted export), a compatibility matrix, a history page with filters, playback of stored runs                                                                                                                |
-| Protocol inspector  | Every HTTP message of every run, decoded (JWT, SD-JWT disclosures, CBOR, JSON-LD), plus an animated sequence diagram                                                                                                                                      |
-| Gap register        | 29 findings in Inji Certify, Inji Verify and Mimoto, 27 public with an issue draft ([docs/gaps](docs/gaps/README.md)), 2 reported privately                                                                                                               |
+| Dimension           | Covered                                                                                                                                                                                                                                                                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Issuers             | Inji Certify 0.14.0 (pre-authorized code), certify-ac (authorization code), reference issuer (did:key, did:jwk, did:web)                                                                                                                                                                                                                              |
+| Wallets             | Inji Web 0.17.0 through Mimoto 0.22.0 (in runs, and its own pages in a browser test), reference wallet (headless), browser wallet (Digital Credentials API), phone wallet by QR code or deep link (Inji Wallet mobile: the step exists, no phone run yet)                                                                                             |
+| Verifiers           | Inji Verify 0.18.2 (API and the `react-inji-verify-sdk` web component), reference verifier, reference verifier over the Digital Credentials API                                                                                                                                                                                                       |
+| Credential formats  | `ldp_vc` (W3C VC 1.1 and 2.0, Ed25519 and ECDSA Data Integrity), `vc+sd-jwt` and `dc+sd-jwt` (SD-JWT VC), `mso_mdoc` (ISO/IEC 18013-5)                                                                                                                                                                                                                |
+| Protocol profiles   | OpenID4VCI draft 13 with OpenID4VP drafts 21-23 and Presentation Exchange (the Inji profile), and OpenID4VCI 1.0 with OpenID4VP 1.0 and DCQL ([ADR 0006](docs/adr/0006-two-protocol-profiles.md))                                                                                                                                                     |
+| Presentation flows  | Cross-device QR code, same-device deep link, W3C Digital Credentials API                                                                                                                                                                                                                                                                              |
+| Scenarios           | 21 scenarios: the happy path, 14 tamper cases and 6 probes (other DID methods, VC 2.0, `dc+sd-jwt`); tamper cases include `expired`, `bad-signature`, `altered-disclosure`, `kb-wrong-nonce`, `vp-replay`, `holder-mismatch`, `forged-x5c`, `self-issued`, `issuer-name-borrowed` and `revoked`; each states the outcome a correct verifier must give |
+| Reports and history | A pass/fail report per run (Markdown, JSON, redacted export), a compatibility matrix, a history page with filters, playback of stored runs                                                                                                                                                                                                            |
+| Protocol inspector  | Every HTTP message of every run, decoded (JWT, SD-JWT disclosures, CBOR, JSON-LD), plus an animated sequence diagram                                                                                                                                                                                                                                  |
+| Gap register        | 29 findings in Inji Certify, Inji Verify and Mimoto, 27 public with an issue draft ([docs/gaps](docs/gaps/README.md)), 2 reported privately                                                                                                                                                                                                           |
 
 ## Where each task of the problem statement is shown
 

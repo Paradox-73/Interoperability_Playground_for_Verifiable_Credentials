@@ -260,7 +260,7 @@ Every root `npm run` command calls a file in `scripts/` or a package's `scripts/
 
 - **Commit messages:** conventional prefixes `feat:`, `fix:`, `test:`, `docs:`, `build:`, `ci:`, `chore:`,
   `import:`. A fix for a known upstream gap names its id (for example `fix: G3 route ...`); the ids are listed
-  in [docs/STATUS.md](docs/STATUS.md#gap-ids-used-in-commits-and-docs).
+  in [docs/history/STATUS-history.md](docs/history/STATUS-history.md#gap-ids-used-in-commits-and-docs).
 - **Sign-off:** every commit is signed off (Developer Certificate of Origin) with `git commit -s`, from your own
   GitHub account: `user.email` must be an address on that account. Forgot it on the last commit:
   `git commit --amend -s --no-edit`; on several: `git rebase --signoff origin/main`.
@@ -298,9 +298,9 @@ Every root `npm run` command calls a file in `scripts/` or a package's `scripts/
 
 ## Picking up a task
 
-1. Open [docs/STATUS.md](docs/STATUS.md), choose a TODO or PARTIAL task whose dependencies are DONE, and check
-   with the team that nobody else owns its lane right now (the lane table in that file says which folders
-   each lane owns).
+1. Open [docs/STATUS.md](docs/STATUS.md), choose an item under "Left for people" or a PARTIAL task, and check
+   with the team that nobody else is on it. The old lane table and task cards are in
+   [docs/history/STATUS-history.md](docs/history/STATUS-history.md).
 2. Branch off the latest `main`:
 
    ```bash
@@ -308,19 +308,15 @@ Every root `npm run` command calls a file in `scripts/` or a package's `scripts/
    git switch -c wp-10-inji-adapters origin/main
    ```
 
-3. For a PARTIAL task, copy its paths from `origin/wip/2026-10-04-stop` as the "State of the unfinished
-   branch" section of `docs/STATUS.md` shows, and commit them first as they are
-   (`git commit -s -m "feat: ... (work from wip/2026-10-04-stop)"`), so reviewers can tell old work from new.
-4. Work only in the folders the card lists. A minimal change to another lane's folder or a shared file
+3. Keep the change to the folders the task needs. A minimal change to another lane's folder or a shared file
    (`package.json`, `package-lock.json`, `README.md`, `ci.yml`, `.gitguardian.yaml`) goes in your pull
    request with a note, and that lane's owner reviews it.
-5. Run the checks before every push:
+4. Run the checks before every push:
    `npm run lint && npm run format:check && npm run typecheck && npm test && npm run build`.
-6. Run the card's acceptance check. Commands that start Docker must end with `npm run stack:down` or
+5. Run the check that proves the task. Commands that start Docker must end with `npm run stack:down` or
    `npm run down`, even when they fail (the cards use `...; rc=$?; npm run stack:down; exit $rc`).
-7. Update the package README or the doc the card names, and in `docs/STATUS.md` set the status and commit ids
-   and clear the card's "what remains".
-8. Push and open a pull request titled `WP-xx: <title>`. In the description: what changed, the acceptance
+6. Update the package README or the doc the change touches, and the task's row in `docs/STATUS.md`.
+7. Push and open a pull request. In the description: what changed, the acceptance
    command, its exit code and key numbers with the date, and anything left open. A teammate reviews and
    merges.
 
