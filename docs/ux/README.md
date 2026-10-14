@@ -1,8 +1,17 @@
 # User flow
 
-How a person uses the playground, shown with screenshots that the browser tests capture
-(`npm run e2e -- --screenshots`, Chromium, reference mode, 2026-10-14). Every screenshot comes from a real
-run against the playground server with its reference roles; nothing is mocked.
+How a person uses the playground, shown with screenshots that the browser tests capture in Chromium on
+2026-10-14 with the Docker bundle running (`npm run up`), so the header shows the Inji modules as healthy.
+Every screenshot comes from a real run; nothing is mocked.
+
+- 1-3 and 17-19: `npm run e2e:live -- --screenshots` (an all-Inji run in the playground, and Inji Web's own
+  pages).
+- 4-16: the reference-mode tests pointed at the bundle, from `packages/web`:
+  `PLAYWRIGHT_BASE_URL=http://localhost:28100 E2E_SERVER_URL=http://localhost:28100 E2E_SCREENSHOTS=../../docs/ux/screenshots npx playwright test --project e2e --workers=1`.
+  Three of those tests expect reference mode and fail against the bundle after their screenshot: the
+  keyboard test (Inji roles are preselected), the phone-wallet modal test (the host cannot resolve
+  `ref.ps02.test`) and, on a busy machine, the 30 s timeout of the matrix and phone-screen tests.
+  `npm run e2e -- --screenshots` takes 4-16 in reference mode instead.
 
 ## 1. Choose the roles and the run
 
@@ -12,7 +21,7 @@ cannot work with the other two selections stays visible and says why. Under the 
 offer only the formats and protocol versions every chosen role supports, and the scenario picker shows,
 before the run, what a correct verifier must answer and the specification text behind it.
 
-![Playground page with the reference issuer, wallet and verifier selected](screenshots/1-playground.png)
+![Playground page with Inji Certify (authorization code), Inji Web and Inji Verify selected](screenshots/1-playground.png)
 
 ## 2. Follow the run
 
@@ -21,7 +30,7 @@ label first and the protocol term second, the status as an icon and a word, the 
 specification section. Below it the sequence diagram and the protocol inspector show the same run's
 recorded HTTP messages, decoded.
 
-![Timeline, sequence diagram and protocol inspector of a finished run](screenshots/2-timeline-and-inspector.png)
+![Timeline, sequence diagram and protocol inspector of a finished Inji Certify, Inji Web, Inji Verify run](screenshots/2-timeline-and-inspector.png)
 
 ## 3. Read the report
 
@@ -30,7 +39,7 @@ type, outcome, error detail with a link to the failing message), the expected an
 steps with timings, and Markdown, JSON and redacted-export downloads. "Replay with tamper" runs the same
 configuration again with a negative scenario.
 
-![Report page of a passing run](screenshots/3-report.png)
+![Report page of a passing all-Inji run](screenshots/3-report.png)
 
 ## 4. Try a negative path
 
@@ -96,6 +105,18 @@ next to the raw base64url. Every page fits a 390 px wide phone screen without si
 ![mso_mdoc vp_token decoded in the inspector](screenshots/15-mdoc-inspector.png)
 
 ![The playground on a phone-sized screen](screenshots/14-phone-playground.png)
+
+## 9. Inji Web's own pages
+
+The live browser test `packages/web/e2e/live/inji-web-ui.spec.ts` uses Inji Web 0.17.0 directly on port
+28004: it logs in, picks "Inji Certify AC (playground)" and "Farmer Verifiable Credential", finds the card
+under "Stored Cards", and consents to share it with Inji Verify ([flows](../flows.md#inji-webs-own-pages)).
+
+![Inji Web: credential types of Inji Certify AC](screenshots/17-inji-web-credential-types.png)
+
+![Inji Web: the stored Farmer credential](screenshots/18-inji-web-stored-cards.png)
+
+![Inji Web: consent to share with the playground's Inji Verify request](screenshots/19-inji-web-share-consent.png)
 
 ## Accessibility checks
 

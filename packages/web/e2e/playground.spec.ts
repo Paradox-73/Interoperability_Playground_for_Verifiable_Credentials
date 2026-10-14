@@ -2,8 +2,9 @@
  * Browser tests of the playground in reference mode (`npm run e2e`): a real Chromium against the built UI
  * (vite preview on 28174) and a real playground server with the reference roles. No Docker.
  *
- * With E2E_SCREENSHOTS set (`npm run e2e -- --screenshots`), the tests also write the screenshots of
- * docs/ux/README.md.
+ * With E2E_SCREENSHOTS set (`npm run e2e -- --screenshots`), the tests also write screenshots 4-16 of
+ * docs/ux/README.md (1-3 and 17-19 come from e2e/live). The committed ones were taken with these tests
+ * pointed at the bundle, so the header shows the Inji modules: see docs/ux/README.md.
  */
 import { AxeBuilder } from '@axe-core/playwright';
 import { acceptOffer, createHolderKey } from '@inji-playground/oid4vci';
@@ -49,12 +50,10 @@ test('reference happy path: choose the roles, run, follow the timeline, read the
   await expect(page.getByRole('radio', { name: 'Reference issuer' })).toBeVisible();
   await chooseReferenceTrio(page);
   await page.getByLabel('Credential format').selectOption('vc+sd-jwt');
-  await shot(page, '1-playground');
   await page.getByRole('button', { name: 'Run' }).click();
 
   const runId = await finishedRunId(page);
   await expect(page.getByTestId('run-result')).toContainText('Pass');
-  await shot(page, '2-timeline-and-inspector');
 
   await page.goto(`/runs/${encodeURIComponent(runId)}/report`);
   await expect(
@@ -65,7 +64,6 @@ test('reference happy path: choose the roles, run, follow the timeline, read the
   }
   await expect(page.locator('[data-field="outcome"]')).toContainText('Valid');
   await expect(page.getByRole('link', { name: 'Download Markdown' })).toBeVisible();
-  await shot(page, '3-report');
 });
 
 test('tamper path: the expected outcome before the run, expected and actual after', async ({ page }) => {
