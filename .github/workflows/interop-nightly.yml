@@ -45,7 +45,7 @@ jobs:
       - name: matrix as job summary
         if: always()
         run: cat docs/interop-report/reference/matrix.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: interop-report-reference
@@ -114,7 +114,7 @@ jobs:
           [ -f docs/interop-report/live/matrix.md ] && cat docs/interop-report/live/matrix.md >> "$GITHUB_STEP_SUMMARY"
           echo "memory at the end of the run:" >> "$GITHUB_STEP_SUMMARY"
           docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' >> "$GITHUB_STEP_SUMMARY" || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: interop-report-live
