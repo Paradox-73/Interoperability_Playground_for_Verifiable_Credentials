@@ -107,6 +107,8 @@ export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}
       ...(pinnedAddress === undefined ? {} : { pinnedAddress }),
     });
     if (!response.ok) {
+      // The body is not read; cancelling it frees the socket now instead of at the timeout.
+      await response.body?.cancel().catch(() => undefined);
       throw new FormatError(codes.failed, `GET ${url} answered HTTP ${response.status}`, {
         details: { url, status: response.status },
       });

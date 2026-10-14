@@ -58,7 +58,7 @@ import { inboundTargetOf, installInboundRecorder } from './recording/inbound.js'
 import { NetworkMap, networkFetch } from './recording/network-map.js';
 import { registerProxyRoutes } from './recording/proxy.js';
 import { isSelfUrl, selfOriginsFor, selfTransport } from './recording/self-transport.js';
-import { proxyTargets, serviceLabels, stackFetchHosts } from './recording/targets.js';
+import { proxyTargets, serviceLabels, stackContextHosts, stackFetchHosts } from './recording/targets.js';
 import { RunStore } from './store/run-store.js';
 
 declare module 'fastify' {
@@ -186,7 +186,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     ...(config.stack === 'off'
       ? {}
       : {
-          remoteContexts: { cacheDir: join(config.runDir, 'contexts') },
+          remoteContexts: {
+            cacheDir: join(config.runDir, 'contexts'),
+            allowedHosts: stackContextHosts(config),
+          },
           ...holderWebResources(config),
         }),
   });

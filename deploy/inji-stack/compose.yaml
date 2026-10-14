@@ -350,6 +350,8 @@ services:
       # Inji Web's "Continue With Google" button (a browser) uses the same provider: the browser opens the test
       # server's /authorize on the playground's host port, which approves at once; Mimoto redeems the code as a
       # public client with PKCE. The redirect URI is fixed because Inji Web's nginx drops the port from Host.
+      # Both URLs assume the default ports: with another INJI_WEB_URL or playground port, change them to match the
+      # client the playground registers (${INJI_WEB_URL}/v1/mimoto/oauth2/callback/google, packages/server/src/app.ts).
       GOOGLE_OAUTH_CLIENT_ID: ps02-mimoto-login
       GOOGLE_OAUTH_CLIENT_SECRET: not-used-by-token-login
       GOOGLE_ISSUER: https://ref.ps02.test/ref/as

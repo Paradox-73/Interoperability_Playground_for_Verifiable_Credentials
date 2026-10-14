@@ -8,7 +8,7 @@ import { DEFAULT_FETCH_ALLOWED_HOSTS, fetchLimited } from '@inji-playground/form
 import { describe, expect, it } from 'vitest';
 import { extraCaPath, loadConfig, networkMapPath } from '../src/config/index.js';
 import { NetworkMap, networkFetch } from '../src/recording/network-map.js';
-import { stackFetchHosts } from '../src/recording/targets.js';
+import { stackContextHosts, stackFetchHosts } from '../src/recording/targets.js';
 import { listenInTestRange } from './helpers.js';
 
 describe('NetworkMap', () => {
@@ -110,12 +110,12 @@ describe('status and DID fetches from the Inji stack', () => {
     ).rejects.toMatchObject({ code: 'STATUS_LIST_UNAVAILABLE' });
   });
 
-  it('bundle: the context hosts the TLS front answers for are allowed on 443 only; host mode resolves them publicly', () => {
-    const bundle = hostsFor({ PLAYGROUND_STACK: 'bundle' });
-    expect(bundle).toEqual(
-      expect.arrayContaining(['www.w3.org:443', 'w3id.org:443', 'piyush7034.github.io:443']),
-    );
-    expect(hostsFor({ PLAYGROUND_STACK: 'host' })).not.toContain('piyush7034.github.io:443');
+  it('bundle: the context hosts the TLS front caches are for the context loader only, on 443', () => {
+    const contexts = ['www.w3.org:443', 'w3id.org:443', 'piyush7034.github.io:443'];
+    expect(stackContextHosts(loadConfig({ PLAYGROUND_STACK: 'bundle' }))).toEqual(contexts);
+    expect(stackContextHosts(loadConfig({ PLAYGROUND_STACK: 'host' }))).toEqual([]);
+    // did:web documents and status lists keep the address check: the TLS front follows redirects.
+    expect(hostsFor({ PLAYGROUND_STACK: 'bundle' })).not.toContain('piyush7034.github.io:443');
   });
 
   it('INJI_*_URL hosts are allowed when the stack is on; with the stack off nothing is added', () => {

@@ -76,7 +76,11 @@ export interface ReferenceHostingOptions {
    * Off by default (reference runs need none); live runs need it because Inji Certify's sample farmer
    * credential uses a context published on a personal GitHub Pages site.
    */
-  remoteContexts?: { cacheDir: string };
+  remoteContexts?: {
+    cacheDir: string;
+    /** Hosts only the context loader may reach although they are private addresses (stackContextHosts). */
+    allowedHosts?: readonly string[];
+  };
   /**
    * Other resources the test authorization server issues access tokens for (Inji Certify in authorization
    * code mode, certify-ac): tokens for these scopes carry this audience instead of the reference issuer's.
@@ -152,7 +156,13 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   const documentLoader = createDocumentLoader({
     didResolver,
     ...(options.remoteContexts
-      ? { network: { ...fetchLimits, cacheDir: options.remoteContexts.cacheDir } }
+      ? {
+          network: {
+            ...fetchLimits,
+            allowedHosts: [...fetchLimits.allowedHosts!, ...(options.remoteContexts.allowedHosts ?? [])],
+            cacheDir: options.remoteContexts.cacheDir,
+          },
+        }
       : {}),
   });
 
