@@ -90,10 +90,11 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
   the QR code and link for it (`mobile-wallet` role), but no run with a phone is recorded.
 - **No status check for `mso_mdoc`.** The reference verifier checks Token Status Lists (SD-JWT VC) and
   Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Revocation was not tested against Inji Verify. A freshly issued Inji Certify 0.14.0 `FarmerCredential` (`ldp_vc`) had no `credentialStatus`, and the SD-JWT VC had no `status` claim (observed 2026-10-14), so there is nothing to revoke.
-- **Outbound requests are not fully limited.** The reference verifier refuses private, loopback and link-local
-  addresses when it fetches a `did:web` document or a status list, but it resolves the name again when the
-  request is made, so DNS rebinding is not blocked. The JSON-LD context loader (live mode) fetches unpinned
-  contexts with no address check, no size cap and redirects followed. It is the main request path still open.
+- **Outbound requests a credential chooses go only to public addresses, but a holder can still cause one.**
+  `did:web` documents, status lists and JSON-LD contexts that are not pinned are fetched with one limit
+  set: no private, loopback or link-local address, the connection goes to the address that was checked
+  (no DNS rebinding), no redirects, 100 KB, 10 s, and at most 200 cached contexts. A holder's own `did:web`
+  is still resolved, and hosts on the allow-list (`*.ps02.test`, the server's own host) skip the check.
 - **mdoc over the Digital Credentials API is not done**, and Inji Web cannot present SD-JWT VC (G25) or
   hold an mdoc (G29). Inji Verify cannot verify an mdoc presentation (G28).
 - **The API on port 28100 has no login.** It listens on 127.0.0.1 by default; the container image listens on

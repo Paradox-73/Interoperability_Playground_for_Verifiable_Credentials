@@ -7,12 +7,14 @@
  * 3. only when `network` is given: a file cache, then an HTTPS fetch whose result is written to the cache.
  *
  * Network access is off by default, so a test or an offline demo can never depend on a remote context
- * by accident; a missing context fails with CONTEXT_NOT_PINNED and names the URL to pin.
+ * by accident; a missing context fails with CONTEXT_NOT_PINNED and names the URL to pin. A credential
+ * names its contexts, so the fetch is `fetchLimited` (address check with the address pinned, no
+ * redirects, 100 KB, timeout), and both caches stop growing at `MAX_CACHED_DOCUMENTS`.
  */
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { FormatError, errorMessage } from '../errors.js';
-import type { FetchLike } from '../util/limited-fetch.js';
+import { fetchLimited, type FetchLimits } from '../util/limited-fetch.js';
 import type { DidResolver } from '../did/resolver.js';
 import { parseDidUrl } from '../did/resolver.js';
 import { contextForVerificationMethodType } from '../did/verification-method.js';
@@ -34,16 +36,17 @@ export interface DocumentLoaderOptions {
   didResolver?: DidResolver;
   /** Extra documents served offline, by URL (for example an issuer's credential vocabulary). */
   contexts?: Record<string, unknown> | Map<string, unknown>;
-  /** Allows fetching contexts that are not pinned. Off unless given. */
-  network?: {
-    fetch?: FetchLike;
+  /** Allows fetching contexts that are not pinned, with these limits. Off unless given. */
+  network?: FetchLimits & {
     /** Directory for fetched documents, so each URL is fetched once per machine. */
     cacheDir?: string;
-    timeoutMs?: number;
   };
   /** Called for every document served, for the protocol inspector and for finding contexts to pin. */
   onLoad?: (event: { url: string; source: DocumentSource }) => void;
 }
+
+/** Most documents kept by the memory cache and the file cache each; beyond it, nothing new is kept. */
+export const MAX_CACHED_DOCUMENTS = 200;
 
 export function createDocumentLoader(options: DocumentLoaderOptions = {}): DocumentLoader {
   const documents = pinnedContexts();
@@ -77,7 +80,7 @@ export function createDocumentLoader(options: DocumentLoaderOptions = {}): Docum
       );
     }
     const { document, source } = await fetchDocument(url, options.network);
-    memoryCache.set(url, document);
+    if (memoryCache.size < MAX_CACHED_DOCUMENTS) memoryCache.set(url, document);
     return served(url, document, source);
   };
 }
@@ -119,19 +122,21 @@ async function fetchDocument(
       // Not cached yet (or unreadable): fetch below.
     }
   }
-  const fetchImpl: FetchLike = network.fetch ?? ((input, init) => globalThis.fetch(input, init));
+  const text = await fetchLimited(
+    {
+      url,
+      accept: 'application/ld+json, application/json',
+      codes: { insecure: 'CONTEXT_FETCH_FAILED', failed: 'CONTEXT_FETCH_FAILED' },
+    },
+    network,
+  );
   let document: unknown;
   try {
-    const response = await fetchImpl(url, {
-      signal: AbortSignal.timeout(network.timeoutMs ?? 10_000),
-      headers: { accept: 'application/ld+json, application/json' },
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    document = JSON.parse(await response.text());
+    document = JSON.parse(text);
   } catch (cause) {
     throw new FormatError(
       'CONTEXT_FETCH_FAILED',
-      `could not fetch JSON-LD document ${url}: ${errorMessage(cause)}`,
+      `JSON-LD document ${url} is not JSON: ${errorMessage(cause)}`,
       {
         cause,
         details: { url },
@@ -140,7 +145,9 @@ async function fetchDocument(
   }
   if (cacheFile && network.cacheDir) {
     await mkdir(network.cacheDir, { recursive: true });
-    await writeFile(cacheFile, JSON.stringify({ url, fetchedAt: new Date().toISOString(), document }));
+    if ((await readdir(network.cacheDir)).length < MAX_CACHED_DOCUMENTS) {
+      await writeFile(cacheFile, JSON.stringify({ url, fetchedAt: new Date().toISOString(), document }));
+    }
   }
   return { document, source: 'network' };
 }

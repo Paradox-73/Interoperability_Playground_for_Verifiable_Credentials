@@ -110,6 +110,14 @@ describe('status and DID fetches from the Inji stack', () => {
     ).rejects.toMatchObject({ code: 'STATUS_LIST_UNAVAILABLE' });
   });
 
+  it('bundle: the context hosts the TLS front answers for are allowed on 443 only; host mode resolves them publicly', () => {
+    const bundle = hostsFor({ PLAYGROUND_STACK: 'bundle' });
+    expect(bundle).toEqual(
+      expect.arrayContaining(['www.w3.org:443', 'w3id.org:443', 'piyush7034.github.io:443']),
+    );
+    expect(hostsFor({ PLAYGROUND_STACK: 'host' })).not.toContain('piyush7034.github.io:443');
+  });
+
   it('INJI_*_URL hosts are allowed when the stack is on; with the stack off nothing is added', () => {
     expect(hostsFor({ PLAYGROUND_STACK: 'bundle', INJI_CERTIFY_URL: 'http://certify.lan:8090' })).toContain(
       'certify.lan:8090',

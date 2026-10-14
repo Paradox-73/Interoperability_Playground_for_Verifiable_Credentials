@@ -50,7 +50,7 @@ Before recording, follow [manual-test-checklist.md](manual-test-checklist.md). I
 - Inji Wallet mobile was not run with a phone.
 - The reference verifier does not check the status of an `mso_mdoc`, and revocation was not tested against
   Inji Verify.
-- Server-side fetches are not protected against DNS rebinding.
+- A holder can make the server fetch a `did:web` document or a JSON-LD context from a public address.
 
 ## If a live run fails while recording
 

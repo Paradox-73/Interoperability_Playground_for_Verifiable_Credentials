@@ -8,6 +8,7 @@ import {
   createDidKey,
   createDidResolver,
   createDocumentLoader,
+  MAX_CACHED_DOCUMENTS,
   createLdpVp,
   CREDENTIALS_V1_URL,
   CREDENTIALS_V2_URL,
@@ -456,6 +457,41 @@ describe('JSON-LD document loader', () => {
       expect(sources).toEqual(['cache']);
       expect(web.requests).toEqual([url]);
     });
+
+    it('refuses a context on a private address, and one larger than 100 KB', async () => {
+      const privateLoader = createDocumentLoader({
+        network: { fetch: fakeWeb().fetch, lookup: () => Promise.resolve(['10.0.0.7']) },
+      });
+      await expect(privateLoader('https://intranet.example/ctx')).rejects.toMatchObject({
+        code: 'CONTEXT_FETCH_FAILED',
+        message: expect.stringContaining('private'),
+      });
+      const web = fakeWeb();
+      web.serve('https://contexts.ps02.test/big', { '@context': { term: 'x'.repeat(200_000) } });
+      const bigLoader = createDocumentLoader({ network: { fetch: web.fetch } });
+      await expect(bigLoader('https://contexts.ps02.test/big')).rejects.toMatchObject({
+        code: 'CONTEXT_FETCH_FAILED',
+        message: expect.stringContaining('102400 bytes'),
+      });
+    });
+
+    // 201 file writes: slow on Windows while other test files run, hence the 30 s timeout.
+    it('stops adding to the file cache at MAX_CACHED_DOCUMENTS', async () => {
+      const dir = await mkdtemp(join(tmpdir(), 'ps02-formats-cap-'));
+      try {
+        const web = fakeWeb();
+        const urls = Array.from(
+          { length: MAX_CACHED_DOCUMENTS + 1 },
+          (_, i) => `https://contexts.ps02.test/c${i}`,
+        );
+        for (const url of urls) web.serve(url, { '@context': {} });
+        const loader = createDocumentLoader({ network: { fetch: web.fetch, cacheDir: dir } });
+        for (const url of urls) await loader(url);
+        expect(await readdir(dir)).toHaveLength(MAX_CACHED_DOCUMENTS);
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    }, 30_000);
 
     it('refuses plain-HTTP context URLs', async () => {
       const loader = createDocumentLoader({ network: { fetch: fakeWeb().fetch } });

@@ -27,8 +27,10 @@ import {
   createDocumentLoader,
   generateKeyPair,
   loadOrCreateKeyPair,
+  pinnedFetch,
   type DidResolver,
   type DocumentLoader,
+  type FetchLike,
   type FetchLimits,
   type KeyAlgorithm,
   type KeyPair,
@@ -134,7 +136,14 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
       ...(options.fetchAllowedHosts ?? []),
       new URL(publicUrl).host,
     ],
-    ...(options.fetch ? { fetch: (url: string, init?: RequestInit) => options.fetch!()(url, init) } : {}),
+    // A host outside the allowed list goes over a connection pinned to its checked address (formats'
+    // pinnedFetch), not through the transport, which would resolve the name again.
+    ...(options.fetch
+      ? {
+          fetch: (url: string, init?: Parameters<FetchLike>[1]) =>
+            init?.pinnedAddress === undefined ? options.fetch!()(url, init) : pinnedFetch(url, init),
+        }
+      : {}),
   };
   const didResolver = createDidResolver({
     ...(overridable ? { hostOverrides: { [didWebHost]: publicUrl } } : {}),
@@ -142,7 +151,9 @@ export async function createReferenceHosting(options: ReferenceHostingOptions): 
   });
   const documentLoader = createDocumentLoader({
     didResolver,
-    ...(options.remoteContexts ? { network: { cacheDir: options.remoteContexts.cacheDir } } : {}),
+    ...(options.remoteContexts
+      ? { network: { ...fetchLimits, cacheDir: options.remoteContexts.cacheDir } }
+      : {}),
   });
 
   const authorizationServer = await createTestAuthorizationServer({

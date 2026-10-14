@@ -62,14 +62,25 @@ export function proxyTargets(config: Config): Record<string, ProxyTarget> {
 }
 
 /**
- * Hosts of the Inji stack the reference verifier may fetch status lists and did:web documents from
- * although they are compose-network or loopback addresses: the proxy targets (`INJI_*_URL` or their
- * defaults) and the network map's names. They are configured, not chosen by a credential. None when the
- * stack is off.
+ * JSON-LD context hosts that are network aliases of the stack's TLS front inside the compose network, a
+ * caching proxy for them (deploy/inji-stack/compose.yaml, nginx/tls-front.conf.template). In the bundle
+ * they resolve to a compose address, so the context loader's address check must let them through.
+ */
+const BUNDLE_CONTEXT_HOSTS = ['www.w3.org:443', 'w3id.org:443', 'piyush7034.github.io:443'];
+
+/**
+ * Hosts of the Inji stack the reference verifier may fetch status lists, did:web documents and JSON-LD
+ * contexts from although they are compose-network or loopback addresses: the proxy targets (`INJI_*_URL`
+ * or their defaults), the network map's names and, in the bundle, the context hosts the TLS front answers
+ * for. They are configured, not chosen by a credential. None when the stack is off.
  */
 export function stackFetchHosts(config: Config, networkMap: NetworkMap): string[] {
   if (config.stack === 'off') return [];
   // `host:port`, so a stack name skips the address check on its own port only.
   const upstreams = Object.values(proxyTargets(config)).map((target) => new URL(target.url));
-  return [...upstreams.map((url) => `${url.hostname}:${portOf(url)}`), ...networkMap.hosts];
+  return [
+    ...upstreams.map((url) => `${url.hostname}:${portOf(url)}`),
+    ...networkMap.hosts,
+    ...(config.stack === 'bundle' ? BUNDLE_CONTEXT_HOSTS : []),
+  ];
 }

@@ -1,16 +1,26 @@
 /**
- * GET for documents a presented credential points the server at (did:web documents, status lists). The
- * credential chooses the URL, so the fetch is limited: a host outside `allowedHosts` must not be or
- * resolve to a private, loopback or link-local address, redirects are not followed, the answer may be at
- * most 100 KB, and the request times out.
+ * GET for documents a presented credential points the server at (did:web documents, status lists, JSON-LD
+ * contexts). The credential chooses the URL, so the fetch is limited: a host outside `allowedHosts` must
+ * not be or resolve to a private, loopback or link-local address, and the connection goes to the address
+ * that was checked (no second lookup, so DNS rebinding cannot swap in another); redirects are not
+ * followed, the answer may be at most 100 KB, and the request times out.
  */
 import { lookup as dnsLookup } from 'node:dns/promises';
-import { BlockList, isIP } from 'node:net';
+import { get as httpGet, type IncomingMessage } from 'node:http';
+import { get as httpsGet } from 'node:https';
+import { BlockList, isIP, type LookupFunction } from 'node:net';
+import { Readable } from 'node:stream';
 import { FormatError, errorMessage, type FormatErrorCode } from '../errors.js';
 
 export type FetchLike = (
   url: string,
-  init?: { signal?: AbortSignal; headers?: Record<string, string>; redirect?: 'error' },
+  init?: {
+    signal?: AbortSignal;
+    headers?: Record<string, string>;
+    redirect?: 'error';
+    /** The checked address of a host outside `allowedHosts`: connect there, do not resolve the name again. */
+    pinnedAddress?: string;
+  },
 ) => Promise<{
   ok: boolean;
   status: number;
@@ -20,7 +30,10 @@ export type FetchLike = (
 }>;
 
 export interface FetchLimits {
-  /** HTTP client; tests and the recording layer pass their own. Default: global fetch. */
+  /**
+   * HTTP client; tests and the recording layer pass their own. Default: `pinnedFetch`. A client used in
+   * production must hand requests with `init.pinnedAddress` to `pinnedFetch`, or DNS rebinding is open.
+   */
   fetch?: FetchLike;
   /** Per-request timeout. Default 10 s. */
   timeoutMs?: number;
@@ -82,13 +95,16 @@ export interface LimitedGet {
 /** The body of a successful GET as text. Rejects with a FormatError. */
 export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}): Promise<string> {
   const { url, codes } = request;
-  if (!request.configured) await assertPublicHost(parseUrl(url, codes.failed), limits, codes);
-  const fetchImpl: FetchLike = limits.fetch ?? ((input, init) => globalThis.fetch(input, init));
+  const pinnedAddress = request.configured
+    ? undefined
+    : await assertPublicHost(parseUrl(url, codes.failed), limits, codes);
+  const fetchImpl: FetchLike = limits.fetch ?? pinnedFetch;
   try {
     const response = await fetchImpl(url, {
       signal: AbortSignal.timeout(limits.timeoutMs ?? 10_000),
       headers: { accept: request.accept },
       redirect: 'error',
+      ...(pinnedAddress === undefined ? {} : { pinnedAddress }),
     });
     if (!response.ok) {
       throw new FormatError(codes.failed, `GET ${url} answered HTTP ${response.status}`, {
@@ -124,13 +140,18 @@ function isAllowedHost(url: URL, allowed: readonly string[]): boolean {
   });
 }
 
-/** Refuses a host that is, or resolves to, an address inside the server's own networks. */
-async function assertPublicHost(url: URL, limits: FetchLimits, codes: LimitedGet['codes']): Promise<void> {
-  if (isAllowedHost(url, limits.allowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS)) return;
+/**
+ * Refuses a host that is, or resolves to, an address inside the server's own networks. Returns the
+ * checked address to connect to, or `undefined` for an allowed host.
+ */
+async function assertPublicHost(
+  url: URL,
+  limits: FetchLimits,
+  codes: LimitedGet['codes'],
+): Promise<string | undefined> {
+  if (isAllowedHost(url, limits.allowedHosts ?? DEFAULT_FETCH_ALLOWED_HOSTS)) return undefined;
   // URL keeps the brackets of an IPv6 literal (`[::1]`); the address checks need it bare.
   const hostname = url.hostname.replace(/^\[(.*)\]$/, '$1');
-  // shortcut: the name is resolved again when fetching, so DNS rebinding can slip past; pin the address
-  // in the connector if this server ever runs where internal services are worth reaching.
   let addresses: string[];
   try {
     addresses = isIP(hostname) ? [hostname] : await (limits.lookup ?? defaultLookup)(hostname);
@@ -147,7 +168,36 @@ async function assertPublicHost(url: URL, limits: FetchLimits, codes: LimitedGet
       { details: { host: hostname } },
     );
   }
+  return addresses[0];
 }
+
+/**
+ * GET with Node's http/https client. With `init.pinnedAddress` the socket connects to that address while
+ * the URL's host name stays in the Host header and the TLS server name; without it, the global fetch.
+ */
+export const pinnedFetch: FetchLike = (url, init) => {
+  const address = init?.pinnedAddress;
+  if (address === undefined) return globalThis.fetch(url, init);
+  const family = isIP(address);
+  const lookup = ((_hostname, options, callback) => {
+    // Node asks for every address (`all: true`) when it tries IPv4 and IPv6 in turn.
+    if (options.all) callback(null, [{ address, family }]);
+    else callback(null, address, family);
+  }) as LookupFunction;
+  const get = new URL(url).protocol === 'https:' ? httpsGet : httpGet;
+  return new Promise((resolve, reject) => {
+    const request = get(
+      url,
+      { headers: init?.headers, lookup, ...(init?.signal ? { signal: init.signal } : {}) },
+      (response: IncomingMessage) => {
+        const status = response.statusCode ?? 0;
+        const body = Readable.toWeb(response) as ReadableStream<Uint8Array>;
+        resolve({ ok: status >= 200 && status < 300, status, body, text: () => new Response(body).text() });
+      },
+    );
+    request.on('error', reject);
+  });
+};
 
 async function defaultLookup(hostname: string): Promise<string[]> {
   return (await dnsLookup(hostname, { all: true })).map((entry) => entry.address);
