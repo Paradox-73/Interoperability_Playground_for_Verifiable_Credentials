@@ -97,6 +97,27 @@ and credential requests recorded; presentations reach Inji Verify, which answers
 (gap G22); Mimoto offers nothing for an SD-JWT VC request (G25) and refuses requests whose filters lack a
 `pattern` (G23). The live matrix: [docs/interop-report/live/matrix.md](interop-report/live/matrix.md).
 
+### Inji Web's own pages
+
+The browser test [packages/web/e2e/live/inji-web-ui.spec.ts](../packages/web/e2e/live/inji-web-ui.spec.ts)
+(`npm run e2e:live`, bundle up) uses Inji Web's React pages on port 28004 the way a person does, without
+the `inji-web` role:
+
+1. "Continue With Google" opens the test authorization server's `/authorize` on port 28100, which approves
+   at once (client `ps02-mimoto-login`, PKCE). Mimoto redeems the code at `/ref/as/token`, reads
+   `/ref/as/userinfo` and opens the passcode page. The test sets or enters the passcode.
+2. "Inji Certify AC (playground)", then "Farmer Verifiable Credential": the browser goes to
+   `https://ref.ps02.test/ref/as/authorize` (the test maps that name to the TLS front on 28443) and back
+   to `/redirect`. Mimoto stores the `ldp_vc`, and the card appears under "Stored Cards".
+3. The test creates a request at verify-service (client `ps02-playground`) and opens it on Inji Web's
+   `/authorize` page. It presses "Yes, I trust this Verifier" (first time only), ticks the card and presses
+   "I Consent & Share". Inji Verify's result must say `allChecksSuccessful: true` for a credential signed
+   by `did:web:certify-ac.ps02.test`.
+
+Measured on 2026-10-14: the test passed in 40 s. A person can repeat it in a browser started with
+`--host-resolver-rules="MAP ref.ps02.test:443 127.0.0.1:28443"` and certificate errors accepted
+for that name.
+
 ## Phone wallets
 
 The `mobile-wallet` role stands for a person with Inji Wallet (or another wallet app) on a phone. The run

@@ -6,7 +6,8 @@
  * /proxy to that server; runs the tests; stops both, whatever the result.
  *
  * `npm run e2e:live`: project `e2e-live` against a running bundle or host-mode server
- * (PLAYWRIGHT_BASE_URL, default http://localhost:28100); nothing is started.
+ * (PLAYWRIGHT_BASE_URL, default http://localhost:28100); nothing is started. With the holder-web profile it
+ * also drives Inji Web's own pages on 28004 (e2e/live/inji-web-ui.spec.ts).
  *
  * Options: `--no-build` (reuse the last build), `--screenshots` (write the UX screenshots to
  * docs/ux/screenshots/); anything else goes to `playwright test`.
@@ -24,21 +25,32 @@ const screenshots = args.includes('--screenshots');
 const passThrough = args.filter((arg) => !['--live', '--no-build', '--screenshots'].includes(arg));
 const playwrightCli = `${root}node_modules/@playwright/test/cli.js`;
 
-function playwright(project, env) {
-  const result = spawnSync(process.execPath, [playwrightCli, 'test', '--project', project, ...passThrough], {
-    cwd: web,
-    stdio: 'inherit',
-    env: { ...process.env, ...env },
-  });
+function playwright(project, env, extra = []) {
+  const result = spawnSync(
+    process.execPath,
+    [playwrightCli, 'test', ...extra, ...passThrough, '--project', project],
+    {
+      cwd: web,
+      stdio: 'inherit',
+      env: { ...process.env, ...env },
+    },
+  );
   return result.status ?? 1;
 }
 
 // The bundle or a host-mode server answers on 28100; the config's default is the Vite preview of `npm run e2e`.
+// One worker: the live tests share one stack, and a run of the Inji Verify web component waited forever
+// while the Inji Web test used verify-service at the same time (2026-10-14).
 if (live) {
   process.exit(
-    playwright('e2e-live', {
-      PLAYWRIGHT_BASE_URL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:28100',
-    }),
+    playwright(
+      'e2e-live',
+      {
+        PLAYWRIGHT_BASE_URL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:28100',
+        ...(screenshots ? { E2E_SCREENSHOTS: `${root}docs/ux/screenshots` } : {}),
+      },
+      ['--workers=1'],
+    ),
   );
 }
 

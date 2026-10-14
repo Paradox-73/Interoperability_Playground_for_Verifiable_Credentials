@@ -25,6 +25,7 @@ import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fas
 import {
   INJI_VERIFY_CLIENT_ID,
   INJI_VERIFY_SDK_CLIENT_ID,
+  MIMOTO_LOGIN_CLIENT_ID,
   injiRoles,
   injiVerifyResponseUris,
 } from './adapters/inji/index.js';
@@ -330,7 +331,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
 }
 
 /**
- * What the test authorization server needs for the holder-web profile: certify-ac's scope and audience, and
+ * What the test authorization server needs for the holder-web profile: certify-ac's scope and audience,
+ * Mimoto's "Google" sign-in as a public client (Inji Web's own login page, deploy/inji-stack/compose.yaml), and
  * Mimoto as a private_key_jwt client with the key from the certificate the stack generated for it
  * (`$PLAYGROUND_RUN_DIR/stack/mimoto/oidc-client.crt`), when that file exists.
  */
@@ -343,15 +345,23 @@ function holderWebResources(
       audience: `${config.injiCertifyAcIssuer.replace(/\/+$/, '')}/v1/certify/issuance/credential`,
     },
   ];
+  const injiWeb = config.injiWebUrl.replace(/\/+$/, '');
+  const login = {
+    clientId: MIMOTO_LOGIN_CLIENT_ID,
+    redirectUris: [`${injiWeb}/v1/mimoto/oauth2/callback/google`],
+    authMethod: 'none' as const,
+    scopes: ['profile', 'email'],
+  };
   const certificate = join(config.runDir, 'stack', 'mimoto', 'oidc-client.crt');
-  if (!existsSync(certificate)) return { extraResources };
+  if (!existsSync(certificate)) return { extraResources, extraClients: [login] };
   const jwk = new X509Certificate(readFileSync(certificate)).publicKey.export({ format: 'jwk' });
   return {
     extraResources,
     extraClients: [
+      login,
       {
         clientId: MIMOTO_CLIENT_ID,
-        redirectUris: [`${config.injiWebUrl.replace(/\/+$/, '')}/redirect`],
+        redirectUris: [`${injiWeb}/redirect`],
         authMethod: 'private_key_jwt',
         jwks: { keys: [{ ...jwk, alg: 'RS256', use: 'sig' }] },
       },

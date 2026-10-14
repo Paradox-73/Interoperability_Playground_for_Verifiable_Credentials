@@ -86,7 +86,9 @@ server is the playground's test authorization server, so Inji Web can download w
   `ps02-playground` and `ps02-playground-sdk` with Inji Verify's response URIs.
 - Mimoto's Google sign-in (`GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_ISSUER` and the provider's JWKS and userinfo URLs)
   points at the test server, so the playground signs in with a test ID token and uses a real wallet (create,
-  unlock, store, present) with no Google account.
+  unlock, store, present) with no Google account. The authorization and token URLs, a fixed redirect URI
+  (`http://localhost:28004/v1/mimoto/oauth2/callback/google`) and public-client authentication make Inji Web's
+  own "Continue With Google" button work in a browser too (the playground registers `ps02-mimoto-login`).
 - verify-service hands wallets `https://verify.ps02.test/v1/verify/...` as `response_uri`: Mimoto refuses an
   `http` one (gap G24).
 

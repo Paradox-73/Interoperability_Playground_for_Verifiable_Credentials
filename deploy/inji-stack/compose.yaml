@@ -347,11 +347,18 @@ services:
       # Mimoto's sign-in is Google only. For the logged-in wallet (WP-14) its "Google" provider is the playground's
       # test authorization server: Mimoto checks the ID token's issuer (google.issuer), its audience (the client id)
       # and its signature (the provider's JWKS); the test server issues ID tokens with an email claim.
+      # Inji Web's "Continue With Google" button (a browser) uses the same provider: the browser opens the test
+      # server's /authorize on the playground's host port, which approves at once; Mimoto redeems the code as a
+      # public client with PKCE. The redirect URI is fixed because Inji Web's nginx drops the port from Host.
       GOOGLE_OAUTH_CLIENT_ID: ps02-mimoto-login
       GOOGLE_OAUTH_CLIENT_SECRET: not-used-by-token-login
       GOOGLE_ISSUER: https://ref.ps02.test/ref/as
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_AUTHORIZATIONURI: http://localhost:28100/ref/as/authorize
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_TOKENURI: https://ref.ps02.test/ref/as/token
       SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_JWKSETURI: https://ref.ps02.test/ref/as/jwks.json
       SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_USERINFOURI: https://ref.ps02.test/ref/as/userinfo
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTAUTHENTICATIONMETHOD: none
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI: http://localhost:28004/v1/mimoto/oauth2/callback/google
       USE_SYSTEM_CA_CERTS: '1'
     volumes:
       - ./scripts/mimoto-start.sh:/ps02/mimoto-start.sh:ro
