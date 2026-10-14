@@ -1,6 +1,7 @@
 /**
- * What the stored runs add up to: the compatibility matrix, run metrics (JSON and Prometheus) and the
- * interoperability gap register.
+ * What the stored runs add up to: the compatibility matrix, run metrics (JSON, Prometheus and Obsrv events)
+ * and the interoperability gap register. With `PLAYGROUND_OBSRV_URL` set, each finished run is also pushed
+ * to that Obsrv dataset.
  */
 import {
   ApiErrorSchema,
@@ -9,19 +10,40 @@ import {
   MatrixSchema,
   MetricsQuerySchema,
   MetricsSchema,
+  RunIdSchema,
 } from '@inji-playground/protocol';
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { buildMatrix } from '../matrix/matrix.js';
 import { renderMatrixMarkdown } from '../matrix/markdown.js';
 import { computeMetrics } from '../metrics/metrics.js';
+import { ObsrvEventSchema, obsrvEvents, pushToObsrv } from '../metrics/obsrv.js';
 import { PROMETHEUS_CONTENT_TYPE, renderPrometheus } from '../metrics/prometheus.js';
 import { RunRequestError } from '../orchestrator/errors.js';
 import { SERVER_VERSION } from '../version.js';
 import type { RouteOptions } from './services.js';
 
 export const insightRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { services }, done) => {
-  const { store, registry, scenarios, gaps } = services;
+  const { store, registry, scenarios, gaps, bus, config } = services;
+
+  const { obsrvUrl } = config;
+  if (obsrvUrl) {
+    const pending = new Set<Promise<void>>();
+    const unsubscribe = bus.subscribeAll((event) => {
+      if (event.type !== 'run.finished') return;
+      const push = pushToObsrv(obsrvUrl, event.report)
+        .catch((error: unknown) =>
+          app.log.warn({ err: error, runId: event.runId }, 'pushing run telemetry to Obsrv failed'),
+        )
+        .finally(() => pending.delete(push));
+      pending.add(push);
+    });
+    // A server closed right after a run (the CLI, `npm run smoke`) would otherwise drop the last push.
+    app.addHook('onClose', async () => {
+      unsubscribe();
+      await Promise.allSettled(pending);
+    });
+  }
 
   app.get(
     '/api/matrix',
@@ -94,6 +116,28 @@ export const insightRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { ser
     },
     async (_request, reply) =>
       reply.type(PROMETHEUS_CONTENT_TYPE).send(renderPrometheus(computeMetrics(store.listFinishedReports()))),
+  );
+
+  app.get(
+    '/api/telemetry/obsrv',
+    {
+      schema: {
+        summary:
+          'Finished runs as flat Obsrv events: one RUN event per run and one STEP event per step that ran',
+        description:
+          'The events `PLAYGROUND_OBSRV_URL` receives, for the finished runs that match the filters (`runId` picks one run). Fields match deploy/obsrv/druid-ingestion-spec.json; see docs/telemetry-obsrv.md.',
+        tags: ['metrics'],
+        querystring: MetricsQuerySchema.extend({ runId: RunIdSchema.optional() }),
+        response: { 200: z.object({ events: z.array(ObsrvEventSchema) }), 400: ApiErrorSchema },
+      },
+    },
+    (request) => {
+      const { runId, ...filter } = request.query;
+      const reports = store
+        .listFinishedReports(filter)
+        .filter(({ report }) => runId === undefined || report.runId === runId);
+      return { events: reports.flatMap(({ report }) => obsrvEvents(report)) };
+    },
   );
 
   app.get(

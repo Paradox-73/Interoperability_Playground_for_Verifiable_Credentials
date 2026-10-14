@@ -99,6 +99,11 @@ export const ConfigSchema = z.object({
         .map((host) => host.trim().toLowerCase())
         .filter(Boolean),
     ),
+  /**
+   * Data In URL of an Obsrv dataset (`https://<obsrv>/v2/data/in/<dataset_id>`). When set, the events of
+   * every finished run are posted there (`src/metrics/obsrv.ts`); unset, nothing is sent.
+   */
+  obsrvUrl: z.url().optional(),
 });
 export type Config = z.infer<typeof ConfigSchema>;
 
@@ -144,6 +149,7 @@ const ENV_KEYS = {
   PLAYGROUND_REF_ISSUER_DID: 'refIssuerDid',
   PLAYGROUND_TRUSTED_ISSUERS: 'trustedIssuers',
   PLAYGROUND_FETCH_ALLOWED_HOSTS: 'fetchAllowedHosts',
+  PLAYGROUND_OBSRV_URL: 'obsrvUrl',
   INJI_CERTIFY_URL: 'injiCertifyUrl',
   INJI_CERTIFY_AC_URL: 'injiCertifyAcUrl',
   INJI_VERIFY_URL: 'injiVerifyUrl',

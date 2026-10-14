@@ -7792,6 +7792,348 @@
         }
       }
     },
+    "/api/telemetry/obsrv": {
+      "get": {
+        "summary": "Finished runs as flat Obsrv events: one RUN event per run and one STEP event per step that ran",
+        "tags": [
+          "metrics"
+        ],
+        "description": "The events `PLAYGROUND_OBSRV_URL` receives, for the finished runs that match the filters (`runId` picks one run). Fields match deploy/obsrv/druid-ingestion-spec.json; see docs/telemetry-obsrv.md.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "in": "query",
+            "name": "issuer",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "in": "query",
+            "name": "wallet",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "in": "query",
+            "name": "verifier",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "in": "query",
+            "name": "version",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ldp_vc",
+                "vc+sd-jwt",
+                "dc+sd-jwt",
+                "mso_mdoc"
+              ]
+            },
+            "in": "query",
+            "name": "format",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+            },
+            "in": "query",
+            "name": "scenario",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "live",
+                "reference",
+                "playback"
+              ]
+            },
+            "in": "query",
+            "name": "mode",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "in": "query",
+            "name": "from",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "in": "query",
+            "name": "to",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "in": "query",
+            "name": "runId",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ets": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991,
+                            "description": "Epoch milliseconds when the run finished (RUN) or the step started (STEP); the timestamp key"
+                          },
+                          "mid": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Unique event id; the dataset dedup key"
+                          },
+                          "eid": {
+                            "type": "string",
+                            "enum": [
+                              "RUN",
+                              "STEP"
+                            ]
+                          },
+                          "runId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "^[A-Za-z0-9_-]+$"
+                          },
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "live",
+                              "reference",
+                              "playback"
+                            ]
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "wallet": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "verifier": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "ldp_vc",
+                              "vc+sd-jwt",
+                              "dc+sd-jwt",
+                              "mso_mdoc"
+                            ]
+                          },
+                          "scenario": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "expected": {
+                            "type": "string",
+                            "enum": [
+                              "VALID",
+                              "INVALID",
+                              "EXPIRED",
+                              "ERROR",
+                              "NOT_RUN"
+                            ]
+                          },
+                          "outcome": {
+                            "type": "string",
+                            "enum": [
+                              "VALID",
+                              "INVALID",
+                              "EXPIRED",
+                              "ERROR",
+                              "NOT_RUN"
+                            ]
+                          },
+                          "verdict": {
+                            "type": "string",
+                            "enum": [
+                              "pass",
+                              "fail",
+                              "error",
+                              "not-supported"
+                            ]
+                          },
+                          "errorCode": {
+                            "description": "Error code of the run; on a STEP event only for the failing step",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "step": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "issuer.offer",
+                                  "issuer.metadata",
+                                  "as.metadata",
+                                  "token",
+                                  "nonce",
+                                  "credential",
+                                  "verifier.request",
+                                  "wallet.fetch-request",
+                                  "wallet.submit",
+                                  "verifier.result",
+                                  "person.action",
+                                  "playground.admin"
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "description": "Null on a RUN event"
+                          },
+                          "stepStatus": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "ok",
+                                  "failed"
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ],
+                            "description": "Null on a RUN event"
+                          },
+                          "durationMs": {
+                            "type": "number",
+                            "minimum": 0,
+                            "description": "Step time, or the sum of the step times on a RUN event"
+                          },
+                          "success": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "enum": [
+                                  0
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "enum": [
+                                  1
+                                ]
+                              }
+                            ],
+                            "description": "1 for a step that finished ok or a run that passed"
+                          }
+                        },
+                        "required": [
+                          "ets",
+                          "mid",
+                          "eid",
+                          "runId",
+                          "mode",
+                          "issuer",
+                          "wallet",
+                          "verifier",
+                          "format",
+                          "scenario",
+                          "expected",
+                          "outcome",
+                          "verdict",
+                          "errorCode",
+                          "step",
+                          "stepStatus",
+                          "durationMs",
+                          "success"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "events"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "details": {}
+                  },
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/gaps": {
       "get": {
         "summary": "Interoperability gaps found so far, from docs/gaps/gaps.json",
@@ -7964,6 +8306,34 @@
         }
       }
     },
+    "/ref/issuer/status/token/{alg}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "alg",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/ref/issuer/status/bitstring": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
     "/ref/issuer/draft13/.well-known/openid-credential-issuer": {
       "get": {
         "responses": {
@@ -8120,6 +8490,34 @@
       }
     },
     "/ref/issuer/did-jwk/.well-known/did.json": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/ref/issuer/did-jwk/status/token/{alg}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "alg",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/ref/issuer/did-jwk/status/bitstring": {
       "get": {
         "responses": {
           "200": {

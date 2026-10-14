@@ -31,6 +31,7 @@ Errors share one body, `{"error": "<code>", "message": "<text>"}`.
 | `GET /api/matrix`                       | Compatibility matrix: newest run per cell, plus the cells that cannot run and why                          |
 | `GET /api/metrics`                      | Success rates and p50/p95 durations per step, role pair and flow; credential sizes                         |
 | `GET /metrics`                          | The same metrics in the Prometheus text format                                                             |
+| `GET /api/telemetry/obsrv`              | Finished runs as flat Obsrv events, [telemetry-obsrv.md](telemetry-obsrv.md)                               |
 | `GET /api/gaps`                         | The interoperability gap register, [gaps/gaps.json](gaps/gaps.json)                                        |
 
 Start a run:
