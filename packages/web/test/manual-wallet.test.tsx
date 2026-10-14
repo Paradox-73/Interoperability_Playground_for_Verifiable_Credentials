@@ -206,6 +206,28 @@ describe('Inji Verify SDK panel', () => {
     ]);
   });
 
+  it('is not shown before the verifier creates its request', async () => {
+    const events = RunEventSchema.array().parse([
+      {
+        type: 'run.started',
+        runId: RUN_ID,
+        config: config({ wallet: 'ref-wallet', verifier: 'inji-verify-sdk', format: 'ldp_vc' }),
+        at: AT,
+      },
+      {
+        type: 'step.started',
+        runId: RUN_ID,
+        step: 'issuer.offer',
+        label: 'Issuer prepares an offer',
+        at: AT,
+      },
+    ]);
+    stream(RUN_ID, events);
+    renderApp(`/runs/${RUN_ID}`);
+    await screen.findByText('Issuer prepares an offer');
+    expect(screen.queryByTestId('inji-verify-sdk-panel')).toBeNull();
+  });
+
   it('is not shown for other verifiers', async () => {
     stream(RUN_ID, personEvents());
     renderApp(`/runs/${RUN_ID}`);
