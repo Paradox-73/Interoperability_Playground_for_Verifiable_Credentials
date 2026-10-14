@@ -70,4 +70,22 @@ describe('nightly replay', () => {
     );
     expect(start.env.PLAYGROUND_PUBLIC_URL).toBe('https://ref.ps02.test');
   });
+
+  it('starts the local stack unless the target is collab', () => {
+    const quiet = () => {};
+    const env = jobEnv(workflow.jobs.live, context, {}, 'linux', quiet);
+    expect(env.INJI_TARGET).toBe('local');
+    const stack = workflow.jobs.live.steps.find((step) => step.name === 'start the Inji stack');
+    const state = (target) => ({ jobFailed: false, outcomes: {}, env: { ...env, INJI_TARGET: target } });
+    expect(evaluateIf(stack.if, state('local'))).toBe(true);
+    expect(evaluateIf(stack.if, state('collab'))).toBe(false);
+    const collab = jobEnv(workflow.jobs.live, context, { INJI_TARGET: 'collab' }, 'linux', quiet);
+    expect(collab.INJI_TARGET).toBe('collab');
+  });
+
+  it('expands unset inputs, variables and secrets as empty, so a default after || applies', () => {
+    expect(expand("${{ inputs.target || vars.INJI_TARGET || 'local' }}", context)).toBe('local');
+    expect(expand('${{ vars.INJI_CERTIFY_URL }}', context)).toBe('');
+    expect(() => expand('${{ github.event_name }}', context)).toThrow(/unsupported expression/);
+  });
 });

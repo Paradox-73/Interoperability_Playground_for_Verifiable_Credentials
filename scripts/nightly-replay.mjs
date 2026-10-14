@@ -14,9 +14,12 @@
  * - `uses: actions/checkout` and `actions/setup-node`: skipped; the replay runs in this checkout with the
  *   installed Node (the version of `.nvmrc` is checked).
  * - `uses: actions/upload-artifact`: the listed paths are copied to run/nightly-replay/artifacts/<name>/.
- * - `if:` supports `always()`, `success()`, `failure()` and `steps.<id>.outcome == '<value>'` joined with
- *   `||` and `&&`; `continue-on-error: true` makes a failed step's outcome `failure` without failing the job.
- * - `${{ github.workspace }}` is this checkout; `$GITHUB_STEP_SUMMARY` is run/nightly-replay/summary-<job>.md.
+ * - `if:` supports `always()`, `success()`, `failure()`, `steps.<id>.outcome == '<value>'` and
+ *   `env.<NAME> == '<value>'` joined with `||` and `&&`; `continue-on-error: true` makes a failed step's
+ *   outcome `failure` without failing the job.
+ * - `${{ github.workspace }}` is this checkout. `inputs.*`, `vars.*` and `secrets.*` are empty, as unset ones
+ *   are on GitHub, so `${{ vars.X || 'default' }}` gives the default; set a job env value with `--env`.
+ * - `$GITHUB_STEP_SUMMARY` is run/nightly-replay/summary-<job>.md.
  * - On Docker Desktop (not Linux) the bridge address 172.17.0.1 does not reach the host, so an env value
  *   naming it is changed to host.docker.internal, and the change is printed.
  *
@@ -66,14 +69,24 @@ export function jobOrder(jobs) {
   return order;
 }
 
-/** Replaces `${{ github.workspace }}` (the only expression the nightly workflow uses in values). */
+/** Replaces each `${{ ... }}` in a value. Operands joined by `||`: the first non-empty one wins. */
 export function expand(value, context) {
-  return String(value).replace(/\$\{\{\s*github\.workspace\s*\}\}/g, context.workspace);
+  return String(value).replace(/\$\{\{(.*?)\}\}/g, (_match, expression) => {
+    for (const operand of expression.split('||').map((part) => part.trim())) {
+      let result;
+      if (operand === 'github.workspace') result = context.workspace;
+      else if (/^'[^']*'$/.test(operand)) result = operand.slice(1, -1);
+      else if (/^(inputs|vars|secrets)\.\w+$/.test(operand)) result = '';
+      else throw new Error(`unsupported expression in a value: ${expression.trim()}`);
+      if (result !== '') return result;
+    }
+    return '';
+  });
 }
 
 /**
  * Evaluates a step `if:`. Without one a step runs only while the job has not failed (`success()`).
- * Supported: always(), success(), failure(), steps.<id>.outcome == / != '<value>', ||, &&, !.
+ * Supported: always(), success(), failure(), steps.<id>.outcome and env.<NAME> == / != '<value>', ||, &&, !.
  */
 export function evaluateIf(expression, state) {
   if (expression === undefined || expression === null || expression === '') return !state.jobFailed;
@@ -81,7 +94,7 @@ export function evaluateIf(expression, state) {
     .replace(/^\$\{\{|\}\}$/g, '')
     .trim();
   const tokens = source.match(
-    /always\(\)|success\(\)|failure\(\)|steps\.[\w-]+\.outcome|'[^']*'|==|!=|\|\||&&|!|\(|\)/g,
+    /always\(\)|success\(\)|failure\(\)|steps\.[\w-]+\.outcome|env\.\w+|'[^']*'|==|!=|\|\||&&|!|\(|\)/g,
   );
   const joined = (tokens ?? []).join('');
   if (joined.replace(/\s/g, '') !== source.replace(/\s/g, '')) {
@@ -103,6 +116,7 @@ export function evaluateIf(expression, state) {
     if (token === 'failure()') return state.jobFailed;
     if (token.startsWith("'")) return token.slice(1, -1);
     if (token.startsWith('steps.')) return state.outcomes[token.split('.')[1]] ?? '';
+    if (token.startsWith('env.')) return state.env?.[token.slice(4)] ?? '';
     throw new Error(`unexpected ${token} in ${source}`);
   };
   const truthy = (value) => value !== false && value !== '' && value !== undefined;
@@ -256,7 +270,7 @@ export function main(argv = process.argv.slice(2)) {
     const context = { workspace: root, outDir, summary: join(outDir, `summary-${id}.md`) };
     writeFileSync(context.summary, '');
     const env = jobEnv(job, context, options.env);
-    const state = { jobFailed: false, outcomes: {} };
+    const state = { jobFailed: false, outcomes: {}, env };
     const steps = [];
     const before = new Set(listeners(28100));
     console.log(`\n[replay] job ${id} (${job.name ?? id})`);

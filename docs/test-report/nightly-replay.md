@@ -38,6 +38,39 @@ start took 87 s the same day), start the playground server 3.8, live-core matrix
 - The server is stopped in the last `always()` step. On Windows `kill` of the background job does not stop
   the node process npm started; the replay stops what a job left listening on 28100.
 
+## Run the live job against MOSIP Collab
+
+By default the `live` job starts the Inji stack on the runner. To run the same matrices against the MOSIP
+Collab sandbox instead, set these repository variables (**Settings** > **Secrets and variables** >
+**Actions** > **Variables**):
+
+| Variable                     | Value                                                                                                     |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `INJI_TARGET`                | `collab`. Unset or any other value keeps the local stack.                                                 |
+| `INJI_CERTIFY_URL`           | Inji Certify base URL. Required. The problem statement lists `https://injicertify-mock.collab.mosip.net/` |
+| `INJI_VERIFY_URL`            | Inji Verify service base URL. Required. The problem statement lists none for Collab.                      |
+| `INJI_MIMOTO_URL`            | Mimoto base URL, for the `inji-web` cells. The problem statement lists `https://api.collab.mosip.net/`    |
+| `INJI_CERTIFY_AC_URL`        | An Inji Certify with the authorization code flow, if Collab has one. Optional.                            |
+| `PLAYGROUND_TRUSTED_ISSUERS` | DIDs of the Collab issuers, so the reference verifier accepts their credentials. Optional.                |
+
+A scheduled run follows `INJI_TARGET`. A manual run uses the `target` picked in the **Run workflow** form.
+With `collab`, the job skips `npm run stack:up` and `npm run stack:down`. The server step stops with an
+error when `INJI_CERTIFY_URL` or `INJI_VERIFY_URL` is empty. With `local`, the step ignores these variables.
+The job reads no secret, because the Collab URLs in the problem statement are public. The job summary
+starts with `Inji target: <target>`.
+
+To try the Collab target on your machine, run the replay with the same values:
+
+```sh
+node scripts/nightly-replay.mjs --job live --env INJI_TARGET=collab \
+  --env INJI_CERTIFY_URL=https://injicertify-mock.collab.mosip.net --env INJI_VERIFY_URL=<verify-url>
+```
+
+The Collab target has not run, on GitHub or with the replay. `nightly-replay.test.mjs` checks only that
+`collab` skips the stack step. The specs `live-core` and `live-holder-web` describe the local stack. Cells
+that need certify-ac, the test authorization server at `https://ref.ps02.test`, or a Collab service that
+calls back into the runner will differ from their expected outcomes.
+
 ## Not measured
 
 - A GitHub-hosted runner: the repository stays private until submission and the workflow has not run on

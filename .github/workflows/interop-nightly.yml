@@ -2,6 +2,9 @@
 # Inji stack (Certify, Inji Verify, Mimoto and Inji Web). The matrices are published as job summaries and
 # docs/interop-report/ (with the redacted run of every cell) as an artifact.
 #
+# Target `collab` (repository variable INJI_TARGET, or the `target` input of a manual run) starts no stack and
+# points the playground at the INJI_*_URL repository variables instead; docs/test-report/nightly-replay.md.
+#
 # Replayed locally with `node scripts/nightly-replay.mjs` (it runs the run steps of each job in
 # order with their env); the reference job also ran under nektos/act. Whether a GitHub-hosted runner has enough
 # memory for the stack with the holder-web profile (2.5 GiB measured locally) is not known yet.
@@ -11,6 +14,12 @@ on:
   schedule:
     - cron: '30 20 * * *'
   workflow_dispatch:
+    inputs:
+      target:
+        description: 'Where the Inji modules run: local (stack on the runner) or collab (INJI_*_URL variables)'
+        type: choice
+        options: [local, collab]
+        default: local
 
 permissions:
   contents: read
@@ -44,7 +53,7 @@ jobs:
           if-no-files-found: warn
 
   live:
-    name: live matrices (Inji stack)
+    name: live matrices (Inji stack or Collab)
     runs-on: ubuntu-latest
     needs: reference
     timeout-minutes: 60
@@ -53,6 +62,8 @@ jobs:
       PLAYGROUND_STACK_PROFILES: holder-web
       # The TLS front reaches the playground on the host through the Docker bridge on Linux.
       PLAYGROUND_REF_UPSTREAM: http://172.17.0.1:28100
+      # Scheduled runs have no inputs, so they follow the repository variable.
+      INJI_TARGET: ${{ inputs.target || vars.INJI_TARGET || 'local' }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -62,6 +73,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: start the Inji stack
+        if: env.INJI_TARGET != 'collab'
         run: npm run stack:up
       # One server for both live specs: certify-ac and Mimoto reach the playground at https://ref.ps02.test, and
       # certify-ac accepts only tokens issued there; Inji Verify resolves the reference issuer's did:web there.
@@ -71,7 +83,18 @@ jobs:
           PLAYGROUND_HOST: 0.0.0.0
           PLAYGROUND_NETWORK_MAP: deploy/inji-stack/network-map.host.json
           PLAYGROUND_PUBLIC_URL: https://ref.ps02.test
+          INJI_CERTIFY_URL: ${{ vars.INJI_CERTIFY_URL }}
+          INJI_CERTIFY_AC_URL: ${{ vars.INJI_CERTIFY_AC_URL }}
+          INJI_VERIFY_URL: ${{ vars.INJI_VERIFY_URL }}
+          INJI_MIMOTO_URL: ${{ vars.INJI_MIMOTO_URL }}
+          PLAYGROUND_TRUSTED_ISSUERS: ${{ vars.PLAYGROUND_TRUSTED_ISSUERS }}
         run: |
+          if [ "$INJI_TARGET" = collab ]; then
+            : "${INJI_CERTIFY_URL:?set the repository variable INJI_CERTIFY_URL}"
+            : "${INJI_VERIFY_URL:?set the repository variable INJI_VERIFY_URL}"
+          else
+            unset INJI_CERTIFY_URL INJI_CERTIFY_AC_URL INJI_VERIFY_URL INJI_MIMOTO_URL PLAYGROUND_TRUSTED_ISSUERS
+          fi
           nohup npm start > "$PLAYGROUND_RUN_DIR/server.log" 2>&1 &
           echo $! > "$PLAYGROUND_RUN_DIR/server.pid"
           for i in $(seq 1 60); do curl -sf http://localhost:28100/api/health && exit 0; sleep 1; done
@@ -87,6 +110,7 @@ jobs:
       - name: matrices as job summary
         if: always()
         run: |
+          echo "Inji target: $INJI_TARGET" >> "$GITHUB_STEP_SUMMARY"
           [ -f docs/interop-report/live/matrix.md ] && cat docs/interop-report/live/matrix.md >> "$GITHUB_STEP_SUMMARY"
           echo "memory at the end of the run:" >> "$GITHUB_STEP_SUMMARY"
           docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' >> "$GITHUB_STEP_SUMMARY" || true
@@ -102,7 +126,7 @@ jobs:
         if: always()
         run: |
           kill "$(cat "$PLAYGROUND_RUN_DIR/server.pid")" || true
-          npm run stack:down
+          [ "$INJI_TARGET" = collab ] || npm run stack:down
       - name: fail when a live matrix differed from its spec
         if: steps.core.outcome == 'failure' || steps.holder.outcome == 'failure'
         run: exit 1
