@@ -62,6 +62,8 @@ COPY --from=build /app/packages/oid4vp/dist packages/oid4vp/dist
 COPY --from=build /app/packages/server/dist packages/server/dist
 COPY --from=build /app/packages/cli/dist packages/cli/dist
 COPY --from=build /app/packages/web/dist packages/web/dist
+# The Gaps page and /api/gaps read the register from here (gapsFile in packages/server/src/config).
+COPY docs/gaps/gaps.json docs/gaps/
 COPY LICENSE ./
 
 RUN mkdir -p /data && chown node:node /data
