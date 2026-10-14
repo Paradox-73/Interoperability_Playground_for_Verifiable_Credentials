@@ -63,7 +63,7 @@ spec over 20 minutes is refused unless `--force`.
   stack with the `holder-web` profile, the server against it, `live-core`, the server again with
   `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test`, `live-holder-web`, the
   matrices and the containers' memory as job summary, `docs/interop-report/` as an artifact, stack down.
-  Not run yet; whether a GitHub-hosted runner has enough memory for the stack is measured by the first run.
+  Passed on a GitHub-hosted runner on 2026-10-14 (run 38565031324).
 
 ## Source
 

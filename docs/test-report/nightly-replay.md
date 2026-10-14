@@ -73,7 +73,9 @@ calls back into the runner will differ from their expected outcomes.
 
 ## Not measured
 
-- A GitHub-hosted runner: the repository stays private until submission and the workflow has not run on
-  GitHub. Whether the 7 GB of a hosted runner holds the stack (2.5 GiB measured locally) is still open.
-- The Linux bridge address `PLAYGROUND_REF_UPSTREAM=http://172.17.0.1:28100`: Docker Desktop has no such
-  bridge, so the replay used `http://host.docker.internal:28100`, which the TLS front also resolves.
+- Collab: the `collab` target has not run.
+
+On 2026-10-14 the workflow ran on a GitHub-hosted runner (run 38565031324, commit `654523d`): the stack
+with the `holder-web` profile fitted, the Linux bridge address `PLAYGROUND_REF_UPSTREAM=http://172.17.0.1:28100`
+worked, and both live matrices were as specified (the live job took 3 min 26 s). The local replay above used
+`http://host.docker.internal:28100` instead, because Docker Desktop has no such bridge.

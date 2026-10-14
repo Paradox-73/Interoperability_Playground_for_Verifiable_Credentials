@@ -321,7 +321,7 @@ function render(results) {
     '',
     '## Hosted CI',
     '',
-    'Hosted GitHub Actions cannot run since 2026-10-09 because of a billing problem on the GitHub account, so `main` has no green hosted run. The last green `ci` run was on 2026-10-06 and the last green `interop-nightly` run on 2026-10-08. The local commands in this report replace them.',
+    'Hosted GitHub Actions run again since 2026-10-14, when the repository became public. On that day `ci` passed (run 38565026950: lint, typecheck, unit tests, build, reference matrix, container image, browser tests), and `interop-nightly` passed (run 38565031324: the reference matrix and both live matrices against the Inji stack on a GitHub-hosted runner, `live-core` 16 of 16 and `live-holder-web` 10 of 10 as specified). Both ran on commit `654523d`; later commits run when they are pushed. From 2026-10-09 to 2026-10-14 a billing problem stopped every hosted job.',
   );
   const licenses = results.licenses;
   lines.push(

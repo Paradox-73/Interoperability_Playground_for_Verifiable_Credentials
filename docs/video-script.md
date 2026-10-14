@@ -42,8 +42,8 @@ Before recording, follow [manual-test-checklist.md](manual-test-checklist.md). I
 
 - Say only what the screen shows. The limits below are part of the video, not a footnote.
 - Name the format and the verifier before every run, so each result is traceable to one report.
-- Do not call hosted CI green. If asked: the last green hosted run was 2026-10-06, and the local commands
-  replace it while the GitHub billing problem lasts.
+- Hosted CI: `ci` and `interop-nightly` (with both live matrices) passed on GitHub on 2026-10-14 on commit
+  `654523d`. Show the Actions tab only after checking that the newest runs are green.
 
 ## Limits to state in the video or the pitch
 
@@ -78,7 +78,7 @@ For the pitch deck (problem, solution, technology stack, audience, impact), ten 
 6. **Architecture.** The diagram in [architecture.md](architecture.md): the server with three capture points,
    the local Inji stack in Docker Compose, the TLS front for `did:web`.
 7. **Evidence.** The [test report](test-report/README.md) and the [README numbers](../README.md#current-numbers):
-   1228 unit tests, 123 reference cells, 16 and 10 live cells, five demo cells, 0 audit advisories.
+   1246 unit tests, 123 reference cells, 16 and 10 live cells, five demo cells, 0 audit advisories.
 8. **Gaps found.** The [gap register](gaps/README.md): 29 findings, 27 public with issue drafts for Inji
    Certify, Inji Verify and Mimoto, 2 reported privately. Pick the three with the largest impact.
 9. **Beyond the brief.** Tamper scenarios with the specification text behind each expected outcome, forged-issuer

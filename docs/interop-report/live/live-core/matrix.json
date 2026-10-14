@@ -10,9 +10,9 @@
     "version": "0.1.0",
     "reference": false
   },
-  "startedAt": "2026-10-14T00:06:18.667Z",
-  "finishedAt": "2026-10-14T00:07:35.783Z",
-  "durationMs": 77116,
+  "startedAt": "2026-10-14T13:15:24.460Z",
+  "finishedAt": "2026-10-14T13:16:40.882Z",
+  "durationMs": 76422,
   "roles": {
     "inji-certify": {
       "name": "Inji Certify",
@@ -64,11 +64,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261014T000618-4eabfe",
+      "runId": "20261014T131524-8938ae",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 846,
+      "durationMs": 567,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -90,11 +90,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261014T000619-f0527d",
+      "runId": "20261014T131525-e0ffc9",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 4701,
+      "durationMs": 5321,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.14.0",
@@ -116,11 +116,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261014T000624-7735f4",
+      "runId": "20261014T131530-a5026d",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 529,
+      "durationMs": 306,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -142,11 +142,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261014T000625-3963ac",
+      "runId": "20261014T131530-a56e0c",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 1566,
+      "durationMs": 1407,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -173,11 +173,11 @@
         "verdict": "pass"
       },
       "expected": "VALID",
-      "runId": "20261014T000626-f60d34",
+      "runId": "20261014T131532-2b2953",
       "outcome": "VALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 3120,
+      "durationMs": 3327,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -199,11 +199,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261014T000629-ae4eb7",
+      "runId": "20261014T131535-0008d9",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 281,
+      "durationMs": 313,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -230,11 +230,11 @@
         "verdict": "pass"
       },
       "expected": "EXPIRED",
-      "runId": "20261014T000630-3960c7",
+      "runId": "20261014T131535-90fef4",
       "outcome": "EXPIRED",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 2867,
+      "durationMs": 2796,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -256,11 +256,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000632-06f49c",
+      "runId": "20261014T131538-b1909a",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 796,
+      "durationMs": 586,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -282,11 +282,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000633-9ae478",
+      "runId": "20261014T131539-096faa",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 536,
+      "durationMs": 589,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -308,11 +308,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000634-da5553",
+      "runId": "20261014T131540-acdb49",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 538,
+      "durationMs": 569,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -334,11 +334,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000634-7516df",
+      "runId": "20261014T131540-8779eb",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 808,
+      "durationMs": 583,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -360,11 +360,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000635-75f6a9",
+      "runId": "20261014T131541-2d3d1c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 553,
+      "durationMs": 308,
       "credentialProof": "EdDSA",
       "versions": {
         "issuer": "0.14.0",
@@ -386,11 +386,11 @@
         "verdict": "pass"
       },
       "expected": "INVALID",
-      "runId": "20261014T000636-340b83",
+      "runId": "20261014T131541-732e3c",
       "outcome": "INVALID",
       "verdict": "pass",
       "matches": true,
-      "durationMs": 3186,
+      "durationMs": 3120,
       "credentialProof": "Ed25519Signature2020",
       "versions": {
         "issuer": "0.1.0",
@@ -412,11 +412,11 @@
         "verdict": "not-supported"
       },
       "expected": "VALID",
-      "runId": "20261014T000639-f80b8c",
+      "runId": "20261014T131544-f63b3c",
       "outcome": "NOT_RUN",
       "verdict": "not-supported",
       "matches": true,
-      "durationMs": 7,
+      "durationMs": 23,
       "error": {
         "step": "playground.admin",
         "code": "compatibility.verifier.format-unsupported",
@@ -443,11 +443,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261014T000639-579719",
+      "runId": "20261014T131544-b4186b",
       "outcome": "INVALID",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 796,
+      "durationMs": 303,
       "error": {
         "step": "verifier.result",
         "code": "outcome.unexpected",
@@ -474,11 +474,11 @@
         "verdict": "fail"
       },
       "expected": "VALID",
-      "runId": "20261014T000640-e2660f",
+      "runId": "20261014T131545-b4d7af",
       "outcome": "ERROR",
       "verdict": "fail",
       "matches": true,
-      "durationMs": 55376,
+      "durationMs": 55838,
       "error": {
         "step": "verifier.result",
         "code": "verifier.submission-refused",

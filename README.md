@@ -60,26 +60,29 @@ starts the same bundle without running the cells. Without Docker, the reference 
 | G5 History dashboard with filters                         | History page, [screenshot](docs/ux/screenshots/6-history.png)                                                                                                                                                                                                                                                                                                                                        |
 | G6 Same-device flow and Digital Credentials API           | `TC_PG_DCAPI_01-05`, [screenshot](docs/ux/screenshots/13-dc-api.png)                                                                                                                                                                                                                                                                                                                                 |
 | B1 CI-style suite with nightly matrix                     | `.github/workflows/interop-nightly.yml`: reference and live matrices nightly as job summary and artifact; local Inji stack by default, MOSIP Collab with `INJI_TARGET=collab` and the `INJI_*_URL` repository variables (not run against Collab yet). Replayed locally ([nightly-replay.md](docs/test-report/nightly-replay.md)); hosted runs: see [Continuous integration](#continuous-integration) |
-| B2 Gaps contributed as issues                             | 27 issue drafts in [docs/gaps/issues](docs/gaps/issues/). They are not filed yet, because the repository stays private until submission.                                                                                                                                                                                                                                                             |
+| B2 Gaps contributed as issues                             | 27 issue drafts in [docs/gaps/issues](docs/gaps/issues/). They are not filed yet.                                                                                                                                                                                                                                                                                                                    |
 | B3 Telemetry                                              | Metric tiles and step timings on the history page, Prometheus at `GET /metrics`, and Obsrv events per run and step (`GET /api/telemetry/obsrv`, optional push with `PLAYGROUND_OBSRV_URL`) with a matching Druid ingestion spec ([telemetry-obsrv.md](docs/telemetry-obsrv.md)). Not run against a real Obsrv or Druid.                                                                              |
 | B4 One-command Docker Compose bundle                      | `npm run up`, `npm run demo`                                                                                                                                                                                                                                                                                                                                                                         |
 | Deliverable: demo video of 3-5 minutes                    | Shot list in [docs/video-script.md](docs/video-script.md)                                                                                                                                                                                                                                                                                                                                            |
 
 ## Current numbers
 
-All measured on 2026-10-14 at commit `812aaaa` or later, on Windows 11 with Docker Desktop (8 GB), Node 24.
+All measured on 2026-10-14 at commit `8a07d51`, on Windows 11 with Docker Desktop (8 GB, shared with another
+project's containers), Node 24.
 
-| Check                                             | Result                                                                       |
-| ------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm test` (unit and integration)                 | 1228 of 1228 tests, 80 files                                                 |
-| `npm run e2e` (browser, axe accessibility checks) | see the [test report](docs/test-report/README.md)                            |
-| `npm run test:live` (against the Inji stack)      | 20 of 20, 60 s                                                               |
-| `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported                     |
-| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 17 s |
-| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 40 s                                  |
-| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 161 s                                                          |
-| `npm run demo -- --ci`                            | `DEMO PASS`, 5 of 5 cells                                                    |
-| `npm audit`                                       | 0 vulnerabilities                                                            |
+| Check                                             | Result                                                                                                      |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `npm test` (unit and integration)                 | 1246 of 1246 tests, 82 files                                                                                |
+| `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 70 s                                                                                              |
+| `npm run e2e:live` (browser, against the bundle)  | 3 of 3, 40 s: the all-Inji run in the playground, the Inji Verify web component, Inji Web's own pages       |
+| `npm run test:live` (against the Inji stack)      | 20 of 20, 129 s                                                                                             |
+| `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported; 40 s                                              |
+| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 16 s                                |
+| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 1 min 21 s                                                           |
+| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 311 s                                                                                         |
+| `npm run demo -- --ci`                            | `DEMO PASS`, 5 of 5 cells, 249 s including the image build                                                  |
+| Hosted CI (`ci`, `interop-nightly`)               | both passed on GitHub on 2026-10-14 at commit `654523d` ([Continuous integration](#continuous-integration)) |
+| `npm audit`                                       | 0 vulnerabilities                                                                                           |
 
 "As specified" means the cell gave the verdict its spec file expects. A cell that expects `fail` is a gap
 in an Inji module that the playground found and recorded; it is not a playground failure. The live matrix
@@ -103,15 +106,11 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
   hold an mdoc (G29). Inji Verify cannot verify an mdoc presentation (G28).
 - **The API on port 28100 has no login.** It listens on 127.0.0.1 by default; the container image listens on
   all interfaces inside the container. See [SECURITY.md](SECURITY.md).
-- **Findings are not filed upstream yet.** The 27 drafts wait for the repository to become public.
+- **Findings are not filed upstream yet.** The 27 drafts are ready to file.
 
 ## Continuous integration
 
-Hosted GitHub Actions cannot run since 2026-10-09: a billing problem on the GitHub account stops every job
-before it starts, so the current `main` has no green hosted run. The last green hosted `ci` run was on
-2026-10-06 (commit `c3f4189`) and the last green `interop-nightly` run on 2026-10-08. Local runs replace
-hosted CI until the account is fixed: the commands in the table above, and `node scripts/nightly-replay.mjs`,
-which runs the nightly workflow's jobs on this machine step by step.
+Hosted GitHub Actions run again since 2026-10-14, when the repository became public. On that day `ci` passed (run 38565026950: lint, typecheck, unit tests, build, reference matrix, container image, browser tests), and `interop-nightly` passed (run 38565031324: the reference matrix and both live matrices against the Inji stack on a GitHub-hosted runner, `live-core` 16 of 16 and `live-holder-web` 10 of 10 as specified). Both ran on commit `654523d`; later commits run when they are pushed. From 2026-10-09 to 2026-10-14 a billing problem stopped every hosted job. `node scripts/nightly-replay.mjs` runs the nightly workflow's jobs on a local machine step by step.
 
 ## Architecture
 

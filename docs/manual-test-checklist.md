@@ -277,5 +277,5 @@ wallet app` with a QR code. Scan it with the app. Expected: the credential appea
 
 ## What this checklist does not cover
 
-- The hosted GitHub Actions workflows, which cannot start until the account billing problem is fixed.
+- The hosted GitHub Actions workflows, which run on every push and nightly.
 - A real screen reader, and a real platform wallet for the Digital Credentials API.

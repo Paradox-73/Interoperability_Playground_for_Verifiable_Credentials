@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "exportedAt": "2026-10-14T00:08:19.895Z",
+  "exportedAt": "2026-10-14T13:20:26.210Z",
   "redacted": true,
   "redactions": 8,
   "run": {
-    "runId": "20261014T000816-accabb",
+    "runId": "20261014T132021-b6f3cf",
     "status": "finished",
     "mode": "live",
     "config": {
@@ -16,9 +16,9 @@
       "vpProfile": "inji-draft",
       "scenario": "holder-proof-es256"
     },
-    "createdAt": "2026-10-14T00:08:16.803Z",
-    "startedAt": "2026-10-14T00:08:16.803Z",
-    "finishedAt": "2026-10-14T00:08:19.701Z",
+    "createdAt": "2026-10-14T13:20:21.730Z",
+    "startedAt": "2026-10-14T13:20:21.731Z",
+    "finishedAt": "2026-10-14T13:20:25.937Z",
     "outcome": "INVALID",
     "verdict": "fail",
     "error": {
@@ -32,8 +32,8 @@
       "verifier": "0.18.2"
     },
     "report": {
-      "runId": "20261014T000816-accabb",
-      "createdAt": "2026-10-14T00:08:19.701Z",
+      "runId": "20261014T132021-b6f3cf",
+      "createdAt": "2026-10-14T13:20:25.937Z",
       "mode": "live",
       "issuer": {
         "id": "ref-issuer",
@@ -56,7 +56,7 @@
       "format": "ldp_vc",
       "credentialProof": "Ed25519Signature2020",
       "holderProof": "ES256",
-      "issuerDid": "did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ",
+      "issuerDid": "did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi",
       "vciProfile": "draft13",
       "vpProfile": "inji-draft",
       "scenario": {
@@ -74,61 +74,61 @@
         {
           "step": "issuer.offer",
           "status": "ok",
-          "durationMs": 0,
-          "startedAt": "2026-10-14T00:08:16.804Z"
+          "durationMs": 3,
+          "startedAt": "2026-10-14T13:20:21.732Z"
         },
         {
           "step": "issuer.metadata",
           "status": "ok",
-          "durationMs": 9,
-          "startedAt": "2026-10-14T00:08:16.805Z"
+          "durationMs": 34,
+          "startedAt": "2026-10-14T13:20:21.736Z"
         },
         {
           "step": "as.metadata",
           "status": "ok",
-          "durationMs": 4,
-          "startedAt": "2026-10-14T00:08:16.813Z"
+          "durationMs": 5,
+          "startedAt": "2026-10-14T13:20:21.770Z"
         },
         {
           "step": "token",
           "status": "ok",
-          "durationMs": 6,
-          "startedAt": "2026-10-14T00:08:16.817Z"
+          "durationMs": 16,
+          "startedAt": "2026-10-14T13:20:21.776Z"
         },
         {
           "step": "credential",
           "status": "ok",
-          "durationMs": 9,
-          "startedAt": "2026-10-14T00:08:16.824Z"
+          "durationMs": 23,
+          "startedAt": "2026-10-14T13:20:21.793Z"
         },
         {
           "step": "verifier.request",
           "status": "ok",
-          "durationMs": 17,
-          "startedAt": "2026-10-14T00:08:16.834Z"
+          "durationMs": 44,
+          "startedAt": "2026-10-14T13:20:21.829Z"
         },
         {
           "step": "wallet.fetch-request",
           "status": "skipped",
-          "durationMs": 12,
-          "startedAt": "2026-10-14T00:08:16.851Z"
+          "durationMs": 60,
+          "startedAt": "2026-10-14T13:20:21.874Z"
         },
         {
           "step": "wallet.submit",
           "status": "ok",
-          "durationMs": 59,
-          "startedAt": "2026-10-14T00:08:16.864Z"
+          "durationMs": 94,
+          "startedAt": "2026-10-14T13:20:21.934Z"
         },
         {
           "step": "verifier.result",
           "status": "ok",
-          "durationMs": 2777,
-          "startedAt": "2026-10-14T00:08:16.923Z"
+          "durationMs": 3912,
+          "startedAt": "2026-10-14T13:20:22.028Z"
         }
       ],
       "credentialSize": {
-        "bytes": 1113,
-        "pixelpassChars": 1017,
+        "bytes": 1112,
+        "pixelpassChars": 1014,
         "fitsQrV40": true
       }
     }
@@ -136,7 +136,7 @@
   "events": [
     {
       "type": "run.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "config": {
         "issuer": "ref-issuer",
         "wallet": "ref-wallet",
@@ -146,41 +146,41 @@
         "vpProfile": "inji-draft",
         "scenario": "holder-proof-es256"
       },
-      "at": "2026-10-14T00:08:16.803Z"
+      "at": "2026-10-14T13:20:21.731Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "issuer.offer",
       "label": "Issuer prepares a credential offer for the wallet",
-      "at": "2026-10-14T00:08:16.804Z"
+      "at": "2026-10-14T13:20:21.732Z"
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "issuer.offer",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.804Z"
+      "at": "2026-10-14T13:20:21.735Z"
     },
     {
       "type": "artifact",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "kind": "offer",
-      "raw": "openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fref.ps02.test%2Fref%2Fissuer%2Fdraft13%2Foffers%2FezuLIZvtcQ-p-xTN"
+      "raw": "openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fref.ps02.test%2Fref%2Fissuer%2Fdraft13%2Foffers%2FYMwG3GG0i-Rswutl"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "issuer.metadata",
       "label": "Wallet reads what the issuer can issue",
-      "at": "2026-10-14T00:08:16.805Z"
+      "at": "2026-10-14T13:20:21.736Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x1",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x1",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 1,
         "capture": "inbound",
         "step": "issuer.offer",
@@ -188,7 +188,7 @@
         "to": "ref-issuer",
         "request": {
           "method": "GET",
-          "url": "http://ref.ps02.test/ref/issuer/draft13/offers/ezuLIZvtcQ-p-xTN",
+          "url": "http://ref.ps02.test/ref/issuer/draft13/offers/YMwG3GG0i-Rswutl",
           "headers": {
             "accept": "application/json",
             "host": "ref.ps02.test",
@@ -205,20 +205,20 @@
             "cache-control": "no-store",
             "content-type": "application/json; charset=utf-8"
           },
-          "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"credential_configuration_ids\":[\"FarmerCredential_ldp_vc_es256_proof\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:dccaa1c6]\",\"authorization_server\":\"https://ref.ps02.test/ref/issuer/draft13\"}}}",
+          "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"credential_configuration_ids\":[\"FarmerCredential_ldp_vc_es256_proof\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:b01cd6d6]\",\"authorization_server\":\"https://ref.ps02.test/ref/issuer/draft13\"}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.806Z",
-        "durationMs": 0.9133999999903608,
+        "startedAt": "2026-10-14T13:20:21.747Z",
+        "durationMs": 0.9843770000006771,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x2",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x2",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 2,
         "capture": "inbound",
         "step": "issuer.metadata",
@@ -246,31 +246,31 @@
           "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"authorization_servers\":[\"https://ref.ps02.test/ref/as\",\"https://ref.ps02.test/ref/issuer/draft13\"],\"credential_endpoint\":\"https://ref.ps02.test/ref/issuer/draft13/credential\",\"display\":[{\"name\":\"Playground reference issuer\",\"locale\":\"en\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"}}],\"credential_configurations_supported\":{\"FarmerCredential_ldp_vc\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"Ed25519Signature2020\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 1.1)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 1.1 signed with Ed25519Signature2020\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_ldp_vc_v2\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc_v2\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"eddsa-rdfc-2022\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 2.0)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 2.0 with DataIntegrityProof eddsa-rdfc-2022\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_ldp_vc_es256_proof\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc_es256_proof\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"Ed25519Signature2020\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 1.1, ES256 key proofs)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 1.1; the issuer accepts only ES256 key proofs\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_vc_sd_jwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_vc_sd_jwt\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"vct\":\"https://playground.ps02.test/vct/farmer/v1\",\"claims\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}},\"display\":[{\"name\":\"Farmer credential (SD-JWT, vc+sd-jwt)\",\"locale\":\"en\",\"description\":\"Farmer identity as an SD-JWT VC with the format name Inji stable uses\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_dc_sd_jwt\":{\"format\":\"dc+sd-jwt\",\"scope\":\"farmer_dc_sd_jwt\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"vct\":\"https://playground.ps02.test/vct/farmer/v1\",\"claims\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}},\"display\":[{\"name\":\"Farmer credential (SD-JWT, dc+sd-jwt)\",\"locale\":\"en\",\"description\":\"Farmer identity as an SD-JWT VC with the format name of OpenID4VCI 1.0\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_mso_mdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mso_mdoc\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\"]}},\"doctype\":\"test.ps02.playground.farmer.1\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (mdoc, mso_mdoc)\",\"locale\":\"en\",\"description\":\"Farmer identity as an ISO/IEC 18013-5 mdoc, MSO signed with ES256 and an x5chain\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}]}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.810Z",
-        "durationMs": 1.8203000000066822,
+        "startedAt": "2026-10-14T13:20:21.754Z",
+        "durationMs": 3.0405549999995856,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "issuer.metadata",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.813Z"
+      "at": "2026-10-14T13:20:21.770Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "as.metadata",
       "label": "Wallet finds the issuer’s authorization server",
-      "at": "2026-10-14T00:08:16.813Z"
+      "at": "2026-10-14T13:20:21.770Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x3",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x3",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 3,
         "capture": "inbound",
         "step": "as.metadata",
@@ -298,31 +298,31 @@
           "body": "{\"issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"token_endpoint\":\"https://ref.ps02.test/ref/issuer/draft13/token\",\"grant_types_supported\":[\"urn:ietf:params:oauth:grant-type:pre-authorized_code\"],\"response_types_supported\":[],\"token_endpoint_auth_methods_supported\":[\"none\"],\"pre-authorized_grant_anonymous_access_supported\":true}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.815Z",
-        "durationMs": 0.5813000000052853,
+        "startedAt": "2026-10-14T13:20:21.771Z",
+        "durationMs": 2.41249100001005,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "as.metadata",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.817Z"
+      "at": "2026-10-14T13:20:21.776Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "token",
       "label": "Wallet exchanges the one-time code for an access token",
-      "at": "2026-10-14T00:08:16.817Z"
+      "at": "2026-10-14T13:20:21.776Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x4",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x4",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 4,
         "capture": "inbound",
         "step": "token",
@@ -338,7 +338,7 @@
             "user-agent": "lightMyRequest",
             "content-length": "137"
           },
-          "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Adccaa1c6%5D",
+          "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Ab01cd6d6%5D",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -351,34 +351,34 @@
             "cache-control": "no-store",
             "content-type": "application/json; charset=utf-8"
           },
-          "body": "{\"access_token\":\"[redacted sha256:f00bfe89]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"1725MrGtlo5KFsZ2VRE18Q\",\"c_nonce_expires_in\":300}",
+          "body": "{\"access_token\":\"[redacted sha256:aa906f1d]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"-xJ3ElEVpU85empQgKvqLw\",\"c_nonce_expires_in\":300}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.819Z",
-        "durationMs": 0.944100000007893,
+        "startedAt": "2026-10-14T13:20:21.778Z",
+        "durationMs": 2.1531039999972563,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "token",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.824Z"
+      "at": "2026-10-14T13:20:21.792Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "credential",
       "label": "Wallet proves it holds its key and receives the credential",
-      "at": "2026-10-14T00:08:16.824Z"
+      "at": "2026-10-14T13:20:21.793Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x5",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x5",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 5,
         "capture": "inbound",
         "step": "credential",
@@ -389,13 +389,13 @@
           "url": "http://ref.ps02.test/ref/issuer/draft13/credential",
           "headers": {
             "accept": "application/json",
-            "authorization": "Bearer [redacted sha256:f00bfe89]",
+            "authorization": "Bearer [redacted sha256:aa906f1d]",
             "content-type": "application/json",
             "host": "ref.ps02.test",
             "user-agent": "lightMyRequest",
             "content-length": "768"
           },
-          "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImtpZCI6ImRpZDpqd2s6ZXlKamNuWWlPaUpRTFRJMU5pSXNJbXQwZVNJNklrVkRJaXdpZUNJNklpMUdNV3RITTJ0bmVrdEtRek5tU0dkemJtcFRkSGMzUjAxRWNERlBYMjh0TkVkdWVHbE9aVEJQWDFFaUxDSjVJam9pVGtOSGJGTkdURkZaY1doNmVXWXdiMmhLTW5OWllWVlBja1Y1UlRoWFZ6TlVNak5OUW0xelJHMXBXU0o5IzAiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJodHRwczovL3JlZi5wczAyLnRlc3QvcmVmL2lzc3Vlci9kcmFmdDEzIiwiaWF0IjoxNzkxOTM2NDk2LCJub25jZSI6IjE3MjVNckd0bG81S0ZzWjJWUkUxOFEifQ.tLJ2rNZf26vVUDwr1pUhPMKgH9-ioIR9aWxP58vBtaUCF4Feps4LSKnyCvAZEZasgzjdFSXcgayVwOWZYnozsw\"}}",
+          "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImtpZCI6ImRpZDpqd2s6ZXlKamNuWWlPaUpRTFRJMU5pSXNJbXQwZVNJNklrVkRJaXdpZUNJNkltaGtTRE5pUTNVMFRXbHhkamt5UlRSNU1YUjVNWEpET1RWR2VrWm9VRzl1UkV0dVFWZ3dNRXRYU25jaUxDSjVJam9pVUZReE4yRldXakZ6YlhKaVZ6SXlPQzFWYUdKUE4xUTJTVU5HWnkxVWNtUm5VVlJ6WHpKaFdraERVU0o5IzAiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJodHRwczovL3JlZi5wczAyLnRlc3QvcmVmL2lzc3Vlci9kcmFmdDEzIiwiaWF0IjoxNzkxOTg0MDIxLCJub25jZSI6Ii14SjNFbEVWcFU4NWVtcFFnS3ZxTHcifQ.tzHEJUW36U9NRkrfXdGICvJIJchnUPG9IUI904uDkRBo68zHW717VJCLvnbf9h183zV0t2VFSf2fmLUTiibr4g\"}}",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -408,41 +408,41 @@
             "cache-control": "no-store",
             "content-type": "application/json; charset=utf-8"
           },
-          "body": "{\"credential\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}},\"c_nonce\":\"7QrZ5iPJI5pKjCB6-rwOqQ\",\"c_nonce_expires_in\":300}",
+          "body": "{\"credential\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}},\"c_nonce\":\"HCz4uHgixxcwnPwL9x-tqw\",\"c_nonce_expires_in\":300}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.826Z",
-        "durationMs": 5.042400000005728,
+        "startedAt": "2026-10-14T13:20:21.795Z",
+        "durationMs": 18.122867999991286,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "credential",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.832Z"
+      "at": "2026-10-14T13:20:21.815Z"
     },
     {
       "type": "artifact",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "kind": "credential",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}}"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}}"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "verifier.request",
       "label": "Verifier creates a request saying which credential it needs",
-      "at": "2026-10-14T00:08:16.834Z"
+      "at": "2026-10-14T13:20:21.829Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x6",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x6",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 6,
         "capture": "outbound",
         "step": "verifier.request",
@@ -450,7 +450,7 @@
         "to": "inji-verify",
         "request": {
           "method": "POST",
-          "url": "http://localhost:28080/v1/verify/vp-request",
+          "url": "http://verify-service:8080/v1/verify/vp-request",
           "headers": {
             "content-type": "application/json"
           },
@@ -462,52 +462,52 @@
           "headers": {
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+            "date": "Wed, 14 Oct 2026 13:20:21 GMT",
             "keep-alive": "timeout=60",
             "transfer-encoding": "chunked"
           },
-          "body": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"requestId\":\"req_0144c163-65a2-4adf-a2a5-c959689a4510\",\"authorizationDetails\":{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-ldp_vc\",\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.type\"],\"filter\":{\"type\":\"array\",\"pattern\":\"FarmerCredential\"}}]}}],\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}}},\"nonce\":\"048a260f73c7114a321e4bfb1c0278a9\",\"responseUri\":\"https://verify.ps02.test/v1/verify/vp-submission/direct-post\",\"acceptVPWithoutHolderProof\":false,\"responseCodeValidationRequired\":false,\"responseType\":\"vp_token\",\"responseMode\":\"direct_post\",\"issuedAt\":1791936496842},\"expiresAt\":1791936796842}",
+          "body": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"requestId\":\"req_4704feb6-594c-46af-8e30-e48fa0118f50\",\"authorizationDetails\":{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-ldp_vc\",\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.type\"],\"filter\":{\"type\":\"array\",\"pattern\":\"FarmerCredential\"}}]}}],\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}}},\"nonce\":\"3539e8dc580f5ac3d1572276ec5b8ab9\",\"responseUri\":\"https://verify.ps02.test/v1/verify/vp-submission/direct-post\",\"acceptVPWithoutHolderProof\":false,\"responseCodeValidationRequired\":false,\"responseType\":\"vp_token\",\"responseMode\":\"direct_post\",\"issuedAt\":1791984021838},\"expiresAt\":1791984321838}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.835Z",
-        "durationMs": 14.632900000011432,
+        "startedAt": "2026-10-14T13:20:21.830Z",
+        "durationMs": 42.08770099999674,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "verifier.request",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.851Z"
+      "at": "2026-10-14T13:20:21.874Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "wallet.fetch-request",
       "label": "Wallet downloads the verifier’s signed request",
-      "at": "2026-10-14T00:08:16.851Z"
+      "at": "2026-10-14T13:20:21.874Z"
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "wallet.fetch-request",
       "status": "skipped",
-      "at": "2026-10-14T00:08:16.864Z"
+      "at": "2026-10-14T13:20:21.934Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "wallet.submit",
       "label": "Wallet sends the presentation to the verifier",
-      "at": "2026-10-14T00:08:16.864Z"
+      "at": "2026-10-14T13:20:21.934Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x7",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x7",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 7,
         "capture": "outbound",
         "step": "wallet.submit",
@@ -519,7 +519,7 @@
           "headers": {
             "content-type": "application/x-www-form-urlencoded"
           },
-          "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fdata-integrity%2Fv2%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%22%2C%22verifiableCredential%22%3A%5B%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fplayground.ps02.test%2Fcontexts%2Fv1.jsonld%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22id%22%3A%22urn%3Auuid%3A19ddb33a-bd4f-48d2-8d3e-7372862aefe8%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22issuer%22%3A%22did%3Akey%3Az6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%22%2C%22issuanceDate%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22expirationDate%22%3A%222027-10-14T00%3A08%3A16Z%22%2C%22credentialSubject%22%3A%7B%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%22%2C%22farmerId%22%3A%222154189532%22%2C%22givenName%22%3A%22Gorge%22%2C%22familyName%22%3A%22Cooper%22%2C%22birthDate%22%3A%221990-05-25%22%2C%22state%22%3A%22Karnataka%22%2C%22landArea%22%3A%223+hectares%22%2C%22primaryCropType%22%3A%22Maize%22%7D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22verificationMethod%22%3A%22did%3Akey%3Az6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%23z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22proofValue%22%3A%22z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22DataIntegrityProof%22%2C%22created%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%230%22%2C%22cryptosuite%22%3A%22ecdsa-rdfc-2019%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22048a260f73c7114a321e4bfb1c0278a9%22%2C%22domain%22%3A%22ps02-playground%22%2C%22proofValue%22%3A%22z2R39UbD4xKFpRxromyjkVSHHbQGoQuW9zhX3zFQJSFkLpTuNSo3K9pWNh8rKNKSP8V88KAj5QoHJ1d72BEyJrs42%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-048a260f%22%2C%22definition_id%22%3A%22ps02-farmer-ldp_vc%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=req_0144c163-65a2-4adf-a2a5-c959689a4510",
+          "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fdata-integrity%2Fv2%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%22%2C%22verifiableCredential%22%3A%5B%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fplayground.ps02.test%2Fcontexts%2Fv1.jsonld%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22id%22%3A%22urn%3Auuid%3A1aa94d25-2753-4764-a3c1-053b40abc280%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22issuer%22%3A%22did%3Akey%3Az6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%22%2C%22issuanceDate%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22expirationDate%22%3A%222027-10-14T13%3A20%3A21Z%22%2C%22credentialSubject%22%3A%7B%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%22%2C%22farmerId%22%3A%222154189532%22%2C%22givenName%22%3A%22Gorge%22%2C%22familyName%22%3A%22Cooper%22%2C%22birthDate%22%3A%221990-05-25%22%2C%22state%22%3A%22Karnataka%22%2C%22landArea%22%3A%223+hectares%22%2C%22primaryCropType%22%3A%22Maize%22%7D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22verificationMethod%22%3A%22did%3Akey%3Az6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%23z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22proofValue%22%3A%22zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22DataIntegrityProof%22%2C%22created%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%230%22%2C%22cryptosuite%22%3A%22ecdsa-rdfc-2019%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%223539e8dc580f5ac3d1572276ec5b8ab9%22%2C%22domain%22%3A%22ps02-playground%22%2C%22proofValue%22%3A%22z4jZ3QsE53FYdttaHwVXZ7TyAkRQ6aadZjsttnGG55JiLf7UC2RZbUXcxcVfCyJPDNnRKJRQZHtjJ1iVnUxPvWzSt%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-3539e8dc%22%2C%22definition_id%22%3A%22ps02-farmer-ldp_vc%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=req_4704feb6-594c-46af-8e30-e48fa0118f50",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -527,45 +527,45 @@
           "headers": {
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+            "date": "Wed, 14 Oct 2026 13:20:22 GMT",
             "server": "nginx/1.30.5",
             "transfer-encoding": "chunked"
           },
           "body": "{}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.865Z",
-        "durationMs": 57.283299999995506,
+        "startedAt": "2026-10-14T13:20:21.936Z",
+        "durationMs": 90.67829599999823,
         "redacted": true
       }
     },
     {
       "type": "artifact",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "kind": "vp-token",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/data-integrity/v2\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"verifiableCredential\":[{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}}],\"proof\":{\"type\":\"DataIntegrityProof\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9#0\",\"cryptosuite\":\"ecdsa-rdfc-2019\",\"proofPurpose\":\"authentication\",\"challenge\":\"048a260f73c7114a321e4bfb1c0278a9\",\"domain\":\"ps02-playground\",\"proofValue\":\"z2R39UbD4xKFpRxromyjkVSHHbQGoQuW9zhX3zFQJSFkLpTuNSo3K9pWNh8rKNKSP8V88KAj5QoHJ1d72BEyJrs42\"}}"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/data-integrity/v2\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"verifiableCredential\":[{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}}],\"proof\":{\"type\":\"DataIntegrityProof\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9#0\",\"cryptosuite\":\"ecdsa-rdfc-2019\",\"proofPurpose\":\"authentication\",\"challenge\":\"3539e8dc580f5ac3d1572276ec5b8ab9\",\"domain\":\"ps02-playground\",\"proofValue\":\"z4jZ3QsE53FYdttaHwVXZ7TyAkRQ6aadZjsttnGG55JiLf7UC2RZbUXcxcVfCyJPDNnRKJRQZHtjJ1iVnUxPvWzSt\"}}"
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "wallet.submit",
       "status": "ok",
-      "at": "2026-10-14T00:08:16.923Z"
+      "at": "2026-10-14T13:20:22.028Z"
     },
     {
       "type": "step.started",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "verifier.result",
       "label": "Verifier checks signatures, dates and holder binding",
-      "at": "2026-10-14T00:08:16.923Z"
+      "at": "2026-10-14T13:20:22.028Z"
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x8",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x8",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 8,
         "capture": "outbound",
         "step": "verifier.result",
@@ -573,7 +573,7 @@
         "to": "inji-verify",
         "request": {
           "method": "GET",
-          "url": "http://localhost:28080/v1/verify/vp-request/req_0144c163-65a2-4adf-a2a5-c959689a4510/status",
+          "url": "http://verify-service:8080/v1/verify/vp-request/req_4704feb6-594c-46af-8e30-e48fa0118f50/status",
           "headers": {}
         },
         "response": {
@@ -581,24 +581,24 @@
           "headers": {
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+            "date": "Wed, 14 Oct 2026 13:20:22 GMT",
             "keep-alive": "timeout=60",
             "transfer-encoding": "chunked"
           },
           "body": "{\"status\":\"VP_SUBMITTED\"}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.924Z",
-        "durationMs": 15.217099999994389,
+        "startedAt": "2026-10-14T13:20:22.029Z",
+        "durationMs": 26.85759600000165,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "exchange": {
-        "id": "20261014T000816-accabb-x9",
-        "runId": "20261014T000816-accabb",
+        "id": "20261014T132021-b6f3cf-x9",
+        "runId": "20261014T132021-b6f3cf",
         "seq": 9,
         "capture": "outbound",
         "step": "verifier.result",
@@ -606,7 +606,7 @@
         "to": "inji-verify",
         "request": {
           "method": "POST",
-          "url": "http://localhost:28080/v1/verify/v2/vp-results/txn_cabbe32b-2f9d-45ab-96b9-55313e87a440",
+          "url": "http://verify-service:8080/v1/verify/v2/vp-results/txn_2bca8f4c-465f-4a1e-900f-70920edd16c2",
           "headers": {
             "content-type": "application/json"
           },
@@ -618,37 +618,37 @@
           "headers": {
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Wed, 14 Oct 2026 00:08:19 GMT",
+            "date": "Wed, 14 Oct 2026 13:20:25 GMT",
             "keep-alive": "timeout=60",
             "transfer-encoding": "chunked"
           },
-          "body": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\\\",\\\"created\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\",\\\"expirationDate\\\":\\\"2027-10-14T00:08:16Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
+          "body": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\\\",\\\"created\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\",\\\"expirationDate\\\":\\\"2027-10-14T13:20:21Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-14T00:08:16.940Z",
-        "durationMs": 2759.615699999995,
+        "startedAt": "2026-10-14T13:20:22.057Z",
+        "durationMs": 3880.857241000005,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "step": "verifier.result",
       "status": "ok",
-      "at": "2026-10-14T00:08:19.701Z"
+      "at": "2026-10-14T13:20:25.936Z"
     },
     {
       "type": "artifact",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "kind": "result",
-      "raw": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\\\",\\\"created\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\",\\\"expirationDate\\\":\\\"2027-10-14T00:08:16Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}"
+      "raw": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\\\",\\\"created\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\",\\\"expirationDate\\\":\\\"2027-10-14T13:20:21Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}"
     },
     {
       "type": "run.finished",
-      "runId": "20261014T000816-accabb",
+      "runId": "20261014T132021-b6f3cf",
       "report": {
-        "runId": "20261014T000816-accabb",
-        "createdAt": "2026-10-14T00:08:19.701Z",
+        "runId": "20261014T132021-b6f3cf",
+        "createdAt": "2026-10-14T13:20:25.937Z",
         "mode": "live",
         "issuer": {
           "id": "ref-issuer",
@@ -671,7 +671,7 @@
         "format": "ldp_vc",
         "credentialProof": "Ed25519Signature2020",
         "holderProof": "ES256",
-        "issuerDid": "did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ",
+        "issuerDid": "did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi",
         "vciProfile": "draft13",
         "vpProfile": "inji-draft",
         "scenario": {
@@ -689,61 +689,61 @@
           {
             "step": "issuer.offer",
             "status": "ok",
-            "durationMs": 0,
-            "startedAt": "2026-10-14T00:08:16.804Z"
+            "durationMs": 3,
+            "startedAt": "2026-10-14T13:20:21.732Z"
           },
           {
             "step": "issuer.metadata",
             "status": "ok",
-            "durationMs": 9,
-            "startedAt": "2026-10-14T00:08:16.805Z"
+            "durationMs": 34,
+            "startedAt": "2026-10-14T13:20:21.736Z"
           },
           {
             "step": "as.metadata",
             "status": "ok",
-            "durationMs": 4,
-            "startedAt": "2026-10-14T00:08:16.813Z"
+            "durationMs": 5,
+            "startedAt": "2026-10-14T13:20:21.770Z"
           },
           {
             "step": "token",
             "status": "ok",
-            "durationMs": 6,
-            "startedAt": "2026-10-14T00:08:16.817Z"
+            "durationMs": 16,
+            "startedAt": "2026-10-14T13:20:21.776Z"
           },
           {
             "step": "credential",
             "status": "ok",
-            "durationMs": 9,
-            "startedAt": "2026-10-14T00:08:16.824Z"
+            "durationMs": 23,
+            "startedAt": "2026-10-14T13:20:21.793Z"
           },
           {
             "step": "verifier.request",
             "status": "ok",
-            "durationMs": 17,
-            "startedAt": "2026-10-14T00:08:16.834Z"
+            "durationMs": 44,
+            "startedAt": "2026-10-14T13:20:21.829Z"
           },
           {
             "step": "wallet.fetch-request",
             "status": "skipped",
-            "durationMs": 12,
-            "startedAt": "2026-10-14T00:08:16.851Z"
+            "durationMs": 60,
+            "startedAt": "2026-10-14T13:20:21.874Z"
           },
           {
             "step": "wallet.submit",
             "status": "ok",
-            "durationMs": 59,
-            "startedAt": "2026-10-14T00:08:16.864Z"
+            "durationMs": 94,
+            "startedAt": "2026-10-14T13:20:21.934Z"
           },
           {
             "step": "verifier.result",
             "status": "ok",
-            "durationMs": 2777,
-            "startedAt": "2026-10-14T00:08:16.923Z"
+            "durationMs": 3912,
+            "startedAt": "2026-10-14T13:20:22.028Z"
           }
         ],
         "credentialSize": {
-          "bytes": 1113,
-          "pixelpassChars": 1017,
+          "bytes": 1112,
+          "pixelpassChars": 1014,
           "fitsQrV40": true
         }
       }
@@ -751,8 +751,8 @@
   ],
   "exchanges": [
     {
-      "id": "20261014T000816-accabb-x1",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x1",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 1,
       "capture": "inbound",
       "step": "issuer.offer",
@@ -760,7 +760,7 @@
       "to": "ref-issuer",
       "request": {
         "method": "GET",
-        "url": "http://ref.ps02.test/ref/issuer/draft13/offers/ezuLIZvtcQ-p-xTN",
+        "url": "http://ref.ps02.test/ref/issuer/draft13/offers/YMwG3GG0i-Rswutl",
         "headers": {
           "accept": "application/json",
           "host": "ref.ps02.test",
@@ -777,16 +777,16 @@
           "cache-control": "no-store",
           "content-type": "application/json; charset=utf-8"
         },
-        "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"credential_configuration_ids\":[\"FarmerCredential_ldp_vc_es256_proof\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:dccaa1c6]\",\"authorization_server\":\"https://ref.ps02.test/ref/issuer/draft13\"}}}",
+        "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"credential_configuration_ids\":[\"FarmerCredential_ldp_vc_es256_proof\"],\"grants\":{\"urn:ietf:params:oauth:grant-type:pre-authorized_code\":{\"pre-authorized_code\":\"[redacted sha256:b01cd6d6]\",\"authorization_server\":\"https://ref.ps02.test/ref/issuer/draft13\"}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.806Z",
-      "durationMs": 0.9133999999903608,
+      "startedAt": "2026-10-14T13:20:21.747Z",
+      "durationMs": 0.9843770000006771,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x2",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x2",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 2,
       "capture": "inbound",
       "step": "issuer.metadata",
@@ -814,13 +814,13 @@
         "body": "{\"credential_issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"authorization_servers\":[\"https://ref.ps02.test/ref/as\",\"https://ref.ps02.test/ref/issuer/draft13\"],\"credential_endpoint\":\"https://ref.ps02.test/ref/issuer/draft13/credential\",\"display\":[{\"name\":\"Playground reference issuer\",\"locale\":\"en\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"}}],\"credential_configurations_supported\":{\"FarmerCredential_ldp_vc\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"Ed25519Signature2020\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 1.1)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 1.1 signed with Ed25519Signature2020\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_ldp_vc_v2\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc_v2\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"eddsa-rdfc-2022\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 2.0)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 2.0 with DataIntegrityProof eddsa-rdfc-2022\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_ldp_vc_es256_proof\":{\"format\":\"ldp_vc\",\"scope\":\"farmer_ldp_vc_es256_proof\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"Ed25519Signature2020\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\"]}},\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"credentialSubject\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (W3C VC 1.1, ES256 key proofs)\",\"locale\":\"en\",\"description\":\"Farmer identity, W3C VC Data Model 1.1; the issuer accepts only ES256 key proofs\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_vc_sd_jwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_vc_sd_jwt\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"EdDSA\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"vct\":\"https://playground.ps02.test/vct/farmer/v1\",\"claims\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}},\"display\":[{\"name\":\"Farmer credential (SD-JWT, vc+sd-jwt)\",\"locale\":\"en\",\"description\":\"Farmer identity as an SD-JWT VC with the format name Inji stable uses\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_dc_sd_jwt\":{\"format\":\"dc+sd-jwt\",\"scope\":\"farmer_dc_sd_jwt\",\"cryptographic_binding_methods_supported\":[\"did:jwk\",\"did:key\",\"jwk\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\",\"EdDSA\",\"Ed25519\"]}},\"vct\":\"https://playground.ps02.test/vct/farmer/v1\",\"claims\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}},\"display\":[{\"name\":\"Farmer credential (SD-JWT, dc+sd-jwt)\",\"locale\":\"en\",\"description\":\"Farmer identity as an SD-JWT VC with the format name of OpenID4VCI 1.0\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}],\"order\":[\"farmerId\",\"givenName\",\"familyName\",\"birthDate\",\"state\",\"landArea\",\"primaryCropType\"]},\"FarmerCredential_mso_mdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mso_mdoc\",\"cryptographic_binding_methods_supported\":[\"cose_key\"],\"credential_signing_alg_values_supported\":[\"ES256\"],\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"ES256\"]}},\"doctype\":\"test.ps02.playground.farmer.1\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"farmerId\":{\"mandatory\":true,\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"givenName\":{\"display\":[{\"name\":\"Given name\",\"locale\":\"en\"}]},\"familyName\":{\"display\":[{\"name\":\"Family name\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of birth\",\"locale\":\"en\"}]},\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land area\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary crop\",\"locale\":\"en\"}]}}},\"display\":[{\"name\":\"Farmer credential (mdoc, mso_mdoc)\",\"locale\":\"en\",\"description\":\"Farmer identity as an ISO/IEC 18013-5 mdoc, MSO signed with ES256 and an x5chain\",\"logo\":{\"uri\":\"https://ref.ps02.test/ref/issuer/logo.svg\",\"alt_text\":\"Playground reference issuer logo\"},\"background_color\":\"#0b5d4b\",\"text_color\":\"#f4f1e8\"}]}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.810Z",
-      "durationMs": 1.8203000000066822,
+      "startedAt": "2026-10-14T13:20:21.754Z",
+      "durationMs": 3.0405549999995856,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x3",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x3",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 3,
       "capture": "inbound",
       "step": "as.metadata",
@@ -848,13 +848,13 @@
         "body": "{\"issuer\":\"https://ref.ps02.test/ref/issuer/draft13\",\"token_endpoint\":\"https://ref.ps02.test/ref/issuer/draft13/token\",\"grant_types_supported\":[\"urn:ietf:params:oauth:grant-type:pre-authorized_code\"],\"response_types_supported\":[],\"token_endpoint_auth_methods_supported\":[\"none\"],\"pre-authorized_grant_anonymous_access_supported\":true}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.815Z",
-      "durationMs": 0.5813000000052853,
+      "startedAt": "2026-10-14T13:20:21.771Z",
+      "durationMs": 2.41249100001005,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x4",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x4",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 4,
       "capture": "inbound",
       "step": "token",
@@ -870,7 +870,7 @@
           "user-agent": "lightMyRequest",
           "content-length": "137"
         },
-        "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Adccaa1c6%5D",
+        "body": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code&pre-authorized_code=%5Bredacted%20sha256%3Ab01cd6d6%5D",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -883,16 +883,16 @@
           "cache-control": "no-store",
           "content-type": "application/json; charset=utf-8"
         },
-        "body": "{\"access_token\":\"[redacted sha256:f00bfe89]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"1725MrGtlo5KFsZ2VRE18Q\",\"c_nonce_expires_in\":300}",
+        "body": "{\"access_token\":\"[redacted sha256:aa906f1d]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"c_nonce\":\"-xJ3ElEVpU85empQgKvqLw\",\"c_nonce_expires_in\":300}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.819Z",
-      "durationMs": 0.944100000007893,
+      "startedAt": "2026-10-14T13:20:21.778Z",
+      "durationMs": 2.1531039999972563,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x5",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x5",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 5,
       "capture": "inbound",
       "step": "credential",
@@ -903,13 +903,13 @@
         "url": "http://ref.ps02.test/ref/issuer/draft13/credential",
         "headers": {
           "accept": "application/json",
-          "authorization": "Bearer [redacted sha256:f00bfe89]",
+          "authorization": "Bearer [redacted sha256:aa906f1d]",
           "content-type": "application/json",
           "host": "ref.ps02.test",
           "user-agent": "lightMyRequest",
           "content-length": "768"
         },
-        "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImtpZCI6ImRpZDpqd2s6ZXlKamNuWWlPaUpRTFRJMU5pSXNJbXQwZVNJNklrVkRJaXdpZUNJNklpMUdNV3RITTJ0bmVrdEtRek5tU0dkemJtcFRkSGMzUjAxRWNERlBYMjh0TkVkdWVHbE9aVEJQWDFFaUxDSjVJam9pVGtOSGJGTkdURkZaY1doNmVXWXdiMmhLTW5OWllWVlBja1Y1UlRoWFZ6TlVNak5OUW0xelJHMXBXU0o5IzAiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJodHRwczovL3JlZi5wczAyLnRlc3QvcmVmL2lzc3Vlci9kcmFmdDEzIiwiaWF0IjoxNzkxOTM2NDk2LCJub25jZSI6IjE3MjVNckd0bG81S0ZzWjJWUkUxOFEifQ.tLJ2rNZf26vVUDwr1pUhPMKgH9-ioIR9aWxP58vBtaUCF4Feps4LSKnyCvAZEZasgzjdFSXcgayVwOWZYnozsw\"}}",
+        "body": "{\"format\":\"ldp_vc\",\"credential_definition\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\"],\"type\":[\"VerifiableCredential\",\"FarmerCredential\"]},\"proof\":{\"proof_type\":\"jwt\",\"jwt\":\"eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImtpZCI6ImRpZDpqd2s6ZXlKamNuWWlPaUpRTFRJMU5pSXNJbXQwZVNJNklrVkRJaXdpZUNJNkltaGtTRE5pUTNVMFRXbHhkamt5UlRSNU1YUjVNWEpET1RWR2VrWm9VRzl1UkV0dVFWZ3dNRXRYU25jaUxDSjVJam9pVUZReE4yRldXakZ6YlhKaVZ6SXlPQzFWYUdKUE4xUTJTVU5HWnkxVWNtUm5VVlJ6WHpKaFdraERVU0o5IzAiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJodHRwczovL3JlZi5wczAyLnRlc3QvcmVmL2lzc3Vlci9kcmFmdDEzIiwiaWF0IjoxNzkxOTg0MDIxLCJub25jZSI6Ii14SjNFbEVWcFU4NWVtcFFnS3ZxTHcifQ.tzHEJUW36U9NRkrfXdGICvJIJchnUPG9IUI904uDkRBo68zHW717VJCLvnbf9h183zV0t2VFSf2fmLUTiibr4g\"}}",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -922,16 +922,16 @@
           "cache-control": "no-store",
           "content-type": "application/json; charset=utf-8"
         },
-        "body": "{\"credential\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}},\"c_nonce\":\"7QrZ5iPJI5pKjCB6-rwOqQ\",\"c_nonce_expires_in\":300}",
+        "body": "{\"credential\":{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}},\"c_nonce\":\"HCz4uHgixxcwnPwL9x-tqw\",\"c_nonce_expires_in\":300}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.826Z",
-      "durationMs": 5.042400000005728,
+      "startedAt": "2026-10-14T13:20:21.795Z",
+      "durationMs": 18.122867999991286,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x6",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x6",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 6,
       "capture": "outbound",
       "step": "verifier.request",
@@ -939,7 +939,7 @@
       "to": "inji-verify",
       "request": {
         "method": "POST",
-        "url": "http://localhost:28080/v1/verify/vp-request",
+        "url": "http://verify-service:8080/v1/verify/vp-request",
         "headers": {
           "content-type": "application/json"
         },
@@ -951,20 +951,20 @@
         "headers": {
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+          "date": "Wed, 14 Oct 2026 13:20:21 GMT",
           "keep-alive": "timeout=60",
           "transfer-encoding": "chunked"
         },
-        "body": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"requestId\":\"req_0144c163-65a2-4adf-a2a5-c959689a4510\",\"authorizationDetails\":{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-ldp_vc\",\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.type\"],\"filter\":{\"type\":\"array\",\"pattern\":\"FarmerCredential\"}}]}}],\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}}},\"nonce\":\"048a260f73c7114a321e4bfb1c0278a9\",\"responseUri\":\"https://verify.ps02.test/v1/verify/vp-submission/direct-post\",\"acceptVPWithoutHolderProof\":false,\"responseCodeValidationRequired\":false,\"responseType\":\"vp_token\",\"responseMode\":\"direct_post\",\"issuedAt\":1791936496842},\"expiresAt\":1791936796842}",
+        "body": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"requestId\":\"req_4704feb6-594c-46af-8e30-e48fa0118f50\",\"authorizationDetails\":{\"clientId\":\"ps02-playground\",\"presentationDefinition\":{\"id\":\"ps02-farmer-ldp_vc\",\"input_descriptors\":[{\"id\":\"farmer-credential\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}},\"constraints\":{\"fields\":[{\"path\":[\"$.type\"],\"filter\":{\"type\":\"array\",\"pattern\":\"FarmerCredential\"}}]}}],\"purpose\":\"Inji Interoperability Playground: present the farmer credential issued in this run\",\"format\":{\"ldp_vc\":{\"proof_type\":[\"Ed25519Signature2020\",\"Ed25519Signature2018\",\"RsaSignature2018\"]}}},\"nonce\":\"3539e8dc580f5ac3d1572276ec5b8ab9\",\"responseUri\":\"https://verify.ps02.test/v1/verify/vp-submission/direct-post\",\"acceptVPWithoutHolderProof\":false,\"responseCodeValidationRequired\":false,\"responseType\":\"vp_token\",\"responseMode\":\"direct_post\",\"issuedAt\":1791984021838},\"expiresAt\":1791984321838}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.835Z",
-      "durationMs": 14.632900000011432,
+      "startedAt": "2026-10-14T13:20:21.830Z",
+      "durationMs": 42.08770099999674,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x7",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x7",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 7,
       "capture": "outbound",
       "step": "wallet.submit",
@@ -976,7 +976,7 @@
         "headers": {
           "content-type": "application/x-www-form-urlencoded"
         },
-        "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fdata-integrity%2Fv2%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%22%2C%22verifiableCredential%22%3A%5B%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fplayground.ps02.test%2Fcontexts%2Fv1.jsonld%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22id%22%3A%22urn%3Auuid%3A19ddb33a-bd4f-48d2-8d3e-7372862aefe8%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22issuer%22%3A%22did%3Akey%3Az6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%22%2C%22issuanceDate%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22expirationDate%22%3A%222027-10-14T00%3A08%3A16Z%22%2C%22credentialSubject%22%3A%7B%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%22%2C%22farmerId%22%3A%222154189532%22%2C%22givenName%22%3A%22Gorge%22%2C%22familyName%22%3A%22Cooper%22%2C%22birthDate%22%3A%221990-05-25%22%2C%22state%22%3A%22Karnataka%22%2C%22landArea%22%3A%223+hectares%22%2C%22primaryCropType%22%3A%22Maize%22%7D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22verificationMethod%22%3A%22did%3Akey%3Az6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%23z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22proofValue%22%3A%22z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22DataIntegrityProof%22%2C%22created%22%3A%222026-10-14T00%3A08%3A16Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9%230%22%2C%22cryptosuite%22%3A%22ecdsa-rdfc-2019%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%22048a260f73c7114a321e4bfb1c0278a9%22%2C%22domain%22%3A%22ps02-playground%22%2C%22proofValue%22%3A%22z2R39UbD4xKFpRxromyjkVSHHbQGoQuW9zhX3zFQJSFkLpTuNSo3K9pWNh8rKNKSP8V88KAj5QoHJ1d72BEyJrs42%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-048a260f%22%2C%22definition_id%22%3A%22ps02-farmer-ldp_vc%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=req_0144c163-65a2-4adf-a2a5-c959689a4510",
+        "body": "vp_token=%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fdata-integrity%2Fv2%22%5D%2C%22type%22%3A%5B%22VerifiablePresentation%22%5D%2C%22holder%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%22%2C%22verifiableCredential%22%3A%5B%7B%22%40context%22%3A%5B%22https%3A%2F%2Fwww.w3.org%2F2018%2Fcredentials%2Fv1%22%2C%22https%3A%2F%2Fplayground.ps02.test%2Fcontexts%2Fv1.jsonld%22%2C%22https%3A%2F%2Fw3id.org%2Fsecurity%2Fsuites%2Fed25519-2020%2Fv1%22%5D%2C%22id%22%3A%22urn%3Auuid%3A1aa94d25-2753-4764-a3c1-053b40abc280%22%2C%22type%22%3A%5B%22VerifiableCredential%22%2C%22FarmerCredential%22%5D%2C%22issuer%22%3A%22did%3Akey%3Az6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%22%2C%22issuanceDate%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22expirationDate%22%3A%222027-10-14T13%3A20%3A21Z%22%2C%22credentialSubject%22%3A%7B%22id%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%22%2C%22farmerId%22%3A%222154189532%22%2C%22givenName%22%3A%22Gorge%22%2C%22familyName%22%3A%22Cooper%22%2C%22birthDate%22%3A%221990-05-25%22%2C%22state%22%3A%22Karnataka%22%2C%22landArea%22%3A%223+hectares%22%2C%22primaryCropType%22%3A%22Maize%22%7D%2C%22proof%22%3A%7B%22type%22%3A%22Ed25519Signature2020%22%2C%22created%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22verificationMethod%22%3A%22did%3Akey%3Az6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%23z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi%22%2C%22proofPurpose%22%3A%22assertionMethod%22%2C%22proofValue%22%3A%22zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX%22%7D%7D%5D%2C%22proof%22%3A%7B%22type%22%3A%22DataIntegrityProof%22%2C%22created%22%3A%222026-10-14T13%3A20%3A21Z%22%2C%22verificationMethod%22%3A%22did%3Ajwk%3AeyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9%230%22%2C%22cryptosuite%22%3A%22ecdsa-rdfc-2019%22%2C%22proofPurpose%22%3A%22authentication%22%2C%22challenge%22%3A%223539e8dc580f5ac3d1572276ec5b8ab9%22%2C%22domain%22%3A%22ps02-playground%22%2C%22proofValue%22%3A%22z4jZ3QsE53FYdttaHwVXZ7TyAkRQ6aadZjsttnGG55JiLf7UC2RZbUXcxcVfCyJPDNnRKJRQZHtjJ1iVnUxPvWzSt%22%7D%7D&presentation_submission=%7B%22id%22%3A%22submission-3539e8dc%22%2C%22definition_id%22%3A%22ps02-farmer-ldp_vc%22%2C%22descriptor_map%22%3A%5B%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vp%22%2C%22path%22%3A%22%24%22%2C%22path_nested%22%3A%7B%22id%22%3A%22farmer-credential%22%2C%22format%22%3A%22ldp_vc%22%2C%22path%22%3A%22%24.verifiableCredential%5B0%5D%22%7D%7D%5D%7D&state=req_4704feb6-594c-46af-8e30-e48fa0118f50",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -984,20 +984,20 @@
         "headers": {
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+          "date": "Wed, 14 Oct 2026 13:20:22 GMT",
           "server": "nginx/1.30.5",
           "transfer-encoding": "chunked"
         },
         "body": "{}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.865Z",
-      "durationMs": 57.283299999995506,
+      "startedAt": "2026-10-14T13:20:21.936Z",
+      "durationMs": 90.67829599999823,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x8",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x8",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 8,
       "capture": "outbound",
       "step": "verifier.result",
@@ -1005,7 +1005,7 @@
       "to": "inji-verify",
       "request": {
         "method": "GET",
-        "url": "http://localhost:28080/v1/verify/vp-request/req_0144c163-65a2-4adf-a2a5-c959689a4510/status",
+        "url": "http://verify-service:8080/v1/verify/vp-request/req_4704feb6-594c-46af-8e30-e48fa0118f50/status",
         "headers": {}
       },
       "response": {
@@ -1013,20 +1013,20 @@
         "headers": {
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Wed, 14 Oct 2026 00:08:16 GMT",
+          "date": "Wed, 14 Oct 2026 13:20:22 GMT",
           "keep-alive": "timeout=60",
           "transfer-encoding": "chunked"
         },
         "body": "{\"status\":\"VP_SUBMITTED\"}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.924Z",
-      "durationMs": 15.217099999994389,
+      "startedAt": "2026-10-14T13:20:22.029Z",
+      "durationMs": 26.85759600000165,
       "redacted": true
     },
     {
-      "id": "20261014T000816-accabb-x9",
-      "runId": "20261014T000816-accabb",
+      "id": "20261014T132021-b6f3cf-x9",
+      "runId": "20261014T132021-b6f3cf",
       "seq": 9,
       "capture": "outbound",
       "step": "verifier.result",
@@ -1034,7 +1034,7 @@
       "to": "inji-verify",
       "request": {
         "method": "POST",
-        "url": "http://localhost:28080/v1/verify/v2/vp-results/txn_cabbe32b-2f9d-45ab-96b9-55313e87a440",
+        "url": "http://verify-service:8080/v1/verify/v2/vp-results/txn_2bca8f4c-465f-4a1e-900f-70920edd16c2",
         "headers": {
           "content-type": "application/json"
         },
@@ -1046,15 +1046,15 @@
         "headers": {
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Wed, 14 Oct 2026 00:08:19 GMT",
+          "date": "Wed, 14 Oct 2026 13:20:25 GMT",
           "keep-alive": "timeout=60",
           "transfer-encoding": "chunked"
         },
-        "body": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\\\",\\\"created\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\",\\\"expirationDate\\\":\\\"2027-10-14T00:08:16Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
+        "body": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\\\",\\\"created\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\",\\\"expirationDate\\\":\\\"2027-10-14T13:20:21Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-14T00:08:16.940Z",
-      "durationMs": 2759.615699999995,
+      "startedAt": "2026-10-14T13:20:22.057Z",
+      "durationMs": 3880.857241000005,
       "redacted": true
     }
   ],
@@ -1062,28 +1062,28 @@
     {
       "seq": 4,
       "kind": "offer",
-      "raw": "openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fref.ps02.test%2Fref%2Fissuer%2Fdraft13%2Foffers%2FezuLIZvtcQ-p-xTN",
-      "createdAt": "2026-10-14T00:08:16.804Z"
+      "raw": "openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fref.ps02.test%2Fref%2Fissuer%2Fdraft13%2Foffers%2FYMwG3GG0i-Rswutl",
+      "createdAt": "2026-10-14T13:20:21.735Z"
     },
     {
       "seq": 18,
       "kind": "credential",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}}",
-      "createdAt": "2026-10-14T00:08:16.833Z"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}}",
+      "createdAt": "2026-10-14T13:20:21.816Z"
     },
     {
       "seq": 26,
       "kind": "vp-token",
       "format": "ldp_vc",
-      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/data-integrity/v2\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"verifiableCredential\":[{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"issuanceDate\":\"2026-10-14T00:08:16Z\",\"expirationDate\":\"2027-10-14T00:08:16Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\"}}],\"proof\":{\"type\":\"DataIntegrityProof\",\"created\":\"2026-10-14T00:08:16Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9#0\",\"cryptosuite\":\"ecdsa-rdfc-2019\",\"proofPurpose\":\"authentication\",\"challenge\":\"048a260f73c7114a321e4bfb1c0278a9\",\"domain\":\"ps02-playground\",\"proofValue\":\"z2R39UbD4xKFpRxromyjkVSHHbQGoQuW9zhX3zFQJSFkLpTuNSo3K9pWNh8rKNKSP8V88KAj5QoHJ1d72BEyJrs42\"}}",
-      "createdAt": "2026-10-14T00:08:16.923Z"
+      "raw": "{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://w3id.org/security/data-integrity/v2\"],\"type\":[\"VerifiablePresentation\"],\"holder\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"verifiableCredential\":[{\"@context\":[\"https://www.w3.org/2018/credentials/v1\",\"https://playground.ps02.test/contexts/v1.jsonld\",\"https://w3id.org/security/suites/ed25519-2020/v1\"],\"id\":\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\",\"type\":[\"VerifiableCredential\",\"FarmerCredential\"],\"issuer\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"issuanceDate\":\"2026-10-14T13:20:21Z\",\"expirationDate\":\"2027-10-14T13:20:21Z\",\"credentialSubject\":{\"id\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\",\"farmerId\":\"2154189532\",\"givenName\":\"Gorge\",\"familyName\":\"Cooper\",\"birthDate\":\"1990-05-25\",\"state\":\"Karnataka\",\"landArea\":\"3 hectares\",\"primaryCropType\":\"Maize\"},\"proof\":{\"type\":\"Ed25519Signature2020\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\"}}],\"proof\":{\"type\":\"DataIntegrityProof\",\"created\":\"2026-10-14T13:20:21Z\",\"verificationMethod\":\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9#0\",\"cryptosuite\":\"ecdsa-rdfc-2019\",\"proofPurpose\":\"authentication\",\"challenge\":\"3539e8dc580f5ac3d1572276ec5b8ab9\",\"domain\":\"ps02-playground\",\"proofValue\":\"z4jZ3QsE53FYdttaHwVXZ7TyAkRQ6aadZjsttnGG55JiLf7UC2RZbUXcxcVfCyJPDNnRKJRQZHtjJ1iVnUxPvWzSt\"}}",
+      "createdAt": "2026-10-14T13:20:22.028Z"
     },
     {
       "seq": 32,
       "kind": "result",
-      "raw": "{\"transactionId\":\"txn_cabbe32b-2f9d-45ab-96b9-55313e87a440\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Ii1GMWtHM2tnektKQzNmSGdzbmpTdHc3R01EcDFPX28tNEdueGlOZTBPX1EiLCJ5IjoiTkNHbFNGTFFZcWh6eWYwb2hKMnNZYVVPckV5RThXVzNUMjNNQm1zRG1pWSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:19ddb33a-bd4f-48d2-8d3e-7372862aefe8\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"z4myVHKfcVFHJvvgqu2oz5snwC13mHUqubFe5uC7GFBJa7uHFtQvdcWNt823nenaFzmn3dzjdkQxjhDyTHTk3LBms\\\",\\\"created\\\":\\\"2026-10-14T00:08:16Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ#z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MknE1p7RzM3aMK3CUxTup1VRjPRVTqJm7Rjoc5wbCx9kLQ\\\",\\\"expirationDate\\\":\\\"2027-10-14T00:08:16Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
-      "createdAt": "2026-10-14T00:08:19.701Z"
+      "raw": "{\"transactionId\":\"txn_2bca8f4c-465f-4a1e-900f-70920edd16c2\",\"allChecksSuccessful\":false,\"credentialResults\":[{\"allChecksSuccessful\":false,\"schemaAndSignatureCheck\":{\"valid\":true,\"error\":null},\"expiryCheck\":{\"valid\":true},\"statusCheck\":[],\"claims\":{},\"verifiableCredential\":\"{\\\"issuanceDate\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"credentialSubject\\\":{\\\"farmerId\\\":\\\"2154189532\\\",\\\"primaryCropType\\\":\\\"Maize\\\",\\\"givenName\\\":\\\"Gorge\\\",\\\"familyName\\\":\\\"Cooper\\\",\\\"landArea\\\":\\\"3 hectares\\\",\\\"id\\\":\\\"did:jwk:eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6ImhkSDNiQ3U0TWlxdjkyRTR5MXR5MXJDOTVGekZoUG9uREtuQVgwMEtXSnciLCJ5IjoiUFQxN2FWWjFzbXJiVzIyOC1VaGJPN1Q2SUNGZy1UcmRnUVRzXzJhWkhDUSJ9\\\",\\\"state\\\":\\\"Karnataka\\\",\\\"birthDate\\\":\\\"1990-05-25\\\"},\\\"id\\\":\\\"urn:uuid:1aa94d25-2753-4764-a3c1-053b40abc280\\\",\\\"proof\\\":{\\\"proofValue\\\":\\\"zArhtAGZJ4W2wfwG4FQ8R7YvEa31zMY1yeCo2zEJLN4WW2hqmvUY1fmETx1wd64Tgw79P8EHqWWNQAoavqYsgRRX\\\",\\\"created\\\":\\\"2026-10-14T13:20:21Z\\\",\\\"proofPurpose\\\":\\\"assertionMethod\\\",\\\"type\\\":\\\"Ed25519Signature2020\\\",\\\"verificationMethod\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi#z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\"},\\\"type\\\":[\\\"VerifiableCredential\\\",\\\"FarmerCredential\\\"],\\\"@context\\\":[\\\"https://www.w3.org/2018/credentials/v1\\\",\\\"https://playground.ps02.test/contexts/v1.jsonld\\\",\\\"https://w3id.org/security/suites/ed25519-2020/v1\\\"],\\\"issuer\\\":\\\"did:key:z6MktenfrCPmfqDTVxu43L1b5YhZbLPiMYczLbijnMD2MPDi\\\",\\\"expirationDate\\\":\\\"2027-10-14T13:20:21Z\\\"}\",\"holderProofCheck\":{\"valid\":false,\"error\":{\"errorCode\":\"ERR_SIGNATURE_VERIFICATION_FAILED\",\"errorMessage\":\"Verification Failed\"}}}]}",
+      "createdAt": "2026-10-14T13:20:25.936Z"
     }
   ]
 }
