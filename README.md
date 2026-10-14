@@ -86,8 +86,10 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
 
 ## Known limits
 
-- **Inji Wallet mobile was not run.** No APK is published and no phone was available. The playground shows
-  the QR code and link for it (`mobile-wallet` role), but no run with a phone is recorded.
+- **Inji Wallet mobile was not run.** No phone was available, and on the Android emulator the app (a CI build;
+  the GitHub releases carry no APK) stays on a blank screen because it needs a hardware-backed key store
+  ([phone wallet guide](docs/phone-wallet-guide.md#emulator-attempt)). The playground shows the QR code and
+  link for it (`mobile-wallet` role). The guide lists the steps for a teammate with a real phone.
 - **No status check for `mso_mdoc`.** The reference verifier checks Token Status Lists (SD-JWT VC) and
   Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Revocation was not tested against Inji Verify. A freshly issued Inji Certify 0.14.0 `FarmerCredential` (`ldp_vc`) had no `credentialStatus`, and the SD-JWT VC had no `status` claim (observed 2026-10-14), so there is nothing to revoke.
 - **Outbound requests a credential chooses go only to public addresses, but a holder can still cause one.**

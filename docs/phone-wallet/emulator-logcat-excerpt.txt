@@ -1,0 +1,4 @@
+10-14 13:42:55.716   571   659 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=io.mosip.residentapp/.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-14 13:42:59.488   571   594 I ActivityTaskManager: Displayed io.mosip.residentapp/.MainActivity for user 0: +3s955ms
+10-14 13:43:02.816  8707  8767 I SecureStorage: Device Supports Hardware false
+10-14 13:43:03.312  8707  8767 E ReactNativeJS: Credentials failed to load for user
