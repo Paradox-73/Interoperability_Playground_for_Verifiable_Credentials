@@ -1,6 +1,6 @@
 # Compatibility matrix: live-core
 
-Run on 2026-10-13, 22:46:35 to 22:47:53 UTC (1 min 18 s), from `live-core.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
+Run on 2026-10-14, 00:06:18 to 00:07:35 UTC (1 min 17 s), from `live-core.yaml` in live mode, against playground server 0.1.0 at http://localhost:28100.
 
 Inji Certify and Inji Verify against the reference roles, both mandatory formats, plus tamper cells against Inji Verify.
 
@@ -20,22 +20,22 @@ Inji Certify and Inji Verify against the reference roles, both mandatory formats
 
 | Case | Issuer → wallet → verifier | Format | Profiles | Scenario | Expected | Actual | Verdict | Matches spec | Run |
 | ---- | -------------------------- | ------ | -------- | -------- | -------- | ------ | ------- | ------------ | --- |
-| TC_PG_LIVE_01 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261013T224635-c4d1ab`](runs/TC_PG_LIVE_01.json) |
-| TC_PG_LIVE_02 | `inji-certify` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261013T224637-818992`](runs/TC_PG_LIVE_02.json) |
-| TC_PG_LIVE_03 | `inji-certify` → `ref-wallet` → `ref-verifier` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261013T224642-9642be`](runs/TC_PG_LIVE_03.json) |
-| TC_PG_LIVE_04 | `inji-certify` → `ref-wallet` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261013T224642-315cf7`](runs/TC_PG_LIVE_04.json) |
-| TC_PG_LIVE_05 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261013T224644-933ef5`](runs/TC_PG_LIVE_05.json) |
-| TC_PG_LIVE_06 | `ref-issuer` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261013T224647-a4a579`](runs/TC_PG_LIVE_06.json) |
-| TC_PG_LIVE_07 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | expired | EXPIRED | EXPIRED | Pass | yes | [`20261013T224648-194448`](runs/TC_PG_LIVE_07.json) |
-| TC_PG_LIVE_08 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | bad-signature | INVALID | INVALID | Pass | yes | [`20261013T224651-26d334`](runs/TC_PG_LIVE_08.json) |
-| TC_PG_LIVE_09 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | altered-disclosure | INVALID | INVALID | Pass | yes | [`20261013T224652-f2886b`](runs/TC_PG_LIVE_09.json) |
-| TC_PG_LIVE_10 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | unreferenced-disclosure | INVALID | INVALID | Pass | yes | [`20261013T224652-64479c`](runs/TC_PG_LIVE_10.json) |
-| TC_PG_LIVE_11 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | kb-wrong-aud | INVALID | INVALID | Pass | yes | [`20261013T224653-bc4291`](runs/TC_PG_LIVE_11.json) |
-| TC_PG_LIVE_12 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | holder-mismatch | INVALID | INVALID | Pass | yes | [`20261013T224653-be5523`](runs/TC_PG_LIVE_12.json) |
-| TC_PG_LIVE_14 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-mismatch | INVALID | INVALID | Pass | yes | [`20261013T224654-851382`](runs/TC_PG_LIVE_14.json) |
-| TC_PG_LIVE_13 | `ref-issuer` → `ref-wallet` → `inji-verify` | dc+sd-jwt | draft13 / inji-draft | happy | VALID | NOT_RUN | Not supported (spec: Not supported) | yes | [`20261013T224657-0c52e2`](runs/TC_PG_LIVE_13.json) |
-| TC_PG_LIVE_15 | `inji-certify` → `ref-wallet` → `ref-verifier` | mso_mdoc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261013T224657-df6adf`](runs/TC_PG_LIVE_15.json) |
-| TC_PG_LIVE_16 | `ref-issuer` → `ref-wallet` → `inji-verify` | mso_mdoc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261013T224657-f401f6`](runs/TC_PG_LIVE_16.json) |
+| TC_PG_LIVE_01 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261014T000618-4eabfe`](runs/TC_PG_LIVE_01.json) |
+| TC_PG_LIVE_02 | `inji-certify` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261014T000619-f0527d`](runs/TC_PG_LIVE_02.json) |
+| TC_PG_LIVE_03 | `inji-certify` → `ref-wallet` → `ref-verifier` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261014T000624-7735f4`](runs/TC_PG_LIVE_03.json) |
+| TC_PG_LIVE_04 | `inji-certify` → `ref-wallet` → `ref-verifier` | ldp_vc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261014T000625-3963ac`](runs/TC_PG_LIVE_04.json) |
+| TC_PG_LIVE_05 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | happy | VALID | VALID | Pass | yes | [`20261014T000626-f60d34`](runs/TC_PG_LIVE_05.json) |
+| TC_PG_LIVE_06 | `ref-issuer` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261014T000629-ae4eb7`](runs/TC_PG_LIVE_06.json) |
+| TC_PG_LIVE_07 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | expired | EXPIRED | EXPIRED | Pass | yes | [`20261014T000630-3960c7`](runs/TC_PG_LIVE_07.json) |
+| TC_PG_LIVE_08 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | bad-signature | INVALID | INVALID | Pass | yes | [`20261014T000632-06f49c`](runs/TC_PG_LIVE_08.json) |
+| TC_PG_LIVE_09 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | altered-disclosure | INVALID | INVALID | Pass | yes | [`20261014T000633-9ae478`](runs/TC_PG_LIVE_09.json) |
+| TC_PG_LIVE_10 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | unreferenced-disclosure | INVALID | INVALID | Pass | yes | [`20261014T000634-da5553`](runs/TC_PG_LIVE_10.json) |
+| TC_PG_LIVE_11 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | kb-wrong-aud | INVALID | INVALID | Pass | yes | [`20261014T000634-7516df`](runs/TC_PG_LIVE_11.json) |
+| TC_PG_LIVE_12 | `inji-certify` → `ref-wallet` → `inji-verify` | vc+sd-jwt | draft13 / inji-draft | holder-mismatch | INVALID | INVALID | Pass | yes | [`20261014T000635-75f6a9`](runs/TC_PG_LIVE_12.json) |
+| TC_PG_LIVE_14 | `ref-issuer` → `ref-wallet` → `inji-verify` | ldp_vc | draft13 / inji-draft | holder-mismatch | INVALID | INVALID | Pass | yes | [`20261014T000636-340b83`](runs/TC_PG_LIVE_14.json) |
+| TC_PG_LIVE_13 | `ref-issuer` → `ref-wallet` → `inji-verify` | dc+sd-jwt | draft13 / inji-draft | happy | VALID | NOT_RUN | Not supported (spec: Not supported) | yes | [`20261014T000639-f80b8c`](runs/TC_PG_LIVE_13.json) |
+| TC_PG_LIVE_15 | `inji-certify` → `ref-wallet` → `ref-verifier` | mso_mdoc | draft13 / inji-draft | happy | VALID | INVALID | Fail (spec: Fail) | yes | [`20261014T000639-579719`](runs/TC_PG_LIVE_15.json) |
+| TC_PG_LIVE_16 | `ref-issuer` → `ref-wallet` → `inji-verify` | mso_mdoc | draft13 / inji-draft | happy | VALID | ERROR | Fail (spec: Fail) | yes | [`20261014T000640-e2660f`](runs/TC_PG_LIVE_16.json) |
 
 The redacted record of each run (configuration, events, every HTTP exchange) is written to `runs/<case id>.json` next to this file. Live runs are kept in git with this file, so every link above opens the recorded exchanges; the nightly workflow also publishes them as a build artifact.
 

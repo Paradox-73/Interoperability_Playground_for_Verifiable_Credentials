@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "exportedAt": "2026-10-13T22:46:57.269Z",
+  "exportedAt": "2026-10-14T00:06:39.530Z",
   "redacted": true,
   "redactions": 0,
   "run": {
-    "runId": "20261013T224657-0c52e2",
+    "runId": "20261014T000639-f80b8c",
     "status": "finished",
     "mode": "live",
     "config": {
@@ -16,9 +16,9 @@
       "vpProfile": "inji-draft",
       "scenario": "happy"
     },
-    "createdAt": "2026-10-13T22:46:57.263Z",
-    "startedAt": "2026-10-13T22:46:57.263Z",
-    "finishedAt": "2026-10-13T22:46:57.264Z",
+    "createdAt": "2026-10-14T00:06:39.523Z",
+    "startedAt": "2026-10-14T00:06:39.524Z",
+    "finishedAt": "2026-10-14T00:06:39.524Z",
     "outcome": "NOT_RUN",
     "verdict": "not-supported",
     "error": {
@@ -32,8 +32,8 @@
       "verifier": "0.18.2"
     },
     "report": {
-      "runId": "20261013T224657-0c52e2",
-      "createdAt": "2026-10-13T22:46:57.264Z",
+      "runId": "20261014T000639-f80b8c",
+      "createdAt": "2026-10-14T00:06:39.524Z",
       "mode": "live",
       "issuer": {
         "id": "ref-issuer",
@@ -100,7 +100,7 @@
   "events": [
     {
       "type": "run.started",
-      "runId": "20261013T224657-0c52e2",
+      "runId": "20261014T000639-f80b8c",
       "config": {
         "issuer": "ref-issuer",
         "wallet": "ref-wallet",
@@ -110,14 +110,14 @@
         "vpProfile": "inji-draft",
         "scenario": "happy"
       },
-      "at": "2026-10-13T22:46:57.263Z"
+      "at": "2026-10-14T00:06:39.524Z"
     },
     {
       "type": "run.finished",
-      "runId": "20261013T224657-0c52e2",
+      "runId": "20261014T000639-f80b8c",
       "report": {
-        "runId": "20261013T224657-0c52e2",
-        "createdAt": "2026-10-13T22:46:57.264Z",
+        "runId": "20261014T000639-f80b8c",
+        "createdAt": "2026-10-14T00:06:39.524Z",
         "mode": "live",
         "issuer": {
           "id": "ref-issuer",

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "exportedAt": "2026-10-13T22:48:41.475Z",
+  "exportedAt": "2026-10-14T00:08:20.734Z",
   "redacted": true,
   "redactions": 18,
   "run": {
-    "runId": "20261013T224841-b03ad0",
+    "runId": "20261014T000820-8f1202",
     "status": "finished",
     "mode": "live",
     "config": {
@@ -16,9 +16,9 @@
       "vpProfile": "inji-draft",
       "scenario": "happy"
     },
-    "createdAt": "2026-10-13T22:48:41.203Z",
-    "startedAt": "2026-10-13T22:48:41.204Z",
-    "finishedAt": "2026-10-13T22:48:41.368Z",
+    "createdAt": "2026-10-14T00:08:20.472Z",
+    "startedAt": "2026-10-14T00:08:20.473Z",
+    "finishedAt": "2026-10-14T00:08:20.624Z",
     "outcome": "ERROR",
     "verdict": "fail",
     "error": {
@@ -32,8 +32,8 @@
       "verifier": "0.18.2"
     },
     "report": {
-      "runId": "20261013T224841-b03ad0",
-      "createdAt": "2026-10-13T22:48:41.368Z",
+      "runId": "20261014T000820-8f1202",
+      "createdAt": "2026-10-14T00:08:20.624Z",
       "mode": "live",
       "issuer": {
         "id": "inji-certify-ac",
@@ -73,13 +73,13 @@
           "step": "issuer.offer",
           "status": "ok",
           "durationMs": 0,
-          "startedAt": "2026-10-13T22:48:41.204Z"
+          "startedAt": "2026-10-14T00:08:20.473Z"
         },
         {
           "step": "issuer.metadata",
           "status": "failed",
-          "durationMs": 163,
-          "startedAt": "2026-10-13T22:48:41.205Z"
+          "durationMs": 150,
+          "startedAt": "2026-10-14T00:08:20.474Z"
         },
         {
           "step": "verifier.request",
@@ -102,7 +102,7 @@
   "events": [
     {
       "type": "run.started",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "config": {
         "issuer": "inji-certify-ac",
         "wallet": "inji-web",
@@ -112,35 +112,35 @@
         "vpProfile": "inji-draft",
         "scenario": "happy"
       },
-      "at": "2026-10-13T22:48:41.204Z"
+      "at": "2026-10-14T00:08:20.473Z"
     },
     {
       "type": "step.started",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "step": "issuer.offer",
       "label": "Issuer prepares a credential offer for the wallet",
-      "at": "2026-10-13T22:48:41.204Z"
+      "at": "2026-10-14T00:08:20.473Z"
     },
     {
       "type": "step.finished",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "step": "issuer.offer",
       "status": "ok",
-      "at": "2026-10-13T22:48:41.205Z"
+      "at": "2026-10-14T00:08:20.473Z"
     },
     {
       "type": "step.started",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "step": "issuer.metadata",
       "label": "Wallet reads what the issuer can issue",
-      "at": "2026-10-13T22:48:41.205Z"
+      "at": "2026-10-14T00:08:20.474Z"
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x1",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x1",
+        "runId": "20261014T000820-8f1202",
         "seq": 1,
         "capture": "outbound",
         "step": "issuer.metadata",
@@ -157,11 +157,11 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+            "date": "Wed, 14 Oct 2026 00:08:20 GMT",
             "expires": "0",
             "keep-alive": "timeout=60",
             "pragma": "no-cache",
-            "set-cookie": "[redacted sha256:2bf06273]",
+            "set-cookie": "[redacted sha256:b360964b]",
             "transfer-encoding": "chunked",
             "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
             "x-content-type-options": "nosniff",
@@ -171,17 +171,17 @@
           "body": "{\"response\":{\"issuers\":[{\"issuer_id\":\"Farmer\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Agriculture Department\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"agri-logo\"},\"title\":\"Agriculture Department\",\"description\":\"Download Farmers Credentials\",\"language\":\"en\"}],\"client_id\":\"wallet-demo\",\"wellknown_endpoint\":\"http://certify-nginx/.well-known/openid-credential-issuer\",\"redirect_uri\":\"io.mosip.residentapp.inji://oauthredirect\",\"authorization_audience\":\"http://certify-nginx:80/v1/certify/oauth/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/Farmer\",\"proxy_token_endpoint\":\"http://certify:8090/v1/certify/oauth/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"Farmer\",\"credential_issuer_host\":\"http://certify-nginx\"},{\"issuer_id\":\"FarmerAC\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Inji Certify AC (playground)\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"issuer-logo\"},\"title\":\"Inji Certify AC (playground)\",\"description\":\"Farmer credential from the playground's certify-ac (authorization code)\",\"language\":\"en\"}],\"client_id\":\"ps02-mimoto\",\"wellknown_endpoint\":\"https://ref.ps02.test/proxy/certify-ac/.well-known/openid-credential-issuer\",\"redirect_uri\":\"http://localhost:28004/redirect\",\"authorization_audience\":\"https://ref.ps02.test/ref/as/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/FarmerAC\",\"proxy_token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"FarmerAC\",\"credential_issuer_host\":\"https://ref.ps02.test/proxy/certify-ac\"},{\"issuer_id\":\"PlaygroundReference\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Playground reference issuer\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"issuer-logo\"},\"title\":\"Playground reference issuer\",\"description\":\"Farmer credential from the playground's reference issuer (non-Inji)\",\"language\":\"en\"}],\"client_id\":\"ps02-mimoto\",\"wellknown_endpoint\":\"https://ref.ps02.test/.well-known/openid-credential-issuer/ref/issuer/draft13\",\"redirect_uri\":\"http://localhost:28004/redirect\",\"authorization_audience\":\"https://ref.ps02.test/ref/as/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/PlaygroundReference\",\"proxy_token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"PlaygroundReference\",\"credential_issuer_host\":\"https://ref.ps02.test/ref/issuer/draft13\"}]},\"errors\":[]}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-13T22:48:41.206Z",
-        "durationMs": 8.754199999995762,
+        "startedAt": "2026-10-14T00:08:20.474Z",
+        "durationMs": 7.763299999991432,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x2",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x2",
+        "runId": "20261014T000820-8f1202",
         "seq": 2,
         "capture": "outbound",
         "step": "issuer.metadata",
@@ -198,11 +198,11 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "keep-alive",
             "content-type": "application/json",
-            "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+            "date": "Wed, 14 Oct 2026 00:08:20 GMT",
             "expires": "0",
             "keep-alive": "timeout=60",
             "pragma": "no-cache",
-            "set-cookie": "[redacted sha256:378ef7fb]",
+            "set-cookie": "[redacted sha256:5a9531e5]",
             "transfer-encoding": "chunked",
             "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
             "x-content-type-options": "nosniff",
@@ -212,17 +212,17 @@
           "body": "{\"credential_issuer\":\"https://ref.ps02.test/proxy/certify-ac\",\"authorization_servers\":[\"https://ref.ps02.test/ref/as\"],\"credential_endpoint\":\"https://ref.ps02.test/proxy/certify-ac/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}},\"display\":[{\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"background_image\":null,\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"doctype\":\"test.ps02.playground.farmer.1\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"vct\":null,\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}},\"display\":[{\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"background_image\":null,\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"vct\":null,\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]},\"display\":[{\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"},\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]}}}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-13T22:48:41.216Z",
-        "durationMs": 14.747099999978673,
+        "startedAt": "2026-10-14T00:08:20.483Z",
+        "durationMs": 19.365700000009383,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x3",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x3",
+        "runId": "20261014T000820-8f1202",
         "seq": 3,
         "capture": "inbound",
         "step": "as.metadata",
@@ -248,17 +248,17 @@
           "body": "{\"issuer\":\"https://ref.ps02.test/ref/as\",\"authorization_endpoint\":\"https://ref.ps02.test/ref/as/authorize\",\"token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"jwks_uri\":\"https://ref.ps02.test/ref/as/jwks.json\",\"userinfo_endpoint\":\"https://ref.ps02.test/ref/as/userinfo\",\"response_types_supported\":[\"code\"],\"response_modes_supported\":[\"query\"],\"grant_types_supported\":[\"authorization_code\"],\"code_challenge_methods_supported\":[\"S256\"],\"token_endpoint_auth_methods_supported\":[\"none\",\"private_key_jwt\"],\"token_endpoint_auth_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"EdDSA\"],\"scopes_supported\":[\"openid\",\"farmer_ldp_vc\",\"farmer_ldp_vc_v2\",\"farmer_ldp_vc_es256_proof\",\"farmer_vc_sd_jwt\",\"farmer_dc_sd_jwt\",\"farmer_mso_mdoc\",\"mock_identity_vc_ldp\",\"farmer_sd_jwt\",\"farmer_mdoc\"],\"subject_types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"claims_supported\":[\"sub\",\"name\",\"given_name\",\"family_name\",\"birthdate\",\"gender\",\"email\",\"email_verified\",\"picture\",\"phone_number\"],\"authorization_response_iss_parameter_supported\":true}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-13T22:48:41.232Z",
-        "durationMs": 0.7202999999863096,
+        "startedAt": "2026-10-14T00:08:20.504Z",
+        "durationMs": 0.8524000000033993,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x4",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x4",
+        "runId": "20261014T000820-8f1202",
         "seq": 4,
         "capture": "inbound",
         "step": "token",
@@ -266,7 +266,7 @@
         "to": "ref-as",
         "request": {
           "method": "GET",
-          "url": "http://ref.ps02.test/ref/as/authorize?response_type=code&client_id=ps02-mimoto&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&scope=farmer_mdoc&code_challenge=Bmmu-gJ4QvOjZMJCZ5pmetfQBsvI5q3pmH9LC9yjdKU&code_challenge_method=S256&state=18HavX3UCwY",
+          "url": "http://ref.ps02.test/ref/as/authorize?response_type=code&client_id=ps02-mimoto&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&scope=farmer_mdoc&code_challenge=1-46LjufdleALIvXfI5z6FNpU5-_0HgoltOhy1cNVRg&code_challenge_method=S256&state=dc5EeH7YCa8",
           "headers": {
             "host": "ref.ps02.test",
             "user-agent": "lightMyRequest"
@@ -280,20 +280,20 @@
             "x-frame-options": "DENY",
             "referrer-policy": "no-referrer",
             "cache-control": "no-store",
-            "location": "http://localhost:28004/redirect?code=%5Bredacted%20sha256%3A5b7bf20e%5D&state=18HavX3UCwY&iss=https%3A%2F%2Fref.ps02.test%2Fref%2Fas"
+            "location": "http://localhost:28004/redirect?code=%5Bredacted%20sha256%3A0b879462%5D&state=dc5EeH7YCa8&iss=https%3A%2F%2Fref.ps02.test%2Fref%2Fas"
           }
         },
-        "startedAt": "2026-10-13T22:48:41.236Z",
-        "durationMs": 1.943699999974342,
+        "startedAt": "2026-10-14T00:08:20.508Z",
+        "durationMs": 0.6918000000005122,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x5",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x5",
+        "runId": "20261014T000820-8f1202",
         "seq": 5,
         "capture": "inbound",
         "step": "token",
@@ -310,7 +310,7 @@
             "accept-encoding": "gzip, x-gzip, deflate",
             "user-agent": "Apache-HttpClient/5.2.3 (Java/21.0.10)"
           },
-          "body": "code=%5Bredacted%20sha256%3A5b7bf20e%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3Abf7ae0f7%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3A0669aefa%5D",
+          "body": "code=%5Bredacted%20sha256%3A0b879462%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3A1b678b30%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3Ad7ee3a2e%5D",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -323,20 +323,20 @@
             "cache-control": "no-store",
             "content-type": "application/json; charset=utf-8"
           },
-          "body": "{\"access_token\":\"[redacted sha256:656f7147]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"scope\":\"farmer_mdoc\",\"c_nonce\":\"O3DXT45s7LB_C2wq05v4-Q\",\"c_nonce_expires_in\":300}",
+          "body": "{\"access_token\":\"[redacted sha256:6f793d9f]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"scope\":\"farmer_mdoc\",\"c_nonce\":\"kkHhWUU0DJ3i44bGvheJCw\",\"c_nonce_expires_in\":300}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-13T22:48:41.287Z",
-        "durationMs": 3.966000000014901,
+        "startedAt": "2026-10-14T00:08:20.555Z",
+        "durationMs": 3.8383000000030734,
         "redacted": true
       }
     },
     {
       "type": "exchange",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "exchange": {
-        "id": "20261013T224841-b03ad0-x6",
-        "runId": "20261013T224841-b03ad0",
+        "id": "20261014T000820-8f1202-x6",
+        "runId": "20261014T000820-8f1202",
         "seq": 6,
         "capture": "outbound",
         "step": "credential",
@@ -349,7 +349,7 @@
             "accept": "application/pdf",
             "content-type": "application/x-www-form-urlencoded"
           },
-          "body": "issuer=FarmerAC&credential=FarmerMdoc&credentialConfigurationId=FarmerMdoc&code=%5Bredacted%20sha256%3A5b7bf20e%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=%5Bredacted%20sha256%3A0669aefa%5D&vcStorageExpiryLimitInTimes=-1&locale=en",
+          "body": "issuer=FarmerAC&credential=FarmerMdoc&credentialConfigurationId=FarmerMdoc&code=%5Bredacted%20sha256%3A0b879462%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=%5Bredacted%20sha256%3Ad7ee3a2e%5D&vcStorageExpiryLimitInTimes=-1&locale=en",
           "bodyEncoding": "utf8"
         },
         "response": {
@@ -358,7 +358,7 @@
             "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
             "connection": "close",
             "content-type": "application/json",
-            "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+            "date": "Wed, 14 Oct 2026 00:08:20 GMT",
             "expires": "0",
             "pragma": "no-cache",
             "transfer-encoding": "chunked",
@@ -370,28 +370,28 @@
           "body": "{\"response\":null,\"errors\":[{\"errorCode\":\"RESIDENT-APP-028\",\"errorMessage\":\"Unsupported credential format: mso_mdoc\"}]}",
           "bodyEncoding": "utf8"
         },
-        "startedAt": "2026-10-13T22:48:41.239Z",
-        "durationMs": 127.77100000000792,
+        "startedAt": "2026-10-14T00:08:20.510Z",
+        "durationMs": 112.6981999999989,
         "redacted": true
       }
     },
     {
       "type": "step.finished",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "step": "issuer.metadata",
       "status": "failed",
       "error": {
         "code": "wallet.download-failed",
         "message": "Mimoto refused the download: HTTP 500 {\"response\":null,\"errors\":[{\"errorCode\":\"RESIDENT-APP-028\",\"errorMessage\":\"Unsupported credential format: mso_mdoc\"}]}"
       },
-      "at": "2026-10-13T22:48:41.368Z"
+      "at": "2026-10-14T00:08:20.623Z"
     },
     {
       "type": "run.finished",
-      "runId": "20261013T224841-b03ad0",
+      "runId": "20261014T000820-8f1202",
       "report": {
-        "runId": "20261013T224841-b03ad0",
-        "createdAt": "2026-10-13T22:48:41.368Z",
+        "runId": "20261014T000820-8f1202",
+        "createdAt": "2026-10-14T00:08:20.624Z",
         "mode": "live",
         "issuer": {
           "id": "inji-certify-ac",
@@ -431,13 +431,13 @@
             "step": "issuer.offer",
             "status": "ok",
             "durationMs": 0,
-            "startedAt": "2026-10-13T22:48:41.204Z"
+            "startedAt": "2026-10-14T00:08:20.473Z"
           },
           {
             "step": "issuer.metadata",
             "status": "failed",
-            "durationMs": 163,
-            "startedAt": "2026-10-13T22:48:41.205Z"
+            "durationMs": 150,
+            "startedAt": "2026-10-14T00:08:20.474Z"
           },
           {
             "step": "verifier.request",
@@ -460,8 +460,8 @@
   ],
   "exchanges": [
     {
-      "id": "20261013T224841-b03ad0-x1",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x1",
+      "runId": "20261014T000820-8f1202",
       "seq": 1,
       "capture": "outbound",
       "step": "issuer.metadata",
@@ -478,11 +478,11 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+          "date": "Wed, 14 Oct 2026 00:08:20 GMT",
           "expires": "0",
           "keep-alive": "timeout=60",
           "pragma": "no-cache",
-          "set-cookie": "[redacted sha256:2bf06273]",
+          "set-cookie": "[redacted sha256:b360964b]",
           "transfer-encoding": "chunked",
           "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
           "x-content-type-options": "nosniff",
@@ -492,13 +492,13 @@
         "body": "{\"response\":{\"issuers\":[{\"issuer_id\":\"Farmer\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Agriculture Department\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"agri-logo\"},\"title\":\"Agriculture Department\",\"description\":\"Download Farmers Credentials\",\"language\":\"en\"}],\"client_id\":\"wallet-demo\",\"wellknown_endpoint\":\"http://certify-nginx/.well-known/openid-credential-issuer\",\"redirect_uri\":\"io.mosip.residentapp.inji://oauthredirect\",\"authorization_audience\":\"http://certify-nginx:80/v1/certify/oauth/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/Farmer\",\"proxy_token_endpoint\":\"http://certify:8090/v1/certify/oauth/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"Farmer\",\"credential_issuer_host\":\"http://certify-nginx\"},{\"issuer_id\":\"FarmerAC\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Inji Certify AC (playground)\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"issuer-logo\"},\"title\":\"Inji Certify AC (playground)\",\"description\":\"Farmer credential from the playground's certify-ac (authorization code)\",\"language\":\"en\"}],\"client_id\":\"ps02-mimoto\",\"wellknown_endpoint\":\"https://ref.ps02.test/proxy/certify-ac/.well-known/openid-credential-issuer\",\"redirect_uri\":\"http://localhost:28004/redirect\",\"authorization_audience\":\"https://ref.ps02.test/ref/as/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/FarmerAC\",\"proxy_token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"FarmerAC\",\"credential_issuer_host\":\"https://ref.ps02.test/proxy/certify-ac\"},{\"issuer_id\":\"PlaygroundReference\",\"protocol\":\"OpenId4VCI\",\"display\":[{\"name\":\"Playground reference issuer\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"issuer-logo\"},\"title\":\"Playground reference issuer\",\"description\":\"Farmer credential from the playground's reference issuer (non-Inji)\",\"language\":\"en\"}],\"client_id\":\"ps02-mimoto\",\"wellknown_endpoint\":\"https://ref.ps02.test/.well-known/openid-credential-issuer/ref/issuer/draft13\",\"redirect_uri\":\"http://localhost:28004/redirect\",\"authorization_audience\":\"https://ref.ps02.test/ref/as/token\",\"token_endpoint\":\"http://localhost:28099/v1/mimoto/get-token/PlaygroundReference\",\"proxy_token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"client_alias\":\"wallet-demo-client\",\"qr_code_type\":\"EmbeddedVC\",\"enabled\":\"true\",\"credential_issuer\":\"PlaygroundReference\",\"credential_issuer_host\":\"https://ref.ps02.test/ref/issuer/draft13\"}]},\"errors\":[]}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-13T22:48:41.206Z",
-      "durationMs": 8.754199999995762,
+      "startedAt": "2026-10-14T00:08:20.474Z",
+      "durationMs": 7.763299999991432,
       "redacted": true
     },
     {
-      "id": "20261013T224841-b03ad0-x2",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x2",
+      "runId": "20261014T000820-8f1202",
       "seq": 2,
       "capture": "outbound",
       "step": "issuer.metadata",
@@ -515,11 +515,11 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "keep-alive",
           "content-type": "application/json",
-          "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+          "date": "Wed, 14 Oct 2026 00:08:20 GMT",
           "expires": "0",
           "keep-alive": "timeout=60",
           "pragma": "no-cache",
-          "set-cookie": "[redacted sha256:378ef7fb]",
+          "set-cookie": "[redacted sha256:5a9531e5]",
           "transfer-encoding": "chunked",
           "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
           "x-content-type-options": "nosniff",
@@ -529,13 +529,13 @@
         "body": "{\"credential_issuer\":\"https://ref.ps02.test/proxy/certify-ac\",\"authorization_servers\":[\"https://ref.ps02.test/ref/as\"],\"credential_endpoint\":\"https://ref.ps02.test/proxy/certify-ac/v1/certify/issuance/credential\",\"credential_configurations_supported\":{\"FarmerSdJwt\":{\"format\":\"vc+sd-jwt\",\"scope\":\"farmer_sd_jwt\",\"claims\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"farmerID\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]}},\"order\":[\"fullName\",\"dateOfBirth\",\"farmerID\"],\"vct\":\"urn:ps02:playground:FarmerCredential\",\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}},\"display\":[{\"name\":\"Farmer Credential (SD-JWT)\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"background_image\":null,\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]},\"FarmerMdoc\":{\"format\":\"mso_mdoc\",\"scope\":\"farmer_mdoc\",\"doctype\":\"test.ps02.playground.farmer.1\",\"claims\":{\"test.ps02.playground.farmer.1\":{\"state\":{\"display\":[{\"name\":\"State\",\"locale\":\"en\"}]},\"farmerId\":{\"display\":[{\"name\":\"Farmer ID\",\"locale\":\"en\"}]},\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"landArea\":{\"display\":[{\"name\":\"Land Area\",\"locale\":\"en\"}]},\"birthDate\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"primaryCropType\":{\"display\":[{\"name\":\"Primary Crop\",\"locale\":\"en\"}]}}},\"order\":[\"test.ps02.playground.farmer.1~fullName\",\"test.ps02.playground.farmer.1~farmerId\"],\"vct\":null,\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"Ed25519\"]}},\"display\":[{\"name\":\"Farmer Credential (mdoc)\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential logo\"},\"background_image\":null,\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]},\"FarmerCredential\":{\"format\":\"ldp_vc\",\"scope\":\"mock_identity_vc_ldp\",\"order\":[\"fullName\",\"mobileNumber\",\"dateOfBirth\",\"gender\",\"state\",\"district\",\"villageOrTown\",\"postalCode\",\"landArea\",\"landOwnershipType\",\"primaryCropType\",\"secondaryCropType\",\"farmerID\"],\"vct\":null,\"proof_types_supported\":{\"jwt\":{\"proof_signing_alg_values_supported\":[\"RS256\",\"ES256\",\"Ed25519\"]}},\"credential_definition\":{\"type\":[\"FarmerCredential\",\"VerifiableCredential\"],\"credentialSubject\":{\"fullName\":{\"display\":[{\"name\":\"Full Name\",\"locale\":\"en\"}]},\"dateOfBirth\":{\"display\":[{\"name\":\"Date of Birth\",\"locale\":\"en\"}]},\"gender\":{\"display\":[{\"name\":\"Gender\",\"locale\":\"en\"}]},\"phone\":{\"display\":[{\"name\":\"Phone Number\",\"locale\":\"en\"}]}},\"@context\":[\"https://www.w3.org/2018/credentials/v1\"]},\"display\":[{\"name\":\"Farmer Verifiable Credential\",\"locale\":\"en\",\"logo\":{\"url\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\",\"alt_text\":\"Farmer Credential Logo\"},\"background_image\":{\"uri\":\"https://mosip.github.io/inji-config/logos/agro-vertias-logo.png\"},\"background_color\":\"#12107c\",\"text_color\":\"#FFFFFF\"}]}}}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-13T22:48:41.216Z",
-      "durationMs": 14.747099999978673,
+      "startedAt": "2026-10-14T00:08:20.483Z",
+      "durationMs": 19.365700000009383,
       "redacted": true
     },
     {
-      "id": "20261013T224841-b03ad0-x3",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x3",
+      "runId": "20261014T000820-8f1202",
       "seq": 3,
       "capture": "inbound",
       "step": "as.metadata",
@@ -561,13 +561,13 @@
         "body": "{\"issuer\":\"https://ref.ps02.test/ref/as\",\"authorization_endpoint\":\"https://ref.ps02.test/ref/as/authorize\",\"token_endpoint\":\"https://ref.ps02.test/ref/as/token\",\"jwks_uri\":\"https://ref.ps02.test/ref/as/jwks.json\",\"userinfo_endpoint\":\"https://ref.ps02.test/ref/as/userinfo\",\"response_types_supported\":[\"code\"],\"response_modes_supported\":[\"query\"],\"grant_types_supported\":[\"authorization_code\"],\"code_challenge_methods_supported\":[\"S256\"],\"token_endpoint_auth_methods_supported\":[\"none\",\"private_key_jwt\"],\"token_endpoint_auth_signing_alg_values_supported\":[\"RS256\",\"PS256\",\"ES256\",\"EdDSA\"],\"scopes_supported\":[\"openid\",\"farmer_ldp_vc\",\"farmer_ldp_vc_v2\",\"farmer_ldp_vc_es256_proof\",\"farmer_vc_sd_jwt\",\"farmer_dc_sd_jwt\",\"farmer_mso_mdoc\",\"mock_identity_vc_ldp\",\"farmer_sd_jwt\",\"farmer_mdoc\"],\"subject_types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"claims_supported\":[\"sub\",\"name\",\"given_name\",\"family_name\",\"birthdate\",\"gender\",\"email\",\"email_verified\",\"picture\",\"phone_number\"],\"authorization_response_iss_parameter_supported\":true}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-13T22:48:41.232Z",
-      "durationMs": 0.7202999999863096,
+      "startedAt": "2026-10-14T00:08:20.504Z",
+      "durationMs": 0.8524000000033993,
       "redacted": true
     },
     {
-      "id": "20261013T224841-b03ad0-x4",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x4",
+      "runId": "20261014T000820-8f1202",
       "seq": 4,
       "capture": "inbound",
       "step": "token",
@@ -575,7 +575,7 @@
       "to": "ref-as",
       "request": {
         "method": "GET",
-        "url": "http://ref.ps02.test/ref/as/authorize?response_type=code&client_id=ps02-mimoto&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&scope=farmer_mdoc&code_challenge=Bmmu-gJ4QvOjZMJCZ5pmetfQBsvI5q3pmH9LC9yjdKU&code_challenge_method=S256&state=18HavX3UCwY",
+        "url": "http://ref.ps02.test/ref/as/authorize?response_type=code&client_id=ps02-mimoto&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&scope=farmer_mdoc&code_challenge=1-46LjufdleALIvXfI5z6FNpU5-_0HgoltOhy1cNVRg&code_challenge_method=S256&state=dc5EeH7YCa8",
         "headers": {
           "host": "ref.ps02.test",
           "user-agent": "lightMyRequest"
@@ -589,16 +589,16 @@
           "x-frame-options": "DENY",
           "referrer-policy": "no-referrer",
           "cache-control": "no-store",
-          "location": "http://localhost:28004/redirect?code=%5Bredacted%20sha256%3A5b7bf20e%5D&state=18HavX3UCwY&iss=https%3A%2F%2Fref.ps02.test%2Fref%2Fas"
+          "location": "http://localhost:28004/redirect?code=%5Bredacted%20sha256%3A0b879462%5D&state=dc5EeH7YCa8&iss=https%3A%2F%2Fref.ps02.test%2Fref%2Fas"
         }
       },
-      "startedAt": "2026-10-13T22:48:41.236Z",
-      "durationMs": 1.943699999974342,
+      "startedAt": "2026-10-14T00:08:20.508Z",
+      "durationMs": 0.6918000000005122,
       "redacted": true
     },
     {
-      "id": "20261013T224841-b03ad0-x5",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x5",
+      "runId": "20261014T000820-8f1202",
       "seq": 5,
       "capture": "inbound",
       "step": "token",
@@ -615,7 +615,7 @@
           "accept-encoding": "gzip, x-gzip, deflate",
           "user-agent": "Apache-HttpClient/5.2.3 (Java/21.0.10)"
         },
-        "body": "code=%5Bredacted%20sha256%3A5b7bf20e%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3Abf7ae0f7%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3A0669aefa%5D",
+        "body": "code=%5Bredacted%20sha256%3A0b879462%5D&client_id=ps02-mimoto&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&client_assertion=%5Bredacted%20sha256%3A1b678b30%5D&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&code_verifier=%5Bredacted%20sha256%3Ad7ee3a2e%5D",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -628,16 +628,16 @@
           "cache-control": "no-store",
           "content-type": "application/json; charset=utf-8"
         },
-        "body": "{\"access_token\":\"[redacted sha256:656f7147]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"scope\":\"farmer_mdoc\",\"c_nonce\":\"O3DXT45s7LB_C2wq05v4-Q\",\"c_nonce_expires_in\":300}",
+        "body": "{\"access_token\":\"[redacted sha256:6f793d9f]\",\"token_type\":\"Bearer\",\"expires_in\":600,\"scope\":\"farmer_mdoc\",\"c_nonce\":\"kkHhWUU0DJ3i44bGvheJCw\",\"c_nonce_expires_in\":300}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-13T22:48:41.287Z",
-      "durationMs": 3.966000000014901,
+      "startedAt": "2026-10-14T00:08:20.555Z",
+      "durationMs": 3.8383000000030734,
       "redacted": true
     },
     {
-      "id": "20261013T224841-b03ad0-x6",
-      "runId": "20261013T224841-b03ad0",
+      "id": "20261014T000820-8f1202-x6",
+      "runId": "20261014T000820-8f1202",
       "seq": 6,
       "capture": "outbound",
       "step": "credential",
@@ -650,7 +650,7 @@
           "accept": "application/pdf",
           "content-type": "application/x-www-form-urlencoded"
         },
-        "body": "issuer=FarmerAC&credential=FarmerMdoc&credentialConfigurationId=FarmerMdoc&code=%5Bredacted%20sha256%3A5b7bf20e%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=%5Bredacted%20sha256%3A0669aefa%5D&vcStorageExpiryLimitInTimes=-1&locale=en",
+        "body": "issuer=FarmerAC&credential=FarmerMdoc&credentialConfigurationId=FarmerMdoc&code=%5Bredacted%20sha256%3A0b879462%5D&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A28004%2Fredirect&code_verifier=%5Bredacted%20sha256%3Ad7ee3a2e%5D&vcStorageExpiryLimitInTimes=-1&locale=en",
         "bodyEncoding": "utf8"
       },
       "response": {
@@ -659,7 +659,7 @@
           "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
           "connection": "close",
           "content-type": "application/json",
-          "date": "Tue, 13 Oct 2026 22:48:41 GMT",
+          "date": "Wed, 14 Oct 2026 00:08:20 GMT",
           "expires": "0",
           "pragma": "no-cache",
           "transfer-encoding": "chunked",
@@ -671,8 +671,8 @@
         "body": "{\"response\":null,\"errors\":[{\"errorCode\":\"RESIDENT-APP-028\",\"errorMessage\":\"Unsupported credential format: mso_mdoc\"}]}",
         "bodyEncoding": "utf8"
       },
-      "startedAt": "2026-10-13T22:48:41.239Z",
-      "durationMs": 127.77100000000792,
+      "startedAt": "2026-10-14T00:08:20.510Z",
+      "durationMs": 112.6981999999989,
       "redacted": true
     }
   ],
