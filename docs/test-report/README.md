@@ -1,6 +1,6 @@
 # Test report
 
-Generated on 2026-10-14 by `npm run test:report` at commit `9e3e5b1` (Windows_NT 10.0.26200, Node 24.19.0, dates in Asia/Calcutta). Every number below was measured by the command named next to it, on the date given; nothing is estimated.
+Generated on 2026-10-14 by `npm run test:report` at commit `3aa2eb5` (Windows_NT 10.0.26200, Node 24.19.0, dates in Asia/Calcutta). Every number below was measured by the command named next to it, on the date given; nothing is estimated.
 
 ## Summary
 
@@ -12,7 +12,7 @@ Generated on 2026-10-14 by `npm run test:report` at commit `9e3e5b1` (Windows_NT
 
 ## Unit and integration tests per package
 
-`npm test` on 2026-10-14: 80 files in 65 s.
+`npm test` on 2026-10-14: 80 files in 51 s.
 
 | Package | Files | Tests | Passed | Failed | Skipped |
 | ------- | ----- | ----- | ------ | ------ | ------- |
@@ -66,6 +66,10 @@ Memory after the live tests (`docker stats`): 2.43 GiB in total.
 | certify-nginx | 13 |
 | verify-ui | 12 |
 | inji-web | 10 |
+
+## Hosted CI
+
+Hosted GitHub Actions cannot run since 2026-10-09 because of a billing problem on the GitHub account, so `main` has no green hosted run. The last green `ci` run was on 2026-10-06 and the last green `interop-nightly` run on 2026-10-08. The local commands in this report replace them.
 
 ## Licence audit
 

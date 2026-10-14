@@ -1,7 +1,7 @@
 {
   "unit": {
-    "measuredAt": "2026-10-14T00:12:16.612Z",
-    "wallSeconds": 65,
+    "measuredAt": "2026-10-14T00:17:28.521Z",
+    "wallSeconds": 51,
     "packages": {
       "cli": {
         "files": 2,
@@ -9,7 +9,7 @@
         "passed": 25,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 5064.458984375
+        "durationMs": 4601.320556640625
       },
       "deploy": {
         "files": 4,
@@ -17,7 +17,7 @@
         "passed": 57,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 4438.696533203125
+        "durationMs": 4484.8505859375
       },
       "formats": {
         "files": 10,
@@ -25,7 +25,7 @@
         "passed": 213,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 9153.294189453125
+        "durationMs": 3341.48193359375
       },
       "oid4vci": {
         "files": 8,
@@ -33,7 +33,7 @@
         "passed": 64,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 49963.020263671875
+        "durationMs": 44555.70849609375
       },
       "oid4vp": {
         "files": 9,
@@ -41,7 +41,7 @@
         "passed": 155,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 3016.04248046875
+        "durationMs": 3532.29931640625
       },
       "protocol": {
         "files": 3,
@@ -49,7 +49,7 @@
         "passed": 30,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 46.510498046875
+        "durationMs": 60.683349609375
       },
       "scenarios": {
         "files": 2,
@@ -57,7 +57,7 @@
         "passed": 137,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 11071.192626953125
+        "durationMs": 8238.893798828125
       },
       "server": {
         "files": 25,
@@ -65,7 +65,7 @@
         "passed": 304,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 106524.87426757812
+        "durationMs": 76489.12573242188
       },
       "web": {
         "files": 17,
@@ -73,7 +73,7 @@
         "passed": 243,
         "failed": 0,
         "skipped": 0,
-        "durationMs": 79768.97973632812
+        "durationMs": 64581.84912109375
       }
     },
     "totals": {
@@ -136,7 +136,7 @@
     }
   },
   "licenses": {
-    "measuredAt": "2026-10-14T00:16:52.811Z",
+    "measuredAt": "2026-10-14T00:18:22.570Z",
     "production": 445,
     "byLicense": [
       [
@@ -289,7 +289,7 @@
       }
     }
   ],
-  "generatedAt": "2026-10-14T00:16:52.828Z",
-  "commit": "9e3e5b1",
+  "generatedAt": "2026-10-14T00:18:22.578Z",
+  "commit": "3aa2eb5",
   "environment": "Windows_NT 10.0.26200, Node 24.19.0"
 }
