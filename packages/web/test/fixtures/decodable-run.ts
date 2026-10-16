@@ -289,7 +289,3 @@ function buildEvents(): RunEvent[] {
 }
 
 export const EVENTS: readonly RunEvent[] = buildEvents();
-
-export function exchangeEvent(x: RecordedExchange): RunEvent {
-  return { type: 'exchange', runId: x.runId, exchange: x };
-}

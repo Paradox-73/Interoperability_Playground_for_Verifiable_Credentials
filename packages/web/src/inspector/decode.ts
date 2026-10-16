@@ -83,10 +83,6 @@ export function decodeJwt(compact: string): DecodedJwt | undefined {
   return { header, payload, signature, signingInput: `${headerPart}.${payloadPart}` };
 }
 
-export function looksLikeJwt(text: string): boolean {
-  return decodeJwt(text) !== undefined;
-}
-
 /** One disclosure of an SD-JWT (RFC 9901 section 4.2): `[salt, name, value]`, or `[salt, value]` in an array. */
 export interface Disclosure {
   /** The disclosure exactly as sent (base64url). */

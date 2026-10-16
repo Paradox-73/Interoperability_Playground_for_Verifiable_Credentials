@@ -76,10 +76,3 @@ export const SpinnerIcon = ({ className = 'size-4', ...props }: IconProps) => (
     <path d="M8 2a6 6 0 1 1-6 6" />
   </Icon>
 );
-
-/** Filled circle used for health; the shape changes with the status as well as the colour. */
-export const DotIcon = (props: IconProps) => (
-  <Icon {...props}>
-    <circle cx="8" cy="8" r="4" fill="currentColor" stroke="none" />
-  </Icon>
-);

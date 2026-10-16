@@ -14,7 +14,3 @@ export const useTamperStore = create<TamperState>()((set) => ({
   scenarioId: HAPPY_ID,
   chooseScenario: (scenarioId) => set({ scenarioId }),
 }));
-
-export function resetTamperStore(): void {
-  useTamperStore.setState({ scenarioId: HAPPY_ID });
-}
