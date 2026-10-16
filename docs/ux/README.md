@@ -12,6 +12,9 @@ Every screenshot comes from a real run; nothing is mocked.
   keyboard test (Inji roles are preselected), the phone-wallet modal test (the host cannot resolve
   `ref.ps02.test`) and, on a busy machine, the 30 s timeout of the matrix and phone-screen tests.
   `npm run e2e -- --screenshots` takes 4-16 in reference mode instead.
+- The committed files are compressed to a 256-colour palette, which keeps the pages readable at about a third
+  of the size: `pngquant --quality=80-98 --speed 1 --strip --ext .png --force docs/ux/screenshots/*.png`, then
+  `oxipng -o 4 --strip safe docs/ux/screenshots/*.png`. Do the same after retaking them.
 
 ## 1. Choose the roles and the run
 
