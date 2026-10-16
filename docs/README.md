@@ -27,6 +27,7 @@ Start with the [README](../README.md) for what the playground is and how to run 
 | [Architecture decisions](adr/README.md)                         | Why the code is built the way it is, one record per decision                                                  |
 | [Status](STATUS.md)                                             | What is done per task of the problem statement, and what people must still do                                 |
 | [Status history](history/STATUS-history.md)                     | The dated record of every work pass, review and branch until 2026-10-14                                       |
+| [Clean-up of 2026-10-14](history/cleanup-2026-10-14.md)         | Review of `654523d..120e001`, the clean-up, and the repository size before and after                          |
 
 Package guides: [protocol](../packages/protocol/README.md), [formats](../packages/formats/README.md),
 [oid4vci](../packages/oid4vci/README.md), [oid4vp](../packages/oid4vp/README.md),

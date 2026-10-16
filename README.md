@@ -67,13 +67,14 @@ starts the same bundle without running the cells. Without Docker, the reference 
 
 ## Current numbers
 
-All measured on 2026-10-14 at commit `8a07d51`, on Windows 11 with Docker Desktop (8 GB, shared with another
-project's containers), Node 24.
+Measured on 2026-10-14 at commit `8a07d51`, on Windows 11 with Docker Desktop (8 GB, shared with another
+project's containers), Node 24. The first two rows were measured again on 2026-10-16 at commit `5e0a136`, on
+macOS 15.6 with Node 24.22, after the clean-up of [docs/history/cleanup-2026-10-14.md](docs/history/cleanup-2026-10-14.md).
 
 | Check                                             | Result                                                                                                      |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `npm test` (unit and integration)                 | 1246 of 1246 tests, 82 files                                                                                |
-| `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 70 s                                                                                              |
+| `npm test` (unit and integration)                 | 1247 of 1247 tests, 82 files                                                                                |
+| `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 36 s                                                                                              |
 | `npm run e2e:live` (browser, against the bundle)  | 3 of 3, 40 s: the all-Inji run in the playground, the Inji Verify web component, Inji Web's own pages       |
 | `npm run test:live` (against the Inji stack)      | 20 of 20, 129 s                                                                                             |
 | `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported; 40 s                                              |

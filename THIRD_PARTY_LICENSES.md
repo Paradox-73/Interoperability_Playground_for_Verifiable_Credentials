@@ -1,8 +1,8 @@
 # Third-party licences
 
-Generated on 2026-10-14 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
+Generated on 2026-10-16 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
 
-Every licence below is OSI-approved. Development-only packages (build, test and lint tools: 367 packages) are not distributed and not listed.
+Every licence below is OSI-approved. Development-only packages (build, test and lint tools: 368 packages) are not distributed and not listed.
 
 ## Container images of the Inji stack
 
@@ -18,14 +18,14 @@ Every licence below is OSI-approved. Development-only packages (build, test and 
 
 Base images contain operating system packages under their own licences; see each image's documentation.
 
-## npm packages in the playground image (445)
+## npm packages in the playground image (444)
 
 | Licence | Packages |
 | ------- | -------- |
 | MIT | 308 |
 | ISC | 53 |
 | BSD-3-Clause | 40 |
-| Apache-2.0 | 20 |
+| Apache-2.0 | 19 |
 | BlueOak-1.0.0 | 5 |
 | (MIT AND Zlib) | 3 |
 | (MIT OR CC0-1.0) | 2 |
@@ -58,7 +58,7 @@ Base images contain operating system packages under their own licences; see each
 | `@babel/traverse` | 7.29.8 | MIT | <https://github.com/babel/babel> |
 | `@babel/types` | 7.29.8 | MIT | <https://github.com/babel/babel> |
 | `@braintree/sanitize-url` | 7.1.2 | MIT | <https://github.com/braintree/sanitize-url> |
-| `@cbor-extract/cbor-extract-win32-x64` | 2.2.2 | MIT | <http://github.com/kriszyp/cbor-extract> |
+| `@cbor-extract/cbor-extract-darwin-arm64` | 2.2.2 | MIT | <http://github.com/kriszyp/cbor-extract> |
 | `@chevrotain/cst-dts-gen` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
 | `@chevrotain/gast` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
 | `@chevrotain/regexp-to-ast` | 13.2.0 | Apache-2.0 | <https://github.com/Chevrotain/chevrotain> |
@@ -127,7 +127,7 @@ Base images contain operating system packages under their own licences; see each
 | `@mui/types` | 7.4.12 | MIT | <https://github.com/mui/material-ui> |
 | `@mui/utils` | 7.3.11 | MIT | <https://github.com/mui/material-ui> |
 | `@napi-rs/canvas` | 0.1.100 | MIT | <https://github.com/Brooooooklyn/canvas> |
-| `@napi-rs/canvas-win32-x64-msvc` | 0.1.100 | MIT | <https://github.com/Brooooooklyn/canvas> |
+| `@napi-rs/canvas-darwin-arm64` | 0.1.100 | MIT | <https://github.com/Brooooooklyn/canvas> |
 | `@noble/curves` | 1.9.7 | MIT | <https://github.com/paulmillr/noble-curves> |
 | `@noble/ed25519` | 1.7.5 | MIT | <https://github.com/paulmillr/noble-ed25519> |
 | `@noble/hashes` | 1.8.0 | MIT | <https://github.com/paulmillr/noble-hashes> |
@@ -470,7 +470,6 @@ Base images contain operating system packages under their own licences; see each
 | `valibot` | 1.5.0 | MIT | <https://github.com/open-circle/valibot> |
 | `varint` | 6.0.0 | MIT | <https://github.com/chrisdickinson/varint> |
 | `veres-one-context` | 12.0.0 | BSD-3-Clause | <https://github.com/veres-one/veres-one-context> |
-| `web-did-resolver` | 3.1.0 | Apache-2.0 | <git@github.com:decentralized-identity/web-did-resolver> |
 | `which-module` | 2.0.1 | ISC | <https://github.com/nexdrew/which-module> |
 | `wrap-ansi` | 6.2.0 | MIT | <chalk/wrap-ansi> |
 | `wrappy` | 1.0.2 | ISC | <https://github.com/npm/wrappy> |
