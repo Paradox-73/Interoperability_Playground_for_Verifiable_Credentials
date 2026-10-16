@@ -10,10 +10,8 @@ const libraries = [
   // @peculiar/x509 needs the Reflect metadata API (through tsyringe) to be installed first.
   'reflect-metadata',
   '@digitalbazaar/data-integrity',
-  '@digitalbazaar/did-method-key',
   '@digitalbazaar/ed25519-multikey',
   '@digitalbazaar/ed25519-signature-2020',
-  '@digitalbazaar/ed25519-verification-key-2020',
   '@digitalbazaar/eddsa-rdfc-2022-cryptosuite',
   '@digitalbazaar/security-document-loader',
   '@digitalbazaar/vc',
@@ -24,7 +22,6 @@ const libraries = [
   'did-resolver',
   'jose',
   'key-did-resolver',
-  'web-did-resolver',
 ];
 
 // A variable specifier keeps TypeScript from requiring type declarations for untyped libraries.

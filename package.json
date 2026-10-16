@@ -49,8 +49,6 @@
     "docs:check": "node scripts/docs-check.mjs"
   },
   "dependencies": {
-    "@peculiar/x509": "^2.1.0",
-    "reflect-metadata": "^0.2.2",
     "yaml": "^2.9.1"
   },
   "devDependencies": {

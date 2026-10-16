@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@inji-playground/protocol": "0.1.0",
-    "@inji-playground/scenarios": "0.1.0",
     "@inji-playground/server": "0.1.0",
     "yaml": "^2.9.1",
     "zod": "^4.6.5"
