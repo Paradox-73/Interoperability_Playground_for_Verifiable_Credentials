@@ -24,8 +24,8 @@ in (did:web documents, JSON-LD contexts that are not pinned).
 `statusEntriesOf` reads a credential's status entries, and `checkStatusEntry` checks one against a Token
 Status List (draft-ietf-oauth-status-list-21, SD-JWT VC) or a Bitstring Status List v1.0 (`ldp_vc`). The
 list must be signed by the credential's own issuer. `fetchLimited` fetches the lists and did:web documents.
-It refuses a private, loopback or link-local address outside `allowedHosts`, follows no redirects and reads
-at most 100 KB. `verifyLdpVc` on its own does not check status; it warns that status was not checked. Not
+It refuses a URL that is not http or https and a private, loopback or link-local address outside
+`allowedHosts`, follows no redirects and reads at most 100 KB. `verifyLdpVc` on its own does not check status; it warns that status was not checked. Not
 covered: mdoc status, Status List Tokens signed through `x5c`, StatusList2021, and Bitstring entries with
 status messages. Tamper primitives for every format are exported separately from
 `@inji-playground/formats/tamper` (`src/tamper/`).

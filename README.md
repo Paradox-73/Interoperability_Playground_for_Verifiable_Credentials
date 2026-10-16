@@ -99,9 +99,9 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
   Bitstring Status Lists (`ldp_vc`). For an mdoc the report says the status was not checked. Revocation was not tested against Inji Verify. A freshly issued Inji Certify 0.14.0 `FarmerCredential` (`ldp_vc`) had no `credentialStatus`, and the SD-JWT VC had no `status` claim (observed 2026-10-14), so there is nothing to revoke.
 - **Outbound requests a credential chooses go only to public addresses, but a holder can still cause one.**
   `did:web` documents, status lists and JSON-LD contexts that are not pinned are fetched with one limit
-  set: no private, loopback or link-local address, the connection goes to the address that was checked
-  (no DNS rebinding), no redirects, 100 KB, 10 s, and at most 200 cached contexts. A holder's own `did:web`
-  is still resolved, and hosts on the allow-list (`*.ps02.test`, the server's own host) skip the check.
+  set: http and https only, no private, loopback or link-local address, the connection goes to the address
+  that was checked (no DNS rebinding), no redirects, 100 KB, 10 s, and at most 200 cached contexts. A
+  holder's own `did:web` is still resolved, and hosts on the allow-list (`*.ps02.test`, the server's own host) skip the check.
 - **mdoc over the Digital Credentials API is not done**, and Inji Web cannot present SD-JWT VC (G25) or
   hold an mdoc (G29). Inji Verify cannot verify an mdoc presentation (G28).
 - **The API on port 28100 has no login.** It listens on 127.0.0.1 by default; the container image listens on

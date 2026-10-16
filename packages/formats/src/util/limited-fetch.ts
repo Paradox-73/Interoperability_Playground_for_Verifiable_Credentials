@@ -2,8 +2,8 @@
  * GET for documents a presented credential points the server at (did:web documents, status lists, JSON-LD
  * contexts). The credential chooses the URL, so the fetch is limited: a host outside `allowedHosts` must
  * not be or resolve to a private, loopback or link-local address, and the connection goes to the address
- * that was checked (no second lookup, so DNS rebinding cannot swap in another); redirects are not
- * followed, the answer may be at most 100 KB, and the request times out.
+ * that was checked (no second lookup, so DNS rebinding cannot swap in another); only http and https URLs
+ * are fetched, redirects are not followed, the answer may be at most 100 KB, and the request times out.
  */
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { get as httpGet, type IncomingMessage } from 'node:http';
@@ -95,9 +95,14 @@ export interface LimitedGet {
 /** The body of a successful GET as text. Rejects with a FormatError. */
 export async function fetchLimited(request: LimitedGet, limits: FetchLimits = {}): Promise<string> {
   const { url, codes } = request;
-  const pinnedAddress = request.configured
-    ? undefined
-    : await assertPublicHost(parseUrl(url, codes.failed), limits, codes);
+  const parsed = parseUrl(url, codes.failed);
+  // A credential could name file:, data: or ftp: URLs; only the two schemes an HTTP client speaks go out.
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    throw new FormatError(codes.insecure, `${url} is not an http or https URL; it is not fetched`, {
+      details: { url },
+    });
+  }
+  const pinnedAddress = request.configured ? undefined : await assertPublicHost(parsed, limits, codes);
   const fetchImpl: FetchLike = limits.fetch ?? pinnedFetch;
   try {
     const response = await fetchImpl(url, {

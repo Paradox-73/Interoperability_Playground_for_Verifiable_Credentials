@@ -59,3 +59,30 @@ describe('limited fetch: DNS rebinding', () => {
     expect(inits[0]).not.toHaveProperty('pinnedAddress');
   });
 });
+
+describe('limited fetch: URL schemes', () => {
+  it.each([
+    'file:///etc/passwd',
+    'data:application/json,{}',
+    'ftp://93.184.216.34/doc',
+    'ws://certify.ps02.test/doc',
+  ])('refuses %s before any lookup or request', async (url) => {
+    const calls: string[] = [];
+    const error = await fetchLimited(
+      { url, accept: 'application/json', codes },
+      {
+        lookup: (host) => {
+          calls.push(`lookup ${host}`);
+          return Promise.resolve(['93.184.216.34']);
+        },
+        fetch: (target) => {
+          calls.push(`fetch ${target}`);
+          return Promise.resolve(new Response('{}'));
+        },
+      },
+    ).catch((caught: unknown) => caught);
+    expect(error).toMatchObject({ code: 'DID_WEB_INSECURE' });
+    expect(String((error as Error).message)).toContain('not an http or https URL');
+    expect(calls).toEqual([]);
+  });
+});
