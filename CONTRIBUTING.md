@@ -41,9 +41,8 @@ Platform differences:
   `PLAYGROUND_REF_UPSTREAM=http://172.17.0.1:28100` (the Docker bridge address) so the stack can reach a
   playground server running on the host.
 - **macOS:** Docker Desktop, same as Windows apart from the Git Bash note.
-- **Memory:** the Inji stack with every profile used about 2.7 GiB after live runs (measured 2026-10-05 with
-  `docker stats`; the `holder-web` profile, Mimoto with certify-ac, is about 1.46 GiB of it). Give Docker at
-  least 4 GB.
+- **Memory:** give Docker 6 to 8 GB; the measured use is in
+  [set-up, memory](docs/setup.md#memory-and-start-times).
 
 ## One-time set-up
 
@@ -189,14 +188,12 @@ for the reverse proxy.
 
 ## Running the end-to-end path
 
-Checked on 2026-10-06 on `main` (Windows 11, Node 24.19.0, Docker Desktop with 8 GB):
-
 1. **Reference roles only, no Docker.** `npm ci && npm run build && npm start`, then
    <http://localhost:28100>; `curl -s http://localhost:28100/api/health` answers `{"status":"ok",...}`.
    `npm run smoke` runs one cell and prints `verdict=pass` with 7 recorded exchanges; `npm run
-matrix:reference` runs the 123 cells of `packages/cli/specs/reference.yaml` (123 as specified).
+matrix:reference` runs the cells of `packages/cli/specs/reference.yaml`.
 2. **One-command bundle.** `npm run demo` (or `npm run up`) builds the playground image, starts the Inji stack
-   and the playground in Docker and runs the four demo cells (`DEMO PASS`); `npm run down` stops it.
+   and the playground in Docker and runs the demo cells (`DEMO PASS`); `npm run down` stops it.
 3. **Server on the host, Inji stack in Docker.** `npm run stack:up`, then start the server with the Inji
    roles: `PLAYGROUND_STACK=host npm start` (add `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test` for the Inji
    Web cells). `npm run matrix:live -- --spec live-core` and `-- --spec live-holder-web` run the live

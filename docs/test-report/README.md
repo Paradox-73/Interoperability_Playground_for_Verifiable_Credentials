@@ -69,7 +69,7 @@ Memory after the live tests (`docker stats`): 2.47 GiB in total.
 
 ## Hosted CI
 
-Hosted GitHub Actions run again since 2026-10-14, when the repository became public. On that day `ci` passed (run 38565026950: lint, typecheck, unit tests, build, reference matrix, container image, browser tests), and `interop-nightly` passed (run 38565031324: the reference matrix and both live matrices against the Inji stack on a GitHub-hosted runner, `live-core` 16 of 16 and `live-holder-web` 10 of 10 as specified). Both ran on commit `654523d`; later commits run when they are pushed. From 2026-10-09 to 2026-10-14 a billing problem stopped every hosted job.
+The hosted `ci` and `interop-nightly` runs, with their run ids, are in [README, Continuous integration](../../README.md#continuous-integration).
 
 ## Licence audit
 

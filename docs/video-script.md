@@ -78,7 +78,7 @@ For the pitch deck (problem, solution, technology stack, audience, impact), ten 
 6. **Architecture.** The diagram in [architecture.md](architecture.md): the server with three capture points,
    the local Inji stack in Docker Compose, the TLS front for `did:web`.
 7. **Evidence.** The [test report](test-report/README.md) and the [README numbers](../README.md#current-numbers):
-   1246 unit tests, 123 reference cells, 16 and 10 live cells, five demo cells, 0 audit advisories.
+   unit tests, reference cells, live cells, demo cells and audit advisories, quoted from that table on the day.
 8. **Gaps found.** The [gap register](gaps/README.md): 29 findings, 27 public with issue drafts for Inji
    Certify, Inji Verify and Mimoto, 2 reported privately. Pick the three with the largest impact.
 9. **Beyond the brief.** Tamper scenarios with the specification text behind each expected outcome, forged-issuer

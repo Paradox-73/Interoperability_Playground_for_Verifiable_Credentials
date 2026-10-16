@@ -11,9 +11,9 @@ specifications and independent of Inji's code:
 Every HTTP request of the client goes through a `fetch` the caller passes in, and both servers are
 Fastify plugins, so the playground's recording layer sees every exchange in both directions.
 
-Status (2026-10-06): `npm test -w @inji-playground/oid4vci` passes 62 tests in 7 files (measured on
-this date, Node 24.19.0). Not yet run against Inji Certify or Mimoto; that happens in the stack
-work packages (WP-10, WP-14).
+`npm test -w @inji-playground/oid4vci` runs this package's tests; the counts are in the
+[test report](../../docs/test-report/README.md#unit-and-integration-tests-per-package). The live matrices run these clients against Inji Certify and Mimoto
+([live matrix](../../docs/interop-report/live/matrix.md)).
 
 ## Layout
 

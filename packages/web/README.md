@@ -113,18 +113,13 @@ misspelt key fails `npm run typecheck`. A new language is one more JSON file reg
 
 ## Tests
 
-Measured on 2026-10-04 (Windows 11, Node 24.19.0): `npm test -w @inji-playground/web` passed 9 test
-files with 157 tests in 56 s while other packages were building on the same laptop (about 20 s on
-an idle one); `npm run build -w @inji-playground/web` built a 464 kB JavaScript bundle (143 kB gzip)
-and 17 kB of CSS.
+`npm test -w @inji-playground/web` runs this package's tests; the counts are in the
+[test report](../../docs/test-report/README.md#unit-and-integration-tests-per-package). The run explorer, the playback page and Mermaid load on demand, so they stay out of the main
+chunk; Vite warns about one chunk over 500 kB, a shared chunk inside Mermaid that loads only after Mermaid
+itself.
 
-After the protocol inspector, sequence diagram and playback were added (2026-10-04): 15 test files, 217 tests, 24 s; the build's main chunk is 356 kB (112 kB gzip) because the run explorer (35 kB), the playback page (7 kB) and Mermaid (`mermaid.core` 94 kB, `sequenceDiagram` 116 kB, plus Mermaid's own lazy chunks) load on demand. Vite still warns about one chunk over 500 kB (662 kB): a shared chunk inside Mermaid, loaded only
-after Mermaid itself.
-
-After the evidence pages were added (2026-10-05): 17 test files, 235 tests.
-
-Page tests get 30 s each and `findBy*` / `waitFor` 5 s (`vite.config.ts`,
-`test/setup.ts`), because the defaults (5 s, 1 s) failed under that load with no fault in the page.
+Page tests get 30 s each and `findBy*` / `waitFor` 5 s (`vite.config.ts`, `test/setup.ts`), because the
+defaults (5 s, 1 s) failed while other packages were building on the same machine, with no fault in the page.
 
 | File                                                                                | What it checks                                                                                                                                                                                                                                                                                                 |
 | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -146,18 +141,13 @@ Chromium, and stops both. `npm run e2e -- --screenshots` also writes the screens
 [docs/ux](../../docs/ux/README.md); `--no-build` reuses the last build. Install the browser once with
 `npm exec -w @inji-playground/web -- playwright install chromium`.
 
-| Test (`e2e/playground.spec.ts`) | What it does                                                                                                          |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| reference happy path            | chooses the reference trio, runs, follows the timeline, opens the report and finds every mandatory field              |
-| tamper path                     | picks `kb-wrong-nonce`, checks the expected outcome before the run and expected vs actual after                       |
-| matrix and history              | a stored run appears as a Pass cell linked to its report and as a history row; a filter changes the address           |
-| manual-wallet modal             | the test acts as the phone: reads the offer and the request from the modal and answers with the reference clients     |
-| keyboard only                   | Tab and Enter only: Run, the run page, the report                                                                     |
-| accessibility                   | axe-core (WCAG 2.1 A/AA) on the playground, matrix, history, report and about pages: no serious or critical violation |
+`e2e/playground.spec.ts` holds the tests: the reference and `mso_mdoc` happy paths, a tamper run, a revoked
+credential, matrix and history, the manual-wallet modal answered by a scripted wallet, keyboard only, the
+run, playback, gaps and not-found pages, the Digital Credentials API, a phone-sized screen, and axe-core
+(WCAG 2.1 A/AA) checks on the pages they open. The latest count and time are in
+[README, Current numbers](../../README.md#current-numbers).
 
-Measured 2026-10-05 on Windows 11 with Chromium from Playwright 1.63: 6 tests pass in 15 s.
-
-`npm run e2e:live` runs project `e2e-live` (`e2e/live/sdk-verify.spec.ts`: Inji Certify -> reference wallet
--> the Inji Verify web component, VALID) against a bundle or a host-mode server on 28100
-(`PLAYWRIGHT_BASE_URL`). `e2e/` has its own `tsconfig.json` without DOM types, because the tests run in
+`npm run e2e:live` runs project `e2e-live` (`e2e/live/`: the all-Inji run in the playground, Inji Certify ->
+reference wallet -> the Inji Verify web component, and Inji Web's own pages from login to a VALID share)
+against a bundle or a host-mode server on 28100 (`PLAYWRIGHT_BASE_URL`). `e2e/` has its own `tsconfig.json` without DOM types, because the tests run in
 Node and import the workspace's protocol clients.
