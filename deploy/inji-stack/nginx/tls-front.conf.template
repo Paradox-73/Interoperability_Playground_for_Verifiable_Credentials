@@ -121,11 +121,14 @@ server {
     }
 
     # One redirect followed here (w3id.org -> *.github.io), so the service gets the document itself.
+    # The document is cached under the key of the original request: the next request is then a hit in
+    # location / and never reaches w3id.org. Keyed by the redirect target instead, every w3id.org context
+    # went to w3id.org for the redirect (2 to 4 s, timeouts on 2026-10-19) and failed ldp_vc verifications.
     location @redirected {
         set $target $upstream_http_location;
         proxy_pass $target;
         proxy_set_header Accept-Encoding "";
-        proxy_cache_key $target;
+        proxy_cache_key $host$request_uri;
         add_header X-Ps02-Context-Cache $upstream_cache_status always;
     }
 }
