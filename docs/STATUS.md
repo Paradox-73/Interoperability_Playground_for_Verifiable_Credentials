@@ -38,14 +38,14 @@ and the rest is blocked or not started; the note says which part. Task ids are t
 
 ## Deliverables
 
-| Deliverable                                   | State   | Note                                                                                                         |
-| --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| Working app, runnable with Docker Compose     | DONE    | Local only, which the statement allows.                                                                      |
-| Public repository with README                 | DONE    | [README](../README.md), [setup](setup.md), [architecture](architecture.md) and [flows](flows.md).            |
-| Demo video, 3 to 5 minutes, inspector visible | MISSING | Shot list in [video-script.md](video-script.md).                                                             |
-| Pitch deck                                    | MISSING | Slide outline in [video-script.md](video-script.md#slide-outline), talking points in [demo](demo/README.md). |
-| Interoperability report and matrix            | DONE    | [Reference matrix](interop-report/reference/matrix.md), [live matrix](interop-report/live/matrix.md).        |
-| Gap write-up                                  | DONE    | [Gap register](gaps/README.md). Filing upstream is a person task below.                                      |
+| Deliverable                                   | State   | Note                                                                                                                                                     |
+| --------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Working app, runnable with Docker Compose     | DONE    | Local only, which the statement allows.                                                                                                                  |
+| Public repository with README                 | DONE    | [README](../README.md), [setup](setup.md), [architecture](architecture.md) and [flows](flows.md).                                                        |
+| Demo video, 3 to 5 minutes, inspector visible | MISSING | Shot list in [video-script.md](video-script.md).                                                                                                         |
+| Pitch deck                                    | READY   | Ready, and submitted with the other deliverables (it is not kept in this repository). Slide outline in [video-script.md](video-script.md#slide-outline). |
+| Interoperability report and matrix            | DONE    | [Reference matrix](interop-report/reference/matrix.md), [live matrix](interop-report/live/matrix.md).                                                    |
+| Gap write-up                                  | DONE    | [Gap register](gaps/README.md). Filing upstream is a person task below.                                                                                  |
 
 ## Left for people
 
@@ -54,7 +54,7 @@ None of these can be done from the code. Each needs a person, a phone or an acco
 | Task                                 | Who                                           | How                                                                                                                                  |
 | ------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | Record the demo video                | One team member, with the bundle running      | Dry run first ([checklist, section VID](manual-test-checklist.md#video-recording-dry-run)), then [video-script.md](video-script.md). |
-| Make and present the pitch deck      | One team member                               | [Slide outline](video-script.md#slide-outline).                                                                                      |
+| Present the pitch deck               | One team member                               | The deck is ready; the [slide outline](video-script.md#slide-outline) is the talking order.                                          |
 | Run the manual test checklist        | One tester per OS: macOS, Linux, Windows      | [manual-test-checklist.md](manual-test-checklist.md), results in [the template](manual-test-results-template.md).                    |
 | Test Inji Wallet on a phone          | A team member with an Android phone or iPhone | [phone-wallet-guide.md](phone-wallet-guide.md); the emulator cannot run the app.                                                     |
 | File the gap issues upstream         | Any team member                               | One issue per draft in [gaps/issues](gaps/issues/). G7 and G20 go privately ([gap register](gaps/README.md#reported-privately)).     |
