@@ -6,7 +6,7 @@ the Inji modules (Inji Certify, Inji Web through Mimoto, Inji Wallet mobile, Inj
 reference implementations written for this playground, so Inji is also tested against code that is not Inji.
 
 MOSIP Decode 2026, problem statement 02 (Interoperability Playground for Verifiable Credentials), team Badmosip:
-Kanav, Ivan, Sodhi and Nikunj.
+Kanav Bhardwaj, Ivan Bhargava, Nikunj Mahajan, Ishaan Sodhi and Harsh Modi.
 
 ![Playground page with Inji Certify (authorization code), Inji Web and Inji Verify selected](docs/ux/screenshots/1-playground.png)
 
