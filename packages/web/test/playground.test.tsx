@@ -16,6 +16,10 @@ import { renderApp } from './render';
 const RUN_EVENTS: RunEvent[] = RunEventSchema.array().parse(exampleRun.events);
 const RUN_ID = 'example-run-0001';
 
+// The live timeline and axe tests render the whole app, click Run and wait for eight streamed steps. The
+// 30 s default of this package timed out once on a busy machine (2026-10-25), so these two get double.
+const SLOW_TEST_MS = 60_000;
+
 /** The radio of a role card, by the role's name. */
 const card = (name: string) => screen.getByRole('radio', { name });
 
@@ -278,50 +282,54 @@ describe('run bar', () => {
 });
 
 describe('live timeline', () => {
-  it('updates from WebSocket events and announces finished steps', async () => {
-    server.use(createRunHandler(RUN_ID));
-    // The first two events arrive on subscription; the rest are sent by the test.
-    const send = streamRunEvents(RUN_EVENTS.slice(0, 2));
-    const { user } = renderApp();
-    await waitForCards();
-    await waitFor(() => expect(card('Inji Verify (API)')).toBeChecked());
-    expect(
-      screen.getByText('No run yet: pick an issuer, a wallet and a verifier, then press Run.'),
-    ).toBeInTheDocument();
+  it(
+    'updates from WebSocket events and announces finished steps',
+    async () => {
+      server.use(createRunHandler(RUN_ID));
+      // The first two events arrive on subscription; the rest are sent by the test.
+      const send = streamRunEvents(RUN_EVENTS.slice(0, 2));
+      const { user } = renderApp();
+      await waitForCards();
+      await waitFor(() => expect(card('Inji Verify (API)')).toBeChecked());
+      expect(
+        screen.getByText('No run yet: pick an issuer, a wallet and a verifier, then press Run.'),
+      ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Run' }));
+      await user.click(screen.getByRole('button', { name: 'Run' }));
 
-    const steps = await screen.findByRole('list', { name: `Steps of run ${RUN_ID}` });
-    // Role names come from /api/roles; the run configuration carries only ids.
-    expect(
-      screen.getByText('Reference issuer → Reference wallet (headless) → Reference verifier'),
-    ).toBeInTheDocument();
-    const firstRow = within(steps).getAllByRole('listitem')[0]!;
-    expect(firstRow).toHaveTextContent('In progress');
-    expect(firstRow).toHaveTextContent(
-      'Issuer prepares a credential offer for the wallet (Credential Offer)',
-    );
+      const steps = await screen.findByRole('list', { name: `Steps of run ${RUN_ID}` });
+      // Role names come from /api/roles; the run configuration carries only ids.
+      expect(
+        screen.getByText('Reference issuer → Reference wallet (headless) → Reference verifier'),
+      ).toBeInTheDocument();
+      const firstRow = within(steps).getAllByRole('listitem')[0]!;
+      expect(firstRow).toHaveTextContent('In progress');
+      expect(firstRow).toHaveTextContent(
+        'Issuer prepares a credential offer for the wallet (Credential Offer)',
+      );
 
-    // exchange, artifact, step.finished of the offer step.
-    send(RUN_EVENTS.slice(2, 5));
-    await waitFor(() => expect(firstRow).toHaveTextContent('Done'));
-    expect(screen.getByTestId('live-announcer')).toHaveTextContent(
-      'Step done: Issuer prepares a credential offer for the wallet',
-    );
-    expect(screen.getByText('1 HTTP exchange recorded')).toBeInTheDocument();
+      // exchange, artifact, step.finished of the offer step.
+      send(RUN_EVENTS.slice(2, 5));
+      await waitFor(() => expect(firstRow).toHaveTextContent('Done'));
+      expect(screen.getByTestId('live-announcer')).toHaveTextContent(
+        'Step done: Issuer prepares a credential offer for the wallet',
+      );
+      expect(screen.getByText('1 HTTP exchange recorded')).toBeInTheDocument();
 
-    send(RUN_EVENTS.slice(5));
-    await waitFor(() => expect(within(steps).getAllByRole('listitem')).toHaveLength(8));
-    const rows = within(steps).getAllByRole('listitem');
-    expect(rows.every((row) => row.getAttribute('data-status') === 'ok')).toBe(true);
-    expect(rows[2]).toHaveTextContent(
-      'Wallet exchanges the one-time code for an access token (Token Request)',
-    );
-    expect(screen.getByTestId('run-result')).toHaveTextContent(
-      'Pass: the verifier answered “Valid” (expected “Valid”)',
-    );
-    expect(screen.getByTestId('live-announcer')).toHaveTextContent('Run finished. Pass: Valid');
-  });
+      send(RUN_EVENTS.slice(5));
+      await waitFor(() => expect(within(steps).getAllByRole('listitem')).toHaveLength(8));
+      const rows = within(steps).getAllByRole('listitem');
+      expect(rows.every((row) => row.getAttribute('data-status') === 'ok')).toBe(true);
+      expect(rows[2]).toHaveTextContent(
+        'Wallet exchanges the one-time code for an access token (Token Request)',
+      );
+      expect(screen.getByTestId('run-result')).toHaveTextContent(
+        'Pass: the verifier answered “Valid” (expected “Valid”)',
+      );
+      expect(screen.getByTestId('live-announcer')).toHaveTextContent('Run finished. Pass: Valid');
+    },
+    SLOW_TEST_MS,
+  );
 
   it('shows a run that is opened on its own page', async () => {
     streamRunEvents(RUN_EVENTS);
@@ -332,21 +340,25 @@ describe('live timeline', () => {
 });
 
 describe('accessibility', () => {
-  it('has no axe violations on the playground page, before and after a run', async () => {
-    server.use(createRunHandler(RUN_ID));
-    streamRunEvents(RUN_EVENTS);
-    const { user } = renderApp();
-    await waitForCards();
-    await waitFor(() => expect(card('Inji Verify (API)')).toBeChecked());
+  it(
+    'has no axe violations on the playground page, before and after a run',
+    async () => {
+      server.use(createRunHandler(RUN_ID));
+      streamRunEvents(RUN_EVENTS);
+      const { user } = renderApp();
+      await waitForCards();
+      await waitFor(() => expect(card('Inji Verify (API)')).toBeChecked());
 
-    // jsdom cannot compute colours; contrast is checked from the theme tokens in theme-contrast.test.ts.
-    const options: axe.RunOptions = { rules: { 'color-contrast': { enabled: false } } };
-    const before = await axe.run(document.body, options);
-    expect(before.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+      // jsdom cannot compute colours; contrast is checked from the theme tokens in theme-contrast.test.ts.
+      const options: axe.RunOptions = { rules: { 'color-contrast': { enabled: false } } };
+      const before = await axe.run(document.body, options);
+      expect(before.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 
-    await user.click(screen.getByRole('button', { name: 'Run' }));
-    await waitFor(() => expect(screen.getByTestId('run-result')).toBeInTheDocument());
-    const after = await axe.run(document.body, options);
-    expect(after.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
-  });
+      await user.click(screen.getByRole('button', { name: 'Run' }));
+      await waitFor(() => expect(screen.getByTestId('run-result')).toBeInTheDocument());
+      const after = await axe.run(document.body, options);
+      expect(after.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+    },
+    SLOW_TEST_MS,
+  );
 });

@@ -1,6 +1,6 @@
 # Project status
 
-What is done for each task of problem statement 02, and what people must still do. Updated 2026-10-22.
+What is done for each task of problem statement 02, and what people must still do. Updated 2026-10-25.
 
 - Project: Inji Interoperability Playground for Verifiable Credentials, MOSIP Decode 2026, team Badmosip.
 - Submission deadline: 2026-10-26 23:59 IST.
@@ -31,21 +31,21 @@ and the rest is blocked or not started; the note says which part. Task ids are t
 | G4 Replay and tamper                            | DONE    | Scenario picker and "Replay with tamper" on the report page.                                                                                                                                                                                                                                                                         |
 | G5 History with filters                         | DONE    | History page, filters by role, module version, format, scenario and outcome.                                                                                                                                                                                                                                                         |
 | G6 Same-device flow and Digital Credentials API | DONE    | With a stand-in browser wallet; no real platform wallet. mdoc over the Digital Credentials API is not done.                                                                                                                                                                                                                          |
-| B1 CI-style suite with nightly matrix           | PARTIAL | `.github/workflows/interop-nightly.yml` runs the reference and live matrices on a hosted runner and passed every night from 2026-10-14 to 2026-10-21 ([CI](../README.md#continuous-integration)). It can target Collab through repository variables, but has not run against Collab.                                                 |
+| B1 CI-style suite with nightly matrix           | PARTIAL | `.github/workflows/interop-nightly.yml` runs the reference and live matrices on a hosted runner and passed every night from 2026-10-14 to 2026-10-23 ([CI](../README.md#continuous-integration)). It can target Collab through repository variables, but has not run against Collab.                                                 |
 | B2 Gaps filed as issues                         | PARTIAL | Issue drafts are in [gaps/issues](gaps/issues/). None is filed yet.                                                                                                                                                                                                                                                                  |
 | B3 Telemetry                                    | DONE    | `GET /metrics` (Prometheus), metric tiles, and Obsrv events with a Druid ingestion spec ([telemetry-obsrv.md](telemetry-obsrv.md)). Not run against a real Obsrv.                                                                                                                                                                    |
 | B4 One-command Docker Compose bundle            | DONE    | `npm run up`, `npm run demo` ([setup](setup.md#one-command-bundle)).                                                                                                                                                                                                                                                                 |
 
 ## Deliverables
 
-| Deliverable                                   | State   | Note                                                                                                                                                     |
-| --------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Working app, runnable with Docker Compose     | DONE    | Local only, which the statement allows.                                                                                                                  |
-| Public repository with README                 | DONE    | [README](../README.md), [setup](setup.md), [architecture](architecture.md) and [flows](flows.md).                                                        |
-| Demo video, 3 to 5 minutes, inspector visible | MISSING | Shot list in [video-script.md](video-script.md).                                                                                                         |
-| Pitch deck                                    | READY   | Ready, and submitted with the other deliverables (it is not kept in this repository). Slide outline in [video-script.md](video-script.md#slide-outline). |
-| Interoperability report and matrix            | DONE    | [Reference matrix](interop-report/reference/matrix.md), [live matrix](interop-report/live/matrix.md).                                                    |
-| Gap write-up                                  | DONE    | [Gap register](gaps/README.md). Filing upstream is a person task below.                                                                                  |
+| Deliverable                                   | State | Note                                                                                                                                                     |
+| --------------------------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Working app, runnable with Docker Compose     | DONE  | Local only, which the statement allows.                                                                                                                  |
+| Public repository with README                 | DONE  | [README](../README.md), [setup](setup.md), [architecture](architecture.md) and [flows](flows.md).                                                        |
+| Demo video, 3 to 5 minutes, inspector visible | DONE  | Recorded; the link is added before submission. Shot list in [video-script.md](video-script.md).                                                          |
+| Pitch deck                                    | READY | Ready, and submitted with the other deliverables (it is not kept in this repository). Slide outline in [video-script.md](video-script.md#slide-outline). |
+| Interoperability report and matrix            | DONE  | [Reference matrix](interop-report/reference/matrix.md), [live matrix](interop-report/live/matrix.md).                                                    |
+| Gap write-up                                  | DONE  | [Gap register](gaps/README.md). Filing upstream is a person task below.                                                                                  |
 
 ## Left for people
 
