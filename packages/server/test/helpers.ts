@@ -84,8 +84,12 @@ export function scenarioCatalogue(extra: ScenarioSpec[]) {
  * Starts an HTTP server on the first free port of 28600-28699 (several test files run in parallel, so
  * a fixed port could collide). Returns the server and its base URL.
  */
-export async function listenInTestRange(handler: RequestListener): Promise<{ server: Server; url: string }> {
-  for (let port = 28_600; port <= 28_699; port += 1) {
+export async function listenInTestRange(
+  handler: RequestListener,
+  fromTop = false,
+): Promise<{ server: Server; url: string }> {
+  for (let i = 0; i < 100; i += 1) {
+    const port = fromTop ? 28_699 - i : 28_600 + i;
     const server = createServer(handler);
     const bound = await new Promise<boolean>((resolve) => {
       server.once('error', () => resolve(false));
@@ -96,9 +100,12 @@ export async function listenInTestRange(handler: RequestListener): Promise<{ ser
   throw new Error('no free port in 28600-28699');
 }
 
-/** A port in 28600-28699 with nothing listening (for connection-refused tests). */
+/**
+ * A port in 28600-28699 with nothing listening (for connection-refused tests). It scans down from the top:
+ * scanning up would return the lowest free port, which the next parallel test file then binds.
+ */
 export async function unusedTestPort(): Promise<number> {
-  const { server, url } = await listenInTestRange(() => undefined);
+  const { server, url } = await listenInTestRange(() => undefined, true);
   await new Promise((resolve) => server.close(resolve));
   return Number(new URL(url).port);
 }
