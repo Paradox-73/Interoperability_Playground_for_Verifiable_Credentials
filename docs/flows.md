@@ -5,6 +5,34 @@ recorded in the run and can be opened in the protocol inspector; the step names 
 ...) are the ones the timeline and the reports use. Protocol detail per profile is in the
 [oid4vci](../packages/oid4vci/README.md) and [oid4vp](../packages/oid4vp/README.md) guides.
 
+## One run at a glance
+
+The recorded messages of live cell `TC_PG_LIVE_01`
+([run file](interop-report/live/live-core/runs/TC_PG_LIVE_01.json)): Inji Certify (pre-authorized code) →
+reference wallet → Inji Verify (API), OpenID4VCI draft 13 and OpenID4VP drafts 21-23. Each arrow is one
+recorded HTTP request, labelled with its step name; the playground server sends the issuer's and verifier's
+own API calls.
+
+```mermaid
+sequenceDiagram
+    participant P as Playground server
+    participant I as Inji Certify
+    participant W as Reference wallet
+    participant V as Inji Verify
+    P->>I: issuer.metadata: GET /v1/certify/issuance/.well-known/openid-credential-issuer
+    P->>I: issuer.offer: POST /v1/certify/pre-authorized-data
+    W->>I: issuer.offer: GET /v1/certify/credential-offer-data/{id}
+    W->>I: issuer.metadata: GET /.well-known/openid-credential-issuer
+    W->>I: as.metadata: GET /.well-known/oauth-authorization-server
+    W->>I: token: POST /v1/certify/oauth/token (pre-authorized code)
+    W->>I: credential: POST /v1/certify/issuance/credential (jwt key proof)
+    P->>V: verifier.request: POST /v1/verify/vp-request
+    W->>V: wallet.submit: POST /v1/verify/vp-submission/direct-post (vp_token)
+    P->>V: verifier.result: GET /v1/verify/vp-request/{id}/status
+    P->>V: verifier.result: POST /v1/verify/v2/vp-results/{transactionId}
+    V-->>P: VALID, INVALID or EXPIRED, with the failing checks
+```
+
 ## Issuance
 
 ### Credential offer with a pre-authorized code

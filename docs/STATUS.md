@@ -1,6 +1,6 @@
 # Project status
 
-What is done for each task of problem statement 02, and what people must still do. Updated 2026-10-14.
+What is done for each task of problem statement 02, and what people must still do. Updated 2026-10-22.
 
 - Project: Inji Interoperability Playground for Verifiable Credentials, MOSIP Decode 2026, team Badmosip.
 - Submission deadline: 2026-10-26 23:59 IST.
@@ -31,7 +31,7 @@ and the rest is blocked or not started; the note says which part. Task ids are t
 | G4 Replay and tamper                            | DONE    | Scenario picker and "Replay with tamper" on the report page.                                                                                                                                                                                                                                                                         |
 | G5 History with filters                         | DONE    | History page, filters by role, module version, format, scenario and outcome.                                                                                                                                                                                                                                                         |
 | G6 Same-device flow and Digital Credentials API | DONE    | With a stand-in browser wallet; no real platform wallet. mdoc over the Digital Credentials API is not done.                                                                                                                                                                                                                          |
-| B1 CI-style suite with nightly matrix           | PARTIAL | `.github/workflows/interop-nightly.yml` runs the reference and live matrices on a hosted runner ([CI](../README.md#continuous-integration)). It can target Collab through repository variables, but has not run against Collab.                                                                                                      |
+| B1 CI-style suite with nightly matrix           | PARTIAL | `.github/workflows/interop-nightly.yml` runs the reference and live matrices on a hosted runner and passed every night from 2026-10-14 to 2026-10-21 ([CI](../README.md#continuous-integration)). It can target Collab through repository variables, but has not run against Collab.                                                 |
 | B2 Gaps filed as issues                         | PARTIAL | Issue drafts are in [gaps/issues](gaps/issues/). None is filed yet.                                                                                                                                                                                                                                                                  |
 | B3 Telemetry                                    | DONE    | `GET /metrics` (Prometheus), metric tiles, and Obsrv events with a Druid ingestion spec ([telemetry-obsrv.md](telemetry-obsrv.md)). Not run against a real Obsrv.                                                                                                                                                                    |
 | B4 One-command Docker Compose bundle            | DONE    | `npm run up`, `npm run demo` ([setup](setup.md#one-command-bundle)).                                                                                                                                                                                                                                                                 |
@@ -51,14 +51,14 @@ and the rest is blocked or not started; the note says which part. Task ids are t
 
 None of these can be done from the code. Each needs a person, a phone or an account.
 
-| Task                                 | Who                                           | How                                                                                                                                  |
-| ------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Record the demo video                | One team member, with the bundle running      | Dry run first ([checklist, section VID](manual-test-checklist.md#video-recording-dry-run)), then [video-script.md](video-script.md). |
-| Present the pitch deck               | One team member                               | The deck is ready; the [slide outline](video-script.md#slide-outline) is the talking order.                                          |
-| Run the manual test checklist        | One tester per OS: macOS, Linux, Windows      | [manual-test-checklist.md](manual-test-checklist.md), results in [the template](manual-test-results-template.md).                    |
-| Test Inji Wallet on a phone          | A team member with an Android phone or iPhone | [phone-wallet-guide.md](phone-wallet-guide.md); the emulator cannot run the app.                                                     |
-| File the gap issues upstream         | Any team member                               | One issue per draft in [gaps/issues](gaps/issues/). G7 and G20 go privately ([gap register](gaps/README.md#reported-privately)).     |
-| College IDs and the submission email | Every team member; one sends the email        | Email decode@mosip.io with the links.                                                                                                |
+| Task                                 | Who                                           | How                                                                                                                                                                                                     |
+| ------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Record the demo video                | One team member, with the bundle running      | Dry run first ([checklist, section VID](manual-test-checklist.md#video-recording-dry-run)), then [video-script.md](video-script.md). Put the link in the README task table, this page and deck slide 7. |
+| Present the pitch deck               | One team member                               | The deck is ready; the [slide outline](video-script.md#slide-outline) is the talking order.                                                                                                             |
+| Run the manual test checklist        | One tester per OS: macOS, Linux, Windows      | [manual-test-checklist.md](manual-test-checklist.md), results in [the template](manual-test-results-template.md).                                                                                       |
+| Test Inji Wallet on a phone          | A team member with an Android phone or iPhone | [phone-wallet-guide.md](phone-wallet-guide.md); the emulator cannot run the app.                                                                                                                        |
+| File the gap issues upstream         | Any team member                               | One issue per draft in [gaps/issues](gaps/issues/). G7 and G20 go privately ([gap register](gaps/README.md#reported-privately)).                                                                        |
+| College IDs and the submission email | Every team member; one sends the email        | Email decode@mosip.io with the links.                                                                                                                                                                   |
 
 ## Open in the code
 
