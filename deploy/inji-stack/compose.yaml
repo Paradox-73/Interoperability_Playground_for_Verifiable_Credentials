@@ -38,7 +38,7 @@ services:
   # upstream SQL by scripts/postgres-init.sh. Trust authentication on the internal network only, so the team adds
   # no database password; the passwords in the upstream properties are ignored by the server.
   database:
-    image: postgres:15.19@sha256:baa22e6286bf832cb147b8bb5aa9d8bc999846d69c21d11bf63f58fbeed1fa48
+    image: postgres:18.6@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6
     environment:
       POSTGRES_USER: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -238,7 +238,7 @@ services:
   # as data provider, and config/certify-ac.properties for what differs. Debug port 28093 on 127.0.0.1; its public
   # URL is https://ref.ps02.test/proxy/certify-ac (the playground's recording proxy).
   database-ac:
-    image: postgres:15.19@sha256:baa22e6286bf832cb147b8bb5aa9d8bc999846d69c21d11bf63f58fbeed1fa48
+    image: postgres:18.6@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6
     profiles: [holder-web]
     environment:
       POSTGRES_USER: postgres
