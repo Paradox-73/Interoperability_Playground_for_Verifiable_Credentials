@@ -32,7 +32,7 @@ starts the same bundle without running the cells. Without Docker, the reference 
 [docs/setup.md](docs/setup.md). A teammate's pre-recording checklist for macOS, Linux and Windows:
 [docs/manual-test-checklist.md](docs/manual-test-checklist.md).
 
-**Demo video:** https://youtu.be/FGcDlW0D51Q
+**Demo video:** https://youtu.be/Bbgxy05Z8MM
 
 ## Judge's path
 
@@ -88,7 +88,7 @@ step 4 needs Docker.
 | B2 Gaps contributed as issues                             | 27 issue drafts in [docs/gaps/issues](docs/gaps/issues/). They are not filed yet.                                                                                                                                                                                                                                                                                                                                                                                |
 | B3 Telemetry                                              | Metric tiles and step timings on the history page, Prometheus at `GET /metrics`, and Obsrv events per run and step (`GET /api/telemetry/obsrv`, optional push with `PLAYGROUND_OBSRV_URL`) with a matching Druid ingestion spec ([telemetry-obsrv.md](docs/telemetry-obsrv.md)). Not run against a real Obsrv or Druid.                                                                                                                                          |
 | B4 One-command Docker Compose bundle                      | `npm run up`, `npm run demo`                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Deliverable: demo video of 3-5 minutes                    | Recorded: https://youtu.be/FGcDlW0D51Q. Shot list in [docs/video-script.md](docs/video-script.md)                                                                                                                                                                                                                                                                                                                                                                |
+| Deliverable: demo video of 3-5 minutes                    | Recorded: https://youtu.be/Bbgxy05Z8MM. Shot list in [docs/video-script.md](docs/video-script.md)                                                                                                                                                                                                                                                                                                                                                                |
 
 ## Current numbers
 
