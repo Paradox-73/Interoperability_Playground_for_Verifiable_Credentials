@@ -55,6 +55,13 @@ describe('compose.yaml', () => {
     expect(compose.services['mimoto-service'].image).toBe('injistack/mimoto:0.22.0');
   });
 
+  it('pins every non-Inji image by version and digest, so a nightly change is an Inji change', () => {
+    const images = Object.values(compose.services).map((s) => s.image);
+    expect(
+      images.filter((image) => !image.startsWith('injistack/') && !/:[\w.-]+@sha256:/.test(image)),
+    ).toEqual([]);
+  });
+
   it('publishes host ports only inside the project range 28000-28999', () => {
     const ports = [...Object.values(compose.services), ...Object.values(hostOverride.services)].flatMap(
       hostPorts,

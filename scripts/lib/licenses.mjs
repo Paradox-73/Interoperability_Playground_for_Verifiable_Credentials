@@ -65,8 +65,8 @@ export const IMAGE_LICENSES = [
   },
   { image: 'injistack/mimoto:0.22.0', license: 'MPL-2.0', source: 'https://github.com/inji/mimoto' },
   { image: 'injistack/inji-web:0.17.0', license: 'MPL-2.0', source: 'https://github.com/inji/inji-web' },
-  { image: 'postgres:15', license: 'PostgreSQL', source: 'https://www.postgresql.org/about/licence/' },
-  { image: 'nginx:stable', license: 'BSD-2-Clause', source: 'https://nginx.org/LICENSE' },
+  { image: 'postgres:15.19', license: 'PostgreSQL', source: 'https://www.postgresql.org/about/licence/' },
+  { image: 'nginx:1.30.5', license: 'BSD-2-Clause', source: 'https://nginx.org/LICENSE' },
 ];
 
 /** True when an SPDX expression is satisfied by OSI-approved licences. */

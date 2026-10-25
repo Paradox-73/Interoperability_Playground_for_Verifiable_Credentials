@@ -13,8 +13,8 @@ Every licence below is OSI-approved. Development-only packages (build, test and 
 | `injistack/inji-verify-ui:0.18.2` | MPL-2.0 | <https://github.com/inji/inji-verify> |
 | `injistack/mimoto:0.22.0` | MPL-2.0 | <https://github.com/inji/mimoto> |
 | `injistack/inji-web:0.17.0` | MPL-2.0 | <https://github.com/inji/inji-web> |
-| `postgres:15` | PostgreSQL | <https://www.postgresql.org/about/licence/> |
-| `nginx:stable` | BSD-2-Clause | <https://nginx.org/LICENSE> |
+| `postgres:15.19` | PostgreSQL | <https://www.postgresql.org/about/licence/> |
+| `nginx:1.30.5` | BSD-2-Clause | <https://nginx.org/LICENSE> |
 
 Base images contain operating system packages under their own licences; see each image's documentation.
 

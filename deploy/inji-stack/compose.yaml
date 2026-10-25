@@ -24,10 +24,10 @@
 name: ps02-inji
 
 services:
-  # One-shot: test CA and TLS front certificate (scripts/stack-init.sh). nginx:stable is used because it ships
+  # One-shot: test CA and TLS front certificate (scripts/stack-init.sh). nginx is used because it ships
   # openssl and is already part of the stack.
   init:
-    image: nginx:stable
+    image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     entrypoint: ['/bin/sh', '/ps02/stack-init.sh']
     restart: 'no'
     volumes:
@@ -38,7 +38,7 @@ services:
   # upstream SQL by scripts/postgres-init.sh. Trust authentication on the internal network only, so the team adds
   # no database password; the passwords in the upstream properties are ignored by the server.
   database:
-    image: postgres:15
+    image: postgres:15.19@sha256:baa22e6286bf832cb147b8bb5aa9d8bc999846d69c21d11bf63f58fbeed1fa48
     environment:
       POSTGRES_USER: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -110,7 +110,7 @@ services:
   # The upstream sample nginx in front of Certify: issuer .well-known at the host root, Mimoto configuration
   # files, Certify API under /v1/certify. Alias "nginx" because mimoto-bootstrap.properties reads http://nginx/.
   certify-nginx:
-    image: nginx:stable
+    image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     ports:
       - '28091:80'
     networks:
@@ -133,7 +133,7 @@ services:
 
   # One-shot: adds the SD-JWT credential configuration (config/seed/) once Certify is healthy.
   certify-seed:
-    image: nginx:stable
+    image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     entrypoint: ['/bin/sh', '/ps02/certify-seed.sh']
     restart: 'no'
     volumes:
@@ -145,7 +145,7 @@ services:
 
   # HTTPS for certify.ps02.test, verify.ps02.test and ref.ps02.test inside the network (did:web, gap G2).
   tls-front:
-    image: nginx:stable
+    image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     ports:
       - '28443:443'
     environment:
@@ -238,7 +238,7 @@ services:
   # as data provider, and config/certify-ac.properties for what differs. Debug port 28093 on 127.0.0.1; its public
   # URL is https://ref.ps02.test/proxy/certify-ac (the playground's recording proxy).
   database-ac:
-    image: postgres:15
+    image: postgres:15.19@sha256:baa22e6286bf832cb147b8bb5aa9d8bc999846d69c21d11bf63f58fbeed1fa48
     profiles: [holder-web]
     environment:
       POSTGRES_USER: postgres
@@ -313,7 +313,7 @@ services:
 
   # One-shot: adds the SD-JWT credential configuration to certify-ac (config/seed-ac/, certify-ac's DID).
   certify-ac-seed:
-    image: nginx:stable
+    image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     profiles: [holder-web]
     entrypoint: ['/bin/sh', '/ps02/certify-seed.sh']
     restart: 'no'

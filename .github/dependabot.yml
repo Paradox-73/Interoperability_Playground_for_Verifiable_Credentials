@@ -44,3 +44,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+  # The Inji stack: base images (nginx, Postgres) are pinned by version and digest; Inji image bumps
+  # must also change the adapter constants (a test compares them).
+  - package-ecosystem: docker-compose
+    directory: /deploy/inji-stack
+    schedule:
+      interval: weekly

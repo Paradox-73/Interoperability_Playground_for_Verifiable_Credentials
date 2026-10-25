@@ -5,7 +5,7 @@
 # that nothing has to be installed on the host: a test certificate authority and one TLS server certificate for
 # the TLS front (certify.ps02.test, certify-ac.ps02.test, verify.ps02.test, ref.ps02.test, playground.ps02.test).
 #
-# Runs in the nginx:stable image (already used by the stack) because it ships openssl. Writes to /out, which
+# Runs in the nginx image (already used by the stack) because it ships openssl. Writes to /out, which
 # compose binds to $PLAYGROUND_RUN_DIR/stack on the host:
 #
 #   ca/ps02-test-ca.crt     test CA certificate; mounted as /certificates in verify-service and Mimoto, whose

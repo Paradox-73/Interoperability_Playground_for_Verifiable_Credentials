@@ -17,8 +17,8 @@ playground's live interoperability runs. Docker Compose project `ps02-inji`.
 | Inji Web            | `injistack/inji-web:0.17.0`                  | browser wallet                                       |
 | Inji Verify service | `injistack/inji-verify-service:0.18.2`       |                                                      |
 | Inji Verify UI      | `injistack/inji-verify-ui:0.18.2`            |                                                      |
-| Postgres            | `postgres:15`                                | Certify, Mimoto, Verify; a second one for certify-ac |
-| nginx               | `nginx:stable`                               | certify-nginx, TLS front, and the one-shot helpers   |
+| Postgres            | `postgres:15.19`                                | Certify, Mimoto, Verify; a second one for certify-ac |
+| nginx               | `nginx:1.30.5`                               | certify-nginx, TLS front, and the one-shot helpers   |
 
 This set ran together on 2026-10-04 (research trial). The upstream compose files pair Certify 0.14.0 with
 Mimoto 0.21.0 and Inji Web 0.16.0; Mimoto 0.22.0 and Inji Web 0.17.0 are the pair of the inji-web compose

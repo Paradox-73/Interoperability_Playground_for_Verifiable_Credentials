@@ -73,7 +73,7 @@ otherwise):
 
 ```bash
 for image in injistack/inji-certify-with-plugins:0.14.0 injistack/mimoto:0.22.0 injistack/inji-web:0.17.0 \
-  injistack/inji-verify-service:0.18.2 injistack/inji-verify-ui:0.18.2 postgres:15 nginx:stable node:24-alpine; do
+  injistack/inji-verify-service:0.18.2 injistack/inji-verify-ui:0.18.2 postgres:15.19 nginx:1.30.5 node:24.21.0-alpine; do
   docker pull "$image"
 done
 ```

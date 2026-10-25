@@ -8,10 +8,8 @@
 #
 # Run-time state (SQLite database, generated test keys) goes to /data; mount a volume there to keep it.
 
-ARG NODE_IMAGE=node:24-alpine
-
 # ---- build: install every dependency, compile the TypeScript packages and bundle the UI ----
-FROM ${NODE_IMAGE} AS build
+FROM node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS build
 WORKDIR /app
 
 # Manifests first, so the dependency layer is reused while only source files change.
@@ -31,7 +29,7 @@ COPY packages packages
 RUN npm run build
 
 # ---- runtime: production dependencies of the server and CLI only, plus the compiled output ----
-FROM ${NODE_IMAGE} AS runtime
+FROM node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     PLAYGROUND_HOST=0.0.0.0 \
