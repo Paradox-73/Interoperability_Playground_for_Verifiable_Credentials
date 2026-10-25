@@ -34,8 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -45,7 +45,7 @@ jobs:
       - name: matrix as job summary
         if: always()
         run: cat docs/interop-report/reference/matrix.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: interop-report-reference
@@ -65,8 +65,8 @@ jobs:
       # Scheduled runs have no inputs, so they follow the repository variable.
       INJI_TARGET: ${{ inputs.target || vars.INJI_TARGET || 'local' }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -114,7 +114,7 @@ jobs:
           [ -f docs/interop-report/live/matrix.md ] && cat docs/interop-report/live/matrix.md >> "$GITHUB_STEP_SUMMARY"
           echo "memory at the end of the run:" >> "$GITHUB_STEP_SUMMARY"
           docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' >> "$GITHUB_STEP_SUMMARY" || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: interop-report-live
