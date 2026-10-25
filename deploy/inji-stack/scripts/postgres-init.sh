@@ -1,5 +1,6 @@
 #!/bin/sh
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Team Badmosip
 #
 # Creates the three Inji databases on the first start of the stack's Postgres container.
 # Mounted as /docker-entrypoint-initdb.d/00-ps02-init.sh; the postgres image runs it once, while the data

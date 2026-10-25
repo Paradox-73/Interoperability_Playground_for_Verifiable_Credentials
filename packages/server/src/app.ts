@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Builds the Fastify application without listening, so tests can call routes with `app.inject()`
  * and `main.ts` decides where to listen.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Runs the playback reducer with a timer: while playing, the next event is shown after the pause
  * `delayBefore` computes from the recorded timestamps.

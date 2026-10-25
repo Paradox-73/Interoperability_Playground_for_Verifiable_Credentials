@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * History dashboard (`/runs`): metric tiles, per-step timings and a filterable, paged table of every
  * stored run, newest first. Filters live in the page address; each row links to the run's report and

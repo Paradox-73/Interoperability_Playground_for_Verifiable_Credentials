@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The compatibility check: decides from the three role descriptors alone whether a combination can run,
  * and says why not in words a reader of the matrix understands. Runs that fail it are stored with the

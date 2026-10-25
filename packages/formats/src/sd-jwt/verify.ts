@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Verifier side of SD-JWT VC. Each step follows RFC 9901 section 7.1 (the SD-JWT) and section 7.3
  * (the KB-JWT), as SD-JWT VC draft 19 section 2.4 requires.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Synthetic answers of the evidence endpoints (`/api/runs`, `/api/metrics`, `/api/matrix`,
  * `/api/runs/{id}/report.json`, `/api/gaps`, `/api/scenarios`) for the matrix, history, report and tamper

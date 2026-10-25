@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Whether the person asked the operating system for reduced motion (`prefers-reduced-motion: reduce`,
  * WCAG 2.3.3). Follows changes while the page is open.

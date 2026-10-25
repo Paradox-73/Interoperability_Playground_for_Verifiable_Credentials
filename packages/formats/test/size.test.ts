@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { decode } from '@injistack/pixelpass';
 import { randomBytes } from 'node:crypto';
 import { describe, expect, it, vi } from 'vitest';

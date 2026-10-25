@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Messages for screen-reader users, read out by the polite live region in the app shell
  * (<LiveAnnouncer />). Any component can announce; only the latest message is kept, because live

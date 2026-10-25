@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * mso_mdoc issuance by the reference issuer and the wallet client, both protocol versions
  * (OpenID4VCI draft 13 Appendix A.2, 1.0 Appendix A.2).

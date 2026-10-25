@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Playground UI: issuer, wallet and verifier selector, live timeline, protocol inspector, matrix and history.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

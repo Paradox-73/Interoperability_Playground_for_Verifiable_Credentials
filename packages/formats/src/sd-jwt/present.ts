@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Holder side of SD-JWT VC: choose disclosures and add a Key Binding JWT (RFC 9901 sections 4.3 and 7.2).
  */

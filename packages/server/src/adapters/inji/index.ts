@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Adapters for the Inji modules of the local stack (`deploy/inji-stack`): Inji Certify as an issuer,
  * Inji Verify as a verifier (its API, and its official web component in the page).

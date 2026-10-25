@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * did:key (https://w3c-ccg.github.io/did-method-key/): the DID is the multibase-encoded public key, so
  * creating and resolving it needs no network.

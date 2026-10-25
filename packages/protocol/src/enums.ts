@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Closed vocabularies shared by every package. Each one is a zod enum (for runtime validation of
  * API input, stored rows and WebSocket messages) plus the TypeScript union inferred from it.

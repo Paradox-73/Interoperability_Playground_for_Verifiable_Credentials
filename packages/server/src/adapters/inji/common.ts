@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Shared by the Inji adapters: where the stack's services are, which image versions the stack runs,
  * health probes, and the `openid4vp://` request Inji Verify's own front ends build from a

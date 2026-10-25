@@ -1,6 +1,6 @@
 # Third-party licences
 
-Generated on 2026-10-16 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under `deploy/inji-stack/` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
+Generated on 2026-10-16 by `npm run test:report` (`scripts/lib/licenses.mjs`). The playground itself is licensed under MPL-2.0 ([LICENSE](LICENSE)), like the Inji repositories; the files imported unchanged from them under `deploy/inji-stack/` keep their own MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).
 
 Every licence below is OSI-approved. Development-only packages (build, test and lint tools: 368 packages) are not distributed and not listed.
 

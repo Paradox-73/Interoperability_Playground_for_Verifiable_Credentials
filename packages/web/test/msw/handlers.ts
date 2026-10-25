@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Mock playground server for UI tests (Mock Service Worker intercepts fetch and WebSocket in Node).
  * The defaults describe a healthy server in reference mode with every role up; tests override single

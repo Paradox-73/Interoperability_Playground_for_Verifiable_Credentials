@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The reference verifier's `status` check: a revoked credential is INVALID, an unrevoked one VALID with
  * the list named, and the lists come from the issuer through the verifier's own fetch (no network).

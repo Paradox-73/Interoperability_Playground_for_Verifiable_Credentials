@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The COSE subset ISO/IEC 18013-5 needs: COSE_Sign1 with ES256 (RFC 9052 section 4.2, RFC 9053
  * section 2.1), an X.509 chain in header label 33 (`x5chain`, RFC 9360 section 2), and EC2 P-256

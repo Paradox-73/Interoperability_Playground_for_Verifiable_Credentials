@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The playground's persistent store: runs, their events, recorded HTTP exchanges and artefacts, in one
  * SQLite file through Node's built-in `node:sqlite` (no native add-on to build on Windows, in Docker or

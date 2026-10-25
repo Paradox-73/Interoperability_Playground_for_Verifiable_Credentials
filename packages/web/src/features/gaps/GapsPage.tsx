@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Interoperability gap register (`/gaps`), read from `GET /api/gaps` (the server reads
  * `docs/gaps/gaps.json`). Red matrix cells link here with `?cell=<cell id>`; the page then lists only

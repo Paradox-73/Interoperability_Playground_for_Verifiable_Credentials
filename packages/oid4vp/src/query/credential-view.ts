@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The JSON a query is evaluated against, for each format: the credential itself for `ldp_vc`, the
  * SD-JWT payload with every disclosure put back in place for SD-JWT VC (RFC 9901 section 7.1 step 3,

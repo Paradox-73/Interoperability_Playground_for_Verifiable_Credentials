@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Mermaid must stay out of the main bundle: only `src/sequence/mermaid-loader.ts` may import it, and only
  * with a dynamic `import()`, which Vite turns into a separate chunk. A static import anywhere would pull

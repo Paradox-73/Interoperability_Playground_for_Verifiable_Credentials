@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * History filters as they live in the page address (`/runs?format=ldp_vc&outcome=INVALID&page=2`) and
  * as the server wants them (`GET /api/runs`, `GET /api/metrics`). Keeping them in the address makes a

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One implementation in a selector column. The whole card is the label of a native radio button, so it
  * is clickable and keyboard-operable (arrow keys move within the column) without custom key handling.

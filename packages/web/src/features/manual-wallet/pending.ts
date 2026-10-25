@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The person action a run is waiting for right now, read from its timeline: the newest row that is still
  * waiting for a person. A finished run waits for nobody.

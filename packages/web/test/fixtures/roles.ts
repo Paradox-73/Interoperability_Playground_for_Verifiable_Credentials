@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Test helpers around the synthetic role catalogue: descriptors validated against the shared contract,
  * with health set per test.

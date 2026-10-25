@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * OpenID4VP over the W3C Digital Credentials API (OpenID4VP 1.0 Appendix A; W3C Digital Credentials,
  * Editor's Draft): the verifier's web page passes the request to `navigator.credentials.get({ digital: {

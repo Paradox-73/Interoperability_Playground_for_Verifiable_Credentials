@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `inji-draft` profile end to end: reference verifier <-> wallet presentation client, in-process.
  * Presentation Exchange, DID client id with a signed request object by reference, `redirect_uri`

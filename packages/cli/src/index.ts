@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/cli: headless runner for single runs and the compatibility matrix.
  *

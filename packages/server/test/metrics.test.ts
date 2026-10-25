@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Metrics from stored runs: nearest-rank percentiles, success rate and p50/p95 per step, per role
  * pair and per flow, credential sizes, the JSON route and the Prometheus text format.

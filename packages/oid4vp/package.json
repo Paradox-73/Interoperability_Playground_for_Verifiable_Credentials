@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Reference OpenID4VP verifier (Presentation Exchange and DCQL) and wallet presentation client.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

@@ -1,5 +1,6 @@
 #!/bin/sh
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Team Badmosip
 #
 # One-shot "init" service of the ps02-inji compose project. Creates the run-time material the stack needs, so
 # that nothing has to be installed on the host: a test certificate authority and one TLS server certificate for

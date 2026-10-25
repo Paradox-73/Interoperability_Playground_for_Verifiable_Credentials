@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The `dc-api` person step (wallet `browser-wallet`, verifier `ref-verifier-dc-api`): this page plays the
  * verifier's web page of OpenID4VP 1.0 Appendix A. It reads the request from the verifier, passes it to

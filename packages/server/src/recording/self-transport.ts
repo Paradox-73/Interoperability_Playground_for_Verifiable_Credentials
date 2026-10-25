@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Transport for calls from the playground's roles to the playground itself (the hosted reference roles
  * and the reverse proxy): such requests are dispatched into the Fastify instance with `app.inject()`

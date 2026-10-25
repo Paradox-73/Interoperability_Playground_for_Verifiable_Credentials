@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Turns the flat cell list of `GET /api/matrix` into the grid the page draws: one row per
  * issuer -> wallet -> verifier combination, one column per credential format and OpenID4VP profile.

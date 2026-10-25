@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Server reads of the history dashboard: one page of stored runs and the metrics of the same runs.
  * Both refresh when any run finishes (see `useRefreshOnRunFinished`).

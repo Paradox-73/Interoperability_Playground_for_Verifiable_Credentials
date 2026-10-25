@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The selected combination as the rest of the page needs it: the role descriptors, the run settings
  * every role supports, the effective run configuration and the reasons it cannot run.

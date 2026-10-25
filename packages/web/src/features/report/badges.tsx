@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Status words with an icon, shared by the matrix, the history table, the report page and the tamper
  * controls. The icon and the colour repeat the word; they are never the only signal (WCAG 1.4.1).

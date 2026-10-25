@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * REST routes through `app.inject()`: catalogue, runs (create, list with filters, detail, events,
  * exchanges, cancel, person-done, verifier-callback), error bodies and the OpenAPI document.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Project `e2e-live` (`npm run e2e:live`): the official Inji Verify web component as the verifier of a
  * run, against the bundle or a host-mode server on 28100 with the Inji stack up. The component draws its

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Issuer trust in the reference verifier: a credential must be signed by an issuer the verifier accepts
  * (`addTrustedIssuers`), and the report names the issuer the key is bound to, never a bare `iss`.

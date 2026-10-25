@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Light telemetry computed from stored reports: success rate and p50/p95 durations per protocol step,
  * per role pair (issuer -> wallet for issuance, wallet -> verifier for presentation) and per flow

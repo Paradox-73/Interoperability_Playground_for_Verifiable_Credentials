@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * HTTP endpoints of the reference verifier, in two forms:
  * - `verifierFetchHandler()`: a Fetch API handler (`Request` in, `Response` out). Tests and in-process

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Minimal JSON client for the playground server. The UI always talks to its own origin: in development
  * Vite forwards `/api` to the server (vite.config.ts), in production the server serves the UI.

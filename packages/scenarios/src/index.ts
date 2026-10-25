@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/scenarios: the happy path, the tamper scenarios and the valid probe variants a run
  * can apply, each with the outcome a correct verifier must report and the specification text that

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Headless matrix runner: runs issuer x wallet x verifier x format cells against a playground server and writes the compatibility matrix.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

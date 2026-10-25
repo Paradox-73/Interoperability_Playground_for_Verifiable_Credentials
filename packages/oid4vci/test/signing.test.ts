@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The reference issuer's signed Bitstring Status List is cached until the next revocation; a signing that
  * failed must not be cached, or every later status check would get that error.

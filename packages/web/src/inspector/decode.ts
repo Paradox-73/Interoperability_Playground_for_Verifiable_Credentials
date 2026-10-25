@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Decoders for the payloads that cross the wire in OpenID4VCI and OpenID4VP: compact JWTs, SD-JWTs
  * (issuer JWT, disclosures, key-binding JWT), JSON and form bodies.

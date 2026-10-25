@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Tamper primitives: each one changes exactly one thing, and the format library's verifier rejects
  * the result with the error code of the rule it breaks. Network access is disabled throughout.

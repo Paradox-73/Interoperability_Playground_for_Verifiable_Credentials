@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Ed25519 and P-256 key pairs held as JWKs (RFC 7517), the one representation every other module of
  * this package accepts. JOSE signing (EdDSA, ES256) and Data Integrity signing (Ed25519) both start

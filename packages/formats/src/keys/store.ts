@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Saves key pairs as JWK files in a directory the caller chooses (the server passes a folder under
  * PLAYGROUND_RUN_DIR, which is outside git). One file per key: `<name>.jwk.json`.

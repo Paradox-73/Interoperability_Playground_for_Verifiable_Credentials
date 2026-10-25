@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Protocol step of a recorded exchange, from what the wire shows: the routes of the reference roles, Inji
  * Certify and Inji Verify (its API and the web component's session endpoints).

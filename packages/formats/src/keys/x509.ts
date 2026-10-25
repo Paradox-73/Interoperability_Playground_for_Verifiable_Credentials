@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * X.509 helpers for SD-JWT VC issuers that identify their key with an `x5c` header (SD-JWT VC draft 19
  * section 2.5, "Inline X.509 Certificates"), and for the verifier that validates such a chain.

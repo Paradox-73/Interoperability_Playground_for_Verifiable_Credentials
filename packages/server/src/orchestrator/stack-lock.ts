@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Live runs share one local Inji stack: two of them at once would mix their traffic in the proxy and
  * compete for Certify's single pre-authorized-code state. This first-come-first-served lock lets one

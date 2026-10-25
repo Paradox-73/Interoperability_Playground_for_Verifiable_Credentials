@@ -1,5 +1,6 @@
 #!/bin/sh
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Team Badmosip
 #
 # One-shot "certify-seed" service of the ps02-inji compose project. Adds the playground's extra credential
 # configurations to Inji Certify through its credential-configuration API, after Certify reports healthy.

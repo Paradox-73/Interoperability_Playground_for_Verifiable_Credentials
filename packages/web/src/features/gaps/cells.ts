@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Matching gap-register cell patterns against matrix cell ids, the same rule the server applies
  * (protocol `GapSchema.cells`): ids are `issuer/wallet/verifier/format/vpProfile/scenario`, a `*`

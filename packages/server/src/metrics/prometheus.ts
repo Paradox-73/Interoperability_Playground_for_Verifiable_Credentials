@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The metrics in the Prometheus text exposition format (version 0.0.4), for `GET /metrics`. Every
  * figure is recomputed from stored runs on each scrape, so all series are gauges or summaries over

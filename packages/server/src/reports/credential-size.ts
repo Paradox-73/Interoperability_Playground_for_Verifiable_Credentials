@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Size of an issued credential and of its PixelPass QR text, recorded in every report that received
  * a credential, so the matrix and the metrics can show which issuers produce credentials that no

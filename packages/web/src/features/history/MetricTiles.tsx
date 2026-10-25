@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Metric tiles above the history table (runs, success rate, verdict counts) and the per-step timing
  * table (success rate, p50 and p95 duration), all from `GET /api/metrics` with the page's filters.

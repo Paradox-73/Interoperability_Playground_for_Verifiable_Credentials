@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The phone step (manual-wallet modal) and the Inji Verify SDK panel, against a mocked server. The SDK
  * itself is replaced by a stand-in that records its props and offers buttons for its callbacks, so the

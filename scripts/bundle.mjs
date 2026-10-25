@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run up` / `npm run down`: the one-command bundle (deploy/compose.yaml, Docker Compose project
  * ps02-bundle): the local Inji stack plus the playground container on http://localhost:28100.

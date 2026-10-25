@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Wallet side of OpenID4VCI: receives credentials from any issuer that speaks draft 13 or 1.0, Inji
  * Certify or the reference issuer.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * A `fetch` that answers from a Fastify instance through `app.inject()`, without opening a port.
  * Tests use it to run the wallet client against the reference issuer and the test authorization

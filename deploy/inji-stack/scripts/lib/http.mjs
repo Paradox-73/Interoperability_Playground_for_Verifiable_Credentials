@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Small HTTP helpers for the stack scripts: requests with a timeout that never throw on HTTP status, waiting
  * for an endpoint, HTTPS through the TLS front with the test CA, and the host network map.

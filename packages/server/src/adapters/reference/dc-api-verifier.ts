@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `ref-verifier-dc-api`: the reference verifier asking through the W3C Digital Credentials API instead of a
  * QR code (OpenID4VP 1.0 Appendix A). It creates an unsigned request with `response_mode` `dc_api`, which a

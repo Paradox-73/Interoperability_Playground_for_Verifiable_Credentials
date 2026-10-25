@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One run on its own page (`/runs/:id`). Subscribing to the run makes the server send its stored
  * events first, so the same timeline works for a running and for a finished run.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Small building blocks: the event bus, step timers, the stack lock, step timeouts per role and the
  * compatibility check.

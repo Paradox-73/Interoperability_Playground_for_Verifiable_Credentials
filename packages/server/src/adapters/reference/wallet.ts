@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `ref-wallet`: a headless wallet in the playground server. It receives credentials with the
  * OpenID4VCI client of `@inji-playground/oid4vci` and presents them with the OpenID4VP client of

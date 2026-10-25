@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The evidence pages against a mocked server: compatibility matrix, run history, run report, gap
  * register, and the tamper controls of the run bar. These are the acceptance checks of WP-13.

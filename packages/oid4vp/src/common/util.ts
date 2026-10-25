@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { randomBytes } from 'node:crypto';
 import { base64UrlEncode, isRecord } from '@inji-playground/formats';
 import { Oid4vpError } from './errors.js';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One resolver for every DID method the playground meets: did:key and did:jwk offline, did:web over
  * HTTP(S) with the host override map. Both credential formats use it: the SD-JWT verifier to find the

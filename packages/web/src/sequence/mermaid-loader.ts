@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Loads Mermaid on first use. Mermaid and its diagram renderers are several hundred kilobytes, so the
  * dynamic `import()` keeps them out of the main bundle: Vite puts them in a separate chunk that the

@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Inji Verify 0.18.2 calls used by the smoke test: direct credential verification and an OpenID4VP
  * presentation request with its status poll (verify-service controllers VCVerificationController and

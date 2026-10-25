@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 export { checkCompatibility, runModeOf, type CompatibilityInput } from './compatibility.js';
 export { RunCancelledError, RunRequestError, StepTimeoutError } from './errors.js';
 export {

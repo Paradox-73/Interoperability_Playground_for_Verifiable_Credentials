@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Digital Credentials Query Language (OpenID4VP 1.0 section 6) through the `dcql` library, used by
  * both sides: the verifier builds and later checks a query, the wallet matches its credentials.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Table-driven acceptance test of the catalogue: every scenario that applies to the reference roles
  * is run end to end, in process, for every applicable format and both OpenID4VP profiles:

@@ -214,5 +214,6 @@ Team **Badmosip**, MOSIP Decode 2026, problem statement 02.
 
 ## Licence
 
-MIT for the team's code ([LICENSE](LICENSE)). Files imported from upstream Inji repositories keep their
-own licence (MPL-2.0), recorded next to them.
+MPL-2.0, the licence of MOSIP and Inji ([LICENSE](LICENSE)); every team-written source file carries an
+`SPDX-License-Identifier: MPL-2.0` header. Files imported from upstream Inji repositories keep their own
+MPL-2.0 licence and provenance, recorded next to them.

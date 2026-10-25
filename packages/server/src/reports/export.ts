@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Redacted export of a run: configuration, report, events, exchanges and artefacts in one JSON
  * document that can be attached to an issue or shared with another team (see `redact.ts` for what is

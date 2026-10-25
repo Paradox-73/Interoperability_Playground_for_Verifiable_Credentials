@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Outbound capture point: the `fetch` every role uses for protocol calls. It sends the request, reads
  * the whole response, stores both (headers, body, status, timing) as a `RecordedExchange`, and hands

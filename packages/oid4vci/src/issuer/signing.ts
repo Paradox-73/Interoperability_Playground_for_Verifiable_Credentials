@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The reference issuer's keys, its DID(s), and the code that signs credentials of each format.
  *

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `openid4vp://authorize?...` URIs: what a QR code or a same-device link carries (OpenID4VP 1.0
  * section 5, RFC 9101 section 5 for `request_uri`).

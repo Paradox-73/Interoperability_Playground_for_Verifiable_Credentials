@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Project `e2e-live` (`npm run e2e:live`): Inji Web 0.17.0's own pages as a person uses them, against the
  * bundle (holder-web profile). Nothing here goes through the playground's headless `inji-web` role.

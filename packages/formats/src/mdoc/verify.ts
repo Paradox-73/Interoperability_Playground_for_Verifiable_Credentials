@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Verifier side of ISO/IEC 18013-5 for a DeviceResponse received over OpenID4VP. For each document,
  * in this order (section 9.3.1, "Inspection procedure for issuer data authentication", and 9.1.3,

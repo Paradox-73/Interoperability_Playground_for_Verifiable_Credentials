@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `stack.mjs verify-imports`: proves that every file listed in UPSTREAM.md entered the repository unchanged.
  *

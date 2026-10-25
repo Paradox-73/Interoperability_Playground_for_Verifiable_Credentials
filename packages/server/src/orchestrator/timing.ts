@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Step timeouts: how long a protocol step may take before the run is stopped, and the timer that
  * enforces it (paused while the run waits for a person).

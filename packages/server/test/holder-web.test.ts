@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * What the holder-web profile needs from the server without the stack: the test authorization server issues
  * tokens for certify-ac's scopes with certify-ac's credential endpoint as audience (the value certify-ac checks

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `inji-certify`: Inji Certify 0.14.0 of the local stack (pre-authorized code profile) as the issuer of a
  * run. It creates a credential offer through `POST /v1/certify/pre-authorized-data` with the farmer test

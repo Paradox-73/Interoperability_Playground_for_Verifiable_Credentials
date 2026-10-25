@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Runs `docker compose` for the ps02-inji project. Commands are spawned without a shell, so no argument is
  * ever re-parsed, and Git Bash path conversion does not apply (it only affects commands typed in Bash).

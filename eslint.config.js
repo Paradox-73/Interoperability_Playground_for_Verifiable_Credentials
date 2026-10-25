@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // ESLint flat configuration for every workspace.
 // TypeScript files are linted with type information (each file belongs to its package's tsconfig.json);
 // plain JavaScript scripts are linted without it. Formatting is Prettier's job (`npm run format:check`).

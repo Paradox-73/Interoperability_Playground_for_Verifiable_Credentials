@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One decoded protocol object, raw text and decoded view side by side: JWT header and payload, SD-JWT
  * disclosures and key-binding JWT, JSON with its embedded Data Integrity proof, or URL parameters.

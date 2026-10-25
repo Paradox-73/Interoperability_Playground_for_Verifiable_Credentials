@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Locations and settings shared by the stack scripts: repository paths, the run directory, the compose
  * project, host URLs of every service and the profiles to start.

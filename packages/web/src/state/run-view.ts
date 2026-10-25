@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Turns the ordered event stream of one run into what the timeline shows: one row per step, with its
  * status and duration, plus the run's configuration and final report.

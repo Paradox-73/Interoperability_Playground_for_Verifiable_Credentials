@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Holder keys of the wallet client and the key proof JWT that binds a credential to them
  * (OpenID4VCI draft 13 section 7.2.1.1, 1.0 Appendix F.1).

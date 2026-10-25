@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useDocumentTitle } from '../app/use-document-title';

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Entry point of the playground server: `npm start` (built) or `npm run dev` (from source, with reload).
  */

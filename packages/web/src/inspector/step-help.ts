@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Translation key of the "what is this step" text of each protocol step. Step ids contain dots, which
  * i18next reads as nesting, so each step gets a dot-free key under `inspector.stepHelp`.

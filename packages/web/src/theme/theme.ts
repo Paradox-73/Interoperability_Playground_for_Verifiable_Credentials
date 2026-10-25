@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Light / dark theme. The person's choice ("system", "light" or "dark") is kept in localStorage; the
  * resolved theme is written to `<html data-theme>`, which switches the colour tokens in index.css.

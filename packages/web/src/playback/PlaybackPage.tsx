@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Playback of a stored run (`/runs/:id/playback`): its recorded events are fed one by one into the same
  * timeline, sequence diagram and inspector that show live runs, with play, pause, step and speed

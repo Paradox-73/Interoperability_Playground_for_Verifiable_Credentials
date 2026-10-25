@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The page a judge sees first: choose the three roles, set the run, press Run, follow the timeline.
  * Below the timeline, the sequence diagram and the protocol inspector show the same run's recorded

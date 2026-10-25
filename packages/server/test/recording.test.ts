@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The outbound recording client against a real HTTP server on a test port: what it stores, what it
  * hands back to the caller, and how it reports network failures and aborts.

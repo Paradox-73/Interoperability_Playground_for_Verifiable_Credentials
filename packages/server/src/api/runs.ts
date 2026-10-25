@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Runs: start one, list the history, read one with its events and recorded exchanges, and act on a
  * running one (cancel, confirm a person's action, deliver a browser verifier's callback).

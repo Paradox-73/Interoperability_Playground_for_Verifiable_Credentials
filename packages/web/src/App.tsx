@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The UI root: data client, live-event socket and router. main.tsx creates the real instances; tests
  * pass their own (a fresh query client, a memory router), so each test starts from a clean state.

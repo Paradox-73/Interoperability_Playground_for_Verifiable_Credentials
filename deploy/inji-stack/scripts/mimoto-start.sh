@@ -1,5 +1,6 @@
 #!/bin/sh
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Team Badmosip
 #
 # Entrypoint wrapper for the injistack/mimoto:0.22.0 container (service mimoto-service).
 #

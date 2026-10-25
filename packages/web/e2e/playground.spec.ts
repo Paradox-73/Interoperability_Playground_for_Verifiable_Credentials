@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Browser tests of the playground in reference mode (`npm run e2e`): a real Chromium against the built UI
  * (vite preview on 28174) and a real playground server with the reference roles. No Docker.

@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Smoke-test wallet for Inji Certify: redeems an OpenID4VCI pre-authorized code offer and receives one
  * credential. Deliberately small and self-contained (node:crypto and fetch only), so the stack check does not

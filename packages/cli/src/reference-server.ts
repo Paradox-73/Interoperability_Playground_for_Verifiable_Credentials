@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `--reference`: a playground server started in this process, on the first free port of the range
  * reserved for test listeners (28600-28699), with an in-memory database and a temporary run directory,

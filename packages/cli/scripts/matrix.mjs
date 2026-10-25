@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run matrix:<reference|live>`: runs the compatibility matrix headless and writes matrix.json,
  * matrix.md and the redacted run of every cell.

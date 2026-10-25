@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Run telemetry as flat events for Sunbird Obsrv, the ingestion pipeline in front of Apache Druid
  * (docs/telemetry-obsrv.md). A finished run becomes one `RUN` event and one `STEP` event per protocol

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * did:web (https://w3c-ccg.github.io/did-method-web/): the DID names an HTTPS URL that serves the DID
  * document.

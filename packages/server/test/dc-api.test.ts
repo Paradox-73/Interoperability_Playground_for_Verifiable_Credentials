@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The Digital Credentials API pair: `ref-verifier-dc-api` (an unsigned OpenID4VP 1.0 request with
  * `response_mode` `dc_api`) answered in-process by `ref-wallet`, and by `browser-wallet`, whose run page

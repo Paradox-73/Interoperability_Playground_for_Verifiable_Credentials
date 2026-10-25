@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // Type-checks translation keys: `t('selector.heading')` compiles, a misspelt key does not.
 import 'i18next';
 import type en from '../locales/en.json';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The interfaces every role implementation (adapter) satisfies. Adding a new issuer, wallet or verifier
  * to the playground means writing one class that implements one of these and registering it.

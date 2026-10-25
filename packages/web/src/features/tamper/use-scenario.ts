@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The run bar's scenario state: the catalogue from the server, the person's choice, and the scenario a
  * run with the current format will actually use.

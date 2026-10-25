@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Type declarations for the JavaScript-only libraries this package calls, limited to the members it
  * uses. Source files that import one of these modules reference this file with

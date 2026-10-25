@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Keys, DIDs and credential formats (W3C VC Data Integrity, SD-JWT VC, mso_mdoc) used by the reference issuer, wallet and verifier.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/oid4vp: reference OpenID4VP verifier (Presentation Exchange and DCQL) and the
  * wallet's presentation client, in two profiles: `inji-draft` (what Inji's stable releases speak) and

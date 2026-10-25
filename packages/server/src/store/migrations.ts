@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Schema migrations of the playground database, applied in order at start-up. A migration is never
  * edited after it has been committed; a change to the schema is a new entry at the end of the list.

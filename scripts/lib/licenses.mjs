@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Licence audit of what the playground ships: every npm package in the production dependency tree of the
  * workspaces (`npm ls --omit=dev --all`), which is what the playground image contains, plus the container
@@ -243,7 +244,7 @@ export function renderThirdPartyLicenses(audit, date) {
   const lines = [
     '# Third-party licences',
     '',
-    `Generated on ${date} by \`npm run test:report\` (\`scripts/lib/licenses.mjs\`). The playground itself is MIT-licensed ([LICENSE](LICENSE)); the files imported unchanged from Inji repositories under \`deploy/inji-stack/\` keep their MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).`,
+    `Generated on ${date} by \`npm run test:report\` (\`scripts/lib/licenses.mjs\`). The playground itself is licensed under MPL-2.0 ([LICENSE](LICENSE)), like the Inji repositories; the files imported unchanged from them under \`deploy/inji-stack/\` keep their own MPL-2.0 licence ([deploy/inji-stack/UPSTREAM.md](deploy/inji-stack/UPSTREAM.md)).`,
     '',
     `Every licence below is OSI-approved${audit.failures.length ? ' except the ones listed under "Not OSI-approved"' : ''}. Development-only packages (build, test and lint tools: ${audit.developmentOnly.length} packages) are not distributed and not listed.`,
     '',

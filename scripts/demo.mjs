@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run demo`: the demo path in one command. Checks Docker, ports and memory, starts the bundle
  * (`npm run up`: the Inji stack plus the playground on http://localhost:28100), runs the cells of

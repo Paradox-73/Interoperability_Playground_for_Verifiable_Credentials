@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Local replay of a GitHub Actions workflow (default `.github/workflows/interop-nightly.yml`): runs the `run`
  * steps of each job in `needs` order, in bash, with the job and step `env`, the way a runner does

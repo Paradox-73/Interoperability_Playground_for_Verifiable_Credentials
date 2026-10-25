@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * OpenID4VP over the Digital Credentials API (OpenID4VP 1.0 Appendix A): the unsigned request, the wallet
  * answering for the calling origin, and the verifier checking the answer it gets from the page.

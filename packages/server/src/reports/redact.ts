@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Redaction for exports: removes the values that would let a reader of an exported run act as one of
  * its parties (bearer tokens, one-time codes, client secrets, cookies, private key material) while

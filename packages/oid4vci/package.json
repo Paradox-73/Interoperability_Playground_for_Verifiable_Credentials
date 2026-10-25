@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Reference OpenID4VCI issuer (draft 13 and 1.0), test authorization server and wallet issuance client.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

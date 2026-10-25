@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `@inji-playground/formats/tamper`: primitives that corrupt credentials and presentations in one
  * precise way each, for the replay-and-tamper scenarios (`@inji-playground/scenarios`).

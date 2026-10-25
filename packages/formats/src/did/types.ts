@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * DID Core 1.0 shapes (https://www.w3.org/TR/did-core/), limited to what credential verification
  * reads. Own types instead of the `did-resolver` package's, whose `any`-typed extension members

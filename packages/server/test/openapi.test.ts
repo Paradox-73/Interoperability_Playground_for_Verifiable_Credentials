@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The OpenAPI document lists the report, matrix, metrics and gap routes, and `npm run openapi` writes
  * the same document the server serves.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The scenario catalogue through the server: every scenario that applies to the reference roles, in
  * every applicable format and both OpenID4VP profiles, started with `POST /api/runs` and carried out

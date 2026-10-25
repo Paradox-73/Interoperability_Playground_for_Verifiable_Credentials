@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The capture points that see traffic from outside the playground's own roles: the reverse proxy in
  * front of the Inji services (`/proxy/:target/*`, `/v1/verify/*`), the inbound recorder in front of the

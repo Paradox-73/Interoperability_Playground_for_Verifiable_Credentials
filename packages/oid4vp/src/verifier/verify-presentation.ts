@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Verification of one presentation inside a `vp_token`, for each format, as checks a run report can
  * show. The format library stops at the first failure, so a failed check is followed by `skipped`

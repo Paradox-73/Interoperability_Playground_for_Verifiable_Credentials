@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run clean` (after `tsc -b --clean`): removes build output that TypeScript does not track,
  * so the next build starts from nothing. Never touches node_modules or the run directory.

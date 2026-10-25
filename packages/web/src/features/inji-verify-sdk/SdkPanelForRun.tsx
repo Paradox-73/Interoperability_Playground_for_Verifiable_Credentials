@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Shows the Inji Verify SDK panel while a run whose verifier is `inji-verify-sdk` is going on, from the
  * step where the verifier creates its request. The component posts /vp-session-request as soon as it

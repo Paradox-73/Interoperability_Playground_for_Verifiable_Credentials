@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/server as a library: lets the CLI and tests start a server in-process.
  */

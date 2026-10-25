@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `final-1.0` profile end to end: DCQL, client id prefixes `decentralized_identifier:` and
  * `redirect_uri:`, `vp_token` keyed by credential query id (OpenID4VP 1.0).

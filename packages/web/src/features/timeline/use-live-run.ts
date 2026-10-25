@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Follows one run over the WebSocket: stores its events, announces finished steps to screen readers,
  * and returns the timeline view. Several components may follow the same run; the event store drops

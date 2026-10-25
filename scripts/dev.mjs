@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run dev`: starts the playground server from source (reloads on change, port 28100) and the
  * Vite dev server for the UI (port 28173, forwards API and WebSocket calls to 28100).

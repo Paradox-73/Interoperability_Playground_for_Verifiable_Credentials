@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The page's polite live region. Screen readers read each new announcement (finished steps, run
  * results) without moving focus. The region exists from the first render, as live regions must.

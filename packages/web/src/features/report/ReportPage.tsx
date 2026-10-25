@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Run report page (`/runs/:id/report`): the pass/fail interoperability report PS02 task 7 asks for.
  *

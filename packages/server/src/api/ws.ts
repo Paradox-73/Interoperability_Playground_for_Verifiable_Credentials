@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `GET /ws`: live run events. A client subscribes to one run (it first receives that run's stored
  * events, so a page opened mid-run misses nothing) or to every run (`*`, for history and matrix pages).

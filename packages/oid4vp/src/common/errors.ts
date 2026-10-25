@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Every failure of the OpenID4VP layer is an `Oid4vpError` with a stable `code`, mirroring
  * `FormatError` in `@inji-playground/formats`: run reports and the matrix group failures by code, and

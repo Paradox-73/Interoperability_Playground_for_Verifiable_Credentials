@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run smoke`: starts the server in-process on a port from 28600-28699, runs one issuer -> wallet ->
  * verifier cell and prints the recorded exchanges and `verdict=<verdict>`. Exit code 0 when the verdict is

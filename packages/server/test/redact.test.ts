@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Redaction rules for exports: which values are secrets (tokens, codes, cookies, private keys) and
  * which are evidence that must survive (credentials, presentations, nonces, error codes).

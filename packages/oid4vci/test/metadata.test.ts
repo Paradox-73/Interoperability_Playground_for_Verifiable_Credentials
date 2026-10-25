@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Issuer metadata of both profiles, the issuer's own authorization server metadata, the
  * did:web document and SD-JWT VC issuer metadata.

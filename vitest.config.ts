@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One Vitest run covers every workspace; each workspace is a Vitest "project" named after its folder.
  *
@@ -50,6 +52,11 @@ export default defineConfig({
       {
         extends: true as const,
         test: { name: 'deploy', root: 'deploy', environment: 'node', include: ['**/test/**/*.test.mjs'] },
+      },
+      // Repository-wide checks (scripts/test).
+      {
+        extends: true as const,
+        test: { name: 'scripts', root: 'scripts', environment: 'node', include: ['test/**/*.test.mjs'] },
       },
       // The web package brings its own Vite config (React plugin, jsdom, setup file).
       'packages/web',

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Connection-level network map. In host development mode the Inji stack advertises URLs that only
  * resolve inside its compose network (`http://certify-nginx`, `https://certify.ps02.test`). The map

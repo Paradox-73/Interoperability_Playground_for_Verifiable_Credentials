@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The playground page against a mocked server: selector, default selection, run bar, live timeline and
  * accessibility. These are the acceptance checks of the UI foundation.

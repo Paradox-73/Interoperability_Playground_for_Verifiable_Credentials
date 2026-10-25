@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Filter bar of the history dashboard. Every control writes to the page address (see `filters.ts`),
  * and the page reads its queries from there, so the address is the single source of the filter.

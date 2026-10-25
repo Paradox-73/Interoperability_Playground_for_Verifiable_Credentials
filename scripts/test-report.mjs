@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run test:report`: runs the test suites and writes the dated test report, docs/test-report/README.md
  * (with the numbers in docs/test-report/results.json), and THIRD_PARTY_LICENSES.md.

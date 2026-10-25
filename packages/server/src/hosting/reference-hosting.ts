@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Hosts the reference roles on the playground's own port, so phones, Mimoto and the playground's
  * roles all reach them over HTTP:

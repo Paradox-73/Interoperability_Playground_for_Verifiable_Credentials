@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Compatibility matrix (`/matrix`): rows are issuer -> wallet -> verifier combinations, columns are
  * credential format x OpenID4VP profile. Each cell shows the verdict of its newest finished run as an

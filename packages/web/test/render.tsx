@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Renders the whole app (router, query client, socket) at a route, as a person would see it.
  */

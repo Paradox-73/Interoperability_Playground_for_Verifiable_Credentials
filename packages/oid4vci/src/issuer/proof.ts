@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Validation of key proof JWTs (OpenID4VCI draft 13 section 7.2.1.1, 1.0 Appendix F.1 and F.4).
  *

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Helpers shared by the reference role adapters: turning library errors into report errors, reading
  * the facts a report needs out of a credential, and the fetch a role passes to the protocol clients.

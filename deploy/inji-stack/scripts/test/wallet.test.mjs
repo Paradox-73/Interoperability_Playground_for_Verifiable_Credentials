@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // Smoke wallet: key, proof JWT, offer parsing and the whole pre-authorized code flow against a fake Certify
 // that checks what the real one checks (pre-authorized code, bearer token, proof signature, nonce, audience).
 import { createPublicKey, verify } from 'node:crypto';

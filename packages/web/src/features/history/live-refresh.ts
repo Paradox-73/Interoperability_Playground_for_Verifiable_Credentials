@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Keeps evidence pages current: subscribes to every run (`'*'`) on the shared WebSocket and refetches
  * the given queries when a run finishes, so a run started from the matrix turns its cell green or red

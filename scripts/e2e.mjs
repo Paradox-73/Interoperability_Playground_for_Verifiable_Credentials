@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run e2e`: the Playwright browser tests of project `e2e`, in reference mode (no Docker). Builds
  * every package, starts the playground server on a free port of 28600-28699 (in-memory database, no

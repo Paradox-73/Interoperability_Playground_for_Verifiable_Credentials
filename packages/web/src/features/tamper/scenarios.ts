@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Pure helpers around the scenario catalogue (`GET /api/scenarios`): which scenarios fit a credential
  * format, how they are grouped in the picker, and how a finished run compares with its scenario.

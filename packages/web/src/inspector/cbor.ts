@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * A small CBOR decoder (RFC 8949 section 3) for the inspector, and the mdoc view built on it: an
  * `mso_mdoc` credential or presentation travels as base64url CBOR (OpenID4VCI 1.0 Appendix A.2.4,

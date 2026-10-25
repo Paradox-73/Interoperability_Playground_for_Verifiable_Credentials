@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `ref-issuer`: the playground's own OpenID4VCI issuer (hosted at `/ref/issuer`) as the issuer column
  * of a run. It creates a pre-authorized credential offer passed by reference, so the wallet's first

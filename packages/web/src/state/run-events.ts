@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Received run events, per run, in arrival order. Shared by every component that shows a run, so the
  * timeline, the inspector and the sequence diagram read the same list.

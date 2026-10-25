@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The compatibility matrix: newest finished run per cell with counts, cells from the compatibility
  * check (untested, or not supported with reasons), gap links, filters, the dated Markdown rendering

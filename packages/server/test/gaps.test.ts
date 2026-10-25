@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The gap register: a missing file, valid, invalid and private entries, re-reading after an edit,
  * cell patterns, and `GET /api/gaps`.

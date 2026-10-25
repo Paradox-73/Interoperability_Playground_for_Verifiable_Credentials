@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The interoperability gap register, `docs/gaps/gaps.json`: real gaps found by playground runs, each
  * linked to the matrix cells that show it. The file is written by people (and checked by

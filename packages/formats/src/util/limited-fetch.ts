@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * GET for documents a presented credential points the server at (did:web documents, status lists, JSON-LD
  * contexts). The credential chooses the URL, so the fetch is limited: a host outside `allowedHosts` must

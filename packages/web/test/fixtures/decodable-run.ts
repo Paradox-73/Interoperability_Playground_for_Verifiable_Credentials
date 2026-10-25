@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * A made-up run whose payloads decode: real base64url JWT headers and payloads, SD-JWT disclosures whose
  * SHA-256 digests are listed in `_sd`, a key-binding JWT, a request object with a presentation

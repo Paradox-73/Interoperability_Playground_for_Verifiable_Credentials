@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Live runs with Inji Web (Mimoto 0.22.0 behind Inji Web 0.17.0) and certify-ac, the authorization code
  * Inji Certify of the holder-web profile (part of the default `npm run stack:up`), then

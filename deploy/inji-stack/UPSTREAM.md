@@ -12,7 +12,7 @@ Check: `node deploy/inji-stack/scripts/stack.mjs verify-imports` confirms, for e
 committed in its import commit hashes (`git hash-object --no-filters`) to the blob id below, and that the
 import commit is the first commit that touched the file. It prints `IMPORTS MATCH`.
 
-The MPL-2.0 text is in [LICENSE.MPL-2.0](LICENSE.MPL-2.0). Files written by the team in this folder are MIT,
+The MPL-2.0 text is in [LICENSE.MPL-2.0](LICENSE.MPL-2.0). Files written by the team in this folder are MPL-2.0,
 like the rest of the repository.
 
 ## Imported files

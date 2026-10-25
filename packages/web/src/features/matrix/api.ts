@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `GET /api/matrix` with the page's filters, which live in the page address
  * (`/matrix?credentialFormat=ldp_vc&scenario=bad-signature`) so a filtered matrix can be shared.

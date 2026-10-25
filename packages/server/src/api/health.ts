@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { ServerHealthSchema, type ServerHealth } from '@inji-playground/protocol';
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod';
 import { SERVER_VERSION } from '../version.js';

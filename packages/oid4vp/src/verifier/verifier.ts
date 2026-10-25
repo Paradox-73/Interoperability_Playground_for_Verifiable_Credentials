@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reference OpenID4VP verifier, written from the specifications and independent of Inji.
  *

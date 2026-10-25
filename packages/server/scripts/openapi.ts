@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `npm run openapi`: writes the OpenAPI document generated from the route schemas to
  * docs/api/openapi.json, so readers can browse the API without starting the server.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Makes one RunSocket available to the component tree. The app creates it once; tests pass their own.
  */

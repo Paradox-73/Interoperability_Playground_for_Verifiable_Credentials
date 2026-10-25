@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Scenario hooks for the orchestrator (`ScenarioHooks` of `@inji-playground/protocol`) and the check
  * whether a scenario applies to a combination of roles, format and profile.

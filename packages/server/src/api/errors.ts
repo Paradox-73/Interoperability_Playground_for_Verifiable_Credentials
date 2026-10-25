@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One error body for every failure: `{ error, message, details? }` (`ApiErrorSchema`). Request
  * validation errors become 400 with the zod issues as details; refusals from the orchestrator keep

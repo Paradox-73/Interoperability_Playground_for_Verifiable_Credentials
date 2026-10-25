@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Matrix spec files (`specs/*.yaml`): the cells a matrix run starts, each with the verdict and outcome
  * it must give. Case ids follow Inji Verify's api-test style, `TC_PG_<AREA>_<NN>`, in a

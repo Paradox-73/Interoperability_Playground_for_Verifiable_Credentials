@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Happy path, tamper scenarios and probe variants with their expected verification outcomes and spec references.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import type { RunEvent } from '@inji-playground/protocol';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reconnectDelay, RunSocket, type SocketLike } from './socket';

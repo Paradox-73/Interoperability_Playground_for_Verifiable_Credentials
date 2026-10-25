@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The walking skeleton: reference issuer -> reference wallet -> reference verifier through the real
  * orchestrator, hosted routes and recording layer, for both mandatory formats and both OpenID4VP

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Step tagging rules: decide which protocol step an HTTP exchange belongs to from what is on the wire
  * (path, content type, body shape), for exchanges whose sender named no step. The proxy and the

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Finds the protocol objects inside a recorded exchange or artefact and decodes each one: credential
  * offers, proof JWTs, credentials (SD-JWT, JWT, Data Integrity / ldp, mdoc CBOR), authorization requests and request

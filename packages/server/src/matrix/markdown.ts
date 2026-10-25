@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The compatibility matrix as a dated Markdown document, for `docs/interop-report/` and for pasting
  * into an issue. Results are words ("PASS", "NOT SUPPORTED"), never colour or symbols alone.

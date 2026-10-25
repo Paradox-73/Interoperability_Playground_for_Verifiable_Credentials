@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Shapes of what the server derives from stored runs: the run report document (JSON and Markdown),
  * the redacted run export, the compatibility matrix, run metrics and the interoperability gap

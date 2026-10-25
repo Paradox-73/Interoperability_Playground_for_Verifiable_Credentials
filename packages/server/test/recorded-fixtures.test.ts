@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The recorded reference runs in `packages/protocol/fixtures/*.recorded.json`, written by
  * `npm run smoke -- --export <file>` (see `packages/server/README.md`). The UI tests and playback read

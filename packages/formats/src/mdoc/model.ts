@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reading ISO/IEC 18013-5 structures: IssuerSigned (section 8.3.2.1.2.2), the Mobile Security Object
  * (section 9.1.2.4) and DeviceResponse (section 8.3.2.1.2.2), from the base64url text OpenID4VCI and

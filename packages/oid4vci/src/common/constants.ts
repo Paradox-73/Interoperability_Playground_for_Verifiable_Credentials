@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Protocol constants shared by the reference issuer, the test authorization server and the wallet
  * client. Section numbers name OpenID4VCI draft 13 ("d13") and the final OpenID4VCI 1.0 ("1.0").

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * mso_mdoc presentations end to end in both profiles: Presentation Exchange as ISO/IEC TS 18013-7
  * Annex B asks (`inji-draft`) and DCQL (`final-1.0`, OpenID4VP 1.0 Appendix B.2), with the

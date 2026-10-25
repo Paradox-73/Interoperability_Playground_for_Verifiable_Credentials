@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import type { Health, HealthStatus } from '@inji-playground/protocol';
 import { useTranslation } from 'react-i18next';
 import { CheckIcon, ClockIcon, CrossIcon, WarningIcon } from './icons';

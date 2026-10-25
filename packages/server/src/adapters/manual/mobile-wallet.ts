@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `mobile-wallet`: a wallet app on a phone (Inji Wallet mobile or any OpenID4VC wallet), driven by a
  * person. The role shows a QR code and a link (`person.action-needed`) and waits. The step completes

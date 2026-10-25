@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The scenario chosen in the run bar. Kept apart from the playground store because the matrix and
  * the report page read it too, and it is the only tamper state the UI holds.

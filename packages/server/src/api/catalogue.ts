@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * What can be combined: the registered roles (the three selector columns) with their health, the
  * health of the local Inji stack, the scenarios, and the compatibility check for one combination.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The phone step of a run (`mobile-wallet`, or any role that waits for a person): a modal with a large QR
  * code, the same request as a link with a copy button, what to do in plain steps, a live waiting status

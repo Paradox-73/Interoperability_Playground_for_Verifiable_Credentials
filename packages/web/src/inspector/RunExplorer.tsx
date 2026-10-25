@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The sequence diagram and the protocol inspector of one run, sharing one selection: choosing an arrow
  * in the diagram opens that exchange in the inspector and moves focus to it; choosing a message in the

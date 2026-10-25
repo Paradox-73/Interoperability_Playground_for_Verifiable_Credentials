@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Top bar: product name, mode badge, navigation, theme choice, and the status strip of the server,
  * the Inji stack and the live-update connection.

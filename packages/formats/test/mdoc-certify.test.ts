@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * An mso_mdoc as Inji Certify 0.14.0 issues it (recorded from the ps02-inji stack on 2026-10-06, gaps G26 and
  * G27): the reader accepts its departures from ISO/IEC 18013-5 and lists them, so a wallet can hold and

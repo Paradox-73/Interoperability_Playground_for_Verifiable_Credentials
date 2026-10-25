@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { z } from 'zod';
 import { RoleIdSchema, ScenarioIdSchema } from './common.js';
 import { CredentialFormatSchema, OutcomeSchema, VpProfileSchema } from './enums.js';

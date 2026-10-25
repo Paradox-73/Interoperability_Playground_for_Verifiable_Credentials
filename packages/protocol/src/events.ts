@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Events a run emits. They are stored in order, streamed over the WebSocket and replayed in playback,
  * so the UI is driven by the same data whether a run is live or recorded.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Issuing SD-JWT VCs (draft-ietf-oauth-sd-jwt-vc-19 on RFC 9901).
  */

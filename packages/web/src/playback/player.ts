@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Playback state of a stored run: how many of its events are shown, whether it is playing, and at what
  * speed. A pure reducer, so stepping rules are tested without timers or a browser.

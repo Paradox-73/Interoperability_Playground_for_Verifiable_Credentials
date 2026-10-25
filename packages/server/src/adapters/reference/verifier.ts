@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `ref-verifier`: the playground's own OpenID4VP verifier (hosted at `/ref/verifier`) as the verifier
  * column of a run. `inji-draft` sends a Presentation Exchange definition in a signed request object

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Every page of the UI. Shared by the browser router (main.tsx) and the memory router in tests.
  */

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Upstream URLs of the Inji services behind `/proxy/:target/*` and `/v1/verify/*`.
  *

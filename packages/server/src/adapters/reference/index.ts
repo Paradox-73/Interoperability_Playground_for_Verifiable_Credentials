@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The reference roles (non-Inji, written from the specifications) as selector entries: `ref-issuer`,
  * `ref-wallet`, `ref-verifier`. They are always registered: reference runs need no Docker.

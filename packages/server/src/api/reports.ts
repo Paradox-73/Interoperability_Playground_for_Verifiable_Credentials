@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Report and export of one run: the interoperability report as JSON or Markdown (problem statement
  * task 7), and a redacted export of everything stored about the run.

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Playground server: run orchestrator, recording proxy, SQLite store, REST and WebSocket API, role adapters.",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "exports": {
     ".": {

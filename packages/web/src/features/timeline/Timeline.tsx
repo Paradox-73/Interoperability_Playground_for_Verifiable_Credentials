@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Live timeline of one run: one row per protocol step, plain-language label first and the protocol's
  * term second, status as icon + word, duration, and the specification section that defines the step.

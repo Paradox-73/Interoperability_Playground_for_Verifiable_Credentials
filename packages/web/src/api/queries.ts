@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * TanStack Query hooks for every server endpoint the UI foundation reads or writes. Query keys live in
  * one place so later pages can invalidate them (for example `queryKeys.roles` after a stack restart).

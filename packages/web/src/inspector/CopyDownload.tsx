@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Copy and download buttons for one payload. Downloads are made in the browser from the recorded text,
  * so nothing is requested from the server again.

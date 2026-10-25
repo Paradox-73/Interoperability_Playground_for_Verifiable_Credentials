@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Written forms of a matrix result: `matrix.md` (dated, with every role version, one row per cell and a
  * link to each cell's redacted run file) and JUnit XML for CI test reports.

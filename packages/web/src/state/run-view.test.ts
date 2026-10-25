@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import exampleRun from '@inji-playground/protocol/fixtures/example-run.synthetic.json';
 import { RunEventSchema, type RunEvent } from '@inji-playground/protocol';
 import { describe, expect, it } from 'vitest';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Animated, interactive sequence diagram of a run. Mermaid draws the SVG from `buildSequenceDiagram`;
  * this component then makes every arrow label a focusable button that opens its exchange in the

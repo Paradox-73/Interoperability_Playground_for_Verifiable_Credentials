@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * CBOR (RFC 8949) as ISO/IEC 18013-5 uses it, through `cbor-x`.
  *

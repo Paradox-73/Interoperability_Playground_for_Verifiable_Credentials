@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Runs the cells of a spec one after the other against a playground server and compares each verdict
  * and outcome with what the spec expects. Cells run in spec order: `vp-replay` cells rely on an earlier

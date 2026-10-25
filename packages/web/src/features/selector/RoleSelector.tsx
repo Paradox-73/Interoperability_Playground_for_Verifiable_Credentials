@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The three-column Issuer -> Wallet -> Verifier selector (PS02 task 2). Cards come from `GET /api/roles`.
  * On first load it preselects healthy Inji modules, else reference roles (default-selection.ts), until

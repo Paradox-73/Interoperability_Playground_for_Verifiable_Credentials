@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Fake roles for tests and for exercising the UI before real roles exist. They speak no protocol and
  * make no HTTP calls: the "credential" is a small JSON document with a SHA-256 digest standing in for a

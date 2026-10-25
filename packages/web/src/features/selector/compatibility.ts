@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Capability check between the three selected roles, done in the browser from the role descriptors
  * alone. It answers at once (no request) and explains the obvious mismatches: no shared format, a

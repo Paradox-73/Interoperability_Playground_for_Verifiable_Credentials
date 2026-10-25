@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The scenario catalogue (`GET /api/scenarios`) and the replay request (`POST /api/runs` with
  * `replayOf`), which the run bar, the report page and the matrix share.

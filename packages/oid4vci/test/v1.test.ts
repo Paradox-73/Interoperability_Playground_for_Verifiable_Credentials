@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reference issuer and wallet client, OpenID4VCI 1.0 profile.
  * Spec: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html

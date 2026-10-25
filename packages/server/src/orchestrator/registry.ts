@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The roles a run can choose from: the three selector columns. Each implementation registers once at
  * start-up; its descriptor is validated then, so a malformed adapter fails the server start instead of

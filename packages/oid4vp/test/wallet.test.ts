@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The wallet presentation client's own checks: request object signatures per client id scheme,
  * request parameters, and the holder DID it presents.

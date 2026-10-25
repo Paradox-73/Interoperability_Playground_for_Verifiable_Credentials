@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Ties exchanges seen by the reverse proxy and the inbound recorder to a run, and lets roles watch them.
  *

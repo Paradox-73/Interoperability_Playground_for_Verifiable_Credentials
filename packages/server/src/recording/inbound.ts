@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Inbound capture point: records requests that reach the hosted reference roles (`/ref/issuer`,
  * `/ref/verifier`, `/ref/as`, and their RFC 8615 well-known URLs at the host root) together with the

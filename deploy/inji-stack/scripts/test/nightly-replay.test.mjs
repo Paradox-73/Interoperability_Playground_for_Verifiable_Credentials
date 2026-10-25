@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // The local replay of the nightly workflow (scripts/nightly-replay.mjs): job order, step conditions and env,
 // checked against the committed workflow so an edit that the replay cannot run fails here first.
 import { readFileSync } from 'node:fs';

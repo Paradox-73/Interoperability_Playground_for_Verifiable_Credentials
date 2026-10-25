@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Tamper primitives for compact JWS (RFC 7515 section 7.1): corrupt a signature, or sign changed
  * content again with another key. Used by the replay-and-tamper scenarios to build inputs a correct

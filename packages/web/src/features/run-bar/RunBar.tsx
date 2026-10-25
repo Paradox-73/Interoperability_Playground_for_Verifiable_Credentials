@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Run settings and the Run button. The format and protocol lists offer only values every selected role
  * supports; the scenario picker offers the happy path and the tamper and probe scenarios that fit the

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Holder side of ISO/IEC 18013-5: a DeviceResponse (section 8.3.2.1.2.2) with the requested elements
  * only and mdoc authentication by DeviceSignature (section 9.1.3.6): a COSE_Sign1 with a detached

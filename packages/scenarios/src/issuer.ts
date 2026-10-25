@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * What a scenario asks of the reference issuer, in the shapes `@inji-playground/oid4vci` takes
  * (`IssuanceOptions` for one offer, the DID method and credential configuration for the issuer).

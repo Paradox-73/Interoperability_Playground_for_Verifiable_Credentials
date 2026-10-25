@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The OpenAPI document, generated from the zod schemas of the routes (one definition validates the
  * request, serialises the response and documents both). Served at `/api/openapi.json`, browsable at
@@ -19,7 +21,7 @@ export async function registerOpenApi(app: FastifyInstance): Promise<void> {
         version: SERVER_VERSION,
         description:
           'Runs verifiable credential flows issuer -> wallet -> verifier across Inji modules and independent reference implementations, records every HTTP exchange, and reports pass/fail per combination.',
-        license: { name: 'MIT', identifier: 'MIT' },
+        license: { name: 'MPL-2.0', identifier: 'MPL-2.0' },
       },
       tags: [
         { name: 'system', description: 'Server health and API description' },

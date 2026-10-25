@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The SQLite store: migrations, run rows, the event log with its exchange and artefact side tables,
  * history filters, and recovery of runs left unfinished by a stopped server.

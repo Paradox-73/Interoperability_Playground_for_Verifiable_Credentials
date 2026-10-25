@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Stand-in for Mermaid in jsdom, which cannot lay out SVG text (no getBBox). It reads the generated
  * diagram source and writes the same element classes Mermaid 11 writes for a sequence diagram: `<title>`

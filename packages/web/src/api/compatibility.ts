@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Response of `GET /api/compatibility?issuer&wallet&verifier&format&vciProfile&vpProfile`: whether the
  * server can run that combination, and why not. The server knows things the role descriptors cannot

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * What the stored runs add up to: the compatibility matrix, run metrics (JSON, Prometheus and Obsrv events)
  * and the interoperability gap register. With `PLAYGROUND_OBSRV_URL` set, each finished run is also pushed

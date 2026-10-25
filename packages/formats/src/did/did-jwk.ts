@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * did:jwk (https://github.com/quartzjer/did-jwk/blob/main/spec.md): the DID is the base64url-encoded
  * JWK. The single verification method is always `#0`.

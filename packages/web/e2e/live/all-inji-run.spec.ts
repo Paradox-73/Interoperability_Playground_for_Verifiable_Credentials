@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Project `e2e-live` (`npm run e2e:live`): an all-Inji run in the playground page, against the bundle with
  * the holder-web profile: Inji Certify (authorization code, certify-ac) issues to Inji Web through Mimoto,

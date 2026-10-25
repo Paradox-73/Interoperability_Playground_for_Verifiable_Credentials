@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Every failure this package reports is a `FormatError` with a stable `code`, so the orchestrator can
  * put the code into a run report and the matrix can group failures without parsing messages. `spec`

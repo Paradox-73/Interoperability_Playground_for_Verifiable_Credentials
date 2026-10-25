@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/oid4vci: a reference OpenID4VCI issuer (draft 13 and 1.0), a test authorization
  * server that stands in for eSignet, and the wallet's issuance client. Independent of Inji's code:

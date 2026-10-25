@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Inji Verify 0.18.2 (verify-service) as the verifier of a run, in two forms:
  *

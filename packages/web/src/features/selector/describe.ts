@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Plain-language text for local incompatibilities, built from translation strings so every word the
  * person reads comes from `locales/en.json`.

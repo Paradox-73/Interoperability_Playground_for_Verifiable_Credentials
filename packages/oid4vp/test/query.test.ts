@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Unit tests of the pieces both roles share: client id parsing, the Presentation Exchange filter
  * subset, SD-JWT claim reconstruction and the HTTP routes on a Fastify-shaped host.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Run reports (problem statement task 7): the JSON document and the Markdown rendering, error detail
  * with the link to the failing exchange, versions and step timings, the recorded credential size, and

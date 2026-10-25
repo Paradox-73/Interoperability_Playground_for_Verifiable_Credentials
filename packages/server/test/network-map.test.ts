@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The connection-level network map of host mode: URLs the stack advertises inside its compose network
  * (`http://certify-nginx`, `http://verify-service:8080`) reach a port on the host while the request keeps

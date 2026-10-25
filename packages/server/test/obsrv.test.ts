@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Obsrv telemetry: a finished run as flat events, the Druid ingestion spec naming exactly those fields,
  * the route that lists them, and the push to an Obsrv dataset, which stays off unless configured.

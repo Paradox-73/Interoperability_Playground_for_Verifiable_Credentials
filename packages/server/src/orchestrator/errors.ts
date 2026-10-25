@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reasons a run stops, used as `AbortSignal` reasons so every pending call of the run sees why.
  */

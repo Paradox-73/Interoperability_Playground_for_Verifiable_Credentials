@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Request and response bodies of the playground server's REST and WebSocket API that are not already
  * a domain object (run config, report, event). The server validates with these schemas and generates

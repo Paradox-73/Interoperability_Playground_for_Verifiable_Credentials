@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Conversions between JWKs and the public-key encodings found in DID documents:
  * `publicKeyJwk` (JsonWebKey2020), `publicKeyMultibase` (Ed25519VerificationKey2020 and Multikey,

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import KeyResolver from 'key-did-resolver';
 import { Resolver } from 'did-resolver';
 import { describe, expect, it } from 'vitest';

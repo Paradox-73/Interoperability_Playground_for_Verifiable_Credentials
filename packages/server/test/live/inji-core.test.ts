@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Live runs against the local Inji stack (Inji Certify 0.14.0, Inji Verify 0.18.2): `npm run stack:up`,
  * then `npm run test:live`. The server listens on 28100 because the stack's TLS front sends

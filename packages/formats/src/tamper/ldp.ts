@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Tamper primitives for W3C VC Data Integrity documents (`ldp_vc` credentials and `ldp_vp`
  * presentations). Each returns a new document; the input is never modified.

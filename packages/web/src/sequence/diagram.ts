@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Builds a Mermaid `sequenceDiagram` from the recorded exchanges of a run: one arrow per exchange, in
  * recording order, between the participants Playground, Issuer, Wallet, Verifier and Person.

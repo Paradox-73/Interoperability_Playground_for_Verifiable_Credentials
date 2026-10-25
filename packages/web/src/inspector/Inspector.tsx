@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Protocol inspector: the recorded messages of a run grouped by protocol step on the left, and the
  * selected message on the right with what the step is for, its decoded payloads beside the raw text,

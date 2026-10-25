@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Groups the recorded exchanges and artefacts of a run by protocol step, in the order they happened.
  * Pure, so live runs, stored runs and playback (a prefix of the events) all use the same code.

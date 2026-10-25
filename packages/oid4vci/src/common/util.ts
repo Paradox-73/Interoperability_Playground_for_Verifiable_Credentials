@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Small helpers shared by the issuer, the authorization server and the client: random values, PKCE,
  * a single-use store with expiry, and the Fastify glue both servers need.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import type { Config } from '../config/index.js';
 import type { EventBus } from '../events/bus.js';
 import type { GapRegister } from '../gaps/register.js';

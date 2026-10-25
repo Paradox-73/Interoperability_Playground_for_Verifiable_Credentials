@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // Invariants of the committed stack configuration, so a later edit cannot quietly break the rules the stack
 // relies on: project name, profiles, port range, the Mimoto service name, the seed data and the network map.
 import { execFileSync } from 'node:child_process';

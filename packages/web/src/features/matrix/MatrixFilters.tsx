@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Filter bar of the matrix: roles, format, OpenID4VP profile, run mode, scenario, and whether to hide
  * combinations that cannot run. Role options come from the matrix answer itself, so a role that is no

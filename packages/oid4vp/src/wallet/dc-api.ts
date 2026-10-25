@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The wallet side of OpenID4VP over the Digital Credentials API (OpenID4VP 1.0 Appendix A): a wallet that
  * the browser called reads the request `data`, takes the verifier's identity from the origin the browser

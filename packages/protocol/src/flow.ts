@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Values passed between the issuer, wallet and verifier roles during the four phases of a run:
  * issue -> hold -> present -> verify.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * DID documents for roles that host their own did:web document (the reference issuer and verifier).
  */

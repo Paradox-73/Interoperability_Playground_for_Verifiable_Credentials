@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Small inline icons. They are decorative (`aria-hidden`): every status they mark is also written as a
  * word next to them, so colour and shape are never the only signal (WCAG 1.4.1).

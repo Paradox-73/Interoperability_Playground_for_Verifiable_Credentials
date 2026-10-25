@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The playground's REST API as the matrix runner uses it: what is registered, start a run, wait for it
  * to finish, fetch its redacted export. Every answer is parsed with the protocol's zod schemas.

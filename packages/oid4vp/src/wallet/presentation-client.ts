@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The wallet side of OpenID4VP for the headless reference wallet: the mirror image of the reference
  * verifier, and the client the playground uses to test Inji Verify without a phone.

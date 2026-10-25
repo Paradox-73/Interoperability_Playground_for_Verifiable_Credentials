@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * What the Inji Verify SDK panel asks for: a DIF Presentation Exchange definition for the playground's
  * farmer credential in the run's format. Shared by the panel and the server-side `inji-verify-sdk` role,

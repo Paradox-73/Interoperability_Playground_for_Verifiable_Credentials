@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Signed request objects (JWT-Secured Authorization Request, RFC 9101) for the DID client id scheme.
  *

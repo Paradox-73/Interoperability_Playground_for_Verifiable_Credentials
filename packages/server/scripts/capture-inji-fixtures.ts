@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Writes the Inji contract fixtures (`packages/server/test/contract/inji/fixtures/*.recorded.json`) from
  * runs stored on a playground server that is connected to the Inji stack. Each fixture is the redacted

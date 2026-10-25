@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Test authorization server (stands in for eSignet): RFC 6749 authorization code, RFC 7636 PKCE,
  * OpenID Connect Core section 9 `private_key_jwt`, RFC 8414 metadata, RFC 9068-style access tokens

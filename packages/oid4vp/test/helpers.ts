@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Test fixtures: an issuer, a holder and credentials in both formats, issued with the formats library;
  * a reference verifier; and a wallet whose `fetch` is answered by the verifier in-process, so no test

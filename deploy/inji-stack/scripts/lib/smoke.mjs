@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The stack smoke test: issues one credential per format from Inji Certify with the smoke wallet, verifies both
  * with Inji Verify, and checks that every other service answers. Pure verdict logic is in `smokeVerdict`.

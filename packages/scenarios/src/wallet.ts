@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The reference wallet's side of a scenario: answer an OpenID4VP request with
  * `@inji-playground/oid4vp`'s presentation client, behaving as the scenario says (present a

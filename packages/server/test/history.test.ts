@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Run history (`GET /api/runs`): filters by role, module version, format, scenario, outcome, verdict
  * and dates, combined; paging and sort order.

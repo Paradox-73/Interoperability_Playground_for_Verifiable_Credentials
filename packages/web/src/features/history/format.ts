@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Display helpers for evidence pages. Times are shown in UTC with the zone written out, so a screenshot
  * or a printed report means the same thing to every reader, wherever they are.

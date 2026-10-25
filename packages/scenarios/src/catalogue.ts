@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The scenario catalogue: the happy path, the tamper scenarios and the valid probe variants, as data.
  *

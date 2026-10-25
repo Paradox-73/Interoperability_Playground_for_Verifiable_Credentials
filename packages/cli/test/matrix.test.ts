@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Matrix specs, the duration estimate and budget, rendering, and a small matrix run against an
  * in-process reference server (port 28600-28699): verdicts compared with the spec, exit code 1 on a

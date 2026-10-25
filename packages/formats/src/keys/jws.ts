@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Compact JWS (RFC 7515 section 7.1) signing and verification over the JWK key pairs of `keys.ts`.
  *

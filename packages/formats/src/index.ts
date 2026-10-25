@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * @inji-playground/formats: keys, DIDs and credential formats for the reference issuer, wallet and
  * verifier. Everything here works offline; network access (did:web, remote JSON-LD contexts) happens

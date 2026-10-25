@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The Inji versions a report names (`INJI_IMAGES`) must be the images the stack runs: a bump in
  * `deploy/inji-stack/compose.yaml` alone would otherwise report the old version.

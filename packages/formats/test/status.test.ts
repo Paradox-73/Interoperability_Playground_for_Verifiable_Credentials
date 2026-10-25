@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Credential status: Token Status List (SD-JWT VC) and Bitstring Status List (ldp_vc), read from lists
  * served by a fake HTTP client.

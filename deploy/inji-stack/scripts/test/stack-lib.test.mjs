@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // Pure helpers of the stack scripts: smoke verdict, environment, compose arguments, compose ps parsing,
 // UPSTREAM.md parsing and the import check against this repository's own history.
 import { readFileSync } from 'node:fs';

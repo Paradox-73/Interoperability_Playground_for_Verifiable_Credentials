@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The Inji adapters against what Inji Certify 0.14.0 and Inji Verify 0.18.2 really answered, replayed from
  * the recorded fixtures in ./fixtures (captured from the local stack on 2026-10-05 with

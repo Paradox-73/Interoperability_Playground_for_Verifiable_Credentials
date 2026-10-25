@@ -283,7 +283,8 @@ Every root `npm run` command calls a file in `scripts/` or a package's `scripts/
   `PLAYGROUND_RUN_DIR`. Upstream sample values inside imported files are listed in `.gitguardian.yaml`
   before the import commit. Look at `git diff --cached` before every commit.
 - **Licences:** dependencies must be OSI-approved (MIT, Apache-2.0, BSD, ISC, MPL-2.0, ...). The team's code is
-  MIT; imported upstream files keep MPL-2.0.
+  MPL-2.0 (start each new source file with the `SPDX-License-Identifier: MPL-2.0` header); imported upstream
+  files keep their own MPL-2.0 licence.
 - **Dependencies:** add to the package that uses it, `npm install -w @inji-playground/<name> <pkg>@<version>`,
   and commit `package.json` and `package-lock.json` with the code that needs it. Never delete
   `package-lock.json`. Pinned on purpose: React 18 (root `overrides`) and `@injistack/react-inji-verify-sdk`

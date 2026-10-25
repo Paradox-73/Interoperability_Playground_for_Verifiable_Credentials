@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Shared set-up for the server tests: an app on an in-memory database with fake roles, and a free TCP
  * port inside the range reserved for test listeners (28600-28699).

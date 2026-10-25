@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The inji-web role against what Mimoto 0.22.0 (and, through it, certify-ac and the test authorization
  * server) really answered, replayed from ../fixtures/inji-web-*.recorded.json (captured from the local stack

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The official Inji Verify component (`OpenID4VPVerification` of `@injistack/react-inji-verify-sdk` 0.18.1)
  * as the verifier of a run, for the `inji-verify-sdk` role.

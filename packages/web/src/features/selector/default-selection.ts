@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The combination preselected on the first visit (PS02 task 2: "starting with all three being Inji
  * modules"):

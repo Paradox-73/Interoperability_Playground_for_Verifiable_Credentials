@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One chip per service: the playground server, each Inji container from `GET /api/stack/status`, and
  * the live-update WebSocket. Each chip is name + status word + icon, never colour alone.

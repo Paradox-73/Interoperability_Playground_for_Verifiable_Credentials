@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Server configuration, read once from environment variables and validated with zod, so a typo in a
  * variable fails at start-up with a clear message instead of misbehaving later.

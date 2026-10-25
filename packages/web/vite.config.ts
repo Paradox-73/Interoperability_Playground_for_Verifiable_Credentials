@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /// <reference types="vitest/config" />
 /**
  * Vite configuration of the playground UI, also used by Vitest for the `web` test project.

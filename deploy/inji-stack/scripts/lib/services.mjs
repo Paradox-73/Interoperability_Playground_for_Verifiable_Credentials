@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Readiness probes for the stack as seen from the host, and the warm-up call. Compose health checks decide
  * start order inside the network; these probes decide when the host (smoke test, playground in host mode)

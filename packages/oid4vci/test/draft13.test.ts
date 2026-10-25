@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reference issuer and wallet client, OpenID4VCI draft 13 profile (what Inji stable speaks).
  * Spec: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-13.html

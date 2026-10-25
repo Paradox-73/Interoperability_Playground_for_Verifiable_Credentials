@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `GET /ws` through `app.injectWS()`: live streaming in order, replay for late subscribers, and
  * answers to malformed messages.

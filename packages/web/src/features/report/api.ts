@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `GET /api/runs/{id}/report.json`: the stored interoperability report of a finished run plus versions,
  * step labels and timings, the failing exchange and the download links. The server answers 409 while

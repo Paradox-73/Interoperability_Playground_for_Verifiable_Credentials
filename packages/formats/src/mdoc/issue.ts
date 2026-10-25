@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Issuer side of ISO/IEC 18013-5: an IssuerSigned structure whose Mobile Security Object is signed
  * in a COSE_Sign1 (ES256) with the document signer certificate in `x5chain` (section 9.1.2.4).

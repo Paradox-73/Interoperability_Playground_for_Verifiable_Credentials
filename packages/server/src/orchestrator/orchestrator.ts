@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The run orchestrator: takes one run configuration (issuer x wallet x verifier x format x profiles x
  * scenario) through issue -> hold -> present -> verify by calling the three role implementations, and

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * In-process publish/subscribe for run events. The orchestrator publishes each event after it has been
  * stored; the WebSocket route and tests subscribe. Delivery is synchronous and in publish order, so a

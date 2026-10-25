@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The run explorer (sequence diagram and protocol inspector) loaded on first use, so the first page
  * load carries only the selector, run bar and timeline. Mermaid itself is loaded later still, when the

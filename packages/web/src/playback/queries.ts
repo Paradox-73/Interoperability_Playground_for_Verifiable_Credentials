@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Reads a stored run for playback: its events (`GET /api/runs/{id}/events`) and its summary
  * (`GET /api/runs/{id}`) for the recording date. Stored runs do not change, so neither is refetched.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * "Replay with tamper" on the report page: runs the stored configuration again with a chosen scenario
  * (`POST /api/runs` with `replayOf`), then opens the new run.

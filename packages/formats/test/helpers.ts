@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Test helpers: a fake HTTP client that serves DID documents for did:web through the host override
  * map, so no test opens a socket.

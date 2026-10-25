@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The subset of DIF Presentation Exchange 2.0 that Inji Verify and Inji Wallet use with OpenID4VP
  * drafts: `input_descriptors[].format`, `constraints.fields[].path` (JSONPath) with an optional

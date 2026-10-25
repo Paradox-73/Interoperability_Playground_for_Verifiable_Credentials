@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Stored runs built by hand, for tests of reports, history, the matrix and metrics that need exact
  * timestamps, versions and step durations (runs made by the orchestrator take real time).

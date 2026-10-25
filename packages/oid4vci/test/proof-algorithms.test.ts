@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { decodeCompactJws } from '@inji-playground/formats';
 import { describe, expect, it } from 'vitest';
 import {

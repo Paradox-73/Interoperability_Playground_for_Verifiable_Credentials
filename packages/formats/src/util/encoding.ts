@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Byte encodings used by JOSE (base64url, RFC 4648 section 5) and by did:key / Data Integrity
  * (multibase base58btc, the `z` prefix).

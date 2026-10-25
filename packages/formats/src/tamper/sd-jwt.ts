@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Tamper primitives for SD-JWT VC (RFC 9901, draft-ietf-oauth-sd-jwt-vc-19). Each one returns a
  * changed compact SD-JWT that a correct verifier must reject, and names the rule that rejects it.

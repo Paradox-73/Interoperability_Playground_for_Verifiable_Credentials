@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 // Adds DOM matchers such as toBeInTheDocument() to Vitest's expect, with their TypeScript types.
 import '@testing-library/jest-dom/vitest';
 import { cleanup, configure } from '@testing-library/react';

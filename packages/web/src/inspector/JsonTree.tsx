@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Collapsible JSON viewer built on native `<details>` / `<summary>`, so it opens and closes with the
  * keyboard and screen readers announce it as expandable without extra ARIA.

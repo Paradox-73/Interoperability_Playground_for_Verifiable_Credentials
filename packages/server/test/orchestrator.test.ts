@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The orchestrator end to end with fake roles: the four phases, verdicts for every way a run can end,
  * timeouts, cancellation, waits for a person, verifier callbacks, scenario hooks, serialised live runs

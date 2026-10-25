@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `inji-web`: Inji Web 0.17.0 through its backend Mimoto 0.22.0 as the wallet of a run, driven headless
  * with the requests Inji Web's pages make.

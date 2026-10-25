@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Runtime checks for what the wallet client reads from an issuer: credential offer, issuer metadata
  * and authorization server metadata. Only the members the client uses are checked; unknown members

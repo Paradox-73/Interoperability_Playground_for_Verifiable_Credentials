@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Shared pieces of SD-JWT (RFC 9901) handling: splitting the compact form, decoding disclosures,
  * hashing, and the `@sd-jwt/sd-jwt-vc` instance wired to this package's keys.

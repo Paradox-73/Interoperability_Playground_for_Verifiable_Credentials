@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * Tamper primitives for `mso_mdoc` (ISO/IEC 18013-5). Each takes base64url CBOR and returns base64url
  * CBOR a correct verifier must reject. Those that change issuer data work on an issued credential

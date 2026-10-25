@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The store uses Node's built-in SQLite module (`node:sqlite`) instead of a native add-on. It was
  * measured under plain Node 24 first; these tests prove it also loads inside the Vitest runner and

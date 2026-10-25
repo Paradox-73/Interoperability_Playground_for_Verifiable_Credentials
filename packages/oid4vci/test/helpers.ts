@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * One in-process playground for the tests: the reference issuer at `/ref/issuer`, the test
  * authorization server at `/ref/as`, the RFC 8615 root well-known routes, and a `fetch` that reaches

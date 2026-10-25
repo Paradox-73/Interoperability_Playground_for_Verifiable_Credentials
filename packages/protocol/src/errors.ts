@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * The error type role implementations throw when a protocol step fails. The orchestrator turns it into
  * the `error` of the run report, so the code and message a role chooses are what a reader of the matrix

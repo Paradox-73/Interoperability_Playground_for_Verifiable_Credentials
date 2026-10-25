@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * WCAG 2.2 AA contrast of the light and dark themes, computed from the colour tokens in src/index.css
  * (jsdom cannot render colours, so axe's contrast rule cannot run in unit tests).

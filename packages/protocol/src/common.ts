@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 import { z } from 'zod';
 
 /** ISO 8601 timestamp with a time zone offset, as produced by `new Date().toISOString()`. */

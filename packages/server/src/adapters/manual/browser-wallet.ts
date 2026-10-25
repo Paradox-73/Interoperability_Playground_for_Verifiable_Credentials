@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2026 Team Badmosip
 /**
  * `browser-wallet`: the wallet the person's browser offers through the W3C Digital Credentials API
  * (`navigator.credentials.get({ digital })`, OpenID4VP 1.0 Appendix A), for the verifier

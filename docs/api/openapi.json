@@ -5,8 +5,8 @@
     "version": "0.1.0",
     "description": "Runs verifiable credential flows issuer -> wallet -> verifier across Inji modules and independent reference implementations, records every HTTP exchange, and reports pass/fail per combination.",
     "license": {
-      "name": "MIT",
-      "identifier": "MIT"
+      "name": "MPL-2.0",
+      "identifier": "MPL-2.0"
     }
   },
   "components": {
