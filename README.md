@@ -96,19 +96,19 @@ Measured on 2026-10-14 at commit `8a07d51`, on Windows 11 with Docker Desktop (8
 project's containers), Node 24. The first two rows were measured again on 2026-10-16 at commit `5e0a136`, on
 macOS 15.6 with Node 24.22, after the clean-up of [docs/history/cleanup-2026-10-14.md](docs/history/cleanup-2026-10-14.md).
 
-| Check                                             | Result                                                                                                                                                          |
-| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm test` (unit and integration)                 | 1247 of 1247 tests, 82 files                                                                                                                                    |
-| `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 36 s                                                                                                                                                  |
-| `npm run e2e:live` (browser, against the bundle)  | 3 of 3, 40 s: the all-Inji run in the playground, the Inji Verify web component, Inji Web's own pages                                                           |
-| `npm run test:live` (against the Inji stack)      | 20 of 20, 129 s                                                                                                                                                 |
-| `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported; 40 s                                                                                                  |
-| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 16 s                                                                                    |
-| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 1 min 21 s                                                                                                               |
-| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 311 s                                                                                                                                             |
-| `npm run demo -- --ci`                            | `DEMO PASS`, 5 of 5 cells, 249 s including the image build                                                                                                      |
-| Hosted CI (`ci`, `interop-nightly`)               | both passed on GitHub on 2026-10-14 at commit `654523d`; `interop-nightly` passed every night to 2026-10-23 ([Continuous integration](#continuous-integration)) |
-| `npm audit`                                       | 0 vulnerabilities                                                                                                                                               |
+| Check                                             | Result                                                                                                |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `npm test` (unit and integration)                 | 1247 of 1247 tests, 82 files                                                                          |
+| `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 36 s                                                                                        |
+| `npm run e2e:live` (browser, against the bundle)  | 3 of 3, 40 s: the all-Inji run in the playground, the Inji Verify web component, Inji Web's own pages |
+| `npm run test:live` (against the Inji stack)      | 20 of 20, 129 s                                                                                       |
+| `npm run matrix:reference` (no Docker)            | 123 of 123 cells as specified: 119 pass, 4 not supported; 40 s                                        |
+| `npm run matrix:live` (`live-core`)               | 16 of 16 as specified: 11 pass, 4 fail, 1 not supported, 0 error; 1 min 16 s                          |
+| `npm run matrix:live -- --spec live-holder-web`   | 10 of 10 as specified: 4 pass, 6 fail; 1 min 21 s                                                     |
+| `npm run stack:smoke` (every profile)             | `SMOKE PASS`, 311 s                                                                                   |
+| `npm run demo -- --ci`                            | `DEMO PASS`, 5 of 5 cells, 249 s including the image build                                            |
+| Hosted CI (`ci`, `interop-nightly`)               | status badges in [Continuous integration](#continuous-integration)                                    |
+| `npm audit`                                       | 0 vulnerabilities                                                                                     |
 
 "As specified" means the cell gave the verdict its spec file expects. A cell that expects `fail` is a gap
 in an Inji module that the playground found and recorded; it is not a playground failure. The live matrix
@@ -136,7 +136,10 @@ files are in [docs/interop-report/live](docs/interop-report/live/matrix.md) and 
 
 ## Continuous integration
 
-Hosted GitHub Actions run again since 2026-10-14, when the repository became public. On that day `ci` passed (run 38565026950: lint, typecheck, unit tests, build, reference matrix, container image, browser tests), and `interop-nightly` passed (run 38565031324: the reference matrix and both live matrices against the Inji stack on a GitHub-hosted runner, `live-core` 16 of 16 and `live-holder-web` 10 of 10 as specified). Both ran on commit `654523d`. Since then `interop-nightly` has run on its schedule and passed every night from 2026-10-14 to 2026-10-23 (latest: run 40039143181), each time posting the compatibility matrix as the job summary. `ci` runs on every push and passed on the latest push (2026-10-24, run 40129246076). From 2026-10-09 to 2026-10-14 a billing problem stopped every hosted job. `node scripts/nightly-replay.mjs` runs the nightly workflow's jobs on a local machine step by step.
+[![ci](https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials/actions/workflows/ci.yml/badge.svg)](https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials/actions/workflows/ci.yml)
+[![interop-nightly](https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials/actions/workflows/interop-nightly.yml/badge.svg)](https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials/actions/workflows/interop-nightly.yml)
+
+`ci` runs lint, typecheck, unit tests, build, the reference matrix, the container image and the browser tests on every push; `interop-nightly` runs the reference and live matrices against the Inji stack every night and posts the matrix as the job summary. The run history is on the [Actions page](https://github.com/Paradox-73/Interoperability_Playground_for_Verifiable_Credentials/actions); `node scripts/nightly-replay.mjs` runs the nightly jobs on a local machine.
 
 ## Architecture
 

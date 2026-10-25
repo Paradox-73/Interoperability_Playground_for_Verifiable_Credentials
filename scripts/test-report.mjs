@@ -321,7 +321,7 @@ function render(results) {
     '',
     '## Hosted CI',
     '',
-    'The hosted `ci` and `interop-nightly` runs, with their run ids, are in [README, Continuous integration](../../README.md#continuous-integration).',
+    'The hosted `ci` and `interop-nightly` runs: [README, Continuous integration](../../README.md#continuous-integration).',
   );
   const licenses = results.licenses;
   lines.push(
