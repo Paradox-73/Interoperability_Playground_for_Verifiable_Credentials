@@ -151,6 +151,6 @@ DID `did:web:verify.ps02.test:v1:verify` (served through the TLS front).
   sample configuration (G11). They are local-only: every stack port is published on 127.0.0.1 unless
   `STACK_BIND` says otherwise ([setup.md, Ports](../../docs/setup.md#ports)). Never set `STACK_BIND=0.0.0.0`
   on a network you do not trust.
-- `ref.ps02.test` points at `host.docker.internal:28100`, resolved by Docker Desktop's DNS. On Linux without
-  Docker Desktop, set `PLAYGROUND_REF_UPSTREAM` to the host's bridge address, for example
-  `http://172.17.0.1:28100`.
+- `ref.ps02.test` points at `host.docker.internal:28100`. On Linux, containers reach the host only through
+  the Docker bridge, so start the playground with `PLAYGROUND_HOST=0.0.0.0` and
+  `PLAYGROUND_REF_UPSTREAM=http://172.17.0.1:28100`, as the nightly CI does.
