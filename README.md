@@ -197,6 +197,18 @@ Step by step, with the messages and the Inji Web specifics: [docs/flows.md](docs
 tools, set-up and commit rules. [SECURITY.md](SECURITY.md) lists the protections and their limits.
 [docs/README.md](docs/README.md) is the index of all documentation.
 
+## Team
+
+Team **Badmosip**, MOSIP Decode 2026, problem statement 02.
+
+| Member         | GitHub                                          | Area                                                   |
+| -------------- | ----------------------------------------------- | ------------------------------------------------------ |
+| Kanav Bhardwaj | [Paradox-73](https://github.com/Paradox-73)     | architecture and playground server                     |
+| Ivan Bhargava  | [Ivan825](https://github.com/Ivan825)           | OpenID4VCI issuance and issuer adapters                |
+| Nikunj Mahajan | [nikunj169](https://github.com/nikunj169)       | web UI and accessibility                               |
+| Ishaan Sodhi   | [aloofdevil](https://github.com/aloofdevil)     | OpenID4VP, verifier adapters and tamper scenarios      |
+| Harsh Modi     | [h4rshmodi007](https://github.com/h4rshmodi007) | Inji stack deployment, gap write-ups and documentation |
+
 ## Licence
 
 MIT for the team's code ([LICENSE](LICENSE)). Files imported from upstream Inji repositories keep their
