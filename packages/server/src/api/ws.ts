@@ -6,6 +6,10 @@
  * `?runId=<id>|*` subscribes at connection time. Server -> client: `subscribed` / `unsubscribed`
  * acknowledgements, `error` for a malformed message, and `RunEvent` objects. A client subscribed to a
  * run and to `*` receives that run's events twice.
+ *
+ * Browsers open WebSockets across origins and CORS does not apply, so the upgrade is refused (403)
+ * unless the `Origin` header is one of the playground's own pages. Clients that send no `Origin`
+ * (the CLI, tests) are not browsers and are let through.
  */
 import {
   RunIdSchema,
@@ -15,12 +19,14 @@ import {
 } from '@inji-playground/protocol';
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
+import { pageOriginsFor } from '../recording/self-transport.js';
 import type { RouteOptions } from './services.js';
 
 const ALL = '*';
 
 export const websocketRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { services }, done) => {
-  const { bus, store } = services;
+  const { bus, store, config } = services;
+  const allowedOrigins = new Set(pageOriginsFor(config.port, config.publicUrl));
 
   app.get(
     '/ws',
@@ -32,6 +38,12 @@ export const websocketRoutes: FastifyPluginCallbackZod<RouteOptions> = (app, { s
           'Send `{"type":"subscribe","runId":"<id>"}` (or `"*"` for every run). A subscription to one run first replays its stored events, then streams new ones. Every message is a `RunEvent`, or a `subscribed` / `unsubscribed` / `error` message.',
         tags: ['runs'],
         querystring: z.object({ runId: z.union([RunIdSchema, z.literal(ALL)]).optional() }),
+      },
+      preValidation: async (request, reply) => {
+        const origin = request.headers.origin;
+        if (origin !== undefined && !allowedOrigins.has(origin)) {
+          await reply.code(403).send({ error: 'origin not allowed' });
+        }
       },
     },
     (socket, request) => {

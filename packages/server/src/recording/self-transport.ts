@@ -30,6 +30,14 @@ export function selfOriginsFor(port: number, publicUrl?: string): string[] {
   return [...origins];
 }
 
+/**
+ * Origins of the pages that may use this server's browser APIs (the DC API verifier, the `/ws` stream):
+ * this server, and the UI's Vite dev (28173) and preview (28174) servers, which forward to it.
+ */
+export function pageOriginsFor(port: number, publicUrl?: string): string[] {
+  return [...selfOriginsFor(port, publicUrl), 'http://localhost:28173', 'http://localhost:28174'];
+}
+
 export function selfTransport(
   app: Pick<FastifyInstance, 'inject'>,
   options: SelfTransportOptions,

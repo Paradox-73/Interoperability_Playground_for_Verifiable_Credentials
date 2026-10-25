@@ -17,6 +17,6 @@ export {
 export { INBOUND_TARGETS, inboundTargetOf, installInboundRecorder } from './inbound.js';
 export { NetworkMap, networkFetch, type NetworkMapEntry } from './network-map.js';
 export { registerProxyRoutes, type ProxyOptions, type ProxyTarget } from './proxy.js';
-export { isSelfUrl, selfOriginsFor, selfTransport } from './self-transport.js';
+export { isSelfUrl, pageOriginsFor, selfOriginsFor, selfTransport } from './self-transport.js';
 export { stepRules, tagStep, type TaggableRequest } from './step-tagging.js';
 export { proxyTargets } from './targets.js';

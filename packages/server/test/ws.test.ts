@@ -129,4 +129,22 @@ describe('GET /ws', () => {
     expect(box.messages.map((message) => message.type)).toEqual(['error', 'error', 'error']);
     expect(box.messages[2]).toMatchObject({ message: 'no run with id "no-such-run"' });
   });
+
+  it('accepts the playground page origins and clients without an Origin header', async () => {
+    app = await buildTestApp();
+    const port = app.playground.config.port;
+    for (const origin of [undefined, `http://localhost:${port}`, 'http://localhost:28173']) {
+      const headers = origin ? { origin } : {};
+      const socket = await app.injectWS('/ws', { headers });
+      const box = inbox(socket);
+      socket.send(JSON.stringify({ type: 'subscribe', runId: '*' }));
+      await box.until((message) => message.type === 'subscribed');
+      socket.terminate();
+    }
+  });
+
+  it('refuses the upgrade from a foreign page origin', async () => {
+    app = await buildTestApp();
+    await expect(app.injectWS('/ws', { headers: { origin: 'https://evil.example' } })).rejects.toThrow(/403/);
+  });
 });

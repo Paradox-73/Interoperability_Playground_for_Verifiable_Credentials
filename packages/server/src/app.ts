@@ -57,7 +57,7 @@ import { CaptureHub } from './recording/capture-hub.js';
 import { inboundTargetOf, installInboundRecorder } from './recording/inbound.js';
 import { NetworkMap, networkFetch } from './recording/network-map.js';
 import { registerProxyRoutes } from './recording/proxy.js';
-import { isSelfUrl, selfOriginsFor, selfTransport } from './recording/self-transport.js';
+import { isSelfUrl, pageOriginsFor, selfOriginsFor, selfTransport } from './recording/self-transport.js';
 import { proxyTargets, serviceLabels, stackContextHosts, stackFetchHosts } from './recording/targets.js';
 import { RunStore } from './store/run-store.js';
 
@@ -216,8 +216,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       registry.register({ role });
     }
     // The Digital Credentials API pair: a verifier that asks through the browser, and the browser's wallet.
-    // Its pages: this server, and the UI's Vite dev (28173) and preview (28174) servers, which forward to it.
-    const dcApiOrigins = [...selfOrigins, 'http://localhost:28173', 'http://localhost:28174'];
+    const dcApiOrigins = pageOriginsFor(config.port, config.publicUrl);
     registry.register({ role: new ReferenceDcApiVerifierRole(reference, capture, dcApiOrigins) });
     registry.register({
       role: new BrowserWalletRole({
