@@ -2,7 +2,7 @@
  * Small helpers shared by the issuer, the authorization server and the client: random values, PKCE,
  * a single-use store with expiry, and the Fastify glue both servers need.
  */
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, randomInt } from 'node:crypto';
 import type { FastifyInstance, FastifyReply } from 'fastify';
 import { OAuthError } from './errors.js';
 
@@ -19,8 +19,7 @@ export function randomToken(bytes = 32): string {
 
 /** A numeric transaction code of `length` digits (d13 section 4.1.1 `tx_code.input_mode` = numeric). */
 export function randomDigits(length: number): string {
-  const digits = randomBytes(length);
-  return Array.from(digits, (byte) => String(byte % 10)).join('');
+  return Array.from({ length }, () => String(randomInt(10))).join('');
 }
 
 /** RFC 7636 section 4.2: `code_challenge = BASE64URL(SHA256(ASCII(code_verifier)))`. */

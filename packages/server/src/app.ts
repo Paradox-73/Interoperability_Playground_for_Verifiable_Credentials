@@ -218,17 +218,18 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     // The Digital Credentials API pair: a verifier that asks through the browser, and the browser's wallet.
     const dcApiOrigins = pageOriginsFor(config.port, config.publicUrl);
     registry.register({ role: new ReferenceDcApiVerifierRole(reference, capture, dcApiOrigins) });
+    const completePerson = (runId: string, actionId: string): void => {
+      try {
+        orchestratorRef.current?.personDone(runId, actionId);
+      } catch {
+        // The person pressed "done" first, or the run ended: nothing is waiting any more.
+      }
+    };
     registry.register({
       role: new BrowserWalletRole({
         referenceWallet: new ReferenceWalletRole(reference),
         hub: capture,
-        completePerson: (runId, actionId) => {
-          try {
-            orchestratorRef.current?.personDone(runId, actionId);
-          } catch {
-            // The person pressed "done" first, or the run ended: nothing is waiting any more.
-          }
-        },
+        completePerson,
         timeoutMs: config.personTimeoutMs,
       }),
       stepTimeoutMs: config.personTimeoutMs,
@@ -236,13 +237,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     registry.register({
       role: new MobileWalletRole({
         hub: capture,
-        completePerson: (runId, actionId) => {
-          try {
-            orchestratorRef.current?.personDone(runId, actionId);
-          } catch {
-            // The person pressed "done" first, or the run ended: nothing is waiting any more.
-          }
-        },
+        completePerson,
         timeoutMs: config.personTimeoutMs,
       }),
     });
