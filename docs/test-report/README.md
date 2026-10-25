@@ -6,7 +6,7 @@ Generated on 2026-10-16 by `npm run test:report` at commit `5e0a136` (Darwin 24.
 
 | Suite | Measured on | Tests | Passed | Failed | Skipped |
 | ----- | ----------- | ----- | ------ | ------ | ------- |
-| Unit and integration (`npm test`) | 2026-10-16 | 1247 | 1247 | 0 | 0 |
+| Unit and integration (`npm test`) | 2026-10-25 | 1253 | 1253 | 0 | 0 |
 | Browser, reference mode (`npm run e2e`) | 2026-10-16 | 12 | 12 | 0 | 0 |
 | Live against the Inji stack (`npm run test:live`) | 2026-10-14 | 20 | 20 | 0 | 0 |
 

@@ -44,9 +44,18 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Node 24 is the supported runtime; a new major is an explicit upgrade.
+      - dependency-name: 'node'
+        update-types: ['version-update:semver-major']
   # The Inji stack: base images (nginx, Postgres) are pinned by version and digest; Inji image bumps
   # must also change the adapter constants (a test compares them).
   - package-ecosystem: docker-compose
     directory: /deploy/inji-stack
     schedule:
       interval: weekly
+    ignore:
+      # Major versions of the base images (Postgres 15 to 18, for example) change on-disk formats and
+      # need a migration; they are upgraded by hand.
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
