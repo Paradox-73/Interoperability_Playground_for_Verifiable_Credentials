@@ -42,12 +42,12 @@
     "@digitalbazaar/vc": "^7.3.0",
     "@inji-playground/protocol": "0.1.0",
     "@injistack/pixelpass": "^0.8.0",
-    "@peculiar/x509": "^2.1.0",
-    "@sd-jwt/core": "^0.21.1",
-    "@sd-jwt/sd-jwt-vc": "^0.21.1",
-    "cbor-x": "^1.6.6",
+    "@peculiar/x509": "^2.2.0",
+    "@sd-jwt/core": "^0.23.0",
+    "@sd-jwt/sd-jwt-vc": "^0.23.0",
+    "cbor-x": "^1.6.8",
     "did-resolver": "^6.0.0",
-    "jose": "^6.2.12",
+    "jose": "^6.2.13",
     "key-did-resolver": "^4.0.0",
     "reflect-metadata": "^0.2.2"
   }

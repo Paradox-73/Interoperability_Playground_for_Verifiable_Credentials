@@ -24,6 +24,6 @@
     "@inji-playground/formats": "0.1.0",
     "@inji-playground/protocol": "0.1.0",
     "dcql": "^4.0.0",
-    "jsonpath-plus": "^11.1.1"
+    "jsonpath-plus": "^11.2.1"
   }
 }
