@@ -31,7 +31,7 @@ services:
       context: ..
       dockerfile: Dockerfile
     ports:
-      - '28100:28100'
+      - '${STACK_BIND:-127.0.0.1}:28100:28100'
     environment:
       PLAYGROUND_STACK: bundle
       # Trust the stack's test CA for https://*.ps02.test (did:web documents behind the TLS front).

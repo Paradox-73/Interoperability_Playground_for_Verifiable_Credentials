@@ -112,7 +112,7 @@ services:
   certify-nginx:
     image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     ports:
-      - '28091:80'
+      - '${STACK_BIND:-127.0.0.1}:28091:80'
     networks:
       default:
         aliases: [nginx]
@@ -147,7 +147,7 @@ services:
   tls-front:
     image: nginx:1.30.5@sha256:9bf97bd7714f5e24c1ccd545ecb9eb5435cb6d109c97cebb15e7e455e0239edb
     ports:
-      - '28443:443'
+      - '${STACK_BIND:-127.0.0.1}:28443:443'
     environment:
       # Where ref.ps02.test points: the playground on the host by default; the bundle sets the container.
       REF_UPSTREAM: ${PLAYGROUND_REF_UPSTREAM:-http://host.docker.internal:28100}
@@ -192,7 +192,7 @@ services:
     image: injistack/inji-verify-service:0.18.2
     user: root
     ports:
-      - '28080:8080'
+      - '${STACK_BIND:-127.0.0.1}:28080:8080'
     environment:
       active_profile_env: default
       DATABASE_HOST: database
@@ -334,7 +334,7 @@ services:
     user: root
     entrypoint: ['/bin/sh', '/ps02/mimoto-start.sh']
     ports:
-      - '28099:8099'
+      - '${STACK_BIND:-127.0.0.1}:28099:8099'
     environment:
       container_user: mosip
       active_profile_env: default
@@ -394,7 +394,7 @@ services:
     image: injistack/inji-web:0.17.0
     profiles: [holder-web]
     ports:
-      - '28004:3004'
+      - '${STACK_BIND:-127.0.0.1}:28004:3004'
     environment:
       DEFAULT_LANG: en
       MIMOTO_URL: http://localhost:28004/v1/mimoto
@@ -413,7 +413,7 @@ services:
     image: injistack/inji-verify-ui:0.18.2
     profiles: [verify-ui]
     ports:
-      - '28030:8000'
+      - '${STACK_BIND:-127.0.0.1}:28030:8000'
     environment:
       DEFAULT_TITLE: Inji Verify
       DEFAULT_LANG: en

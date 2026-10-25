@@ -17,7 +17,7 @@ playground's live interoperability runs. Docker Compose project `ps02-inji`.
 | Inji Web            | `injistack/inji-web:0.17.0`                  | browser wallet                                       |
 | Inji Verify service | `injistack/inji-verify-service:0.18.2`       |                                                      |
 | Inji Verify UI      | `injistack/inji-verify-ui:0.18.2`            |                                                      |
-| Postgres            | `postgres:15.19`                                | Certify, Mimoto, Verify; a second one for certify-ac |
+| Postgres            | `postgres:15.19`                             | Certify, Mimoto, Verify; a second one for certify-ac |
 | nginx               | `nginx:1.30.5`                               | certify-nginx, TLS front, and the one-shot helpers   |
 
 This set ran together on 2026-10-04 (research trial). The upstream compose files pair Certify 0.14.0 with
@@ -148,7 +148,9 @@ DID `did:web:verify.ps02.test:v1:verify` (served through the TLS front).
 - certify-ac and Mimoto reach the playground at `https://ref.ps02.test`, so the playground must run on 28100
   with `PLAYGROUND_PUBLIC_URL=https://ref.ps02.test` for holder-web runs.
 - Admin APIs of Certify (`/credential-configurations`, `/pre-authorized-data`) need no authentication in the
-  sample configuration (G11). Fine for a local playground; never expose these ports.
+  sample configuration (G11). They are local-only: every stack port is published on 127.0.0.1 unless
+  `STACK_BIND` says otherwise ([setup.md, Ports](../../docs/setup.md#ports)). Never set `STACK_BIND=0.0.0.0`
+  on a network you do not trust.
 - `ref.ps02.test` points at `host.docker.internal:28100`, resolved by Docker Desktop's DNS. On Linux without
   Docker Desktop, set `PLAYGROUND_REF_UPSTREAM` to the host's bridge address, for example
   `http://172.17.0.1:28100`.

@@ -91,7 +91,9 @@ route has not been run with Inji Wallet yet; every expected result below comes f
 1. Start a tunnel that gives `http://localhost:28100` a public `https://` address with a publicly trusted
    certificate. A LAN address such as `http://192.168.1.20:28100` is not enough for Inji Wallet on Android:
    the app refuses plain `http` and ignores certificates the user installed (see
-   [known failures](#known-failures)).
+   [known failures](#known-failures)). The tunnel connects to `localhost`, so the default binding of the
+   ports to 127.0.0.1 works; to use a LAN address instead, start with `STACK_BIND=0.0.0.0`
+   ([setup.md, Ports](setup.md#ports)).
 2. Restart the playground with that address: `PLAYGROUND_PUBLIC_URL=https://<tunnel-host> npm run up -- --no-build`.
    This breaks Inji Web runs until you start it again without the variable
    ([Inji stack README, Known limits](../deploy/inji-stack/README.md#known-limits)).

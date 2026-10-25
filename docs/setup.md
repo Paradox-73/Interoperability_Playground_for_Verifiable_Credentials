@@ -125,7 +125,10 @@ path) says otherwise.
 
 ## Ports
 
-All host ports are in the project range 28000-28999.
+All host ports are in the project range 28000-28999. The stack and bundle publish them on 127.0.0.1 only.
+To reach them from another device (a phone on the same Wi-Fi, see the
+[phone wallet guide](phone-wallet-guide.md)), start with `STACK_BIND=0.0.0.0 npm run up`; that also opens
+Certify's unauthenticated admin APIs (gap G11) to that network.
 
 | Port  | Service                                         | Mode          |
 | ----- | ----------------------------------------------- | ------------- |
@@ -143,15 +146,16 @@ All host ports are in the project range 28000-28999.
 
 ## Environment variables
 
-| Variable                                                                                                             | Default                              | Meaning                                                                          |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------- |
-| `PLAYGROUND_RUN_DIR`                                                                                                 | `<repo>/run`                         | everything generated at run time; must be absolute when compose is used directly |
-| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`               | profiles the npm commands start; `none` for the core only                        |
-| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`  | where the TLS front sends `ref.ps02.test` in host mode                           |
-| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `https://verify.ps02.test/v1/verify` | `response_uri` base Inji Verify gives wallets; set a LAN address for a phone     |
-| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                 | host URLs the stack scripts probe                                                |
-| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                | `1` keeps the compose logs of a passing smoke run too                            |
-| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`             | image tag the bundle builds and runs                                             |
+| Variable                                                                                                             | Default                              | Meaning                                                                                                     |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `PLAYGROUND_RUN_DIR`                                                                                                 | `<repo>/run`                         | everything generated at run time; must be absolute when compose is used directly                            |
+| `PLAYGROUND_STACK_PROFILES`                                                                                          | `holder-web,verify-ui`               | profiles the npm commands start; `none` for the core only                                                   |
+| `PLAYGROUND_REF_UPSTREAM`                                                                                            | `http://host.docker.internal:28100`  | where the TLS front sends `ref.ps02.test` in host mode                                                      |
+| `INJI_VERIFY_SUBMISSION_BASE_URL`                                                                                    | `https://verify.ps02.test/v1/verify` | `response_uri` base Inji Verify gives wallets; set a LAN address for a phone                                |
+| `INJI_CERTIFY_URL`, `INJI_VERIFY_URL`, `INJI_MIMOTO_URL`, `INJI_WEB_URL`, `INJI_VERIFY_UI_URL`, `INJI_TLS_FRONT_URL` | the host ports above                 | host URLs the stack scripts probe                                                                           |
+| `PLAYGROUND_STACK_SAVE_LOGS`                                                                                         | unset                                | `1` keeps the compose logs of a passing smoke run too                                                       |
+| `STACK_BIND`                                                                                                         | `127.0.0.1`                          | host address the stack and bundle publish their ports on; `0.0.0.0` for other devices (see [Ports](#ports)) |
+| `PLAYGROUND_IMAGE`                                                                                                   | `ps02-playground:bundle`             | image tag the bundle builds and runs                                                                        |
 
 ## Memory and start times
 

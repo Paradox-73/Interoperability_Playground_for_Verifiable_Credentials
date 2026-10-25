@@ -70,6 +70,11 @@ describe('compose.yaml', () => {
     expect(ports.filter((port) => port < 28000 || port > 28999)).toEqual([]);
   });
 
+  it('publishes every port on 127.0.0.1 unless STACK_BIND opens it (G11: open admin APIs)', () => {
+    const ports = Object.values(compose.services).flatMap((s) => s.ports ?? []);
+    expect(ports.filter((p) => !/^(\$\{STACK_BIND:-127\.0\.0\.1\}|127\.0\.0\.1):/.test(p))).toEqual([]);
+  });
+
   it('does not publish Postgres in the base file (host mode adds it on 127.0.0.1 only)', () => {
     expect(compose.services.database.ports).toBeUndefined();
     expect(hostOverride.services.database.ports).toEqual(['127.0.0.1:28432:5432']);
