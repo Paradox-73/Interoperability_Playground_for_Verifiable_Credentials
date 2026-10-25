@@ -98,7 +98,7 @@ macOS 15.6 with Node 24.22, after the clean-up of [docs/history/cleanup-2026-10-
 
 | Check                                             | Result                                                                                                |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `npm test` (unit and integration)                 | 1247 of 1247 tests, 82 files                                                                          |
+| `npm test` (unit and integration)                 | 1253 of 1253 tests, 84 files (2026-10-25)                                                             |
 | `npm run e2e` (browser, axe accessibility checks) | 12 of 12, 36 s                                                                                        |
 | `npm run e2e:live` (browser, against the bundle)  | 3 of 3, 40 s: the all-Inji run in the playground, the Inji Verify web component, Inji Web's own pages |
 | `npm run test:live` (against the Inji stack)      | 20 of 20, 129 s                                                                                       |
