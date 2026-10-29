@@ -28,7 +28,8 @@ Stop everything afterwards with `npm run down`.
 ## Script, video and slides
 
 The shot-by-shot script of the video (4 minutes 50 seconds, each shot with its narration and the rubric
-criterion it proves) and the ten-slide outline are in [video-script.md](../video-script.md). The checklist to
+criterion it proves) and the ten-slide outline are in [video-script.md](../video-script.md). The submitted
+slide deck is [deck.pdf](deck.pdf). The checklist to
 run before recording is [manual-test-checklist.md](../manual-test-checklist.md).
 
 Numbers to quote: [README, Current numbers](../../README.md#current-numbers), the only place they are kept.
